@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 /* This is a hello world for omp/mpi hybrid */ 
-
+// Hello from the openmpi team!
 int i = 0;
 
 int main(int argc, char *argv[])
