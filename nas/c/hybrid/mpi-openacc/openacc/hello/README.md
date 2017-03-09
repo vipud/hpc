@@ -1,4 +1,2 @@
 <h1> Current issues </h1>
-Compiling with pgcc results in ld error
-: missing -mpich
-Looking into solution
+<h2> compiles, no visible performance difference at the moment </h2>
