@@ -6,8 +6,6 @@ include ../config/make.def
 
 include ../sys/make.common
 
-CC = mpicc
-
 OBJS = ep.o \
 			 ${COMMON}/print_results.o \
 			 ${COMMON}/${RAND}.o \
