@@ -1,7 +1,7 @@
-CC = mpicc -std=c99 
-EXEC = mpiexec -n 4
+CC = mpicc 
+EXEC = mpiexec
 
-all : hello.exec hello_add.exec
+all: run
 
 hello_add.exec : hello_add.c
 	$(CC) hello_add.c -o hello_add.exec
@@ -9,5 +9,7 @@ hello_add.exec : hello_add.c
 hello.exec : hello.c
 	$(CC) hello.c -o hello.exec
 
+run: hello_add.exec
+	$(EXEC) -n 1  hello_add.exec
 clean:
 	rm -rf *~ *.exec
