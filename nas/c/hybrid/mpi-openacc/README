@@ -1,1 +1,25 @@
 add mpi-openacc codes into this repository
+
+-- Eric ----------------------------------------------------------------
+So far we have MPI EP working, currently working towards OpenACC
+A lot of learning about OpenACC to do still
+
+Haven't gotten MPI+OpenACC to compile yet, will worry about that after
+OpenACC code is done
+
+in the EP-MPI directory you can just do
+    make EP CLASS=A
+to compile and then
+    mpiexec -n 4 ./bin/ep.A.x
+to run it, the program should take about 35 seconds with 1 processor
+and about 1/4 that with 4 processors
+
+OpenACC is still being worked on
+We were having problems with how much stuff is going on
+in the NAS NPB Makefiles, so we reorganized all essential files and made
+our own very simple Makefile for now...
+    make test
+will compile it, but right now it's not done yet, so not much will happen
+except for compiler error messages
+all of the OpenACC code
+-------------------------------------------------------------------------
