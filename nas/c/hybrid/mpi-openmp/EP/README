@@ -4,9 +4,10 @@ Runable mpi+omp EP
 
 1. Correct result when process =1
 2. Wrong result when processes =2
-2. seg fault(11) when I use >= 3 processes
+3. seg fault(11) when I use >= 3 processes
 
-
+Diagnosis: workload distribution wrong
+           Pointer reaches null.
 
 
 
