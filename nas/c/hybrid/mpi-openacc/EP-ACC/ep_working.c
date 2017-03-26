@@ -296,7 +296,7 @@ int main(int argc, char* argv[])
         //  vectorizable. 
         //--------------------------------------------------------------------
         //if (timers_enabled) timer_start(1);
-        #pragma acc loop vector
+
         for (i = 0; i < NK; i++) {
             x1 = 2.0 * x[2*i] - 1.0;
             x2 = 2.0 * x[2*i+1] - 1.0;
@@ -306,7 +306,6 @@ int main(int argc, char* argv[])
                 t3   = (x1 * t2);
                 t4   = (x2 * t2);
                 l    = MAX(fabs(t3), fabs(t4));
-                //#pragma acc atomic update
                 q[l] = q[l] + 1.0;
                 // add one to q at wherever the random value falls into
                 sx   = sx + t3;
