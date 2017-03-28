@@ -2,7 +2,7 @@
 #include <mpi.h>
 #include <stdlib.h>
 #include <math.h>
-#include "openacc.h"
+#include <openacc.h>
 
 #define DEBUG true
 
@@ -22,18 +22,18 @@ int main(int argc, char* argv[]){
 	c = (int *) malloc(N * sizeof(int));
 	start_time = MPI_Wtime();
 	// init
-	#pragma acc parallel
+	#pragma acc kernels
 	for(int i = 0; i < N; i++){
 		a[i] = i;
 		b[i] = i;
 	}
 	// add to c
- 	#pragma acc parallel
+ 	#pragma acc kernels
 	for(int i = 0; i < N; i++){
 		c[i] = a[i] * b[i];
 		#ifdef DEBUG
-		printf("c[%d] = %d\n", i, c[i]);
-		fflush(stdout);
+		//printf("c[%d] = %d\n", i, c[i]);
+		//fflush(stdout);
 		#endif
 	}
 	end_time = MPI_Wtime();

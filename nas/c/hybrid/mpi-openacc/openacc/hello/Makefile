@@ -1,10 +1,11 @@
 CC = mpicc 
 EXEC = mpiexec
+FLAGS =  -fast -acc -ta=nvidia:cc2,fastmath -Minfo=accel -Wl, -rpath,/opt/pgi/modulefiles/openmpi/1.10.2/2016 
 
-all: run
+all: hello_add.exec 
 
 hello_add.exec : hello_add.c
-	$(CC) hello_add.c -o hello_add.exec
+	$(CC) $(FLAGS) hello_add.c -o hello_add.exec
 
 hello.exec : hello.c
 	$(CC) hello.c -o hello.exec
@@ -12,4 +13,4 @@ hello.exec : hello.c
 run: hello_add.exec
 	$(EXEC) -n 1  hello_add.exec
 clean:
-	rm -rf *~ *.exec
+	rm -rf *~ *.o *.exec
