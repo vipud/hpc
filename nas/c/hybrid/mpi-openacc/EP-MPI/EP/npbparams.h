@@ -1,14 +1,14 @@
-/* CLASS = A */
+/* CLASS = S */
 /*
    This file is generated automatically by the setparams utility.
    It sets the number of processors and the class of the NPB
    in this directory. Do not modify it by hand.   
 */
-#define CLASS  'A'
-#define M      28
+#define CLASS  'S'
+#define M      24
 
 #define CONVERTDOUBLE  false
-#define COMPILETIME "16 Mar 2017"
+#define COMPILETIME "25 Mar 2017"
 #define NPBVERSION "3.3.1"
 #define CS1 "mpicc"
 #define CS2 "$(CC)"

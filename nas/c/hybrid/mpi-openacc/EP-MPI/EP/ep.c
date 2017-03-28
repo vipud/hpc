@@ -54,7 +54,6 @@
 #include "randdp.h"
 #include "timers.h"
 #include "print_results.h"
-//#include <openacc.h>
 #include <mpi.h>
 
 #define MAX(X,Y)  (((X) > (Y)) ? (X) : (Y))
@@ -70,6 +69,7 @@
 
 static double x[2*NK];
 static double q[NQ];
+static double global_q[NQ];
 
 
 int main(int argc, char* argv[])
@@ -267,6 +267,7 @@ int main(int argc, char* argv[])
   MPI_Reduce(&gc, &gc_global, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&sx, &sx_global, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&sy, &sy_global, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(q, global_q, 10, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
   gc = gc_global;
   sx = sx_global;
   sy = sy_global;
@@ -317,7 +318,7 @@ int main(int argc, char* argv[])
     printf("Sums = %25.15lE %25.15lE\n", sx, sy);
     printf("Counts: \n");
     for (i = 0; i < NQ; i++) {
-        printf("%3d%15.0lf\n", i, q[i]);
+        printf("%3d%15.0lf\n", i, global_q[i]);
     }
 
     print_results("EP", CLASS, M+1, 0, 0, nit,
