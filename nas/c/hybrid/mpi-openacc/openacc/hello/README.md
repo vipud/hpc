@@ -1,4 +1,4 @@
-<h1> Current issues </h1>
-<h2> Compiling results in linking errors, looking into different ways to fix this</h2>
+<h1>hello_add.c is compiling and running! It seems that the OpenACC is slowing down the program in this situation, perhaps due to overhead.</h1>
+<h2>Compile: make hello_add.exec</h2>
+<h3>Run: srun -n 1 --gres=gpu:1 hello_add.exec.</h3>
 
-<h3>Progress on figuring out what's wrong - currently there is a linking error when compiling with mpicc as a wrapper compiler using pgcc as the compiler. Running ompi_info results in an error</h3>
