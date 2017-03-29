@@ -22,4 +22,10 @@ our own very simple Makefile for now...
 will compile it, but right now it's not done yet, so not much will happen
 except for compiler error messages
 all of the OpenACC code
--------------------------------------------------------------------------
+-- Aamir ----------------------------------------------------------------
+Current status:
+MPI+OpenACC code compiles and links correctly, in the mpi-openacc/openacc/hello directory. I am testing some OpenACC code to learn how the directive works, here are the GPU numbers for reference:
+1080 GPU ~ -ta=tesla:cc60
+Tesla K80 ~ -ta=tesla:cc35
+The goal is to implement OpenACC in the EP code, and then combine that with the MPI code to split the workload further.
+------------------------------------------------------------------------

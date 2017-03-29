@@ -2,7 +2,6 @@
 #include <mpi.h>
 #include <stdlib.h>
 #include <math.h>
-#include <openacc.h>
 
 #define DEBUG true
 
@@ -27,7 +26,6 @@ int main(int argc, char* argv[]){
 		b[i] = i;
 	}
 	// add to c
- 	#pragma acc kernels
 	for(int i = 0; i < N; i++){
 		c[i] = a[i] * b[i];
 		#ifdef DEBUG
