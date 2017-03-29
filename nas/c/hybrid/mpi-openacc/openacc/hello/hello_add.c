@@ -22,7 +22,6 @@ int main(int argc, char* argv[]){
 	c = (int *) malloc(N * sizeof(int));
 	start_time = MPI_Wtime();
 	// init
-	#pragma acc kernels
 	for(int i = 0; i < N; i++){
 		a[i] = i;
 		b[i] = i;

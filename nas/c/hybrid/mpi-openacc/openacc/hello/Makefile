@@ -4,6 +4,9 @@ FLAGS =  -fast -acc -ta=nvidia:cc2,fastmath -Minfo=accel -Wl, -rpath,/opt/pgi/mo
 
 all: hello_add.exec 
 
+hello_acc.exec: hello_acc.c
+	$(CC) $(FLAGS) hello_acc.c -o hello_acc.exec
+
 hello_add.exec : hello_add.c
 	$(CC) $(FLAGS) hello_add.c -o hello_add.exec
 
