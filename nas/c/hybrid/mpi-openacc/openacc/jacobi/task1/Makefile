@@ -1,5 +1,0 @@
-CC = pgcc
-
-all : task
-
-

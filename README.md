@@ -1,3 +1,2 @@
-# hpc
-General repository for the High Performance Computing VIP team at UD
-Creating hybrid parallel codes for NAS NPB benchmarks 
+# EP MPI + OPENMP Bench
+Feel free to improved upon the OpenMPI pragmas.
