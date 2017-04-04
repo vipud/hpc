@@ -22,6 +22,6 @@ ${PROGRAM}: config ${OBJS}
 ep.o: ep.c npbparams.h
 
 clean:
-	- rm -f *.o *~ 
+	- rm -f *.o 
 	- rm -f npbparams.h core
 

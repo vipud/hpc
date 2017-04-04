@@ -14,6 +14,6 @@
 #define CS2 "$(CC)"
 #define CS3 "-lm"
 #define CS4 "-I../common"
-#define CS5 "(none)"
+#define CS5 "-openmp -pg"
 #define CS6 "-O3 -mcmodel=medium"
 #define CS7 "randdp"

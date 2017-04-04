@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 
   // Initialize every value in x to be some really small number
   // Can be parallized with shared memory
-  #pragma omp parallel for
+  #pragma omp parallel for shared(x) private(i)
   for (i = 0; i < 2 * NK; i++) {
     x[i] = -1.0e99;
   }
@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
 
   // Set every value in q to 0.0
   // Parallizable
- #pragma omp parallel for
+ #pragma omp parallel for private(i)
   for (i = 0; i < NQ; i++) {
     q[i] = 0.0;
   }
@@ -209,7 +209,7 @@ int main(int argc, char* argv[])
   // The only reason it is paralizable is because ti and t2 get set to the same
   // value each iteration
   // And it seems that like every value in this loop will have to be private
-  #pragma omp parallel
+  #pragma omp parallel private(i,k,t1,t2,t3,ik)
   {
   #pragma omp for
   for (k = rank+1; k <= np; k+=npes) {
@@ -266,7 +266,7 @@ int main(int argc, char* argv[])
   }
 }
   // Parallel using a sum reduction
-  #pragma omp parallel reduction(+: gc)
+  #pragma omp parallel reduction(+: gc) private(i, gc)
 {
   #pragma omp for
   for (i = 0; i < NQ; i++) {
