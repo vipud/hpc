@@ -8,7 +8,7 @@
 #define M      36
 
 #define CONVERTDOUBLE  false
-#define COMPILETIME "29 Mar 2017"
+#define COMPILETIME "04 Apr 2017"
 #define NPBVERSION "3.3.1"
 #define CS1 "mpicc"
 #define CS2 "$(CC)"

@@ -4,6 +4,8 @@
 #include <mpi.h>
 #include <openacc.h>
 
+#define N 10000
+
 int main(int argc, char* argv[]){
 	double start_time, end_time;
 	start_time = MPI_Wtime();

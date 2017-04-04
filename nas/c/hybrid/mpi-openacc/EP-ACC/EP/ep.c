@@ -105,17 +105,17 @@ int main(int argc, char* argv[])
 	{
 		#pragma acc kernels
 		{
-			//#pragma acc parallel loop
+			#pragma acc loop
 			for(i = 0; i < NQ; i++){
 				q[i] = 0.0;
 			}
 
-			//#pragma acc parallel loop
+			#pragma acc loop
 			for(i = 0; i < NQ*blocksize; i++){
 				qq[i] = 0.0;
 			}
 			
-			//#pragma acc parallel loop
+			#pragma acc loop
 			for(i = 0; i < 2*NK*blocksize; i++){
 				xx[i] = -1.0e99;
 			}
