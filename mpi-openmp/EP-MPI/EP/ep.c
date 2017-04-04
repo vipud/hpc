@@ -152,7 +152,6 @@ int main(int argc, char* argv[])
   // Initialize every value in x to be some really small number
   // Can be parallized with shared memory
   #pragma omp parallel for
-  #pragma omp for
   for (i = 0; i < 2 * NK; i++) {
     x[i] = -1.0e99;
   }
@@ -193,13 +192,11 @@ int main(int argc, char* argv[])
 
   // Set every value in q to 0.0
   // Parallizable
- #pragma omp parallel 
-{
- #pragma omp for
+ #pragma omp parallel for
   for (i = 0; i < NQ; i++) {
     q[i] = 0.0;
   }
-}
+
   //--------------------------------------------------------------------
   //  Each instance of this loop may be performed independently. We compute
   //  the k offsets separately to take into account the fact that some nodes
@@ -247,7 +244,7 @@ int main(int argc, char* argv[])
     //  vectorizable.
     //--------------------------------------------------------------------
     if (timers_enabled) timer_start(1);
-    #pragma omp for
+    //#pragma omp for
     for (i = 0; i < NK; i++) {
       x1 = 2.0 * x[2*i] - 1.0;
       x2 = 2.0 * x[2*i+1] - 1.0;
@@ -269,8 +266,7 @@ int main(int argc, char* argv[])
   }
 }
   // Parallel using a sum reduction
-
-  #pragma omp parallel reduction(+:sum) 
+  #pragma omp parallel reduction(+: gc)
 {
   #pragma omp for
   for (i = 0; i < NQ; i++) {
