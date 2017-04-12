@@ -30,10 +30,7 @@
 # This is the fortran compiler used for Fortran programs
 #---------------------------------------------------------------------------
 F77 = gfortran
-
-#---------------------------------------------------------------------------
 # This links fortran programs; usually the same as ${F77}
-#---------------------------------------------------------------------------
 FLINK	= $(F77)
 
 #---------------------------------------------------------------------------
@@ -49,13 +46,13 @@ F_INC =
 #---------------------------------------------------------------------------
 # Global *compile time* flags for Fortran programs
 #---------------------------------------------------------------------------
-FFLAGS	= -O3 -mcmodel=medium
+FFLAGS	= -O3 -fopenmp -mcmodel=medium
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-FLINKFLAGS = -O3 -mcmodel=medium
+FLINKFLAGS = -O3 -fopenmp -mcmodel=medium
 
 
 #---------------------------------------------------------------------------
@@ -79,10 +76,7 @@ FLINKFLAGS = -O3 -mcmodel=medium
 # This is the C compiler used for C programs
 #---------------------------------------------------------------------------
 CC = mpicc
-
-#---------------------------------------------------------------------------
 # This links C programs; usually the same as ${CC}
-#---------------------------------------------------------------------------
 CLINK	= $(CC)
 
 #---------------------------------------------------------------------------
@@ -110,13 +104,13 @@ C_INC = -I../common
 # _LARGEFILE64_SOURCE - are standard compiler flags which allow to work with 
 # files larger than 2GB.
 #---------------------------------------------------------------------------
-CFLAGS	= 
+CFLAGS	= -g -Wall -O3 -fopenmp -mcmodel=medium
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 
 # size usually go here. 
 #---------------------------------------------------------------------------
-CLINKFLAGS = -O3 -mcmodel=medium
+CLINKFLAGS = -O3 -fopenmp -mcmodel=medium
 
 
 #---------------------------------------------------------------------------
@@ -156,7 +150,7 @@ WTIME  = wtime.c
 
 
 #---------------------------------------------------------------------------
-# Enable if either Cray or IBM: 
+# Enable if either Cray (not Cray-X1) or IBM: 
 # (no such flag for most machines: see common/wtime.h)
 # This is used by the C compiler to pass the machine name to common/wtime.h,
 # where the C/Fortran binding interface format is determined

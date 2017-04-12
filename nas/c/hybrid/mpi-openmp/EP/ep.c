@@ -89,9 +89,10 @@ int main(int argc, char* argv[])
   char   size[16], timers_enabled_char;
 
   FILE *fp;
-
+  int required = MPI_THREAD_SERIALIZED;
+  int provided;
   int rank, npes;
-  MPI_Init(&argc, &argv);
+  MPI_Init_thread(&argc, &argv, required, &provided);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &npes);
 
@@ -223,7 +224,7 @@ int main(int argc, char* argv[])
             qq[i]=0.0;
         }
     }
-    #pragma omp for reduction(+sx,sy) nowait
+    #pragma omp for reduction(+:sx,sy) nowait
     for (k = rank+1; k <= np; k+=npes) {
         // kk will be 1 less than k, k being the loop variable
         kk = k_offset + k;
