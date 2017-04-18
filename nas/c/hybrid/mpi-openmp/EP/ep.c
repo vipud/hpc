@@ -197,12 +197,10 @@ int main(int argc, char* argv[])
 
   // Set every value in q to 0.0
   // Parallizable
-#pragma omp parallel default(shared) private(i)
-{
+
   for (i = 0; i < NQ; i++) {
     q[i] = 0.0;
   }
-}
   //--------------------------------------------------------------------
   //  Each instance of this loop may be performed independently. We compute
   //  the k offsets separately to take into account the fact that some nodes
