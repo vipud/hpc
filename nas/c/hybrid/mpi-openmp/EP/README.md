@@ -14,7 +14,7 @@ We use a master thread to make MPI calls while the other threads carry the compu
 To build the benchmark simply type :
 
 ```
-make CLASS = "Class Name"
+make CLASS="Class Name"
 ````
 
 Class can be A, B, C, D, E, F, S or W without the quotes.
@@ -23,10 +23,10 @@ Class can be A, B, C, D, E, F, S or W without the quotes.
 # How to run the benchmark
 
 From the bin folder located at /hpc/nas/c/hybrid/mpi-openmp/bin
-Run the executable
+Run the executable by specifying the number of processes. For example:
 
 ```
-./ep.A.x
+mpiexec -n 12 ./ep.A.x
 ```
 
 
