@@ -58,7 +58,8 @@
 #include <omp.h>
 
 #define MAX(X,Y)  (((X) > (Y)) ? (X) : (Y))
-
+//num of threads per proc
+#define NT 4
 #define MK        16
 #define MM        (M - MK)
 #define NN        (1 << MM)
@@ -95,15 +96,26 @@ int main(int argc, char* argv[])
   MPI_Init_thread(&argc, &argv, required, &provided);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &npes);
-
+  if(provided < required){
+    if ( rank == 0){
+      printf("p\t%d\t", npes);
+    }
+    omp_set_num_threads(1);
+  }
+  else{
+    if(rank == 0){
+      printf("r\t%d\t", npes);
+    }
+    omp_set_num_threads(NT);
+  }
   if(rank == 0){
     if ((fp = fopen("timer.flag", "r")) == NULL) {
-        timers_enabled = false;
-        timers_enabled_char = 0;
+      timers_enabled = false;
+      timers_enabled_char = 0;
     } else {
-        timers_enabled = true;
-        fclose(fp);
-        timers_enabled_char = 1;
+      timers_enabled = true;
+      fclose(fp);
+      timers_enabled_char = 1;
     }
   }
 
@@ -121,8 +133,8 @@ int main(int argc, char* argv[])
     j = 14;
     if (size[j] == '.') j--;
     size[j+1] = '\0';
-    printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - EP Benchmark\n");
-    printf("\n Number of random numbers generated: %15s\n", size);
+    //printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - EP Benchmark\n");
+    //printf("\n Number of random numbers generated: %15s\n", size);
   }
   verified = false;
 
@@ -153,11 +165,9 @@ int main(int argc, char* argv[])
 
   // Initialize every value in x to be some really small number
   // Can be parallized with shared memory
-  #pragma omp parallel default(shared) private(i)
-  {
-      for (i = 0; i < 2 * NK; i++) {
-          x[i] = -1.0e99;
-      }
+#pragma omp parallel for default(shared) private(i)
+  for (i = 0; i < 2 * NK; i++) {
+    x[i] = -1.0e99;
   }
 
   // this line of code also seems redundant...
@@ -183,7 +193,7 @@ int main(int argc, char* argv[])
   // This is not parallizable, data dependency
   if(rank == 0){
     for (i = 0; i < MK + 1; i++) {
-        t2 = randlc(&t1, t1);
+      t2 = randlc(&t1, t1);
     }
   }
   MPI_Bcast(&t1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -197,12 +207,11 @@ int main(int argc, char* argv[])
 
   // Set every value in q to 0.0
   // Parallizable
-#pragma omp parallel default(shared) private(i)
-{
+
   for (i = 0; i < NQ; i++) {
     q[i] = 0.0;
   }
-}
+
   //--------------------------------------------------------------------
   //  Each instance of this loop may be performed independently. We compute
   //  the k offsets separately to take into account the fact that some nodes
@@ -217,71 +226,73 @@ int main(int argc, char* argv[])
   // And it seems that like every value in this loop will have to be private
 
 #pragma omp parallel default(shared) private(k,kk,t1,t2,t3,t4,i,ik,x1,x2,l)
-{
-    #pragma omp parallel default(shared) private(i)
-    {
-        for (i=0; i<NQ;i++){
-            qq[i]=0.0;
-        }
+  {
+    for (i=0; i<NQ;i++){
+      qq[i]=0.0;
     }
-    #pragma omp for reduction(+:sx,sy) nowait
+    if(rank==0){
+#pragma omp single
+      printf("nprocs=%d, nthreads=%d\n",npes,omp_get_num_threads());
+      fflush(stdout);
+    }
+#pragma omp for reduction(+:sx,sy) nowait
     for (k = rank+1; k <= np; k+=npes) {
-        // kk will be 1 less than k, k being the loop variable
-        kk = k_offset + k;
-        t1 = S; // S is some generically large number
-        t2 = an; // an at this point is some sort of seed value
+      // kk will be 1 less than k, k being the loop variable
+      kk = k_offset + k;
+      t1 = S; // S is some generically large number
+      t2 = an; // an at this point is some sort of seed value
 
-        // Find starting seed t1 for this kk.
+      // Find starting seed t1 for this kk.
 
-        for (i = 1; i <= 100; i++) {
-            ik = kk / 2; // some interger kk >= 0
-            // basically if k is even
-            if ((2 * ik) != kk) t3 = randlc(&t1, t2); // t3 is a random number
-            // t1 is used as the seed, t1 started at S
-            if (ik == 0) break; // this should only be true when k = 1 or 2
-            t3 = randlc(&t2, t2); // t3 is a random number using t2 as seed
-            // where t2 starts as the old seed
-            kk = ik; // kk is now half of what it used to be
-        }
+      for (i = 1; i <= 100; i++) {
+	ik = kk / 2; // some interger kk >= 0
+	// basically if k is even
+	if ((2 * ik) != kk) t3 = randlc(&t1, t2); // t3 is a random number
+	// t1 is used as the seed, t1 started at S
+	if (ik == 0) break; // this should only be true when k = 1 or 2
+	t3 = randlc(&t2, t2); // t3 is a random number using t2 as seed
+	// where t2 starts as the old seed
+	kk = ik; // kk is now half of what it used to be
+      }
 
-    //--------------------------------------------------------------------
-    //  Compute uniform pseudorandom numbers.
-    //--------------------------------------------------------------------
-        if (timers_enabled) timer_start(2);
-        vranlc(2 * NK, &t1, A, x); // fill x with a bunch of random numbers
-        if (timers_enabled) timer_stop(2);
+      //--------------------------------------------------------------------
+      //  Compute uniform pseudorandom numbers.
+      //--------------------------------------------------------------------
+      if (timers_enabled) timer_start(2);
+      vranlc(2 * NK, &t1, A, x); // fill x with a bunch of random numbers
+      if (timers_enabled) timer_stop(2);
 
-    //--------------------------------------------------------------------
-    //  Compute Gaussian deviates by acceptance-rejection method and
-    //  tally counts in concentri//square annuli.  This loop is not
-    //  vectorizable.
-    //--------------------------------------------------------------------
-        if (timers_enabled) timer_start(1);
+      //--------------------------------------------------------------------
+      //  Compute Gaussian deviates by acceptance-rejection method and
+      //  tally counts in concentri//square annuli.  This loop is not
+      //  vectorizable.
+      //--------------------------------------------------------------------
+      if (timers_enabled) timer_start(1);
 
-        for (i = 0; i < NK; i++) {
-            x1 = 2.0 * x[2*i] - 1.0;
-            x2 = 2.0 * x[2*i+1] - 1.0;
-            t1 = x1 * x1 + x2 * x2;
-            if (t1 <= 1.0) {
-                t2   = sqrt(-2.0 * log(t1) / t1);
-                t3   = (x1 * t2);
-                t4   = (x2 * t2);
-                l    = MAX(fabs(t3), fabs(t4));
-                q[l] = q[l] + 1.0;
-                // add one to q at wherever the random value falls into
-                sx   = sx + t3;
-                sy   = sy + t4;
-                // sx and sy keep a sum
-            }
-        }
+      for (i = 0; i < NK; i++) {
+	x1 = 2.0 * x[2*i] - 1.0;
+	x2 = 2.0 * x[2*i+1] - 1.0;
+	t1 = x1 * x1 + x2 * x2;
+	if (t1 <= 1.0) {
+	  t2   = sqrt(-2.0 * log(t1) / t1);
+	  t3   = (x1 * t2);
+	  t4   = (x2 * t2);
+	  l    = MAX(fabs(t3), fabs(t4));
+	  q[l] = q[l] + 1.0;
+	  // add one to qq at wherever the random value falls into
+	  sx   = sx + t3;
+	  sy   = sy + t4;
+	  // sx and sy keep a sum
+	}
+      }
 
-        if (timers_enabled) timer_stop(1);
+      if (timers_enabled) timer_stop(1);
     }
     for(i=0;i<NQ; i++){
-        #pragma omp atomic
-        q[i]+=qq[i];
+#pragma omp atomic
+      q[i]+=qq[i];
     }
-}
+  }
 
   // Parallel using a sum reduction
 
@@ -338,6 +349,7 @@ int main(int argc, char* argv[])
   Mops = pow(2.0, M+1) / tm / 1000000.0;
 
   if(rank == 0){
+
     printf("\nEP Benchmark Results:\n\n");
     printf("CPU Time =%10.4lf\n", tm);
     printf("N = 2^%5d\n", M);
@@ -345,26 +357,30 @@ int main(int argc, char* argv[])
     printf("Sums = %25.15lE %25.15lE\n", sx, sy);
     printf("Counts: \n");
     for (i = 0; i < NQ; i++) {
-        printf("%3d%15.0lf\n", i, global_q[i]);
+      printf("%3d%15.0lf\n", i,global_q[i]);
     }
 
     print_results("EP", CLASS, M+1, 0, 0, nit,
-        tm, Mops,
-        "Random numbers generated",
-        verified, NPBVERSION, COMPILETIME, CS1,
-        CS2, CS3, CS4, CS5, CS6, CS7);
+		  tm, Mops,
+		  "Random numbers generated",
+		  verified, NPBVERSION, COMPILETIME, CS1,
+		  CS2, CS3, CS4, CS5, CS6, CS7);
 
     if (timers_enabled) {
-        if (tm <= 0.0) tm = 1.0;
-        tt = timer_read(0);
-        printf("\nTotal time:     %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
-        tt = timer_read(1);
-        printf("Gaussian pairs: %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
-        tt = timer_read(2);
-        printf("Random numbers: %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
+      if (tm <= 0.0) tm = 1.0;
+      tt = timer_read(0);
+      printf("\nTotal time:     %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
+      tt = timer_read(1);
+      printf("Gaussian pairs: %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
+      tt = timer_read(2);
+      printf("Random numbers: %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
     }
-  }
 
+#ifdef INS
+    printf("%10.4f\n",tm);
+#endif
+  }
+ // MPI_Wait(NULL,NULL);
   MPI_Finalize();
 
   return 0;
