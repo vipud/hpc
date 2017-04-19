@@ -211,10 +211,7 @@ int main(int argc, char* argv[])
   for (i = 0; i < NQ; i++) {
     q[i] = 0.0;
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 343aeb6e21d3e6bcdc3ffb47547b707016592d63
   //--------------------------------------------------------------------
   //  Each instance of this loop may be performed independently. We compute
   //  the k offsets separately to take into account the fact that some nodes
