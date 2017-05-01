@@ -14,7 +14,7 @@ We use a master thread to make MPI calls while the other threads carry the compu
 To build the benchmark simply type :
 
 ```
-make CLASS="Class Name"
+make EP CLASS="Class Name"
 ````
 
 Class can be A, B, C, D, E, F, S or W without the quotes.
