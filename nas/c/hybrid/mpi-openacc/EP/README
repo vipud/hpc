@@ -1,4 +1,144 @@
-    Eric
-EP in OpenACC is looking good.
-make EP CLASS={S, W, A, B, C, D}
-Default target is the GTX 1080
+*************************************************************************************
+*                               University of Delaware                              *
+*                           Vertically Integrated Projects                          * 
+*                             High Performance Computing                            *
+*       Eric Wright, Mauricio Ferrato, Aamir Majeed, Zack Zaloga, Edwin Ortiz       *
+*************************************************************************************
+
+  *********************************************************************************
+  *                        NAS NPB Parallel Benchmark Suite                       *
+  *********************************************************************************
+
+    *******************************                               ***************
+    * Embarassingly Parallel (EP) *                               * Spring 2017 *
+    *****************************************************************************
+      *                           How to compile EP                           *
+      *************************************************************************
+      * First you must load the OpenMPI/OpenACC compiler                      *
+      *     * This compiler is available through the module                   *
+      *         * type 'module load openmpi_pgi/pgcc' to load the module      *
+      *         * 'module unload openmpi_pgi/pgcc will unload the module if   *
+      *           needed                                                      *
+      *                                                                       *
+      * There are seven available classes to compile EP with                  *
+      *     * Class S - Generates 33,554,432        random numbers            *
+      *     * Class W - Generates 67,108,864        random numbers            *
+      *     * Class A - Generates 536,870,912       random numbers            *
+      *     * Class B - Generates 2,147,483,648     random numbers            *
+      *     * Class C - Generates 8,589,934,592     random numbers            *
+      *     * Class D - Generates 137,438,953,472   random numbers            *
+      *     * Class E - Generates 2,199,023,255,552 random numbers            *
+      *                                                                       *
+      * To compile EP with any of these classes, from the current directory.. *
+      *     * make EP CLASS={CLASS}                                           *
+      *         * Substitute {CLASS} with either S, W, A, B, C, D, or E       *
+      *                                                                       *
+      *************************************************************************
+      *                             How to run EP                             *
+      *************************************************************************
+      * After compiling EP with the desired class, an MPI executable will be  *
+      * created in the ./bin directory. This version of EP utilizes OpenMPI   *
+      * and OpenACC to parallelize the code. The ideal number of MPI          *
+      * processes to use (for the Nightingale server) is 4. The reasoning for *
+      * this will be discussed later. You can use more or less than 4, but a  *
+      * minimum of 2 must be used.                                            *
+      *                                                                       *
+      * The command to execute the code is..                                  *
+      *     * mpiexec -n {NUM_PROCESSORS} ./bin/ep.{CLASS}.x                  *
+      *         * Substitute {NUM_PROCESSORS} with the number of MPI          *
+      *           processors you wish to use (4 is optimal)                   *
+      *         * Substitute {CLASS} with which class the code was compiled   *
+      *           for (the class should be a capital letter)                  *
+      *                                                                       *
+      * The smallest class (S) should take about 0.20 seconds to run, while   *
+      * the largest class (E) should take upwards of 15 minutes               *
+      *                                                                       *
+      *************************************************************************
+      *                           Programming Model                           *
+      *************************************************************************
+      * The Nightingale server has 2 seperate GPUs. One is a GTX 1080, and    *
+      * the other is a Tesla K80. The architecture of the Tesla K80 is        *
+      * essentially two Tesla GK210s combined into one card. For this reason, *
+      * PGI (the OpenACC compiler) detects the Tesla K80 as two seperate      *
+      * GPUs. With this considered, the Nightingale server has 3 GPUs that    *
+      * can run OpenACC code. We can use OpenMPI and OpenACC together to have *
+      * each MPI process utilize one of the GPUs. Then distribute the         *
+      * workload across all 3 of the GPUs.                                    *
+      *                                                                       *
+      * Since our 3 GPUs are not exactly the same (one being a GTX 1080 and   *
+      * the other two being GK210s) we cannot efficiently use a static work   *
+      * distribution. For this reason, we use a Master/Slave programming      *
+      * model to utilize an extra MPI process that distributes the workload   *
+      * dynamically between the GPUs. This will be discussed in more detail   *
+      * in the Dynamic Distribution section.                                  *
+      *                                                                       *
+      *************************************************************************
+      *                   Why is 4 MPI processes optimal?                     *
+      *************************************************************************
+      * As discussed, the Nightingale server has 3 available GPUs for         * 
+      * OpenACC. It is optimal for each MPI process to use a single GPU, and  *
+      * having multiple MPI processes use the same GPU does not improve       *
+      * performance at all. The MPI processes contest for GPU resources, and  *
+      * end up taking turns using the GPU, and this is not preferrable. So    *
+      * for the Nightingale server, we will use 3 MPI processes, one for each *
+      * GPU.                                                                  *
+      *                                                                       *
+      * Also, as discussed previously, since the 3 GPUs are different, they   *
+      * will not all run at the same speed. For this reason, a static         *
+      * allocation of the workload will result in poor performance. In order  *
+      * to efficiently utilize all 3 GPUs, we decided to use a dynamic work   *
+      * allocation. To achieve this, we implemented an MPI process that acts  *
+      * as the 'Master' process. The Master process will be elaborated on in  *
+      * a later section.                                                      *
+      *                                                                       *
+      * We have 3 MPI processes that each utilize a single GPU, and  then     *
+      * there is 1 extra MPI process that acts as the 'Master' process, and   *
+      * handles work distribution. This is why 4 MPI processes is optimal     *
+      * for the Nightingale server.                                           *
+      *                                                                       *
+      *************************************************************************
+      *                         Dynamic Distribution                          *
+      *************************************************************************
+      *                                                                       *
+      *                                                                       *
+      *                                                                       *
+      *************************************************************************
+      *               Runtimes by Class and Model (in seconds)                *
+      *************************************************************************
+         *                                                                 *
+         *      S       W       A       B        C        D        E       *
+        *********************************************************************
+        *                          GTX 1080 OpenACC                         *
+        *********************************************************************
+         *      0.22    0.22    0.41    1.39     5.55     88.02    TBD     *
+         *                                                                 *
+        *********************************************************************
+        *                           GK210 OpenACC                           *
+        *********************************************************************
+         *      0.48    0.49    1.37    5.24     20.82    332.60   TBD     *
+         *                                                                 *
+        *********************************************************************
+        *           Tesla K80 OpenACC+OpenMPI Static Distribution           *
+        *********************************************************************
+         *      0.47    0.52    0.86    2.82     10.47    166.93   TBD     *
+         *                                                                 *
+        *********************************************************************
+        *     GTX 1080 + Tesla K80 OpenACC+OpenMPI Dynamic Distribution     *
+        *********************************************************************
+         *      1.40    1.40    1.39    2.18     5.00     56.17    1302.81 *
+         *                                                                 *
+        *********************************************************************
+        *                  Multicore (12 Cores) OpenACC                     *
+        *********************************************************************
+         *       0.18    0.33    2.44    9.45     37.42    597.67   TBD    *
+         *                                                                 *
+        *********************************************************************
+        *                             Serial                                *
+        *********************************************************************
+         *      1.48    2.95    23.39   93.56    374.13   TBD      TBD     *
+         *                                                                 *
+         *******************************************************************
+
+                                         **************************************
+                                         * End of Embarassingly Parallel (EP) *
+                                         **************************************
