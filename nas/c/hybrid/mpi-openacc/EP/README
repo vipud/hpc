@@ -1,45 +1,3 @@
-add mpi-openacc codes into this repository
-
--- Eric ----------------------------------------------------------------
-So far we have MPI EP working, currently working towards OpenACC
-A lot of learning about OpenACC to do still
-
-Haven't gotten MPI+OpenACC to compile yet, will worry about that after
-OpenACC code is done
-
-in the EP-MPI directory you can just do
-    make EP CLASS=A
-to compile and then
-    mpiexec -n 4 ./bin/ep.A.x
-to run it, the program should take about 35 seconds with 1 processor
-and about 1/4 that with 4 processors
-
-OpenACC is still being worked on
-We were having problems with how much stuff is going on
-in the NAS NPB Makefiles, so we reorganized all essential files and made
-our own very simple Makefile for now...
-    make test
-will compile it, but right now it's not done yet, so not much will happen
-except for compiler error messages
-all of the OpenACC code
--- Aamir ----------------------------------------------------------------
-Current status:
-MPI+OpenACC code compiles and links correctly for EP! Sample code is in the mpi-openacc/samples/openacc/hello directory. Here are the GPU numbers for reference:
-1080 GPU ~ -ta=tesla:cc60
-Tesla K80 ~ -ta=tesla:cc35
-Things we plan to do for next week:
-- pgprof
-- mess with block size
-- GNUPlot based on block size
-- See why the teslas are slow
-- Write a report
-- Manager-worker/queue setup
-- How we split the workload
-- Block size and performance
-- Scalability 
-- Fix up this README
-------------------------------------------------------------------------
-
 *************************************************************************************
 *                               University of Delaware                              *
 *                           Vertically Integrated Projects                          * 
@@ -88,11 +46,99 @@ Things we plan to do for next week:
       * The command to execute the code is..                                  *
       *     * mpiexec -n {NUM_PROCESSORS} ./bin/ep.{CLASS}.x                  *
       *         * Substitute {NUM_PROCESSORS} with the number of MPI          *
-      *           processors you wish to use.                                 *
+      *           processors you wish to use (4 is optimal)                   *
       *         * Substitute {CLASS} with which class the code was compiled   *
-      *           for                                                         *
+      *           for (the class should be a capital letter)                  *
       *                                                                       *
       * The smallest class (S) should take about 0.20 seconds to run, while   *
       * the largest class (E) should take upwards of 15 minutes               *
       *                                                                       *
       *************************************************************************
+      *                           Programming Model                           *
+      *************************************************************************
+      * The Nightingale server has 2 seperate GPUs. One is a GTX 1080, and    *
+      * the other is a Tesla K80. The architecture of the Tesla K80 is        *
+      * essentially two Tesla GK210s combined into one card. For this reason, *
+      * PGI (the OpenACC compiler) detects the Tesla K80 as two seperate      *
+      * GPUs. With this considered, the Nightingale server has 3 GPUs that    *
+      * can run OpenACC code. We can use OpenMPI and OpenACC together to have *
+      * each MPI process utilize one of the GPUs. Then distribute the         *
+      * workload across all 3 of the GPUs.                                    *
+      *                                                                       *
+      * Since our 3 GPUs are not exactly the same (one being a GTX 1080 and   *
+      * the other two being GK210s) we cannot efficiently use a static work   *
+      * distribution. For this reason, we use a Master/Slave programming      *
+      * model to utilize an extra MPI process that distributes the workload   *
+      * dynamically between the GPUs. This will be discussed in more detail   *
+      * in the Dynamic Distribution section.                                  *
+      *                                                                       *
+      *************************************************************************
+      *                   Why is 4 MPI processes optimal?                     *
+      *************************************************************************
+      * As discussed, the Nightingale server has 3 available GPUs for         * 
+      * OpenACC. It is optimal for each MPI process to use a single GPU, and  *
+      * having multiple MPI processes use the same GPU does not improve       *
+      * performance at all. The MPI processes contest for GPU resources, and  *
+      * end up taking turns using the GPU, and this is not preferrable. So    *
+      * for the Nightingale server, we will use 3 MPI processes, one for each *
+      * GPU.                                                                  *
+      *                                                                       *
+      * Also, as discussed previously, since the 3 GPUs are different, they   *
+      * will not all run at the same speed. For this reason, a static         *
+      * allocation of the workload will result in poor performance. In order  *
+      * to efficiently utilize all 3 GPUs, we decided to use a dynamic work   *
+      * allocation. To achieve this, we implemented an MPI process that acts  *
+      * as the 'Master' process. The Master process will be elaborated on in  *
+      * a later section.                                                      *
+      *                                                                       *
+      * We have 3 MPI processes that each utilize a single GPU, and  then     *
+      * there is 1 extra MPI process that acts as the 'Master' process, and   *
+      * handles work distribution. This is why 4 MPI processes is optimal     *
+      * for the Nightingale server.                                           *
+      *                                                                       *
+      *************************************************************************
+      *                         Dynamic Distribution                          *
+      *************************************************************************
+      *                                                                       *
+      *                                                                       *
+      *                                                                       *
+      *************************************************************************
+      *               Runtimes by Class and Model (in seconds)                *
+      *************************************************************************
+         *                                                                 *
+         *      S       W       A       B        C        D        E       *
+        *********************************************************************
+        *                          GTX 1080 OpenACC                         *
+        *********************************************************************
+         *      0.22    0.22    0.41    1.39     5.55     88.02    TBD     *
+         *                                                                 *
+        *********************************************************************
+        *                           GK210 OpenACC                           *
+        *********************************************************************
+         *      0.48    0.49    1.37    5.24     20.82    332.60   TBD     *
+         *                                                                 *
+        *********************************************************************
+        *           Tesla K80 OpenACC+OpenMPI Static Distribution           *
+        *********************************************************************
+         *      0.47    0.52    0.86    2.82     10.47    166.93   TBD     *
+         *                                                                 *
+        *********************************************************************
+        *     GTX 1080 + Tesla K80 OpenACC+OpenMPI Dynamic Distribution     *
+        *********************************************************************
+         *      1.40    1.40    1.39    2.18     5.00     56.17    1302.81 *
+         *                                                                 *
+        *********************************************************************
+        *                  Multicore (12 Cores) OpenACC                     *
+        *********************************************************************
+         *       0.18    0.33    2.44    9.45     37.42    597.67   TBD    *
+         *                                                                 *
+        *********************************************************************
+        *                             Serial                                *
+        *********************************************************************
+         *      1.48    2.95    23.39   93.56    374.13   TBD      TBD     *
+         *                                                                 *
+         *******************************************************************
+
+                                         **************************************
+                                         * End of Embarassingly Parallel (EP) *
+                                         **************************************
