@@ -1,4 +1,98 @@
-    Eric
-EP in OpenACC is looking good.
-make EP CLASS={S, W, A, B, C, D}
-Default target is the GTX 1080
+add mpi-openacc codes into this repository
+
+-- Eric ----------------------------------------------------------------
+So far we have MPI EP working, currently working towards OpenACC
+A lot of learning about OpenACC to do still
+
+Haven't gotten MPI+OpenACC to compile yet, will worry about that after
+OpenACC code is done
+
+in the EP-MPI directory you can just do
+    make EP CLASS=A
+to compile and then
+    mpiexec -n 4 ./bin/ep.A.x
+to run it, the program should take about 35 seconds with 1 processor
+and about 1/4 that with 4 processors
+
+OpenACC is still being worked on
+We were having problems with how much stuff is going on
+in the NAS NPB Makefiles, so we reorganized all essential files and made
+our own very simple Makefile for now...
+    make test
+will compile it, but right now it's not done yet, so not much will happen
+except for compiler error messages
+all of the OpenACC code
+-- Aamir ----------------------------------------------------------------
+Current status:
+MPI+OpenACC code compiles and links correctly for EP! Sample code is in the mpi-openacc/samples/openacc/hello directory. Here are the GPU numbers for reference:
+1080 GPU ~ -ta=tesla:cc60
+Tesla K80 ~ -ta=tesla:cc35
+Things we plan to do for next week:
+- pgprof
+- mess with block size
+- GNUPlot based on block size
+- See why the teslas are slow
+- Write a report
+- Manager-worker/queue setup
+- How we split the workload
+- Block size and performance
+- Scalability 
+- Fix up this README
+------------------------------------------------------------------------
+
+*************************************************************************************
+*                               University of Delaware                              *
+*                           Vertically Integrated Projects                          * 
+*                             High Performance Computing                            *
+*       Eric Wright, Mauricio Ferrato, Aamir Majeed, Zack Zaloga, Edwin Ortiz       *
+*************************************************************************************
+
+  *********************************************************************************
+  *                        NAS NPB Parallel Benchmark Suite                       *
+  *********************************************************************************
+
+    *******************************                               ***************
+    * Embarassingly Parallel (EP) *                               * Spring 2017 *
+    *****************************************************************************
+      *                           How to compile EP                           *
+      *************************************************************************
+      * First you must load the OpenMPI/OpenACC compiler                      *
+      *     * This compiler is available through the module                   *
+      *         * type 'module load openmpi_pgi/pgcc' to load the module      *
+      *         * 'module unload openmpi_pgi/pgcc will unload the module if   *
+      *           needed                                                      *
+      *                                                                       *
+      * There are seven available classes to compile EP with                  *
+      *     * Class S - Generates 33,554,432        random numbers            *
+      *     * Class W - Generates 67,108,864        random numbers            *
+      *     * Class A - Generates 536,870,912       random numbers            *
+      *     * Class B - Generates 2,147,483,648     random numbers            *
+      *     * Class C - Generates 8,589,934,592     random numbers            *
+      *     * Class D - Generates 137,438,953,472   random numbers            *
+      *     * Class E - Generates 2,199,023,255,552 random numbers            *
+      *                                                                       *
+      * To compile EP with any of these classes, from the current directory.. *
+      *     * make EP CLASS={CLASS}                                           *
+      *         * Substitute {CLASS} with either S, W, A, B, C, D, or E       *
+      *                                                                       *
+      *************************************************************************
+      *                             How to run EP                             *
+      *************************************************************************
+      * After compiling EP with the desired class, an MPI executable will be  *
+      * created in the ./bin directory. This version of EP utilizes OpenMPI   *
+      * and OpenACC to parallelize the code. The ideal number of MPI          *
+      * processes to use (for the Nightingale server) is 4. The reasoning for *
+      * this will be discussed later. You can use more or less than 4, but a  *
+      * minimum of 2 must be used.                                            *
+      *                                                                       *
+      * The command to execute the code is..                                  *
+      *     * mpiexec -n {NUM_PROCESSORS} ./bin/ep.{CLASS}.x                  *
+      *         * Substitute {NUM_PROCESSORS} with the number of MPI          *
+      *           processors you wish to use.                                 *
+      *         * Substitute {CLASS} with which class the code was compiled   *
+      *           for                                                         *
+      *                                                                       *
+      * The smallest class (S) should take about 0.20 seconds to run, while   *
+      * the largest class (E) should take upwards of 15 minutes               *
+      *                                                                       *
+      *************************************************************************
