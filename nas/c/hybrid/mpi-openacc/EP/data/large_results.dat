@@ -1,0 +1,22 @@
+# data file
+clear
+reset
+unset key
+set title "Sequential vs. Parallel OpenACC with Nvidia 1080 vs. MPI+OpenACC manager/worker"
+set xtic rotate out
+set style data histogram 
+set style histogram cluster gap 1 
+set style fill solid border 
+set boxwidth 0.5
+set xlabel "NAS EP Benchmark"
+set ylabel "Time taken (seconds)"
+#set style line 1 lc rgb "red"
+#set style line 2 lc rgb "yellow"
+#set style line 3 lc rgb "green"
+plot for [COL=2:4] 'large_results.tsv' using COL:xticlabels(1) title columnheader
+# 1 - Class S
+# 2 - Class W
+# 3 - Class A
+# 4 - Class B
+# 5 - Class C
+# 6 - Class D
