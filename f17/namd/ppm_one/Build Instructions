@@ -1,0 +1,27 @@
+** Instructions for Linux **
+
+1.
+	You must have cmake installed
+	$ sudo apt install cmake
+
+2.
+	Now we must build the common and lmmin libraries
+	$ cd common_build
+	$ cmake ../common
+	$ make install
+
+	$ cd ../lmmin_build
+	$ cmake ../lmmin
+	$ make install
+
+3.
+	Lastly, we must build the ppm files
+	$ cd .. # You should now be in the PPM_ONE directory
+	$ cmake .
+	$ make install
+
+	To run ppm_one you just need to run the ppm_stable executable 		and give it a pdb file as input
+	$ cd ppm
+	$ ./ppm_stable -pdb <filename>.pdb
+
+	Just running ./ppm_stable will display all of the available 		options
