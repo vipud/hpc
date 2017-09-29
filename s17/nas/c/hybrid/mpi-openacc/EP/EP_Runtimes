@@ -1,0 +1,235 @@
+*****************************************************************
+*     University of Delaware Vertically Integrated Projects     *
+*                                                               *
+*****************************************************************
+*																*
+*	S		W		A		B		C		D		E			*
+*																*
+*                    ********************                       *
+********************** GTX 1080 OpenACC *************************
+*                    ********************                       *
+*	0.22	0.22	0.41	1.39	5.55	88.02	TBD			*
+*																*
+*                       ***************                         *
+************************* K40 OpenACC ***************************
+*                       ***************                         *
+*	0.48	0.49	1.37	5.24	20.82	332.60	TBD			*
+*																*
+*                   ***********************                     *
+********************* K80 OpenACC+OpenMPI ***********************
+*                   ***********************                     *
+*	0.47	0.52	0.86	2.82	10.47	166.93	TBD			*
+*																*
+*              *********************************                *
+**************** GTX1080 + K80 OpenACC+OpenMPI ******************
+*              *********************************                *
+*	1.40	1.40	1.39	2.18	5.00	56.17	1302.81		*
+*                                  								*
+*                         **********                            *
+*************************** Serial ******************************
+*                         **********                            *
+*	1.48	2.95	23.39	93.56	374.13	TBD		TBD			*
+*																*
+*                  ************************                     *
+******************** Multicore (12 Cores) ***********************
+*                  ************************                     *
+*	0.18	0.33	2.44	9.45	37.42	597.67	TBD			*
+*                                                               *
+*****************************************************************
+*	Class	Random Numbers Generated	Gaussian Pairs			*
+*	S		33,554,432					13,176,389				*
+*	W		67,108,864					26,354,769				*
+*	A		536,870,912					210,832,767				*
+*	B		2,147,483,648				843,345,606				*
+*	C		8,589,934,592				3,373,275,903			*
+*	D		137,438,953,472				53,972,171,957			*
+*	E		2,199,023,255,552			863,554,308,186 		*
+*****************************************************************
+*                           * All timing information in seconds *
+*****************************************************************
+
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 375.51                 Driver Version: 375.51                    |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 1080    On   | 0000:02:00.0     Off |                  N/A |
+| 36%   63C    P2   126W / 180W |   2125MiB /  8114MiB |     99%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla K80           On   | 0000:83:00.0     Off |                    0 |
+| N/A   68C    P0   146W / 149W |   2076MiB / 11439MiB |    100%      Default |
++-------------------------------+----------------------+----------------------+
+|   2  Tesla K80           On   | 0000:84:00.0     Off |                    0 |
+| N/A   49C    P0   144W / 149W |   2076MiB / 11439MiB |     95%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID  Type  Process name                               Usage      |
+|=============================================================================|
+|    0     32173    C   ethminer/ethminer                             2123MiB |
+|    1     32173    C   ethminer/ethminer                             2072MiB |
+|    2     32173    C   ethminer/ethminer                             2072MiB |
++-----------------------------------------------------------------------------+
+
+==============NVSMI LOG==============
+
+Timestamp                           : Tue Apr 25 13:23:24 2017
+Driver Version                      : 375.51
+
+Attached GPUs                       : 3
+GPU 0000:02:00.0
+    Product Name                    : GeForce GTX 1080
+    Product Brand                   : GeForce
+    Display Mode                    : Disabled
+    Display Active                  : Disabled
+    Persistence Mode                : Enabled
+    Accounting Mode                 : Disabled
+    Accounting Mode Buffer Size     : 1920
+    Driver Model
+        Current                     : N/A
+        Pending                     : N/A
+    Serial Number                   : N/A
+    GPU UUID                        : GPU-1f907c7b-eab9-7358-4929-824c6c55af4f
+    Minor Number                    : 0
+    VBIOS Version                   : 86.04.17.00.11
+    MultiGPU Board                  : No
+    Board ID                        : 0x200
+    GPU Part Number                 : N/A
+    Inforom Version
+        Image Version               : G001.0000.01.03
+        OEM Object                  : 1.1
+        ECC Object                  : N/A
+        Power Management Object     : N/A
+    GPU Operation Mode
+        Current                     : N/A
+        Pending                     : N/A
+    GPU Virtualization Mode
+        Virtualization mode         : None
+    PCI
+        Bus                         : 0x02
+        Device                      : 0x00
+        Domain                      : 0x0000
+        Device Id                   : 0x1B8010DE
+        Bus Id                      : 0000:02:00.0
+        Sub System Id               : 0x859B1043
+        GPU Link Info
+            PCIe Generation
+                Max                 : 3
+                Current             : 3
+            Link Width
+                Max                 : 16x
+                Current             : 16x
+        Bridge Chip
+            Type                    : N/A
+            Firmware                : N/A
+        Replays since reset         : 0
+        Tx Throughput               : 3000 KB/s
+        Rx Throughput               : 10000 KB/s
+    Fan Speed                       : 37 %
+    Performance State               : P2
+    Clocks Throttle Reasons
+        Idle                        : Not Active
+        Applications Clocks Setting : Not Active
+        SW Power Cap                : Not Active
+        HW Slowdown                 : Not Active
+        Sync Boost                  : Not Active
+        Unknown                     : Active
+    FB Memory Usage
+        Total                       : 8114 MiB
+        Used                        : 2125 MiB
+        Free                        : 5989 MiB
+    BAR1 Memory Usage
+        Total                       : 256 MiB
+        Used                        : 2 MiB
+        Free                        : 254 MiB
+    Compute Mode                    : Default
+    Utilization
+        Gpu                         : 94 %
+        Memory                      : 70 %
+        Encoder                     : 0 %
+        Decoder                     : 0 %
+    Ecc Mode
+        Current                     : N/A
+        Pending                     : N/A
+    ECC Errors
+        Volatile
+            Single Bit            
+                Device Memory       : N/A
+                Register File       : N/A
+                L1 Cache            : N/A
+                L2 Cache            : N/A
+                Texture Memory      : N/A
+                Texture Shared      : N/A
+                Total               : N/A
+            Double Bit            
+                Device Memory       : N/A
+                Register File       : N/A
+                L1 Cache            : N/A
+                L2 Cache            : N/A
+                Texture Memory      : N/A
+                Texture Shared      : N/A
+                Total               : N/A
+        Aggregate
+            Single Bit            
+                Device Memory       : N/A
+                Register File       : N/A
+                L1 Cache            : N/A
+                L2 Cache            : N/A
+                Texture Memory      : N/A
+                Texture Shared      : N/A
+                Total               : N/A
+            Double Bit            
+                Device Memory       : N/A
+                Register File       : N/A
+                L1 Cache            : N/A
+                L2 Cache            : N/A
+                Texture Memory      : N/A
+                Texture Shared      : N/A
+                Total               : N/A
+    Retired Pages
+        Single Bit ECC              : N/A
+        Double Bit ECC              : N/A
+        Pending                     : N/A
+    Temperature
+        GPU Current Temp            : 63 C
+        GPU Shutdown Temp           : 99 C
+        GPU Slowdown Temp           : 96 C
+    Power Readings
+        Power Management            : Supported
+        Power Draw                  : 126.29 W
+        Power Limit                 : 180.00 W
+        Default Power Limit         : 180.00 W
+        Enforced Power Limit        : 180.00 W
+        Min Power Limit             : 90.00 W
+        Max Power Limit             : 217.00 W
+    Clocks
+        Graphics                    : 1860 MHz
+        SM                          : 1860 MHz
+        Memory                      : 4513 MHz
+        Video                       : 1670 MHz
+    Applications Clocks
+        Graphics                    : N/A
+        Memory                      : N/A
+    Default Applications Clocks
+        Graphics                    : N/A
+        Memory                      : N/A
+    Max Clocks
+        Graphics                    : 1911 MHz
+        SM                          : 1911 MHz
+        Memory                      : 5005 MHz
+        Video                       : 1708 MHz
+    Clock Policy
+        Auto Boost                  : N/A
+        Auto Boost Default          : N/A
+    Processes
+        Process ID                  : 32173
+            Type                    : C
+            Name                    : ethminer/ethminer
+            Used GPU Memory         : 2123 MiB
+
+
+
+
+pgprof --analysis-metrics --export-profile ./bin/ep.S.x

@@ -1,0 +1,21 @@
+# data file
+clear
+reset
+set key outside rmargin
+set title "Speedup on Benchmarks for GK210, GTX GeForce 1080\n2 GK210's(K80) Static Distribution and GK210's/GeForce 1080 Hybrid Manager/Worker"
+set style data histogram 
+set style histogram cluster gap 1 
+set style fill solid border 
+set boxwidth 0.5
+set xlabel "NAS EP Benchmark"
+set ylabel "Speedup (sequential time / parallel time)"
+#set style line 1 lc rgb "red"
+#set style line 2 lc rgb "yellow"
+#set style line 3 lc rgb "green"
+plot for [COL=2:5] 'gpu_speedup.tsv' using COL:xticlabels(1) title columnheader
+# 1 - Class S
+# 2 - Class W
+# 3 - Class A
+# 4 - Class B
+# 5 - Class C
+# 6 - Class D
