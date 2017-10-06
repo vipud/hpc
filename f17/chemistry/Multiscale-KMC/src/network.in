@@ -1,0 +1,57 @@
+# Multiscale input file
+
+random seed
+1
+
+Number of species
+3
+
+Number of reactions
+3
+
+Species names
+A
+B
+C
+
+Initial state
+100
+0
+0
+
+Reactions
+ -1     1    0
+  1    -1    0
+  0    -1    1
+
+Rate constants
+20.0
+30.0
+2.0
+
+Parameter names
+k1
+k2
+k3
+
+Final time
+10.0
+
+Number of trajectories
+50
+
+Number of time points
+100
+
+#write trajectory data
+
+# ======= two time scale section =======
+
+two time scale
+
+Number of fast reaction pairs
+1
+
+# Fast reactions - enter reversible reactions in forward/backward pairs
+Fast reaction pairs
+ 1   2

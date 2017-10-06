@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+int s = 1;
+int t = 1;
+
+int V(int *s) {
+  (*s)++;
+}
+
+int P(int *s) {
+  $when ((*s) > 0) (*s)--;
+}
+
+void f1() {
+  while (1) {
+    P(&s);
+    printf("p1 got s\n");
+    P(&t);
+    printf("p1 got t\n");
+    V(&t);
+    printf("p1 released t\n");
+    V(&s);
+    printf("p1 released s\n");
+  }
+}
+
+// synchronized (o1) {
+//   synchronized (o2) {
+//     ...
+//   }
+// }
+
+void f2() {
+  while (1) {
+    P(&t);
+    printf("p2 got t\n");
+    P(&s);
+    printf("p2 got s\n");
+    V(&s);
+    printf("p2 released s\n");
+    V(&t);
+    printf("p2 released t\n");
+  }
+}
+
+int main() {
+  $proc p1 = $spawn f1();
+  $proc p2 = $spawn f2();
+  $wait(p1);
+  $wait(p2);  
+}
+

@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int s = 1;
+
+int V(int *s) {
+  (*s)++;
+}
+
+int P(int *s) {
+  $when ((*s) > 0) (*s)--;
+}
+
+void proc(int id) {
+  while (1) {
+    P(&s);
+    printf("proc %d has the lock\n", id);
+    printf("proc %d has released the lock\n", id);
+    V(&s);
+  }
+}
+
+int main() {
+  $parfor (int i : 0 .. 5) proc(i);
+}
+
