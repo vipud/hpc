@@ -239,7 +239,7 @@ void file_reader(char* fileName){
 }
 
 void initStats(struct Traj_stats *sim){
-  //TODO
+
   sim->species_avgs_out_flname = "species_avgs_out.txt";
   sim->SA_out_flname = "sensitivities_out.txt";
 
@@ -317,33 +317,34 @@ void finalize_stats(struct Traj_stats *sim){
   }
 }
 
-// void initRandomNumbers(int** randomNumbers){
-//   //TODO
-// }
-//
-// void initTraj(struct KMC_traj* trajs){
-//   //TODO
-// }
-//
-// void initTraj(struct KMC_traj_TTS* trajs_TTS){
-//   //TODO
-// }
-//
-// void simulate(struct KMC_traj traj, int random){
-//   //TODO
-// }
-//
-// void simulate(struct KMC_traj_TTS traj_TTS, int random){
-//   //TODO
-// }
-//
+void write_spec_avg_output(struct Traj_stats *sim){
+  //TODO
+}
+
+void write_sensitivity_output(struct Traj_stats *sim){
+  //TODO
+}
+
+
+void initRandomNumbers(int** randomNumbers){
+  //TODO
+}
+
+void initTraj(struct KMC_traj** trajs){
+  //TODO
+}
+
+
+void simulate(struct KMC_traj* traj, int random){
+  //TODO
+}
+
+
 // void run_simulations(struct KMC_traj* trajs){
 //   //TODO
 // }
 //
-// void run_simulations(struct KMC_traj_TTS * trajs_TTS){
-//   //TODO
-// }
+
 
 int main(){
 
@@ -366,6 +367,8 @@ int main(){
   file_reader("input.csv");
   struct Traj_stats* sim;
   initStats(sim);
+
+
 
 
 
