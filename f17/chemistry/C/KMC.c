@@ -238,10 +238,12 @@ void file_reader(char* fileName){
 
 }
 
-// void initStats(struct Traj_stats sim){
-//   //TODO
-// }
-//
+void initStats(struct Traj_stats sim){
+  //TODO
+
+  
+}
+
 // void initRandomNumbers(int** randomNumbers){
 //   //TODO
 // }
@@ -289,6 +291,8 @@ int main(){
   // }
 
   file_reader("input.csv");
+  struct Traj_stats sim;
+
 
   free(tmp);
   return 0;

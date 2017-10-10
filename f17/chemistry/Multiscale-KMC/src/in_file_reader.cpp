@@ -179,9 +179,9 @@ file_reader :: file_reader(string flname){
 					line = trim_string(line);
 					pos = line.find(delimiter);
 					token = line.substr(0, pos);
-                    fwd_rxn_ind = atoi(token.c_str()) - 1;
-                    fast_pairs[2 * pair_ind][0] = fwd_rxn_ind;
-                    fast_pairs[2 * pair_ind + 1][1] = fwd_rxn_ind;
+          fwd_rxn_ind = atoi(token.c_str()) - 1;
+          fast_pairs[2 * pair_ind][0] = fwd_rxn_ind;
+          fast_pairs[2 * pair_ind + 1][1] = fwd_rxn_ind;
 					line.erase(0, pos + delimiter.length());
 
                     // Read reverse reaction
