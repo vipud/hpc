@@ -330,7 +330,7 @@ void initRandomNumbers(int** randomNumbers){
   //TODO
 }
 
-void initTraj(struct KMC_traj** trajs){
+void initTrajs(struct KMC_traj** trajs){
   //TODO
 }
 
@@ -340,41 +340,24 @@ void simulate(struct KMC_traj* traj, int random){
 }
 
 
-// void run_simulations(struct KMC_traj* trajs){
-//   //TODO
-// }
-//
+void run_simulations(struct KMC_traj* trajs){
+  //TODO
+}
+
 
 
 int main(){
-
-  // struct Traj_stats sim;
-  // struct KMC_traj * trajs;
-  // struct KMC_traj_TTS * trajs_TTS;
-  // int** randomNumbers;
-  //
-  // file_reader("network.in");
-  // initStats(sim);
-  // initRandomNumbers(randomNumbers);
-  // if(two_time_scale){
-  //   initTraj(trajs);
-  //   run_simulations(trajs_TTS);
-  // }else{
-  //   initTraj(trajs_TTS);
-  //   run_simulations(trajs);
-  // }
 
   file_reader("input.csv");
   struct Traj_stats* sim;
   initStats(sim);
 
+  struct KMC_traj ** trajs;
+  int** randomNumbers;
+  initRandomNumbers(randomNumbers);
+  initTrajs(trajs);
+  run_simulations(randomNumbers, trajs);
 
-
-
-
-
-
-  free(tmp);
   return 0;
 
 }
