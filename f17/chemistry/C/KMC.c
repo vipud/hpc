@@ -342,6 +342,34 @@ void initTraj_1(struct KMC_traj* traj){
       traj->N[i] = N_0[i];
   }
 
+  traj->props = (double*) malloc(sizeof(double)* n_rxns);
+  traj->prop_ders_sum = (double*)malloc(sizeof(double)*n_rxns);
+  traj->prop_ders = (double**)malloc(sizeof(double*)*n_rxns);
+  for(int i =0; i< n_rxns; i++){
+    traj->prop_ders[i] = (double*) malloc(sizeof(double)*n_params);
+  }
+
+  traj->W = (double*) malloc(sizeof(double)*n_params);
+  for(int i =0; i<n_params; i++){
+    traj->W[i] =0;
+  }
+
+  traj->spec_profile = (double**) malloc(sizeof(double*)*N_record);
+  for(int i=0; i<N_record; i++){
+    traj->spec_profile[i] = (double*) malloc(sizeof(double)*n_specs);
+  }
+
+  traj->traj_deriv_profile = (double**) malloc (sizeof(double*)*N_record);
+  for(int i =0; i<N_record; i++){
+    traj->traj_deriv_profile[i] = (double*) malloc(sizeof(double)*n_params);
+  }
+
+  for (int i = 0; i < N_record; i++){
+      for (int j = 0; j < n_params; j++){
+          traj->traj_deriv_profile[i][j] = 0;
+      }
+  }
+
 }
 
 void initTrajs(struct KMC_traj** trajs){
