@@ -112,18 +112,6 @@ int** slow_rxns;
 
 //functions
 
-char* getfield(char* line, int num)
-{
-    char* tok;
-    for (tok = strtok(line, ",");
-            tok && *tok;
-            tok = strtok(NULL, ",\n"))
-    {
-        if (!--num)
-            return tok;
-    }
-    return NULL;
-}
 
 //read file
 void file_reader(char* fileName){
@@ -159,15 +147,17 @@ void file_reader(char* fileName){
   n_specs = atoi(readIn[1][1]);
 
   n_rxns = atoi(readIn[2][1]);
+  n_params = n_rxns;
 
   spec_names = (char**)malloc(sizeof(char*)*n_specs);
   for(int i = 0; i<n_specs; i++){
-    spec_names[i] = readIn[3][i];
+    spec_names[i] = readIn[3][i+1];
   }
+  // printf("%s\n", spec_names[2]);
 
   N_0 = (int*) malloc(sizeof(int)*n_specs);
   for(int i = 0; i<n_specs; i++){
-    N_0[i] = atoi(readIn[4][i]);
+    N_0[i] = atoi(readIn[4][i+1]);
   }
 
   // rxn_stoich = (int*)malloc(sizeof(int)*n_specs);
@@ -185,7 +175,36 @@ void file_reader(char* fileName){
   //   }
   // }
 
+  rate_const = (double*)malloc(sizeof(double)*n_rxns);
+  for(int i=0; i<n_rxns; i++){
+    rate_const[i] = atof(readIn[6][i+1]);
+  }
 
+  param_names =(char**) malloc(sizeof(char*) * n_params);
+  for(int i=0; i<n_params; i++){
+    param_names[i]=readIn[7][i+1];
+  }
+
+  // printf("%s\n", param_names[2]);
+
+  t_final = atof(readIn[8][1]);
+
+  N_traj = atoi(readIn[9][1]);
+
+  N_record = atoi(readIn[10][1])+1;
+
+  n_fast_pairs = atoi(readIn[11][1]);
+  n_fast_rxns = n_fast_pairs*2;
+  n_slow_rxns = n_rxns - n_fast_rxns;
+
+  fast_rxns = (int*)malloc(sizeof(int) * n_fast_rxns);
+  slow_rxns = (int*)malloc(sizeof(int) * n_slow_rxns);
+  fast_pairs = (int**)malloc(sizeof(int*) *n_fast_rxns);
+  for(int i=0; i<n_fast_rxns; i++){
+    fast_pairs[i]=(int*)malloc(sizeof(int)*2);
+  }
+
+  
 
 }
 
