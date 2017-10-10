@@ -7,6 +7,9 @@
 
 
 
+char* tmp;
+
+
 //Structs
 
 struct Traj_stats{
@@ -82,7 +85,7 @@ struct KMC_traj_TTS{
 
 //variables
 //input variables
-char ** readIn;
+char *** readIn;
 int N_record = 101;
 int N_traj = 1000;
 bool write_traj_files = false;
@@ -97,7 +100,7 @@ int n_specs;
 int n_params;
 int t_final;
 double eps;
-char*** spec_names;
+char** spec_names;
 char** param_names;
 int* N_0;
 int** stoich_mat;
@@ -124,29 +127,45 @@ char* getfield(char* line, int num)
 
 //read file
 void file_reader(char* fileName){
-  //TODO
   char line[1024];
   FILE *stream;
   stream = fopen(fileName,"r");
 
-  readIn = (char **)malloc(sizeof(char*) * 41);
-  for(int i=0; i<41; i++){
-    readIn[i] = (char*)malloc(sizeof(char)*100);
+  readIn = (char ***)malloc(sizeof(char**) * 13);
+  for(int i=0; i<13; i++){
+    readIn[i] = (char**)malloc(sizeof(char*)*10);
+    for(int j = 0; j<10; j++){
+      readIn[i][j] = (char*)malloc(sizeof(char*)*100);
+    }
   }
 
+  int count=0;
   while (fgets(line,1024,stream)){
-
-    for(int i=0;i<41; i++){
-      char * tmp = strdup(line);
-      readIn[i]=getfield(tmp,i);
-      printf("%s\n", readIn[i]);
-      free(tmp);
+    tmp = strdup(line);
+    char* token;
+    token = strtok(tmp,",");
+    int j = 0;
+    while(token!= NULL){
+      readIn[count][j] = token;
+      token = strtok(NULL,",");
+      j++;
     }
 
+    count++;
+  }
+  fclose(stream);
 
+  rand_seed = atoi(readIn[0][1]);
+  n_specs = atoi(readIn[1][1]);
+  spec_names = (char**)malloc(sizeof(char*)*n_specs);
+  for(int i = 0; i<n_specs; i++){
+    spec_names[i] = readIn[3][i];
   }
 
-  fclose(stream);
+  // n_rxns = atoi()
+
+
+
 }
 
 // void initStats(struct Traj_stats sim){
@@ -182,6 +201,7 @@ void file_reader(char* fileName){
 // }
 
 int main(){
+
   // struct Traj_stats sim;
   // struct KMC_traj * trajs;
   // struct KMC_traj_TTS * trajs_TTS;
@@ -199,7 +219,8 @@ int main(){
   // }
 
   file_reader("input.csv");
-  printf("%s\n", readIn[1]);
+
+  free(tmp);
   return 0;
 
 }
