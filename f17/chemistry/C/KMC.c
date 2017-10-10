@@ -179,11 +179,11 @@ void file_reader(char* fileName){
       stoich_mat[i][j] =atoi(readIn[5][1+n_specs*i +j]);
     }
   }
-  for (size_t i = 0; i < 3; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      printf("%d\n",stoich_mat[i][j] );
-    }
-  }
+  // for (size_t i = 0; i < 3; i++) {
+  //   for (size_t j = 0; j < 3; j++) {
+  //     printf("%d\n",stoich_mat[i][j] );
+  //   }
+  // }
 
 
 
