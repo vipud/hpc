@@ -82,6 +82,7 @@ struct KMC_traj_TTS{
 
 //variables
 //input variables
+char ** readIn;
 int N_record = 101;
 int N_traj = 1000;
 bool write_traj_files = false;
@@ -111,9 +112,9 @@ int** slow_rxns;
 const char* getfield(char* line, int num)
 {
     const char* tok;
-    for (tok = strtok(line, ";");
+    for (tok = strtok(line, ",");
             tok && *tok;
-            tok = strtok(NULL, ";\n"))
+            tok = strtok(NULL, ",\n"))
     {
         if (!--num)
             return tok;
@@ -129,9 +130,14 @@ void file_reader(char* fileName){
   stream = fopen(fileName,"r");
 
   while (fgets(line,1024,stream)){
-    char * tmp = strdup(line);
-    printf("Field 3 would be %s\n", getfield(tmp,4));
-    free(tmp);
+
+    for(int i=0;i<41; i++){
+      char * tmp = strdup(line);
+      printf("%s\n",getfield(tmp,i+1));
+      free(tmp);
+    }
+
+
   }
 
   fclose(stream);
@@ -185,8 +191,13 @@ int main(){
   //   initTraj(trajs_TTS);
   //   run_simulations(trajs);
   // }
-
+  readIn = (char **)malloc(sizeof(char*) * 41);
+  for(int i=0; i<41; i++){
+    readIn[i] = (char*)malloc(sizeof(char)*100);
+  }
   file_reader("input.csv");
+  printf("%s\n", readIn[1]);
+
   return 0;
 
 }
