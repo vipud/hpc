@@ -157,12 +157,33 @@ void file_reader(char* fileName){
 
   rand_seed = atoi(readIn[0][1]);
   n_specs = atoi(readIn[1][1]);
+
+  n_rxns = atoi(readIn[2][1]);
+
   spec_names = (char**)malloc(sizeof(char*)*n_specs);
   for(int i = 0; i<n_specs; i++){
     spec_names[i] = readIn[3][i];
   }
 
-  // n_rxns = atoi()
+  N_0 = (int*) malloc(sizeof(int)*n_specs);
+  for(int i = 0; i<n_specs; i++){
+    N_0[i] = atoi(readIn[4][i]);
+  }
+
+  // rxn_stoich = (int*)malloc(sizeof(int)*n_specs);
+  stoich_mat = (int**)malloc(sizeof(int*)*n_rxns);
+
+  for(int i = 0; i<n_rxns; i++){
+    stoich_mat[i] = (int*)malloc(sizeof(int)*n_specs);
+    for(int j = 0; j<n_specs; j++){
+      stoich_mat[i][j] =atoi(readIn[5][1+n_specs*i +j]);
+    }
+  }
+  for (size_t i = 0; i < 3; i++) {
+    for (size_t j = 0; j < 3; j++) {
+      printf("%d\n",stoich_mat[i][j] );
+    }
+  }
 
 
 
