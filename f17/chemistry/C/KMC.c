@@ -238,10 +238,52 @@ void file_reader(char* fileName){
 
 }
 
-void initStats(struct Traj_stats sim){
+void initStats(struct Traj_stats *sim){
   //TODO
+  sim->species_avgs_out_flname = "species_avgs_out.txt";
+  sim->SA_out_flname = "sensitivities_out.txt";
 
   
+  sim->spec_profiles_averages =(double**) malloc(sizeof(double*)*N_record);
+  for(int i =0; i< N_record; i++){
+    sim->spec_profiles_averages[i] = (double*)malloc(sizeof(double)*n_specs);
+  }
+
+  sim->traj_deriv_avgs =(double**) malloc(sizeof(double*)*N_record);
+  for(int i =0; i< N_record; i++){
+    sim->traj_deriv_avgs[i] = (double*)malloc(sizeof(double)*n_specs);
+  }
+
+  sim->sensitivities =(double***) malloc(sizeof(double**)*N_record);
+  for(int i =0; i< N_record; i++){
+    sim->sensitivities[i] = (double**)malloc(sizeof(double*)*n_specs);
+    for(int j =0; j< n_specs; j++){
+      sim->sensitivities[i][j] = (double*) malloc(sizeof(double)*n_params);
+    }
+  }
+
+
+  for (int i = 0; i < N_record; ++i){
+      for(int j = 0; j < n_specs; j++){
+          sim->spec_profiles_averages[i][j] = 0;
+      }
+  }
+
+  for (int i = 0; i < N_record; ++i){
+      for(int j = 0; j < n_params; j++){
+          sim->traj_deriv_avgs[i][j] = 0;
+      }
+  }
+
+  for (int i = 0; i < N_record; ++i){
+      for(int j = 0; j < n_specs; j ++){
+          for(int k = 0; k < n_params; k++){
+              sim->sensitivities[i][j][k] = 0;
+          }
+      }
+  }
+
+
 }
 
 // void initRandomNumbers(int** randomNumbers){
@@ -291,7 +333,11 @@ int main(){
   // }
 
   file_reader("input.csv");
-  struct Traj_stats sim;
+  struct Traj_stats* sim;
+  initStats(sim);
+
+
+
 
 
   free(tmp);
