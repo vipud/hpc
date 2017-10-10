@@ -3,25 +3,40 @@
 1.
 	You must have cmake installed
 	$ sudo apt install cmake
+	(cmake is already installed on nightingale)
 
-2.
+2.	If you are using the PGI compiler:
+	We must switch the cmake C and C++ compiler to pgcc and pgc++
+	The examples will use PGI version 16.10, you should substitute
+	whichever version you are using
+	$ export CC=/opt/pgi/linus86-64/16.10/bin/pgcc
+	$ export CXX=/opt/pgi/linux86-64/16.10/bin/pgc++
+
+3.
 	Now we must build the common and lmmin libraries
 	$ cd common_build
 	$ cmake ../common
+	If you would like to add compiler flags (like -Minfo) run will need
+	to specify the compiler options when running the cmake command
+	$ cmake -D CMAKE_CXX_FLAGS="-ta=multicore -Minfo=all" ../common
 	$ make install
 
 	$ cd ../lmmin_build
 	$ cmake ../lmmin
+	Optionally you can build with compiler options...
+	$ cmake -D CMAKE_CXX_FLAGS="-ta=multicore -Minfo=all" ../lmmin
 	$ make install
 
 3.
 	Lastly, we must build the ppm files
 	$ cd .. # You should now be in the PPM_ONE directory
 	$ cmake .
+	Again, compiler options
+	$ cmake -D CMAKE_CXX_FLAGS="-ta=multicore -Minfo=all" .
 	$ make install
 
 	To run ppm_one you just need to run the ppm_stable executable 		and give it a pdb file as input
 	$ cd ppm
-	$ ./ppm_stable -pdb <filename>.pdb
+	$ ./ppm_stable -pdb <filename>.pdb -mode ann -para pdb
 
-	Just running ./ppm_stable will display all of the available 		options
+	Just running ./ppm_stable -h will display all of the available 		options
