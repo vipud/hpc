@@ -107,8 +107,13 @@ int** stoich_mat;
 double* rate_const;
 double* t_rec;
 int** fast_pairs;
-int** fast_rxns;
-int** slow_rxns;
+int* fast_rxns;
+int* slow_rxns;
+
+int fwd_rxn_ind;
+int rev_rxn_ind;
+
+int slow_ind = 0;
 
 //functions
 
@@ -204,7 +209,32 @@ void file_reader(char* fileName){
     fast_pairs[i]=(int*)malloc(sizeof(int)*2);
   }
 
-  
+  for(int i =0; i<n_fast_pairs; i++){
+    fwd_rxn_ind = atoi(readIn[12][1]);
+    fast_pairs[2*i][0] = fwd_rxn_ind;
+    fast_pairs[2*i +1][1] = fwd_rxn_ind;
+    rev_rxn_ind = atoi(readIn[12][2]);
+    fast_pairs[2*i][1]=rev_rxn_ind;
+    fast_pairs[2*i +1][0] = rev_rxn_ind;
+
+    fast_rxns[2*i]=rev_rxn_ind;
+    fast_rxns[2*i +1] = rev_rxn_ind;
+  }
+
+  for(int i = 0; i<n_rxns; i++){
+    for(int j = 0; j <n_fast_rxns; j++){
+      if(fast_rxns[j] == i){
+        slow_rxns[slow_ind] = i;
+        slow_ind ++;
+      }
+    }
+  }
+
+  t_rec = (double*) malloc(sizeof(double)*N_record);
+  for(int i = 0; i< N_record; i++){
+    t_rec[i] = (double)i / (N_record -1) * t_final;
+  }
+
 
 }
 
