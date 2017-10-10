@@ -109,9 +109,9 @@ int** slow_rxns;
 
 //functions
 
-const char* getfield(char* line, int num)
+char* getfield(char* line, int num)
 {
-    const char* tok;
+    char* tok;
     for (tok = strtok(line, ",");
             tok && *tok;
             tok = strtok(NULL, ",\n"))
@@ -129,11 +129,17 @@ void file_reader(char* fileName){
   FILE *stream;
   stream = fopen(fileName,"r");
 
+  readIn = (char **)malloc(sizeof(char*) * 41);
+  for(int i=0; i<41; i++){
+    readIn[i] = (char*)malloc(sizeof(char)*100);
+  }
+
   while (fgets(line,1024,stream)){
 
     for(int i=0;i<41; i++){
       char * tmp = strdup(line);
-      printf("%s\n",getfield(tmp,i+1));
+      readIn[i]=getfield(tmp,i);
+      printf("%s\n", readIn[i]);
       free(tmp);
     }
 
@@ -191,13 +197,9 @@ int main(){
   //   initTraj(trajs_TTS);
   //   run_simulations(trajs);
   // }
-  readIn = (char **)malloc(sizeof(char*) * 41);
-  for(int i=0; i<41; i++){
-    readIn[i] = (char*)malloc(sizeof(char)*100);
-  }
+
   file_reader("input.csv");
   printf("%s\n", readIn[1]);
-
   return 0;
 
 }
