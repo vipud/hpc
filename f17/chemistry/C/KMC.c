@@ -330,17 +330,31 @@ void initRandomNumbers(int** randomNumbers){
   //TODO
 }
 
+void initTraj_1(struct KMC_traj* traj){
+  traj->species_out_flname = "species_out.txt";
+  traj->traj_deriv_out_flname = "traj_deriv_out,txt";
+  traj->t =0;
+  traj->t_prev =0;
+  traj->ind_rec = 0;
+
+  traj->N = (int*)malloc(sizeof(int)*n_specs);
+  for(int i =0; i <n_specs; i++){
+      traj->N[i] = N_0[i];
+  }
+
+}
+
 void initTrajs(struct KMC_traj** trajs){
   //TODO
 }
 
 
-void simulate(struct KMC_traj* traj, int random){
+void simulate(int* rands, struct KMC_traj* traj){
   //TODO
 }
 
 
-void run_simulations(struct KMC_traj* trajs){
+void run_simulations(int** rands, struct KMC_traj** trajs){
   //TODO
 }
 
