@@ -5,24 +5,21 @@
 
 int LIMIT = 9;
 
-//This creates the HashSets
 struct CuckooHash{
     int* table0; // uses hash 0
     int* table1; // uses hash 1
 };
 
-//This calculates at what index the element is being added to for the first table
 int hash0(int x){
     return (x % 11) % 9;
 }
 
-//This calculates at what index the element is being added to for the second table
 int hash1(int x){
     // printf("%d % 13 % 9 = %d\n", x, (x % 13) % 9); 
     return (x % 13) % 9;
 }
 
-//This switches the values of element 1 and 2, the elements you want to swap
+
 int swap_hash(int* x1, int* x2){
     //printf("swap_hashping %d and %d\n", *x1, *x2);
     int temp = *x2;
@@ -34,7 +31,7 @@ int swap_hash(int* x1, int* x2){
 }
 
 
-//This checks if element exists in either table
+// check if element exists in either table
 int contains(int x, struct CuckooHash h){
     //printf("hash0(%d) = %d\n", x, hash0(x));
     //printf("hash1(%d) = %d\n", x, hash1(x));
@@ -50,7 +47,7 @@ int contains(int x, struct CuckooHash h){
 
 }
 
-//This adds a value to the hash
+// add a value to the hash
 int add(int x, struct CuckooHash h){
     if(contains(x, h)){
         printf("%d exists in the set.\n", x);
@@ -69,7 +66,7 @@ int add(int x, struct CuckooHash h){
    // printf("did not add %d", x);
 }
 
-//This prints currently stored values
+// print currently stored values
 void print_hash(struct CuckooHash h){
     // print table0
     printf("table0: ");
@@ -91,8 +88,7 @@ int main(){
     // initialize
     h.table0 = (int *) calloc(9, sizeof(int));
     h.table1 = (int *) calloc(9, sizeof(int));
-	
-	//Testing so that every index in both hash sets are filled by the end
+
     print_hash(h);
     printf("adding 1\n");
     add(1, h); 
