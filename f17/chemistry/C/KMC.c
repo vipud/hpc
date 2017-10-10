@@ -243,7 +243,7 @@ void initStats(struct Traj_stats *sim){
   sim->species_avgs_out_flname = "species_avgs_out.txt";
   sim->SA_out_flname = "sensitivities_out.txt";
 
-  
+
   sim->spec_profiles_averages =(double**) malloc(sizeof(double*)*N_record);
   for(int i =0; i< N_record; i++){
     sim->spec_profiles_averages[i] = (double*)malloc(sizeof(double)*n_specs);
@@ -282,8 +282,39 @@ void initStats(struct Traj_stats *sim){
           }
       }
   }
+}
 
+void finalize_stats(struct Traj_stats *sim){
+  for (int i = 0; i < N_record; ++i){
 
+      for(int j = 0; j < n_specs; j++){
+          sim->spec_profiles_averages[i][j] = sim->spec_profiles_averages[i][j] / N_traj;
+
+          for(int k = 0; k < n_params; k++){
+              sim->sensitivities[i][j][k] = sim->sensitivities[i][j][k] / N_traj;
+          }
+      }
+
+      for(int j = 0; j < n_params; j++){
+          sim->traj_deriv_avgs[i][j] = sim->traj_deriv_avgs[i][j] / N_traj;
+      }
+  }
+
+  for (int i = 0; i < N_record; ++i){
+
+      for(int j = 0; j < n_specs; j++){
+
+          for(int k = 0; k < n_params; k++){
+
+              //cout << endl;
+              //cout << sensitivities[i][j][k] << endl;
+              sim->sensitivities[i][j][k] -= sim->spec_profiles_averages[i][j] * sim->traj_deriv_avgs[i][k];
+              sim->sensitivities[i][j][k] = sim->sensitivities[i][j][k] * N_traj / (N_traj - 1);
+              //cout << sensitivities[i][j][k] << endl;
+          }
+      }
+
+  }
 }
 
 // void initRandomNumbers(int** randomNumbers){
