@@ -3,7 +3,7 @@
 
 // Cuckoo Hash
 
-int LIMIT = 9;
+int LEN = 9;
 
 struct CuckooHash{
     int* table0; // uses hash 0
@@ -11,12 +11,12 @@ struct CuckooHash{
 };
 
 int hash0(int x){
-    return (x % 11) % 9;
+    return (x % 11) % LEN;
 }
 
 int hash1(int x){
     // printf("%d % 13 % 9 = %d\n", x, (x % 13) % 9); 
-    return (x % 13) % 9;
+    return (x % 13) % LEN;
 }
 
 
@@ -53,7 +53,7 @@ int add(int x, struct CuckooHash h){
         printf("%d exists in the set.\n", x);
         return 0;
     }
-    for(int i = 0; i < LIMIT; i++){
+    for(int i = 0; i < LEN; i++){
         if(swap_hash(&(h.table0[hash0(x)]), &x) == 0){
             //printf("swap_hashped 0\n");
             return 1;
@@ -70,24 +70,20 @@ int add(int x, struct CuckooHash h){
 void print_hash(struct CuckooHash h){
     // print table0
     printf("table0: ");
-    for(int i = 0; i < LIMIT; i++){
+    for(int i = 0; i < LEN; i++){
         printf("%d ", h.table0[i]);
     }
     // print table1
     printf("table1: ");
-    for(int i = 0; i < LIMIT; i++){
+    for(int i = 0; i < LEN; i++){
         printf("%d ", h.table1[i]);
     }
     printf("\n\n");
 }
 
+struct CuckooHash h;
 
-int main(){
-    struct CuckooHash h;
-
-    // initialize
-    h.table0 = (int *) calloc(9, sizeof(int));
-    h.table1 = (int *) calloc(9, sizeof(int));
+int test1(){
 
     print_hash(h);
     printf("adding 1\n");
@@ -138,5 +134,23 @@ int main(){
     free(h.table0);
     free(h.table1);
     return 0;
+}
 
+$input int M = 3;
+$input int INPUTS[M];
+
+int test2() {
+  for (int i=0; i<M; i++) {
+    add(INPUTS[i], h);
+  }
+  print_hash(h);
+}
+
+int main() {
+  // initialize
+  h.table0 = (int *) calloc(LEN, sizeof(int));
+  h.table1 = (int *) calloc(LEN, sizeof(int));
+
+  // test1();
+  test2();
 }

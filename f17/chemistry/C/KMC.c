@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 
 
 
@@ -29,7 +30,7 @@ struct KMC_traj{
   double t;
   double t_prev;
   double dt;
-  int rxn_to_file_ind;
+  int rxn_to_fire_ind;
   int ind_rec;
   double* props;
 
@@ -263,19 +264,19 @@ void initStats(struct Traj_stats *sim){
   }
 
 
-  for (int i = 0; i < N_record; ++i){
+  for (int i = 0; i < N_record; i++){
       for(int j = 0; j < n_specs; j++){
           sim->spec_profiles_averages[i][j] = 0;
       }
   }
 
-  for (int i = 0; i < N_record; ++i){
+  for (int i = 0; i < N_record; i++){
       for(int j = 0; j < n_params; j++){
           sim->traj_deriv_avgs[i][j] = 0;
       }
   }
 
-  for (int i = 0; i < N_record; ++i){
+  for (int i = 0; i < N_record; i++){
       for(int j = 0; j < n_specs; j ++){
           for(int k = 0; k < n_params; k++){
               sim->sensitivities[i][j][k] = 0;
@@ -285,7 +286,7 @@ void initStats(struct Traj_stats *sim){
 }
 
 void finalize_stats(struct Traj_stats *sim){
-  for (int i = 0; i < N_record; ++i){
+  for (int i = 0; i < N_record; i++){
 
       for(int j = 0; j < n_specs; j++){
           sim->spec_profiles_averages[i][j] = sim->spec_profiles_averages[i][j] / N_traj;
@@ -322,11 +323,6 @@ void write_spec_avg_output(struct Traj_stats *sim){
 }
 
 void write_sensitivity_output(struct Traj_stats *sim){
-  //TODO
-}
-
-
-void initRandomNumbers(int** randomNumbers){
   //TODO
 }
 
@@ -372,20 +368,120 @@ void initTraj_1(struct KMC_traj* traj){
 
 }
 
-void initTrajs(struct KMC_traj** trajs){
+void simulate(double** rands, struct KMC_traj* traj){
   //TODO
+  int i=0;
+  double r_rxn_choose;
+  double r_timestep;
+  double asum;
+  double* prop_cum = (double*) malloc(sizeof(double) * n_rxns);
+  for(; traj->t<t_final;){
+    r_rxn_choose = rands[0][i];
+    r_timestep = rands[1][i];
+
+    for(int i = 0; i<n_rxns; i++){
+      traj->props[i] = rate_const[i];
+
+      for(int j =0; j<n_specs;j++){
+        if(stoich_mat[i][j]<0){
+          traj->props[i] = traj->props[i]*pow(traj->N[j], -stoich_mat[i][j]);
+        }
+      }
+
+      for(int k = 0; k<n_params; k++){
+        if(i==k){
+          traj->prop_ders[i][k] = 1.0;
+
+          for(int l =0; l < n_specs; l++){
+            if(stoich_mat[i][l] <0){
+              traj->prop_ders[i][k] = traj->prop_ders[i][k] * pow (traj->N[l],\
+                 -stoich_mat[i][l]);
+            }
+          }
+        }
+        else{
+          traj->prop_ders[i][k] = 0;
+        }
+      }
+    }
+
+    for(int i = 0; i<n_params; i++){
+      traj->prop_ders_sum[i] =0;
+      for(int j =0; j < n_rxns; j++){
+        traj->prop_ders_sum[i]+= traj->prop_ders[j][i];
+      }
+    }
+
+    asum =0;
+    for(int i =0; i< n_rxns; i++){
+      asum += traj-> props[i];
+    }
+
+    if(asum ==0){
+      break;
+    }
+
+    for(int i =0; i< n_rxns; i++){
+      prop_cum[i] =0;
+      for(int j =0; j<=i; j++){
+        prop_cum[i] += traj-> props[j]/asum;
+      }
+    }
+
+    traj->rxn_to_fire_ind =0;
+    if(r_rxn_choose ==1){
+      for(int i =0; i<n_rxns; i++){
+        if(traj->props[i] >0){
+          traj->rxn_to_fire_ind =i;
+        }
+      }
+    }
+    else{
+      while(prop_cum[traj->rxn_to_fire_ind]< r_rxn_choose){
+        traj->rxn_to_fire_ind+=1;
+      }
+    }
+
+    // if (r_rxn_choose == 1){
+    //     cout << rxn_to_fire_ind << endl;
+    // }
+
+    traj->dt = log(1/r_timestep)/asum;
+    if(! isfinite(traj->dt)){
+      break;
+    }
+
+    // while(traj->t >= t_rec[traj->ind_rec]){
+    //
+    //   //record_stats();
+    // }
+
+    for(int i =0; i< n_specs; i++){
+      traj->N[i] += stoich_mat[traj->rxn_to_fire_ind][i];
+    }
+
+    traj->t_prev =traj->t;
+    traj-> t= traj->t+ traj->dt;
+
+
+    for(int i = 0; i<n_params; i++){
+      // if(traj->props[traj->rxn_to_fire_ind] ==0){
+      //   Error
+      // }
+
+      traj->W[i] += traj->prop_ders[traj->rxn_to_fire_ind][i]/ traj->props[traj->rxn_to_fire_ind];
+      traj->W[i] -= traj->prop_ders_sum[i]*traj->dt;
+
+    }
+
+  }
+
+  // while (ind_rec < N_record){
+  //   record_stats();
+  // }
+
+
 }
-
-
-void simulate(int* rands, struct KMC_traj* traj){
-  //TODO
-}
-
-
-void run_simulations(int** rands, struct KMC_traj** trajs){
-  //TODO
-}
-
 
 
 int main(){
@@ -395,10 +491,51 @@ int main(){
   initStats(sim);
 
   struct KMC_traj ** trajs;
-  int** randomNumbers;
-  initRandomNumbers(randomNumbers);
-  initTrajs(trajs);
-  run_simulations(randomNumbers, trajs);
+  double*** randomNumbers;
+
+  randomNumbers = (double***) malloc(sizeof(double**) *N_traj);
+  for(int i =0; i<N_traj; i++){
+    srand(rand_seed + i);
+    randomNumbers[i] = (double**) malloc(sizeof(double*) * 2);
+    for(int j = 0; j<2; j++){
+      randomNumbers[i][j] = (double*)malloc(sizeof(double)*t_final);
+      for(int k =0; k< t_final; k++){
+        randomNumbers[i][j][k] = ((double) rand() / (double)(RAND_MAX));
+      }
+    }
+  }
+
+  trajs = (struct KMC_traj**)malloc(sizeof(struct KMC_traj*) *N_traj);
+  for(int i =0; i<N_traj; i++){
+    trajs[i] = (struct KMC_traj*) malloc(sizeof(struct KMC_traj));
+    initTraj_1(trajs[i]);
+  }
+
+  for(int i =0; i<N_traj; i++){
+    simulate(randomNumbers[i], trajs[i]);
+    printf("%s %d %s\n", "traj", i, "done");
+  }
+
+  for(int i =0; i<N_traj; i++){
+    for(int j =0; j< N_record; j++){
+      for(int k =0; k < n_specs; k++){
+        sim-> spec_profiles_averages[j][k] += trajs[i]->spec_profile[j][k];
+        for(int l =0; l< n_params; l++){
+          sim->sensitivities[j][k][l] += trajs[i]->spec_profile[j][k] *trajs[i]->traj_deriv_profile[j][l]+0;
+          // if(!isfinite(sim->sensitivities[j][k][l]){
+          //   printf("%s\n", "NaN");
+          // }
+
+        }
+      }
+
+      for(int k =0; k< n_params; k++){
+        sim->traj_deriv_avgs[j][k] += trajs[i] -> traj_deriv_profile[j][k];
+      }
+    }
+  }
+
+  finalize_stats(sim);
 
   return 0;
 
