@@ -37,10 +37,9 @@ int swap_hash(int* x1, int* x2){
 int contains(int x, struct CuckooHash h){
    int val_t0, val_t1;
    
-   val_t0 = (h.table0[hash0(x)] - x);
-   val_t1 = (h.table1[hash1(x)] - x);
-   return (val_t0 * val_t1) == 0;
-   
+   val_t0 = h.table0[hash0(x)];
+   val_t1 = h.table1[hash1(x)];
+   return (val_t0 == x || val_t1 == x);
 }
 
 // add a value to the hash
@@ -56,6 +55,36 @@ int add(int x, struct CuckooHash h){
            return 1;
    }
 }
+
+// remove a value from the hash
+int remove(int x, struct CuckooHash h){
+   int val_t0, val_t1;
+   
+   val_t0 = h.table0[hash0(x)];
+   val_t1 = h.table1[hash1(x)];
+   if(val_t0 == x){
+        inte temp = val_t0;
+        h.table0[hash0(x)] = 0;
+        printf("removed %d from table0[%d]\n", temp, hash0(x));
+        return 1;
+   } 
+   else if(val_t1 == x){
+        int temp = val_t1;
+        h.table0[hash0(x)] = 0;
+        printf("removed %d from table0[%d]\n", temp, hash0(x));
+        return 1;
+   }
+   else{
+       return 0;
+   }
+}
+
+// resize
+int resize(struct CuckooHash h){
+    // double size, move all elements to new table
+}
+
+
 
 // print currently stored values
 void print_hash(struct CuckooHash h){
