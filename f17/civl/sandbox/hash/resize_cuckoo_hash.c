@@ -28,7 +28,6 @@ $assume($forall (int x)
        );
        
 //Bounding to eliminate error created by abstract functions
-/*
 $assume($forall (int x)
 		 ($forall (int y)
 		  ($forall (int z)
@@ -37,7 +36,6 @@ $assume($forall (int x)
 		  )
 		 )
 		);
-        */
 
 int swap_hash(int* x1, int* x2){
    int temp = *x2;

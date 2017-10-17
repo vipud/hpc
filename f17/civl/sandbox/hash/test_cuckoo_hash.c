@@ -1,20 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 // Cuckoo Hash
 
-int LEN = 5;
+int NUM_ENTRIES = 0; // # entries full
+int LEN = 5; // total size
+
 struct CuckooHash{
    int* table0; // uses hash 0
    int* table1; // uses hash 1
+};
+
+/*int hash0(int x){
+    return (x % 11) % LEN;
 }
-;//int hash0(int x){
-//    return (x % 11) % LEN;
-//}
-//
-//int hash1(int x){
-//    return (x % 13) % LEN;
-//}
+
+int hash1(int x){
+    return (x % 13) % LEN;
+}
+*/
 
 $abstract int hash0(int x);
 $assume($forall (int x) hash0(x) >= 0 && hash0(x) < LEN);
@@ -56,14 +59,14 @@ int add(int x, struct CuckooHash h){
    }
 }
 
-// remove a value from the hash
+// remove a value from either hash table
 int remove(int x, struct CuckooHash h){
    int val_t0, val_t1;
    
    val_t0 = h.table0[hash0(x)];
    val_t1 = h.table1[hash1(x)];
    if(val_t0 == x){
-        inte temp = val_t0;
+        int temp = val_t0;
         h.table0[hash0(x)] = 0;
         printf("removed %d from table0[%d]\n", temp, hash0(x));
         return 1;
