@@ -78,20 +78,6 @@ struct KMC_traj_TTS{
 };
 
 
-void record_stats(struct KMC_traj traj,int n_specs, int n_params, double* t_rec){
-  traj.t_trunc = t_rec[traj.ind_rec] - traj.t_prev;
-
-  for(int i =0; i<n_specs; i++){
-    traj.spec_profile[traj.ind_rec][i] = (double) traj.N[i];
-  }
-
-  for(int i = 0; i< n_params; i++){
-    traj.traj_deriv_profile[traj.ind_rec][i] = traj.W[i] - traj.prop_ders_sum[i]*traj.t_trunc;
-  }
-
-  traj.ind_rec +=1;
-}
-
 
 int main(){
 
@@ -447,7 +433,7 @@ int main(){
       if(! isfinite(trajs[x].dt)){
         break;
       }
-      printf("%f\n",trajs[x].t);
+      // printf("%f\n",trajs[x].t);
 
       while(trajs[x].t >= t_rec[trajs[x].ind_rec]){
         // printf("%f\t%f\n", trajs[x].t,t_rec[trajs[x].ind_rec]);
@@ -500,7 +486,7 @@ int main(){
       trajs[x].ind_rec +=1;
     }
 
-    printf("%s\n", "sss");
+    // printf("%s\n", "sss");
 
 
 
@@ -511,9 +497,9 @@ int main(){
   for(int i =0; i<N_traj; i++){
     for(int j =0; j< N_record; j++){
       for(int k =0; k < n_specs; k++){
-        // sim.spec_profiles_averages[j][k] += trajs[i].spec_profile[j][k];
+        sim.spec_profiles_averages[j][k] += trajs[i].spec_profile[j][k];
         for(int l =0; l< n_params; l++){
-          // sim.sensitivities[j][k][l] += trajs[i].spec_profile[j][k] *trajs[i].traj_deriv_profile[j][l]+0;
+          sim.sensitivities[j][k][l] += trajs[i].spec_profile[j][k] *trajs[i].traj_deriv_profile[j][l]+0;
           // if(!isfinite(sim->sensitivities[j][k][l]){
           //   printf("%s\n", "NaN");
           // }
@@ -522,15 +508,57 @@ int main(){
       }
 
       for(int k =0; k< n_params; k++){
-        // sim.traj_deriv_avgs[j][k] += trajs[i].traj_deriv_profile[j][k];
+        sim.traj_deriv_avgs[j][k] += trajs[i].traj_deriv_profile[j][k];
       }
     }
   }
 
   // finalize_stats(sim);
+  for (int i = 0; i < N_record; i++){
 
-  // printf("%f\n", sim.spec_profiles_averages[N_record-1][n_specs-1]);
-  // printf("%f\n", sim.sensitivities[N_record-1][n_specs-1][n_params-1]);
+      for(int j = 0; j < n_specs; j++){
+          sim.spec_profiles_averages[i][j] = sim.spec_profiles_averages[i][j] / N_traj;
+
+          for(int k = 0; k < n_params; k++){
+              sim.sensitivities[i][j][k] = sim.sensitivities[i][j][k] / N_traj;
+          }
+      }
+
+      for(int j = 0; j < n_params; j++){
+          sim.traj_deriv_avgs[i][j] = sim.traj_deriv_avgs[i][j] / N_traj;
+      }
+  }
+
+  for (int i = 0; i < N_record; i++){
+
+      for(int j = 0; j < n_specs; j++){
+
+          for(int k = 0; k < n_params; k++){
+
+              //cout << endl;
+              //cout << sensitivities[i][j][k] << endl;
+              sim.sensitivities[i][j][k] -= sim.spec_profiles_averages[i][j] * sim.traj_deriv_avgs[i][k];
+              sim.sensitivities[i][j][k] = sim.sensitivities[i][j][k] * N_traj / (N_traj - 1);
+              //cout << sensitivities[i][j][k] << endl;
+          }
+      }
+
+  }
+
+  for(int i = 0; i< n_specs;i++){
+    printf("%s\t", spec_names[i]);
+  }
+  printf("\n");
+
+  for (int i = 0; i < N_record; i++) {
+    /* code */
+    printf("%f\t",t_rec[i] );
+    for (int j = 0; j < n_specs; j++) {
+      /* code */
+      printf("%f\t", sim.spec_profiles_averages[i][j] );
+    }
+    printf("\n" );
+  }
   return 0;
 
 }
