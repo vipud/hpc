@@ -246,6 +246,7 @@ int main(){
   t_rec = (double*) malloc(sizeof(double)*N_record);
   for(int i = 0; i< N_record; i++){
     t_rec[i] = (double)i / (N_record -1) * t_final;
+    // printf("%f\n",t_rec[i] );
   }
 
 
@@ -298,7 +299,7 @@ int main(){
   // initStats(sim);
 
   struct KMC_traj trajs[N_traj];
-  double randomNumbers[N_traj][2][t_final];
+  double randomNumbers[N_traj][2][500];
 
   // randomNumbers = (double***) malloc(sizeof(double**) *N_traj);
   for(int i =0; i<N_traj; i++){
@@ -306,12 +307,12 @@ int main(){
     // randomNumbers[i] = (double**) malloc(sizeof(double*) * 2);
     for(int j = 0; j<2; j++){
       // randomNumbers[i][j] = (double*)malloc(sizeof(double)*t_final);
-      for(int k =0; k< t_final; k++){
+      for(int k =0; k< 500; k++){
         randomNumbers[i][j][k] = ((double) rand() / (double)(RAND_MAX));
       }
     }
   }
-  printf("%f\n", randomNumbers[1][1][1]);
+  // printf("%f\n", randomNumbers[1][1][1]);
 
   // trajs = (struct KMC_traj**)malloc(sizeof(struct KMC_traj*) *N_traj);
 
@@ -365,7 +366,6 @@ int main(){
   }
 
 
-  printf("%d\n", 2);
   for(int x =0; x<N_traj; x++){
     // simulate(randomNumbers[i], trajs[i]);
     int r=0;
@@ -373,9 +373,12 @@ int main(){
     double r_timestep;
     double asum;
     double* prop_cum = (double*) malloc(sizeof(double) * n_rxns);
+
     for(; trajs[x].t<t_final;){
       r_rxn_choose = randomNumbers[x][0][r];
       r_timestep = randomNumbers[x][1][r];
+      r+=1;
+      // printf("%f\n", r_rxn_choose);
 
       for(int i = 0; i<n_rxns; i++){
         trajs[x].props[i] = rate_const[i];
@@ -439,19 +442,28 @@ int main(){
         }
       }
 
-      // if (r_rxn_choose == 1){
-      //     cout << rxn_to_fire_ind << endl;
-      // }
 
       trajs[x].dt = log(1/r_timestep)/asum;
       if(! isfinite(trajs[x].dt)){
         break;
       }
+      printf("%f\n",trajs[x].t);
 
-      // while(trajs[x].t >= t_rec[trajs[x].ind_rec]){
-      //
-      //   record_stats(trajs[x],n_specs, n_params,t_rec);
-      // }
+      while(trajs[x].t >= t_rec[trajs[x].ind_rec]){
+        // printf("%f\t%f\n", trajs[x].t,t_rec[trajs[x].ind_rec]);
+        trajs[x].t_trunc = t_rec[trajs[x].ind_rec] - trajs[x].t_prev;
+
+        for(int i =0; i<n_specs; i++){
+          trajs[x].spec_profile[trajs[x].ind_rec][i] = (double) trajs[x].N[i];
+        }
+
+        for(int i = 0; i< n_params; i++){
+          trajs[x].traj_deriv_profile[trajs[x].ind_rec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
+        }
+
+        trajs[x].ind_rec +=1;
+        // printf("%s\n", "xxxx");
+      }
 
       for(int i =0; i< n_specs; i++){
         trajs[x].N[i] += stoich_mat[trajs[x].rxn_to_fire_ind][i];
@@ -473,11 +485,24 @@ int main(){
 
     }
 
-    // while (trajs[x].ind_rec < N_record){
-    //   record_stats(trajs[x],n_specs,n_params,t_rec);
-    // }
+    while (trajs[x].ind_rec < N_record){
+      // record_stats(trajs[x],n_specs,n_params,t_rec);
+      trajs[x].t_trunc = t_rec[trajs[x].ind_rec] - trajs[x].t_prev;
 
-    r++;
+      for(int i =0; i<n_specs; i++){
+        trajs[x].spec_profile[trajs[x].ind_rec][i] = (double) trajs[x].N[i];
+      }
+
+      for(int i = 0; i< n_params; i++){
+        trajs[x].traj_deriv_profile[trajs[x].ind_rec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
+      }
+
+      trajs[x].ind_rec +=1;
+    }
+
+    printf("%s\n", "sss");
+
+
 
 
     printf("%s %d %s\n", "traj", x, "done");

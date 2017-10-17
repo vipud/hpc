@@ -254,6 +254,7 @@ file_reader :: file_reader(string flname){
     t_rec.resize(N_record);
 	for(int i = 0; i < N_record; i++){
 		t_rec[i] = (double) i / (N_record-1) * t_final;
+    // printf("%f\n", t_rec[i]);
 	}
 
     if(two_time_scale){
