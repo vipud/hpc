@@ -24,6 +24,11 @@ using namespace std;
 int main(int argc, char ** argv)
 
 {
+
+	#ifdef _OPENACC
+	cout << "OpenACC seems to be working." << endl;
+	#endif
+
 	int begin,stop;
 	bool bh,bdetail,bnew,bann,btest,bnew_pdb,blinear,bold;
 	class CMainbody mainbody;
