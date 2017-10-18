@@ -1244,7 +1244,7 @@ int CPdb::loadpdb(string filename)
 
 
 		part=line.substr(0,6);
-		if(part=="END")
+		if(part=="END" || part=="ENDMDL")
 		{
 			break;
 		}
@@ -1550,7 +1550,7 @@ int CPdb::loadpdb_old(string filename)
 	while(getline(fin,line))
 	{
 		part=line.substr(0,6);
-		if(part=="END")
+		if(part=="END" || part=="ENDMDL")
 		{
 			break;
 		}
