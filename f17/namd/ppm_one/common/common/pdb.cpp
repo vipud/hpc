@@ -1208,6 +1208,7 @@ void CPdb::setup(CAminoacid *t, CLigand *tt, int iligand, string residue , int i
 	return;
 }
 
+// Altered to use a "END" snapshot seperation instead of "ENDMDL"
 int CPdb::loadpdb(string filename)
 {
 	string line,part;
@@ -1243,7 +1244,7 @@ int CPdb::loadpdb(string filename)
 
 
 		part=line.substr(0,6);
-		if(part=="ENDMDL")
+		if(part=="END")
 		{
 			break;
 		}
@@ -1421,7 +1422,7 @@ int CPdb::loadpdb(string filename)
 				else
 				{
 					t=new CUnk;
-					cout<<"Warning! unrecognized resiude name "<<residue<<" fore residue "<<index_old<<endl;
+					cout<<"Warning! unrecognized residue name "<<residue<<" for residue "<<index_old<<endl;
 					printblock(pdbblock.block);
 				}
 
@@ -1514,7 +1515,8 @@ int CPdb::loadpdb(string filename)
 
 
 		
-
+// Altered to use "END" instead of "ENDMDL"
+// This function is marked old, maybe used for ppm instead of ppm_one
 int CPdb::loadpdb_old(string filename)
 {
 	bool bres;
@@ -1548,7 +1550,7 @@ int CPdb::loadpdb_old(string filename)
 	while(getline(fin,line))
 	{
 		part=line.substr(0,6);
-		if(part=="ENDMDL")
+		if(part=="END")
 		{
 			break;
 		}
