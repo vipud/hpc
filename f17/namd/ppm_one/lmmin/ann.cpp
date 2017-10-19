@@ -980,12 +980,8 @@ double CAnn::predict_one( vector<double> xx )
 	}
 	#endif
 
-	out/=p_save.size();
-	out+=10000000.0;
-	out+=1000000.0;
-	out+=100000.0;
-	//return out;
-	return 0;
+	output/=p_save.size();
+	return out;
 };
 	
 double CAnn::predict_one_md(int n, vector<double> xx )
