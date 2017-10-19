@@ -980,7 +980,7 @@ double CAnn::predict_one( vector<double> xx )
 	}
 	#endif
 
-	output/=p_save.size();
+	out/=p_save.size();
 	return out;
 };
 	
