@@ -606,6 +606,7 @@ void CAnn::evaluation_neuron(const double *par, int n_dat, const void *pdata, do
 };
 
 
+#pragma acc routine seq
 double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 {
 	int i;
@@ -617,12 +618,15 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 	p4=p3+nneuron;
 
 	r2=0;
+	//#pragma acc loop reduction(+:r2) vector default(present)//\
+		//copyin(p[0:ndim*nneuron+2*nneuron+1], x[0:ndim]) default(present)
 	for(int j=0;j<nneuron;j++)
 	{
 		const double *p1;
 		double r;
 		p1=p+j*ndim;
 		r=0.0;
+		//#pragma acc loop reduction(+:r) default(present)
 		for(i=0;i<ndim;i++)
 		{
 			r+=x[i]*p1[i];
@@ -914,6 +918,7 @@ double CAnn::assess_md(string ann_name,string x_name,string y_name)
 
 double CAnn::predict_one( vector<double> xx )
 {
+	cout << "Predict One" << endl;
 	int j;
 	double tt,out;
 
@@ -927,19 +932,60 @@ double CAnn::predict_one( vector<double> xx )
 		x[j]=xx.at(j);
 	}
 	xapplyminmax();
-
 	out=0;
+
+	// OpenACC Variation
+	#ifdef _OPENACC
+	double *my_x = x;
+	#pragma acc enter data copyin(my_x[0:n_dim])
+
+	int npar = (int)n_par;
+	int ndim = (int)n_dim;
+	int nneuron = (int)n_neuron;
+	int size_p_save = (int)p_save.size();
+	int ymin = y_min;
+	int ymax = y_max;
+	double **p_save_arr = new double*[size_p_save];
+	for(int i = 0; i < size_p_save; i++){
+		double *p_tmp = p_save.at(i).data();
+		p_save_arr[i] = p_tmp;
+		#pragma acc enter data copyin(p_tmp[0:ndim*nneuron+2*nneuron+1])
+	}
+
+	#pragma acc kernels
+	{
+	for(int j=0;j<(int)size_p_save;j++)
+	{
+		double *p_arr = p_save_arr[j];
+		tt=CAnn::myfunc_neuron(ndim,nneuron,my_x,p_arr);
+		tt=(tt+1)/2*(ymax-ymin)+ymin;
+		out+=tt;;
+	}
+	}
+
+	for(int i = 0; i < size_p_save; i++){
+		double *p_tmp = p_save_arr[i];
+		#pragma acc exit data delete(p_tmp[0:npar])
+	}
+	#pragma acc exit data delete(my_x[0:n_dim])
+
+	#else
 	for(int j=0;j<(int)p_save.size();j++)
 	{
 		for(int i=0;i<n_par;i++)
 			p[i]=p_save.at(j).at(i);
-	
 		tt=CAnn::myfunc_neuron(n_dim,n_neuron,x,p);
 		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
+	#endif
+
 	out/=p_save.size();
-	return out;
+	out+=10000000.0;
+	out+=1000000.0;
+	out+=100000.0;
+	//return out;
+	return 0;
 };
 	
 double CAnn::predict_one_md(int n, vector<double> xx )
