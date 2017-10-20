@@ -610,39 +610,41 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 {
 	int i;
 	double r2;
-	const double *p2,*p3,*p4;
+	//const double *p2,*p3,*p4;
 
-	p2=p+ndim*nneuron;
-	p3=p2+nneuron;
-	p4=p3+nneuron;
+	//p2=p+ndim*nneuron;
+	//p3=p2+nneuron;
+	//p4=p3+nneuron;
 
 	r2=0;
 
-	#pragma acc enter data copyin(p[0:ndim*nneuron+2*nneuron+1])
-	#pragma acc parallel loop reduction (+:r2) gang present(x[0:nneuron], p2[0:nneuron], p3[0:nneuron])
+	#pragma acc parallel loop reduction (+:r2) gang copyin(p[0:ndim*nneuron+2*nneuron+1],x[0:ndim])
 	for(int j=0;j<nneuron;j++)
 	{
-		const double *p1;
+		//const double *p1;
 		double r;
-		p1=p+j*ndim;
+		//p1=p+j*ndim;
 		r=0.0;
 		#pragma acc loop reduction(+:r) vector
 		for(i=0;i<ndim;i++)
 		{
-			r+=x[i]*p1[i];
+			//r+=x[i]*p1[i];
+			r+=x[i]*p[j*ndim+i];
 		}
-		r+=p2[j];
+		//r+=p2[j];
+		r+=p[ndim*nneuron+j];
 		if(r<-30 )
 			r=0.0;
 		else if(r>30)
 			r=1.0;
 		else
 			r=(1-exp(-2*r))/(1+exp(-2*r));
-		r=r*p3[j];
+		//r=r*p3[j];
+		r=r*p[ndim*nneuron+nneuron+j];
 		r2+=r;
 	}
-	r2+=p4[0];
-	#pragma acc exit data delete(p)
+	//r2+=p4[0];
+	r2+=p[ndim*nneuron+nneuron+nneuron];
 
 	return r2;
 };
@@ -939,7 +941,6 @@ double CAnn::predict_one( vector<double> xx )
 
 	double *my_x = x;
 
-	#pragma acc enter data copyin(my_x[0:n_dim])
 	for(int j=0;j<p_save.size();j++)
 	{
 		double *p_arr = p_save.at(j).data();
@@ -947,7 +948,6 @@ double CAnn::predict_one( vector<double> xx )
 		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
-	#pragma acc exit data delete(x)
 
 	#else
 	for(int j=0;j<(int)p_save.size();j++)
