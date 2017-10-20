@@ -618,7 +618,8 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 	p4=p3+nneuron;
 	#endif
 
-	#pragma acc parallel loop reduction (+:r2) gang copyin(p[0:ndim*nneuron+2*nneuron+1],x[0:ndim])
+	#pragma acc parallel loop reduction (+:r2) gang present(x[0:ndim]) \
+		copyin(p[0:ndim*nneuron+2*nneuron+1])
 	for(int j = 0; j < nneuron; j++)
 	{
 		double r = 0.0;
@@ -951,6 +952,7 @@ double CAnn::predict_one( vector<double> xx )
 	#ifdef _OPENACC
 	double *my_x = x;
 	#endif
+	#pragma acc enter data copyin(my_x[0:n_dim])
 
 	for(int j=0;j<p_save.size();j++)
 	{
@@ -965,6 +967,8 @@ double CAnn::predict_one( vector<double> xx )
 		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
+
+	#pragma acc exit data delete(my_x)
 
 	out/=p_save.size();
 	return out;
