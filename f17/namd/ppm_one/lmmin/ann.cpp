@@ -610,41 +610,53 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 {
 	int i;
 	double r2;
-	//const double *p2,*p3,*p4;
-
-	//p2=p+ndim*nneuron;
-	//p3=p2+nneuron;
-	//p4=p3+nneuron;
-
-	r2=0;
+	r2 = 0;
+	#ifndef _OPENACC
+	const double *p2,*p3,*p4;
+	p2=p+ndim*nneuron;
+	p3=p2+nneuron;
+	p4=p3+nneuron;
+	#endif
 
 	#pragma acc parallel loop reduction (+:r2) gang copyin(p[0:ndim*nneuron+2*nneuron+1],x[0:ndim])
-	for(int j=0;j<nneuron;j++)
+	for(int j = 0; j < nneuron; j++)
 	{
-		//const double *p1;
-		double r;
-		//p1=p+j*ndim;
-		r=0.0;
+		double r = 0.0;
+		#ifndef _OPENACC
+		const double *p1 = p+j*ndim;
+		#endif
 		#pragma acc loop reduction(+:r) vector
-		for(i=0;i<ndim;i++)
+		for(i = 0; i < ndim; i++)
 		{
-			//r+=x[i]*p1[i];
-			r+=x[i]*p[j*ndim+i];
+			#ifndef _OPENACC
+			r += x[i] * p1[i];
+			#else
+			r += x[i] * p[j*ndim+i];
+			#endif
 		}
-		//r+=p2[j];
-		r+=p[ndim*nneuron+j];
+		#ifndef _OPENACC
+		r += p2[j];
+		#else
+		r += p[ndim*nneuron+j];
+		#endif
 		if(r<-30 )
 			r=0.0;
 		else if(r>30)
 			r=1.0;
 		else
 			r=(1-exp(-2*r))/(1+exp(-2*r));
-		//r=r*p3[j];
-		r=r*p[ndim*nneuron+nneuron+j];
+		#ifndef _OPENACC
+		r = r*p3[j];
+		#else
+		r = r*p[ndim*nneuron+nneuron+j];
+		#endif
 		r2+=r;
 	}
-	//r2+=p4[0];
-	r2+=p[ndim*nneuron+nneuron+nneuron];
+	#ifndef _OPENACC
+	r2 += p4[0];
+	#else
+	r2 += p[ndim*nneuron+nneuron+nneuron];
+	#endif
 
 	return r2;
 };
@@ -936,29 +948,23 @@ double CAnn::predict_one( vector<double> xx )
 	xapplyminmax();
 	out=0;
 
-	// OpenACC Variation
 	#ifdef _OPENACC
-
 	double *my_x = x;
+	#endif
 
 	for(int j=0;j<p_save.size();j++)
 	{
+		#ifdef _OPENACC
 		double *p_arr = p_save.at(j).data();
 		tt=CAnn::myfunc_neuron(n_dim,n_neuron,my_x,p_arr);
-		tt=(tt+1)/2*(y_max-y_min)+y_min;
-		out+=tt;
-	}
-
-	#else
-	for(int j=0;j<(int)p_save.size();j++)
-	{
+		#else
 		for(int i=0;i<n_par;i++)
 			p[i]=p_save.at(j).at(i);
 		tt=CAnn::myfunc_neuron(n_dim,n_neuron,x,p);
+		#endif
 		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
-	#endif
 
 	out/=p_save.size();
 	return out;
