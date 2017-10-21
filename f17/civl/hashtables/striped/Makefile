@@ -1,5 +1,4 @@
-# GENERIC MAKEFILE
-# CHANGE/DELETE AS NEEDED
+# STRIPED HASH MAKEFILE
 
 CC = gcc
 CIVL = civl
@@ -10,10 +9,11 @@ CIVL = civl
 # verify - 'make verify'
 # clean extra files - 'make clean'
 
-example : example.c
-	$(CC) example.c -o example
+striped : striped_hash.cvl
+	$(CC) striped_hash.cvl -o striped_hash
 
-verify : example.c
-	$(CIVL) verify example.c
+verify : striped_hash.cvl
+	$(CIVL) verify striped_hash.cvl
+
 clean:
 	rm -rf *~ *.out *.trace *.log *.gch

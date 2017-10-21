@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+// Concurrent Striped Hash
+// Uses a fixed number of locks to write to hash table
+
+int SIZE = 9;
+int LOCKS = SIZE;
+int CAP = 3;
+
+struct StripedHash
+{
+    int* table; // table
+    int* locks; // locks
+};
+
+
+//hash function definition
+int hash(int x)
+{
+    return (x % SIZE);
+}
+
+// acquire (-1), release (0) locks
+void acquire(int x, struct StripedHash *s)
+{
+    $when(s->locks[(x % SIZE)] >= 0) s->locks[hash(x)]--;
+    //printf("Lock %s acquired.\n", hash(x));
+}
+
+void release(int x, struct StripedHash *s)
+{
+    s->locks[hash(x)]++;
+    //printf("Lock %s released.\n", hash(x));
+}
+
+// add, remove, contains
+int contains(int x, struct StripedHash *s)
+{
+    acquire(x,s);
+    int slot = hash(x);
+    for (int i = 0; i < CAP; i++)
+    {
+        if (s->table[slot][i] == x)
+        {
+            release(x,s);
+            return x;
+        }
+    }
+    release(x,s);
+    return 0;
+}
+
+int add(int x, struct StripedHash *s)
+{
+    if(contains(x,s)) //Don't insert duplicates
+    {
+        printf("%s not inserted, already present.\n", x);
+        return 0;
+    }
+    else
+    {
+        acquire(x,s);
+        s->table[hash(x)] = x;
+        printf("%s inserted.\n", x);
+        release(x,s);
+        return 1;
+    }
+}
+
+int hashRemove(int x, struct StripedHash *s)
+{
+    if(contains(x,s)) //remove
+    {
+        acquire(x,s);
+        s->table[hash(x)] = 0;
+        printf("%s removed.\n", x);
+        release(x,s);
+        return 1;
+    }
+    else
+    {
+        printf("%s not removed, not present\n", x);
+        return 0;
+    }
+}
+
+void resize(struct StripedHash *s) //UNIMPLEMENTED
+{
+    int oldCapacity = sizeof(s->table);
+}
+
+//resize policy
+int policy(struct StripedHash *s) //UNIMPLEMENTED
+{
+    return (SIZE / sizeof(s->table) > 4);
+}
+
+void testCheck(int x, struct StripedHash *s)
+{
+    if (contains(x,s) == x)
+        printf("%s found.\n", x);
+    else
+        printf("%s not found.\n", x);
+}
+
+int main(int argc, char* argv[])
+{
+    //alloc table and locks at 0
+    struct StripedHash sHash;
+    sHash.table = (int **) calloc(SIZE, sizeof(int *));
+    for (i = 0; i < SIZE; i++)
+        sHash.table[i] = (int *) calloc(CAP, sizeof(int));
+    sHash.locks = (int *) calloc(LOCKS, sizeof(int));
+
+    //basic tests
+    add(15,&sHash);
+    add(15,&sHash);
+    hashRemove(15,&sHash);
+    hashRemove(18,&sHash);
+
+    //free memory
+    free(sHash.table);
+    free(sHash.locks);
+    return 0;
+}
+
