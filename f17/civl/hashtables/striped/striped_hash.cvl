@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 // Concurrent Striped Hash
@@ -9,11 +10,14 @@ int SIZE = 9;
 int LOCKS = SIZE;
 int CAP = 3;
 
+
 struct StripedHash
 {
-    int* table; // table
+    int** table; // table
     int* locks; // locks
+    int items;
 };
+
 
 
 //hash function definition
@@ -45,12 +49,44 @@ int contains(int x, struct StripedHash *s)
         if (s->table[slot][i] == x)
         {
             release(x,s);
-            return x;
+            return (i+1);
         }
     }
     release(x,s);
     return 0;
 }
+
+
+//resize policy
+int policy(struct StripedHash *s) //UNIMPLEMENTED
+{
+    double pol = (double) (s->items / (SIZE*CAP));
+    return (pol > 0.75);
+}
+
+void resize(struct StripedHash *s) //UNIMPLEMENTED
+{
+    printf("Time to resize...\n");
+    int oldSIZE = SIZE;
+    for (int i = 0; i < LOCKS; i++)
+        acquire(i,s);
+    if (oldSIZE == SIZE)
+    {
+        int** tableCopy[SIZE][CAP]; //Making a copy of the current table
+        printf("Generating memcpy...\n");
+        memcpy(tableCopy, s->table, sizeof(s->table));
+        printf("COPY TABLE STATE:\n");
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < CAP; k++)
+                printf("%d ", tableCopy[j][k]);
+            printf("\n");
+        }
+    }
+    for (int j = 0; j < LOCKS; j++)
+        release(j,s);
+}
+
 
 int add(int x, struct StripedHash *s)
 {
@@ -62,20 +98,36 @@ int add(int x, struct StripedHash *s)
     else
     {
         acquire(x,s);
-        s->table[hash(x)] = x;
-        printf("%s inserted.\n", x);
+        int slot = hash(x);
+        for (int i = 0; i < CAP; i++)
+        {
+            if (s->table[slot][i] == 0)
+            {
+                s->table[slot][i] = x;
+                printf("%s inserted.\n", x);
+                s->items++;
+                release(x,s);
+                if (policy(s))
+                   resize(s);
+                return 1;
+            }
+        }
+        printf("%s not inserted, no capacity.\n", x);
         release(x,s);
-        return 1;
+        resize(s);
+        return 0;
     }
 }
 
 int hashRemove(int x, struct StripedHash *s)
 {
-    if(contains(x,s)) //remove
+    int ind = contains(x,s);
+    if(ind > 0) //remove
     {
         acquire(x,s);
-        s->table[hash(x)] = 0;
+        s->table[hash(x)][(ind-1)] = 0;
         printf("%s removed.\n", x);
+        s->items--;
         release(x,s);
         return 1;
     }
@@ -86,41 +138,61 @@ int hashRemove(int x, struct StripedHash *s)
     }
 }
 
-void resize(struct StripedHash *s) //UNIMPLEMENTED
-{
-    int oldCapacity = sizeof(s->table);
-}
-
-//resize policy
-int policy(struct StripedHash *s) //UNIMPLEMENTED
-{
-    return (SIZE / sizeof(s->table) > 4);
-}
-
 void testCheck(int x, struct StripedHash *s)
 {
-    if (contains(x,s) == x)
+    if (contains(x,s))
         printf("%s found.\n", x);
     else
         printf("%s not found.\n", x);
 }
 
+void printTable(struct StripedHash *s)
+{
+    printf("TABLE STATE:\n");
+    for (int j = 0; j < SIZE; j++)
+    {
+        for (int k = 0; k < CAP; k++)
+            printf("%s ", s->table[j][k]);
+        printf("\n");
+    }
+    printf("# OF ITEMS: %s\n", s->items);
+}
+
 int main(int argc, char* argv[])
 {
-    //alloc table and locks at 0
     struct StripedHash sHash;
-    sHash.table = (int **) calloc(SIZE, sizeof(int *));
-    for (i = 0; i < SIZE; i++)
-        sHash.table[i] = (int *) calloc(CAP, sizeof(int));
+    sHash.items = 0; //init item counter
+        
+    //alloc table SIZE * CAP
+    sHash.table = (int **) malloc(SIZE * sizeof(int *));
+    for (int i = 0; i < SIZE; i++)
+       sHash.table[i] = (int *) malloc(CAP * sizeof(int));
+    
+    //init table at 0 for all elements
+    for (int j = 0; j < SIZE; j++)
+        for (int k = 0; k < CAP; k++)
+            sHash.table[j][k] = 0;
+
+    //alloc all locks at open (0)
     sHash.locks = (int *) calloc(LOCKS, sizeof(int));
 
     //basic tests
+    printTable(&sHash);
     add(15,&sHash);
     add(15,&sHash);
+    add(24,&sHash);
+    add(33,&sHash);
+    add(42,&sHash);
+    printTable(&sHash);
     hashRemove(15,&sHash);
+    testCheck(15,&sHash);
+    testCheck(24,&sHash);
     hashRemove(18,&sHash);
+    printTable(&sHash);
 
     //free memory
+    for (int l = 0; l < SIZE; l++)
+        free(sHash.table[l]);
     free(sHash.table);
     free(sHash.locks);
     return 0;
