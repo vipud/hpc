@@ -10,10 +10,10 @@ CIVL = civl
 # verify - 'make verify'
 # clean extra files - 'make clean'
 
-example : example.c
-	$(CC) example.c -o example
+example : BaseHash.c
+	$(CC) BaseHash.c -o BaseHash
 
-verify : example.c
-	$(CIVL) verify example.c
+verify : BaseHash.c
+	$(CIVL) verify BaseHash.c
 clean:
-	rm -rf *~ *.out *.trace *.log *.gch
+	rm -rf *~ *.out *.trace *.log *.gch BaseHash
