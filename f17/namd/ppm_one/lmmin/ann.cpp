@@ -611,53 +611,36 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 	int i;
 	double r2;
 	r2 = 0;
-	#ifndef _OPENACC
-	const double *p2,*p3,*p4;
-	p2=p+ndim*nneuron;
-	p3=p2+nneuron;
-	p4=p3+nneuron;
-	#endif
+	const int p2=ndim*nneuron;
+	const int p3=p2+nneuron;
+	const int p4=p3+nneuron;
 
 	#pragma acc parallel loop reduction (+:r2) gang present(x[0:ndim]) \
 		copyin(p[0:ndim*nneuron+2*nneuron+1])
 	for(int j = 0; j < nneuron; j++)
 	{
 		double r = 0.0;
-		#ifndef _OPENACC
-		const double *p1 = p+j*ndim;
-		#endif
+		const int p1 = j*ndim;
 		#pragma acc loop reduction(+:r) vector
 		for(i = 0; i < ndim; i++)
 		{
-			#ifndef _OPENACC
-			r += x[i] * p1[i];
-			#else
-			r += x[i] * p[j*ndim+i];
-			#endif
+			r += x[i] * p[p1+i];
 		}
-		#ifndef _OPENACC
-		r += p2[j];
-		#else
-		r += p[ndim*nneuron+j];
-		#endif
+
+		r += p[p2+j];
+
 		if(r<-30 )
 			r=0.0;
 		else if(r>30)
 			r=1.0;
 		else
 			r=(1-exp(-2*r))/(1+exp(-2*r));
-		#ifndef _OPENACC
-		r = r*p3[j];
-		#else
-		r = r*p[ndim*nneuron+nneuron+j];
-		#endif
+
+		r = r*p[p3+j];
 		r2+=r;
 	}
-	#ifndef _OPENACC
-	r2 += p4[0];
-	#else
-	r2 += p[ndim*nneuron+nneuron+nneuron];
-	#endif
+
+	r2 += p[p4];
 
 	return r2;
 };
