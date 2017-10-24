@@ -30,13 +30,13 @@ int hash(int x)
 void acquire(int x, struct StripedHash *s)
 {
     $when(s->locks[(x % SIZE)] >= 0) s->locks[hash(x)]--;
-    //printf("Lock %s acquired.\n", hash(x));
+    printf("Lock %s acquired.\n", hash(x));
 }
 
 void release(int x, struct StripedHash *s)
 {
     s->locks[hash(x)]++;
-    //printf("Lock %s released.\n", hash(x));
+    printf("Lock %s released.\n", hash(x));
 }
 
 // add, remove, contains
@@ -72,14 +72,14 @@ void resize(struct StripedHash *s) //UNIMPLEMENTED
         acquire(i,s);
     if (oldSIZE == SIZE)
     {
-        int** tableCopy[SIZE][CAP]; //Making a copy of the current table
+        int** temp[SIZE][CAP]; //Making a copy of the current table
         printf("Generating memcpy...\n");
-        memcpy(tableCopy, s->table, sizeof(s->table));
-        printf("COPY TABLE STATE:\n");
+        memcpy(temp, s->table, sizeof(s->table));
+        printf("TEMP TABLE STATE:\n");
         for (int j = 0; j < SIZE; j++)
         {
             for (int k = 0; k < CAP; k++)
-                printf("%d ", tableCopy[j][k]);
+                printf("%d ", temp[j][k]);
             printf("\n");
         }
     }
@@ -87,6 +87,16 @@ void resize(struct StripedHash *s) //UNIMPLEMENTED
         release(j,s);
 }
 
+/*
+Notes on resize steps:
+1. Acquire all locks *
+2. Make sure the table hasn't been resized already *
+3. Make a temp copy of the table *
+4. Resize (x2) the "real" table in memory, changing hash()
+5. Reinit the real table to all 0's
+6. Place every item in temp in real using new hash()
+7. Free temp, release all locks
+*/
 
 int add(int x, struct StripedHash *s)
 {
@@ -176,6 +186,7 @@ int main(int argc, char* argv[])
     //alloc all locks at open (0)
     sHash.locks = (int *) calloc(LOCKS, sizeof(int));
 
+    /*
     //basic tests
     printTable(&sHash);
     add(15,&sHash);
@@ -188,6 +199,16 @@ int main(int argc, char* argv[])
     testCheck(15,&sHash);
     testCheck(24,&sHash);
     hashRemove(18,&sHash);
+    printTable(&sHash);
+    */
+
+    $parfor (int i : 0 .. 5)
+    {
+        add(i+1,&sHash);
+        add(i*2,&sHash);
+        add(i*4,&sHash);
+    }
+
     printTable(&sHash);
 
     //free memory

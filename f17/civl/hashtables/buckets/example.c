@@ -4,10 +4,6 @@
 int N; // size of table
 int* table;
 
-int change(){
-    t[5] = 100;
-    return 1;
-}
 
 int main(int argc, char* argv[]){
     int* table; // pointer to table

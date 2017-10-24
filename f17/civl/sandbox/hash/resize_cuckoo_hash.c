@@ -1,14 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 // Cuckoo Hash
 
-int LEN = 5;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int LEN = 5; // length of each table
+struct CuckooHash h;
+
 struct CuckooHash{
    int* table0; // uses hash 0
    int* table1; // uses hash 1
-}
-;//int hash0(int x){
+   int items; // number of items
+};
+//int hash0(int x){
 //    return (x % 11) % LEN;
 //}
 //
@@ -54,6 +58,28 @@ int contains(int x, struct CuckooHash h){
    
 }
 
+// checks # items / both table lengths
+int policy(struct CuckooHash h){
+    double load_factor = h.items / (2*LEN);
+    return load_factor > 0.75;
+}
+
+void resize(struct CuckooHash h){
+    // store previous hash values
+    int* temp_table0 = (int*)malloc(LEN * sizeof(int));
+    int* temp_table1 = (int*)malloc(LEN * sizeof(int));
+    memcpy(temp_table0, h.table0, sizeof(h.table0));    
+    memcpy(temp_table1, h.table1, sizeof(h.table0));    
+    // double size in table0, table1
+    LEN *= 2;
+    free(h.table0);
+    free(h.table1);
+    // empty tables
+    h.table0 = (int *) calloc(LEN, sizeof(int)); 
+    h.table1 = (int *) calloc(LEN, sizeof(int));
+    // rehash 
+}
+
 // add a value to the hash
 int add(int x, struct CuckooHash h){
    if(contains(x, h)){
@@ -62,9 +88,36 @@ int add(int x, struct CuckooHash h){
    }
    for(int i = 0; i < LEN; i++){
        if(swap_hash(&(h.table0[hash0(x)]), &x) == 0)
+           h.items += 1;
            return 1;
        if (swap_hash(&(h.table1[hash1(x)]), &x) == 0)
+           h.items += 1;
            return 1;
+   }
+   resize();
+   add(x,h);
+   return;
+}
+
+int remove(int x, struct CuckooHash h){
+   int val_t0, val_t1;
+
+   val_t0 = h.table0[hash0(x)];
+   val_t1 = h.table1[hash1(x)];
+   if(val_t0 == x){
+        int temp = val_t0;
+        h.table0[hash0(x)] = 0;
+        printf("removed %d from table0[%d]\n", temp, hash0(x));
+        return 1;
+   }
+   else if(val_t1 == x){
+        int temp = val_t1;
+        h.table0[hash0(x)] = 0;
+        printf("removed %d from table0[%d]\n", temp, hash0(x));
+        return 1;
+   }
+   else{
+       return 0;
    }
 }
 
@@ -81,10 +134,9 @@ void print_hash(struct CuckooHash h){
    for(int i = 0; i < LEN; i++){
        printf("%d ", h.table1[i]);
    }
-   printf("\n\n");
+   printf("\nLoad factor = %d/%d = %d", h.items, LEN, (double)h.items/LEN);
 }
 
-struct CuckooHash h;
 int test1(){
    print_hash(h);
    printf("adding 1\n");

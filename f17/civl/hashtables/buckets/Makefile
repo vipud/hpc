@@ -4,16 +4,17 @@
 CC = gcc
 CIVL = civl
 
-# replace 'example.c' with your file name!
-# compile - 'make example'
-# run - './example'
+# compile - 'make linked_list'
+# run - './linked_list'
 # verify - 'make verify'
 # clean extra files - 'make clean'
 
-example : example.c
-	$(CC) example.c -o example
+linked_list : linked_list.c
+	$(CC) linked_list.c -o linked_list 
+	./linked_list
 
-verify : example.c
-	$(CIVL) verify example.c
+verify : linked_list.c
+	$(CIVL) verify linked_list.c
 clean:
 	rm -rf *~ *.out *.trace *.log *.gch
+	rm -rf example linked_list
