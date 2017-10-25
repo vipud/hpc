@@ -605,7 +605,7 @@ void CAnn::evaluation_neuron(const double *par, int n_dat, const void *pdata, do
 	return;
 };
 
-
+#pragma acc routine vector
 double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 {
 	int i;
@@ -615,13 +615,12 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 	const int p3=p2+nneuron;
 	const int p4=p3+nneuron;
 
-	#pragma acc parallel loop reduction (+:r2) gang \
-		present(x[0:ndim], p[0:ndim*nneuron+2*nneuron+1])
+	#pragma acc loop reduction(+:r2) vector
 	for(int j = 0; j < nneuron; j++)
 	{
 		double r = 0.0;
 		const int p1 = j*ndim;
-		#pragma acc loop reduction(+:r) vector
+		#pragma acc loop reduction(+:r) seq
 		for(i = 0; i < ndim; i++)
 		{
 			r += x[i] * p[p1+i];
@@ -944,12 +943,13 @@ double CAnn::predict_one( vector<double> xx )
 	int p_save_size = p_save.size();
 	#pragma acc enter data copyin(p_save_flat[0:n_par*p_save_size])
 
-	for(int j=0;j<p_save.size();j++)
+	#pragma acc parallel loop gang reduction(+:out) private(tt) \
+		present(x[0:n_dim], p_save_flat[0:n_par], this)
+	for(int j=0;j<p_save_size;j++)
 	{
 		#ifdef _OPENACC
-		double *p_arr = p_save.at(j).data();
 		tt=CAnn::myfunc_neuron(n_dim,n_neuron,x,
-			p_save_flat+n_par*j);
+			p_save_flat+(n_par*j));
 		#else
 		for(int i=0;i<n_par;i++)
 			p[i]=p_save.at(j).at(i);
