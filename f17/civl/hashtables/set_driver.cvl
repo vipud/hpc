@@ -1,2 +1,43 @@
 #include "set.cvh"
 
+$input int VALUE_B = 3; // upper bound on values
+$input int THREAD_B = 3; // bound on number of threads
+$input int STEP_B; // bound on number of steps
+$input int nthreads; // number of threads
+$assume(1<=nthreads && nthreads<=THREAD_B);
+
+int nsteps[nthreads]; // num steps for each thread
+_Bool isAdd[nthreads][STEP_B];
+int vals[nthreads][STEP_B];
+
+/* oracle[i] indicates value i should be in the set */
+_Bool oracle[VALUE_B+1];
+
+
+void init() {
+  int step_total = 0;
+  for (int i=0; i<nthreads; i++) {
+    int n = $choose_int(STEP_B+1-step_total);
+    nsteps[i] = n;
+    step_total += n;
+    for (int j=0; j<n; j++) {
+      isAdd = $choose_int(2);
+      vals[i][j] = $choose_int(VALUE_B + 1);
+    }
+  }
+}
+
+void thread(int i) {
+  for (int j=0; j<nsteps[i]; j++) {
+    if (isAdd[i][j])
+      add(vals[i][j]);
+    else
+      remove(vals[i][j]);
+  }
+}
+
+int main() {
+  init();
+  $parfor (int i : 0..nthreads-1) thread(i);
+  // check...
+}
