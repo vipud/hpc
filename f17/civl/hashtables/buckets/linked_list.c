@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "linked_list.h"
 
 // initialize
@@ -12,9 +13,9 @@ node* create(int val){
 }
 
 // add a new node
-int append(node* head, int val){
+bool append(node* head, int val){
     if(head == NULL){
-        return 0;
+        return false;
     }
     node* cursor = head; // traverse
     while(cursor->next != NULL){
@@ -22,50 +23,50 @@ int append(node* head, int val){
     }
     node* next_node = create(val); 
     cursor->next = next_node;
-    return 1; 
+    return true; 
 }
 
 // check if value is in the list
-int contains(node* head, int val){
+bool contains(node* head, int val){
     if(head == NULL){
         //printf("no values in list!\n");
-        return 0;
+        return false;
     }
     node* cursor = head; // traverse
     while(cursor != NULL){
         if(cursor->val == val){
-            //printf("Found %d in list.\n", cursor->val);
-            return 1;
+            printf("Found %d in list.\n", cursor->val);
+            return true;
         }
         cursor = cursor->next;
     }
-    //printf("Could not find %d in list.\n", val);
-    return 0;
+    return false;
 }
 
 // remove a node, based on value
-int n_remove(node* head, int val){
+bool n_remove(node* head, int val){
     if(head == NULL){
         printf("List does not exist!\n");
-        return 0;
+        return false;
     }
     else if(contains(head,val)){ // remove
         node* cursor = head;
-        while(cursor != NULL){
+        while(cursor->next != NULL){
+            node* temp = cursor->next;
             if(cursor->val == val){
-                // check next and remove appropriately
-                if(cursor->next == NULL){
-                    node* temp = cursor;
-                    
+                if(temp == NULL){
+                    return true;
                 } else {
+                    return true;
                 }
-            return 1;
-            }
-        }        
-    } else {
+            } // else go to next
+            cursor = cursor->next;
+        }
+    } 
+    else{
         printf("Could not find %d.!\n", val);
     }
-    return 0;
+    return false;
 }
 
 // traverse and print vals
@@ -109,7 +110,7 @@ int main(int argc, char* argv[]){
     contains(head, 1);
     contains(head, 16);
     n_remove(head, 15);
-    // n_remove(head, 16);
+    n_remove(head, 16);
     free_list(head);
     return 0;
 }

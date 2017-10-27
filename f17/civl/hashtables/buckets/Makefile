@@ -10,8 +10,8 @@ CIVL = civl
 # clean extra files - 'make clean'
 
 linked_list : linked_list.c
-	$(CC) linked_list.c -o linked_list 
-	./linked_list
+	$(CC) linked_list.c linked_list.h 
+	./a.out
 
 verify : linked_list.c
 	$(CIVL) verify linked_list.c

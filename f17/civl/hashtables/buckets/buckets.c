@@ -7,7 +7,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "linkedlist.h"
+// #include "linkedlist.h"
+
+struct BucketList {
+    int val;
+};
+
+typedef struct BucketList bucket_list;
+
+struct HashSet{
+    // table
+    int* table;
+} 
+typedef struct HashSet hash_set;
+
+HashSet* create(int size){
+    hash_set* hs;
+    hs = 
+    hs->table = (int *) malloc(size * sizeof(int));
+    return hs;
+}
 
 int N; // size of table, always power of 2
 
@@ -19,15 +38,19 @@ int contains(int x){
     return 1;
 }
 
-int remove(int x){
+int n_remove(int x){
     return 1;
 }
 
 int main(int argc, char* argv[]){
     N = 10; 
+    int* table;
+    bucket_list* bucket; // malloc
+    bucket = (bucket_list*) malloc(sizeof(bucket_list));
+    bucket->val = 10;
     table = (int *) malloc (N * sizeof(int)); // 10 ints long 
     // do stuff
-     
+    printf("bucket->val = %d\n", bucket->val); 
     free(table);  // free memory
     return 0;
 }
