@@ -1,8 +1,15 @@
+/* Aamir Majeed
+ * Bucket List Hash Set
+ * All items are kept in a single lock-free linked list
+ * A bucket is a reference to a node in the list
+ * Our array of references expands as # of buckets increase
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
+#include "linkedlist.h"
 
-int N; // size of table
-int* table; // pointer to table
+int N; // size of table, always power of 2
 
 int add(int x){
     return 1;
