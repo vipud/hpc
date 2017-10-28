@@ -1,10 +1,10 @@
 // set.cvl
 #include <stdbool.h>
 
-struct Set;
-typedef struct Set _set;
+struct _set;
+typedef struct _set Set;
 
-/* add( _set* hash_set, int value)
+/* add(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
  *         value, a positive integer
  * Output: true if the value is successfully added,
@@ -17,9 +17,9 @@ typedef struct Set _set;
  * - the set exists and is unlocked
  * - the value is successfully stored in the set 
  */
-bool add(_set* hash_set, int value);
+bool add(Set* hash_set, int value);
 
-/* discard(_set* hash_set, int value)
+/* discard(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
  *         value, a positive integer
  * Output: true if the value is successfully discarded from the set
@@ -32,9 +32,9 @@ bool add(_set* hash_set, int value);
  * - the set exists and is unlocked
  * - the value is successfully removed from the set
  */
-bool contains(_set* hash_set, int value);
+bool discard(Set* hash_set, int value);
 
-/* contains(_set* hash_set, int value)
+/* contains(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
  *         value, a positive integer
  * Output: true if the value exists in the set
@@ -47,7 +47,7 @@ bool contains(_set* hash_set, int value);
  * - the value can be referenced at some location in the set
  */
 
-bool contains(_set* hash_set, int value)
+bool contains(Set* hash_set, int value)
 
 /* create(int size)
  * Input:  size, a positive integer
@@ -60,7 +60,7 @@ bool contains(_set* hash_set, int value)
  * - the value can be referenced at some location in the set
  */
 
-_set* create(int size);
-bool destroy(_set* hash_set); 
+Set* create(int size);
+bool destroy(Set* hash_set); 
 list get_all
 

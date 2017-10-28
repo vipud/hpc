@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 
 // Concurrent Striped Hash
@@ -14,7 +15,7 @@ int CAP = 3;
 struct StripedHash
 {
     int** table; // table
-    int* locks; // locks
+    bool* locks; // locks
     int items;
 };
 
@@ -26,16 +27,22 @@ int hash(int x)
     return (x % SIZE);
 }
 
-// acquire (-1), release (0) locks
+//lock hash function definition
+int lock_hash(int x)
+{
+    return ((x % SIZE) & LOCKS);
+}
+
+// acquire (-1), release (0) locks (implement _Bool)
 void acquire(int x, struct StripedHash *s)
 {
-    $when(s->locks[(x % SIZE)] >= 0) s->locks[hash(x)]--;
-    printf("Lock %s acquired.\n", hash(x));
+    $when(s->locks[((x % SIZE) & LOCKS)] == false) s->locks[lock_hash(x)] == true;
+    printf("Lock %s acquired.\n", lock_hash(x));
 }
 
 void release(int x, struct StripedHash *s)
 {
-    s->locks[hash(x)]++;
+    s->locks[hash(x)] == false;
     printf("Lock %s released.\n", hash(x));
 }
 
@@ -184,7 +191,11 @@ int main(int argc, char* argv[])
             sHash.table[j][k] = 0;
 
     //alloc all locks at open (0)
-    sHash.locks = (int *) calloc(LOCKS, sizeof(int));
+    sHash.locks = (bool *) malloc(LOCKS * sizeof(bool));
+
+    //init locks at false for all
+    for (int k = 0; k < LOCKS; k++)
+        sHash.locks[k] = false;
 
     /*
     //basic tests
@@ -218,4 +229,3 @@ int main(int argc, char* argv[])
     free(sHash.locks);
     return 0;
 }
-
