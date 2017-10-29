@@ -8,6 +8,6 @@ typedef struct node{
 node* create(int val);
 bool append(node* head, int val);
 bool contains(node* head, int val);
-bool n_remove(node* head, int val);
+bool discard(node** head, int val);
 void print_list(node* list);
 void free_list(node* list);

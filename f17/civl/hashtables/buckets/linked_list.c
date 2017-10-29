@@ -40,31 +40,38 @@ bool contains(node* head, int val){
         }
         cursor = cursor->next;
     }
+    printf("%d not found in list.\n", val);
     return false;
 }
 
-// remove a node, based on value
-bool n_remove(node* head, int val){
-    if(head == NULL){
-        printf("List does not exist!\n");
+// discard a node, based on value
+bool discard(node** head, int val){
+    node* cursor = *head;
+    node* temp;
+
+    // check front of linked list
+    if(cursor == NULL){
+        printf("list does not exist!\n");
         return false;
-    }
-    else if(contains(head,val)){ // remove
-        node* cursor = head;
-        while(cursor->next != NULL){
-            node* temp = cursor->next;
-            if(cursor->val == val){
-                if(temp == NULL){
-                    return true;
-                } else {
-                    return true;
-                }
-            } // else go to next
-            cursor = cursor->next;
-        }
     } 
-    else{
-        printf("Could not find %d.!\n", val);
+    else if(cursor->val == val){
+        temp = *head;
+        *head = (*head)->next;
+        printf("deleting %d\n", temp->val);
+        free(temp);
+        return true;
+    }
+    node* cursor_next = (*head)->next;;
+    while(cursor != NULL && cursor_next != NULL){ // run through list
+        if(cursor_next->val == val){
+            printf("deleting %d\n", cursor_next->val);
+            temp = cursor_next;
+            cursor->next = cursor_next->next;
+            free(temp);
+            return true;
+        }
+        cursor = cursor_next;
+        cursor_next = cursor_next->next;
     }
     return false;
 }
@@ -94,6 +101,7 @@ void free_list(node* list){
     }
 }
 
+/*
 int main(int argc, char* argv[]){
     int SIZE = 0;
     struct node* head;
@@ -109,8 +117,19 @@ int main(int argc, char* argv[]){
     contains(head, 5);
     contains(head, 1);
     contains(head, 16);
-    n_remove(head, 15);
-    n_remove(head, 16);
+    discard(&head, 1);
+    print_list(head);
+    discard(&head, 16);
+    print_list(head);
+    discard(&head, 15);
+    discard(&head, 4);
+    print_list(head);
+    discard(&head, 2);
+    print_list(head);
+    discard(&head, 1);
+    print_list(head);
+    discard(&head, 1);
     free_list(head);
     return 0;
 }
+*/

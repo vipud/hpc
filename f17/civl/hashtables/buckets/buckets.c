@@ -7,22 +7,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-// #include "linkedlist.h"
+#include "linked_list.h"
+#include "../set.cvh"
 
-struct BucketList {
-    int val;
-};
-
-typedef struct BucketList bucket_list;
-
-struct HashSet{
-    // table
-    int* table;
-} 
-typedef struct HashSet hash_set;
-
-HashSet* create(int size){
-    hash_set* hs;
+Set* create(int size){
+    Set* s;
     hs = 
     hs->table = (int *) malloc(size * sizeof(int));
     return hs;
