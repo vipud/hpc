@@ -4,6 +4,7 @@
 struct _set;
 typedef struct _set Set;
 
+
 /* add(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
  *         value, a positive integer
@@ -18,6 +19,7 @@ typedef struct _set Set;
  * - the value is successfully stored in the set 
  */
 bool add(Set* hash_set, int value);
+
 
 /* discard(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
@@ -34,33 +36,45 @@ bool add(Set* hash_set, int value);
  */
 bool discard(Set* hash_set, int value);
 
+
 /* contains(Set* hash_set, int value)
  * Input:  hash_set, a pointer to a given Hash Set
  *         value, a positive integer
  * Output: true if the value exists in the set
  *         false if the value does not exist in the set 
- * If discard is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * If contains is given faulty input (ex: a negative number, a non-integer, etc.), 
  * the code will return false for wrong input
  * A value exists in the set if
  * - it is a non-negative integer
  * - the set exists and is unlocked
  * - the value can be referenced at some location in the set
  */
-
 bool contains(Set* hash_set, int value)
+
 
 /* create(int size)
  * Input:  size, a positive integer
- * Output: a given set, such that 
- * If discard is given faulty input (ex: a negative number, a non-integer, etc.), 
- * the code will return false for wrong input
- * A value exists in the set if
- * - it is a non-negative integer
- * - the set exists and is unlocked
- * - the value can be referenced at some location in the set
+ * Output: Pointer to created set
+ * If create is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * the code will return NULL for wrong input
+ * A set is created if
+ * - its memory has been allocated
+ * - its values are initialized to 0
+ * - the set can be referenced at some location in memory
  */
-
 Set* create(int size);
+
+
+/* destroy(Set* hash_set)
+ * Input:  hash_set, a pointer to a given Hash Set
+ * Output: true if the set was sucessesfully destroyed,
+ * false otherwise.
+ * If destroy is given a non-Set* or null pointer the code will
+ * return false for wrong input
+ * A set is destroyed if:
+ * - its memory has been freed 
+ */
 bool destroy(Set* hash_set); 
-list get_all
+
+//list get_all
 
