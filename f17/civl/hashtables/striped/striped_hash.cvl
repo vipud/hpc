@@ -1,25 +1,26 @@
+/* Concurrent Striped Hash
+ * Uses a fixed array of locks to write to hash set
+ * Josh Davis 2017 UDel VIP-HPC
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include "../set.cvh"
 
-
-// Concurrent Striped Hash
-// Uses a fixed number of locks to write to hash table
-
 int SIZE = 9;
 int LOCKS = SIZE;
 int CAP = 3;
 
+struct _set;
 
-struct StripedHash
+typedef struct _set
 {
     int** table; // table
     bool* locks; // locks
-    int items;
-};
-
+    int items; //running count of items
+} Set;
 
 //hash function definition
 int hash(int x)
@@ -30,58 +31,59 @@ int hash(int x)
 //lock hash function definition
 int lock_hash(int x)
 {
-    return ((x % SIZE) & LOCKS);
+    return (x % LOCKS);
 }
 
 // acquire (-1), release (0) locks (implement _Bool)
-void acquire(int x, struct StripedHash *s)
+void acquire(Set* hash_set, int value)
 {
-    $when(s->locks[((x % SIZE) & LOCKS)] == false) s->locks[lock_hash(x)] == true;
-    printf("Lock %s acquired.\n", lock_hash(x));
+    $when(hash_set->locks[((value % SIZE) & LOCKS)] == false) hash_set->locks[lock_hash(value)] = true;
+    printf("Lock %s acquired.\n", lock_hash(value));
 }
 
-void release(int x, struct StripedHash *s)
+void release(Set* hash_set, int value)
 {
-    s->locks[hash(x)] == false;
-    printf("Lock %s released.\n", hash(x));
+    hash_set->locks[lock_hash(value)] = false;
+    printf("Lock %s released.\n", lock_hash(value));
 }
 
 // add, remove, contains
-int contains(int x, struct StripedHash *s)
+bool contains(Set* hash_set, int value)
 {
-    acquire(x,s);
-    int slot = hash(x);
+    acquire(hash_set,value);
+    int slot = hash(value);
     for (int i = 0; i < CAP; i++)
     {
-        if (s->table[slot][i] == x)
+        if (hash_set->table[slot][i] == value)
         {
-            release(x,s);
-            return (i+1);
+            release(hash_set,value);
+            //return (i+1);
+            return true;
         }
     }
-    release(x,s);
-    return 0;
+    release(hash_set,value);
+    return false;
 }
 
 
 //resize policy
-int policy(struct StripedHash *s) //UNIMPLEMENTED
+int policy(Set* hash_set) //UNIMPLEMENTED
 {
-    double pol = (double) (s->items / (SIZE*CAP));
+    double pol = (double) (hash_set->items / (SIZE*CAP));
     return (pol > 0.75);
 }
 
-void resize(struct StripedHash *s) //UNIMPLEMENTED
+bool resize(Set* hash_set) //UNIMPLEMENTED
 {
     printf("Time to resize...\n");
     int oldSIZE = SIZE;
     for (int i = 0; i < LOCKS; i++)
-        acquire(i,s);
+        acquire(hash_set,i);
     if (oldSIZE == SIZE)
     {
         int** temp[SIZE][CAP]; //Making a copy of the current table
         printf("Generating memcpy...\n");
-        memcpy(temp, s->table, sizeof(s->table));
+        memcpy(temp, hash_set->table, sizeof(hash_set->table));
         printf("TEMP TABLE STATE:\n");
         for (int j = 0; j < SIZE; j++)
         {
@@ -91,93 +93,104 @@ void resize(struct StripedHash *s) //UNIMPLEMENTED
         }
     }
     for (int j = 0; j < LOCKS; j++)
-        release(j,s);
+        release(hash_set,j);
 }
 
 /*
-Notes on resize steps:
-1. Acquire all locks *
-2. Make sure the table hasn't been resized already *
-3. Make a temp copy of the table *
-4. Resize (x2) the "real" table in memory, changing hash()
-5. Reinit the real table to all 0's
-6. Place every item in temp in real using new hash()
-7. Free temp, release all locks
+ * Notes on resize steps:
+ * 1. Acquire all locks *
+ * 2. Make sure the table hasn't been resized already *
+ * 3. Make a temp copy of the table *
+ * 4. Resize (x2) the "real" table in memory, changing hash()
+ * 5. Reinit the real table to all 0's
+ * 6. Place every item in temp in real using new hash()
+ * 7. Free temp, release all locks
 */
 
-int add(int x, struct StripedHash *s)
+bool add(Set* hash_set, int value)
 {
-    if(contains(x,s)) //Don't insert duplicates
+    if(contains(hash_set,value)) //Don't insert duplicates
     {
-        printf("%s not inserted, already present.\n", x);
-        return 0;
+        printf("%s not inserted, already present.\n", value);
+        return false;
     }
     else
     {
-        acquire(x,s);
-        int slot = hash(x);
+        acquire(hash_set,value);
+        int slot = hash(value);
         for (int i = 0; i < CAP; i++)
         {
-            if (s->table[slot][i] == 0)
+            if (hash_set->table[slot][i] == 0)
             {
-                s->table[slot][i] = x;
-                printf("%s inserted.\n", x);
-                s->items++;
-                release(x,s);
-                if (policy(s))
-                   resize(s);
-                return 1;
+                hash_set->table[slot][i] = value;
+                printf("%s inserted.\n", value);
+                hash_set->items++;
+                release(hash_set,value);
+                //if (policy(hash_set))
+                //   resize(hash_set);
+                return true;
             }
         }
-        printf("%s not inserted, no capacity.\n", x);
-        release(x,s);
-        resize(s);
-        return 0;
+        printf("%s not inserted, no capacity.\n", value);
+        release(hash_set,value);
+        //resize(hash_set);
+        return false;
     }
 }
-
-int hashRemove(int x, struct StripedHash *s)
+/*
+bool discard(Set* hash_set, int value)
 {
-    int ind = contains(x,s);
-    if(ind > 0) //remove
+    bool ind = contains(hash_set,value);
+    if(ind) //remove
     {
-        acquire(x,s);
-        s->table[hash(x)][(ind-1)] = 0;
-        printf("%s removed.\n", x);
-        s->items--;
-        release(x,s);
-        return 1;
+        acquire(hash_set,value);
+        hash_set->table[hash(value)][(ind-1)] = 0;
+        printf("%s removed.\n", value);
+        hash_set->items--;
+        release(hash_set,value);
+        return true;
     }
     else
     {
-        printf("%s not removed, not present\n", x);
-        return 0;
+        printf("%s not removed, not present\n", value);
+        return false;
     }
 }
+*/
 
-void testCheck(int x, struct StripedHash *s)
+void testCheck(Set* hash_set, int value)
 {
-    if (contains(x,s))
-        printf("%s found.\n", x);
+    if (contains(hash_set,value))
+        printf("%s found.\n", value);
     else
-        printf("%s not found.\n", x);
+        printf("%s not found.\n", value);
 }
 
-void printTable(struct StripedHash *s)
+void printTable(Set* hash_set)
 {
     printf("TABLE STATE:\n");
     for (int j = 0; j < SIZE; j++)
     {
         for (int k = 0; k < CAP; k++)
-            printf("%s ", s->table[j][k]);
+            printf("%s ", hash_set->table[j][k]);
         printf("\n");
     }
-    printf("# OF ITEMS: %s\n", s->items);
+    printf("# OF ITEMS: %s\n", hash_set->items);
+}
+
+void printLocks(Set* hash_set)
+{
+    printf("LOCKS STATE:");
+    for (int i = 0; i < LOCKS; i++)
+    {
+        printf("%s ", hash_set->locks[i]);
+    }
+    printf("\n");
 }
 
 int main(int argc, char* argv[])
 {
-    struct StripedHash sHash;
+    Set sHash;
     sHash.items = 0; //init item counter
         
     //alloc table SIZE * CAP
@@ -200,28 +213,29 @@ int main(int argc, char* argv[])
     /*
     //basic tests
     printTable(&sHash);
-    add(15,&sHash);
-    add(15,&sHash);
-    add(24,&sHash);
-    add(33,&sHash);
-    add(42,&sHash);
+    add(&sHash,15);
+    add(&sHash,11);
+    add(&sHash,29);
+    add(&sHash,30);
+    add(&sHash,42);
     printTable(&sHash);
-    hashRemove(15,&sHash);
-    testCheck(15,&sHash);
-    testCheck(24,&sHash);
-    hashRemove(18,&sHash);
+    //discard(&sHash,15);
+    testCheck(&sHash,15);
+    testCheck(&sHash,24);
+    //discard(&sHash,18);
     printTable(&sHash);
     */
 
+    
     $parfor (int i : 0 .. 5)
     {
-        add(i+1,&sHash);
-        add(i*2,&sHash);
-        add(i*4,&sHash);
+        add(&sHash,i+1);
+        add(&sHash,i*2);
+        add(&sHash,i*4);
     }
-
+    
     printTable(&sHash);
-
+    
     //free memory
     for (int l = 0; l < SIZE; l++)
         free(sHash.table[l]);
