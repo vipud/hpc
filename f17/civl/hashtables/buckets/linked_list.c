@@ -4,7 +4,7 @@
 #include "linked_list.h"
 
 // initialize
-node* create(int val){
+node* create_list(int val){
     node* new_node;
     new_node = (node *) malloc(sizeof(node));
     new_node->val = val;
@@ -13,7 +13,7 @@ node* create(int val){
 }
 
 // add a new node
-bool append(node* head, int val){
+bool append_list(node* head, int val){
     if(head == NULL){
         return false;
     }
@@ -21,13 +21,13 @@ bool append(node* head, int val){
     while(cursor->next != NULL){
         cursor = cursor->next;
     }
-    node* next_node = create(val); 
+    node* next_node = create_list(val); 
     cursor->next = next_node;
     return true; 
 }
 
 // check if value is in the list
-bool contains(node* head, int val){
+bool contains_list(node* head, int val){
     if(head == NULL){
         //printf("no values in list!\n");
         return false;
@@ -44,8 +44,8 @@ bool contains(node* head, int val){
     return false;
 }
 
-// discard a node, based on value
-bool discard(node** head, int val){
+// discard_list a node, based on value
+bool discard_list(node** head, int val){
     node* cursor = *head;
     node* temp;
 
@@ -100,35 +100,34 @@ void free_list(node* list){
         }
     }
 }
-
 /*
 int main(int argc, char* argv[]){
     int SIZE = 0;
     struct node* head;
-    head = create(1);
+    head = create_list(1);
     print_list(head);
-    append(head, 2);
+    append_list(head, 2);
     print_list(head);
-    append(head, 4);
+    append_list(head, 4);
     print_list(head);
-    append(head, 16);
+    append_list(head, 16);
     print_list(head);
-    contains(head, 4);
-    contains(head, 5);
-    contains(head, 1);
-    contains(head, 16);
-    discard(&head, 1);
+    contains_list(head, 4);
+    contains_list(head, 5);
+    contains_list(head, 1);
+    contains_list(head, 16);
+    discard_list(&head, 1);
     print_list(head);
-    discard(&head, 16);
+    discard_list(&head, 16);
     print_list(head);
-    discard(&head, 15);
-    discard(&head, 4);
+    discard_list(&head, 15);
+    discard_list(&head, 4);
     print_list(head);
-    discard(&head, 2);
+    discard_list(&head, 2);
     print_list(head);
-    discard(&head, 1);
+    discard_list(&head, 1);
     print_list(head);
-    discard(&head, 1);
+    discard_list(&head, 1);
     free_list(head);
     return 0;
 }
