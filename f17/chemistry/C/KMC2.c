@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <accelmath.h>
-
 #include <openacc.h>
+#include <math.h>
 
 
 
@@ -353,8 +353,9 @@ int main(){
   }
 
 
-#pragma acc kernels loops
+#pragma acc kernels copy(trajs[:], randomNumbers[:][:][:], n_rxns, N_traj, n_params, n_specs, stoich_mat[:][:]) copyout(trajs[:])
 {
+#pragma acc loop
   for(int x =0; x<N_traj; x++){
     // simulate(randomNumbers[i], trajs[i]);
     int r=0;
@@ -363,6 +364,7 @@ int main(){
     double asum;
     double* prop_cum = (double*) malloc(sizeof(double) * n_rxns);
 
+    int indrec = trajs[x].ind_rec;
     for(; trajs[x].t<t_final;){
       r_rxn_choose = randomNumbers[x][0][r];
       r_timestep = randomNumbers[x][1][r];
@@ -437,20 +439,22 @@ int main(){
         break;
       }
       // printf("%f\n",trajs[x].t);
-
-      while(trajs[x].t >= t_rec[trajs[x].ind_rec]){
+      
+      
+      while(trajs[x].t >= t_rec[indrec]){
         // printf("%f\t%f\n", trajs[x].t,t_rec[trajs[x].ind_rec]);
-        trajs[x].t_trunc = t_rec[trajs[x].ind_rec] - trajs[x].t_prev;
+        trajs[x].t_trunc = t_rec[indrec] - trajs[x].t_prev;
 
         for(int i =0; i<n_specs; i++){
-          trajs[x].spec_profile[trajs[x].ind_rec][i] = (double) trajs[x].N[i];
+          trajs[x].spec_profile[indrec][i] = (double) trajs[x].N[i];
         }
 
         for(int i = 0; i< n_params; i++){
-          trajs[x].traj_deriv_profile[trajs[x].ind_rec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
+          trajs[x].traj_deriv_profile[indrec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
         }
 
         trajs[x].ind_rec +=1;
+        indrec = trajs[x].ind_rec;
         // printf("%s\n", "xxxx");
       }
 
@@ -466,7 +470,7 @@ int main(){
         // if(traj->props[traj->rxn_to_fire_ind] ==0){
         //   Error
         // }
-
+        int 
         trajs[x].W[i] += trajs[x].prop_ders[trajs[x].rxn_to_fire_ind][i]/ trajs[x].props[trajs[x].rxn_to_fire_ind];
         trajs[x].W[i] -= trajs[x].prop_ders_sum[i]*trajs[x].dt;
 
@@ -474,19 +478,20 @@ int main(){
 
     }
 
-    while (trajs[x].ind_rec < N_record){
+    while (indrec < N_record){
       // record_stats(trajs[x],n_specs,n_params,t_rec);
-      trajs[x].t_trunc = t_rec[trajs[x].ind_rec] - trajs[x].t_prev;
+      trajs[x].t_trunc = t_rec[indrec] - trajs[x].t_prev;
 
       for(int i =0; i<n_specs; i++){
-        trajs[x].spec_profile[trajs[x].ind_rec][i] = (double) trajs[x].N[i];
+        trajs[x].spec_profile[indrec][i] = (double) trajs[x].N[i];
       }
 
       for(int i = 0; i< n_params; i++){
-        trajs[x].traj_deriv_profile[trajs[x].ind_rec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
+        trajs[x].traj_deriv_profile[indrec][i] = trajs[x].W[i] - trajs[x].prop_ders_sum[i]*trajs[x].t_trunc;
       }
 
       trajs[x].ind_rec +=1;
+      indrec = trajs[x].ind_rec;
     }
 
     // printf("%s\n", "sss");
