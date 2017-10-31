@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <math.h>
+#include <accelmath.h>
 
+#include <openacc.h>
 
 
 
@@ -352,7 +353,7 @@ int main(){
   }
 
 
-#pragma acc kernels
+#pragma acc kernels loops
 {
   for(int x =0; x<N_traj; x++){
     // simulate(randomNumbers[i], trajs[i]);
