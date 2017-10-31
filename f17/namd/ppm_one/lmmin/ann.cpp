@@ -947,14 +947,7 @@ double CAnn::predict_one( vector<double> xx )
 		present(x[0:n_dim], p_save_flat[0:n_par], this)
 	for(int j=0;j<p_save_size;j++)
 	{
-		#ifdef _OPENACC
-		tt=CAnn::myfunc_neuron(n_dim,n_neuron,x,
-			p_save_flat+(n_par*j));
-		#else
-		for(int i=0;i<n_par;i++)
-			p[i]=p_save.at(j).at(i);
-		tt=CAnn::myfunc_neuron(n_dim,n_neuron,x,p);
-		#endif
+		tt=CAnn::myfunc_neuron(n_dim, n_neuron, x, p_save_flat+(n_par*j));
 		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
