@@ -5,9 +5,11 @@ typedef struct node{
     struct node* next;
 } node;
 
-node* create(int val);
-bool append(node* head, int val);
-bool contains(node* head, int val);
-bool n_remove(node* head, int val);
+node* create_list(int val);
+bool append_list(node* head, int val);
+bool contains_list(node* head, int val);
+bool discard_list(node** head, int val);
 void print_list(node* list);
 void free_list(node* list);
+
+node* list;

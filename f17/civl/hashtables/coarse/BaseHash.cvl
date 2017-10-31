@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 int SIZE = 5;
-int* table;
+bool LOCK = false;
 
-/* BaseHashSet... will add locks later in order to parallelize the program.
+/* BaseHashSet
 *This is just the basic adding/removing of elements to a hash set.
 *Was meant to look into coarse grained hash set, but it looks as though
 *coarse grained hash set just extends base hash set with a resize fxn. 
@@ -13,55 +14,91 @@ int* table;
 // $abstract int hash_fxn(int x);
 // $assume($forall (int x) hash_fxn(x) >= 0 && hash_fxn(x) < SIZE);
 
+struct _set;
+
+typedef struct _set{
+	int** table;
+	bool lock;
+	int items;
+} Set;
+
+
+
 
 int hash_fxn(int x){
-    return (x % 7) % SIZE;
+    return (x % SIZE);
 }
 
-int contains(int x){
+// acquire (-1), release (0) locks
+void acquire(Set* hash_set, int value)
+{
+    $when(hash_set->lock == false) hash_set->lock = true;
+    
+}
+
+void release(Set* hash_set, int value)
+{
+    hash_set->lock = false;
+    
+}
+
+
+bool contains(Set* hash_set, int value){
+	acquire(hash_set,value);
+	
 	int val;
 	
-	val = table[hash_fxn(x)];
-	return (val == x);
+	val = (int) hash_set->table[hash_fxn(value)];
+	
+	release(hash_set,value);
+	
+	return (val == value);
   //use a hash code to check and see if item is in the bucket
   
 }
 
-int add(int x){
+bool add(Set* hash_set, int value){
+	acquire(hash_set,value);
 	
-	if (!contains(x)){ //if the hash set does not contain the element
-		table[hash_fxn(x)] = x;
-		printf("added %d to table[%d]\n", x, hash_fxn(x));
-		return 1;
+	if (!contains(hash_set,value)){ //if the hash set does not contain the element
+		hash_set->table[hash_fxn(value)] = (int*) value;
+		printf("added %d to table[%d]\n", value, hash_fxn(value));
+		release(hash_set,value);
+		return true;
 	}
 	else{
-		return 0;
+		release(hash_set,value);
+		return false;
 	}
 	 
 }
 
-int remove_element(int x){
+bool discard(Set* hash_set, int value){
+	acquire(hash_set,value);
+	
 	int val;
 	
-	val = table[hash_fxn(x)];
+	val = (int) hash_set->table[hash_fxn(value)];
 	
-	if (val == x){
+	if (val == value){
 		int temp = val;
-		table[hash_fxn(x)] = 0;
-		printf("removed %d from table[%d]\n", temp, hash_fxn(x));
-		return 1;
+		hash_set->table[hash_fxn(value)] = 0;
+		printf("removed %d from table[%d]\n", temp, hash_fxn(value));
+		release(hash_set,value);
+		return true;
 	}
 	
 	else{
-		return 0;
+		release(hash_set,value);
+		return false;
 	}
 }
 
-void print_hash(){
+void print_hash(Set* hash_set){
    // print table
    printf("table: ");
    for(int i = 0; i < SIZE; i++){
-       printf("%d ", table[i]);
+       printf("%d ", hash_set->table[i]);
    }
    printf("\n");
 }
@@ -80,22 +117,26 @@ void print_hash(){
 
 
 int main(){
-	table = (int *) calloc(SIZE, sizeof(int)); //table of size 5
+	Set set;
+	set.table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
+	for (int i = 0; i < SIZE; i++){
+		set.table[i] = (int *) calloc (1 , sizeof(int));
+	}
 	
-	add(20);
-	print_hash();
-	add(17);
-	print_hash();
-	remove_element(17);
-	print_hash();
-	add(46);
-	print_hash();
-	add(30);
-	print_hash();
+	add(&set,20);
+	print_hash(&set);
+	add(&set,17);
+	print_hash(&set);
+	discard(&set,17);
+	print_hash(&set);
+	add(&set,46);
+	print_hash(&set);
+	add(&set,30);
+	print_hash(&set);
 	
 	// test0();
 	
 	
-	free(table);
+	free(set.table);
 	return 0;
 }

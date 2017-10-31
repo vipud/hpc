@@ -12,6 +12,9 @@ CIVL = civl
 linked_list : linked_list.c
 	$(CC) linked_list.c linked_list.h 
 	./a.out
+buckets: buckets.c
+	$(CC) buckets.c linked_list.h
+	./a.out
 
 verify : linked_list.c
 	$(CIVL) verify linked_list.c
