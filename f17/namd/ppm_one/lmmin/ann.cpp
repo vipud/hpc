@@ -933,11 +933,12 @@ double CAnn::predict_one( vector<double> xx )
 		return 0;
 
 	n_dat=1;
-	x=new double[n_dat*n_dim];
+	/*x=new double[n_dat*n_dim];
 	for(j=0;j<n_dim;j++)
 	{
 		x[j]=xx.at(j);
-	}
+	}*/
+	x = xx.data();
 	xapplyminmax();
 	out=0;
 
