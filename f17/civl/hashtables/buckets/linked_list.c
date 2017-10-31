@@ -100,7 +100,7 @@ void free_list(node* list){
         }
     }
 }
-/*
+
 int main(int argc, char* argv[]){
     int SIZE = 0;
     struct node* head;
@@ -131,4 +131,4 @@ int main(int argc, char* argv[]){
     free_list(head);
     return 0;
 }
-*/
+
