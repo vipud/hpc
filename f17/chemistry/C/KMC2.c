@@ -352,6 +352,8 @@ int main(){
   }
 
 
+#pragma acc kernels
+{
   for(int x =0; x<N_traj; x++){
     // simulate(randomNumbers[i], trajs[i]);
     int r=0;
@@ -488,12 +490,9 @@ int main(){
 
     // printf("%s\n", "sss");
 
-
-
-
-    printf("%s %d %s\n", "traj", x, "done");
+    // printf("%s %d %s\n", "traj", x, "done");
   }
-
+}
   for(int i =0; i<N_traj; i++){
     for(int j =0; j< N_record; j++){
       for(int k =0; k < n_specs; k++){
