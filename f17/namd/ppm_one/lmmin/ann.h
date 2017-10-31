@@ -55,8 +55,8 @@ private:
 	double y_min;
 	double y_max;
 
-	vector< vector<double> > p_save;
-
+	double *p_save_flat;
+	int p_save_size;
 
 	void mapminmax(void);
 	void mapminmax_md(void);
