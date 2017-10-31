@@ -47,7 +47,7 @@ void release(Set* hash_set, int value)
     printf("Lock %s released.\n", lock_hash(value));
 }
 
-// add, remove, contains
+// contains checks if the value is in the hash set
 bool contains(Set* hash_set, int value)
 {
     acquire(hash_set,value);
@@ -65,14 +65,31 @@ bool contains(Set* hash_set, int value)
     return false;
 }
 
+// find item returns the index of the item or -1 if not found
+int findItem(Set* hash_set, int value)
+{
+    acquire(hash_set,value);
+    int slot = hash(value);
+    for (int i = 0; i < CAP; i++)
+    {
+        if (hash_set->table[slot][i] == value)
+        {
+            release(hash_set,value);
+            return i;
+        }
+    }
+    release(hash_set,value);
+    return -1;
+}
 
-//resize policy
+//resize policy to check if load factor exceeds a set limit
 int policy(Set* hash_set) //UNIMPLEMENTED
 {
     double pol = (double) (hash_set->items / (SIZE*CAP));
     return (pol > 0.75);
 }
 
+//called if policy is true or a bucket is overfull
 bool resize(Set* hash_set) //UNIMPLEMENTED
 {
     printf("Time to resize...\n");
@@ -107,6 +124,7 @@ bool resize(Set* hash_set) //UNIMPLEMENTED
  * 7. Free temp, release all locks
 */
 
+//adds an item to the set
 bool add(Set* hash_set, int value)
 {
     if(contains(hash_set,value)) //Don't insert duplicates
@@ -137,14 +155,16 @@ bool add(Set* hash_set, int value)
         return false;
     }
 }
-/*
+
+//discard removes items from the set
 bool discard(Set* hash_set, int value)
 {
-    bool ind = contains(hash_set,value);
-    if(ind) //remove
+    bool present = contains(hash_set,value);
+    int ind = findItem(hash_set,value);
+    if(present) //remove
     {
         acquire(hash_set,value);
-        hash_set->table[hash(value)][(ind-1)] = 0;
+        hash_set->table[hash(value)][ind] = 0;
         printf("%s removed.\n", value);
         hash_set->items--;
         release(hash_set,value);
@@ -156,7 +176,7 @@ bool discard(Set* hash_set, int value)
         return false;
     }
 }
-*/
+
 
 void testCheck(Set* hash_set, int value)
 {
@@ -210,7 +230,7 @@ int main(int argc, char* argv[])
     for (int k = 0; k < LOCKS; k++)
         sHash.locks[k] = false;
 
-    /*
+    
     //basic tests
     printTable(&sHash);
     add(&sHash,15);
@@ -219,21 +239,21 @@ int main(int argc, char* argv[])
     add(&sHash,30);
     add(&sHash,42);
     printTable(&sHash);
-    //discard(&sHash,15);
+    discard(&sHash,15);
     testCheck(&sHash,15);
     testCheck(&sHash,24);
-    //discard(&sHash,18);
+    discard(&sHash,18);
     printTable(&sHash);
-    */
-
     
-    $parfor (int i : 0 .. 5)
+
+    /*
+    $parfor (int i : 0 .. 4)
     {
         add(&sHash,i+1);
         add(&sHash,i*2);
         add(&sHash,i*4);
     }
-    
+    */
     printTable(&sHash);
     
     //free memory
