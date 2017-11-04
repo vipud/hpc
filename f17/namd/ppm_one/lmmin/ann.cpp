@@ -465,18 +465,34 @@ void CAnn::xapplyminmax_md()
 	return;
 };
 
+void CAnn::xapplyminmax(double *xx)
+{
+	double tmin,tmax;
+	int i,j,step;
+
+	for(i = 0; i < n_dim; i++)
+	{
+		tmin=v_min[i];
+		tmax=v_max[i];
+		for(j = 0; j < n_dat; j++)
+		{
+			step = j*n_dim+i;
+			xx[step]=(xx[step]-tmin)/(tmax-tmin)*2-1;
+		}
+	}
+
+	return;
+};
+
 
 void CAnn::xapplyminmax()
 {
 	double tmin,tmax;
 	int i,j,step;
-
-
 	for(i=0;i<n_dim;i++)
 	{
 		tmin=v_min[i];
 		tmax=v_max[i];
-
 		for(j=0;j<n_dat;j++)
 		{
 			step=j*n_dim+i;
@@ -610,18 +626,18 @@ void CAnn::evaluation_neuron(const double *par, int n_dat, const void *pdata, do
 	for(int i=0;i<n_dat;i++)
 	{
 		int begin=i*(d->n_dim);
-		fvect[i]=(d->y[i])-(d->f)(d->n_dim,d->n_neuron,&(d->input[begin]),(const double *)par);
+		fvect[i]=(d->y[i])-(d->f)(d->n_dim,d->n_neuron,&(d->input[begin]),(const double *)par,0);
 	}
 	return;
 };
 
 #pragma acc routine vector
-double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
+double CAnn::myfunc_neuron(int ndim, int nneuron, double *xx, const double *p, int offset)
 {
 	int i;
 	double r2;
 	r2 = 0;
-	const int p2=ndim*nneuron;
+	const int p2=offset+ndim*nneuron;
 	const int p3=p2+nneuron;
 	const int p4=p3+nneuron;
 
@@ -629,11 +645,11 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *x, const double *p)
 	for(int j = 0; j < nneuron; j++)
 	{
 		double r = 0.0;
-		const int p1 = j*ndim;
+		const int p1 = offset+j*ndim;
 		#pragma acc loop reduction(+:r) seq
 		for(i = 0; i < ndim; i++)
 		{
-			r += x[i] * p[p1+i];
+			r += xx[i] * p[p1+i];
 		}
 
 		r += p[p2+j];
@@ -924,32 +940,39 @@ double CAnn::assess_md(string ann_name,string x_name,string y_name)
 	return rms;
 };
 
-double CAnn::predict_one( vector<double> xx )
+double CAnn::predict_one( double *xx, int vec_size )
 {
-	int j;
 	double tt,out;
 
-	if(xx.size()!=n_dim)
+	if(vec_size!=n_dim)
 		return 0;
 
 	n_dat=1;
-	x = xx.data();
-	xapplyminmax();
+	xapplyminmax(xx);
 	out=0;
 
-	#pragma acc update device(this)
-	#pragma acc enter data copyin(x[0:n_dim])
+	int ndim = n_dim;
+	int nneuron = n_neuron;
+	int npar = n_par;
+	double ymax = y_max;
+	double ymin = y_min;
+	double *psaveflat = p_save_flat;
+	int psavesize = p_save_size;
+
+	#pragma acc enter data copyin(xx[0:n_dim]) async
+
+	#pragma acc wait
 
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
-		present(x[0:n_dim], this) copyin(p_save_flat[0:n_par])
-	for(int j=0;j<p_save_size;j++)
+		present(xx[0:ndim],psaveflat[0:npar]) async
+	for(int j=0;j<psavesize;j++)
 	{
-		tt=CAnn::myfunc_neuron(n_dim, n_neuron, x, p_save_flat+(n_par*j));
-		tt=(tt+1)/2*(y_max-y_min)+y_min;
+		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
+		tt=(tt+1)/2*(ymax-ymin)+ymin;
 		out+=tt;
 	}
 
-	#pragma acc exit data delete(x)
+	#pragma acc exit data delete(xx)
 
 	out/=p_save_size;
 	return out;
@@ -1033,7 +1056,7 @@ vector<double> CAnn::predict(int flag, string ann_name,string x_name, vector< ve
 		for(int i=0;i<n_dat;i++)
 		{
 			int begin=i*n_dim;
-			tt=CAnn::myfunc_neuron(n_dim,n_neuron,x+begin,p);
+			tt=CAnn::myfunc_neuron(n_dim,n_neuron,x+begin,p,0);
 			tt=(tt+1)/2*(y_max-y_min)+y_min;
 			pre[i]+=tt;
 		}
@@ -1144,7 +1167,7 @@ double CAnn::myfunc_mix(int n_neuron, double *x, const double *p)
 	x4[1]=r2/1.4956-11.8745;
 	x4[2]=r3/1.5156-12.031;
 
-	return myfunc_neuron(10,n_neuron,x4,p4);
+	return myfunc_neuron(10,n_neuron,x4,p4,0);
 };
 
 void CAnn::evaluation_mix(const double *par, int m_dat, const void *pdata, double *fvect, int *user)
