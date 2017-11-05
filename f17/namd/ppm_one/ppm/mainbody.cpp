@@ -751,7 +751,7 @@ CMainbody::CMainbody()
 	int i;
 
 	bnew=0;
-	
+
 	sep_table=new int[98+1];
 	for(i=0;i<98+1;i++)
 		sep_table[i]=-1;
@@ -1207,7 +1207,7 @@ void CMainbody::predict_bb_static_ann()
 	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 
 
-	index.resize(pdb->getnres());	
+	index.resize(pdb->getnres());
 	for(i=0;i<(int)index.size();i++)
 		index.at(i).x1=index.at(i).x2=-1;
 	for(i=0;i<(int)bb.size();i++)
@@ -1230,20 +1230,20 @@ void CMainbody::predict_bb_static_ann()
 		//blos62 matrix
 		//total 60 terms
 		Sequence::code2same(code_pre,buffer);
-		for(j=0;j<20;j++)		
+		for(j=0;j<20;j++)
 		{
 			oneline.push_back(buffer[j]);
 		}
 
 		code=pdb->code(id);
 		Sequence::code2same(code,buffer);
-		for(j=0;j<20;j++)		
+		for(j=0;j<20;j++)
 		{
 			oneline.push_back(buffer[j]);
 		}
 
 		Sequence::code2same(code_fol,buffer);
-		for(j=0;j<20;j++)		
+		for(j=0;j<20;j++)
 		{
 			oneline.push_back(buffer[j]);
 		}
@@ -1298,12 +1298,9 @@ void CMainbody::predict_bb_static_ann()
 		oneline_cb.insert(oneline_cb.begin()+60,result.at(1));
 		oneline_co.insert(oneline_co.begin()+60,result.at(2));
 		oneline_n=oneline;
-		
-		pre[0]=ann_ca.predict_one(oneline);
-		pre[1]=ann_cb.predict_one(oneline_cb);
-		pre[2]=ann_co.predict_one(oneline_co);
-		pre[4]=ann_n.predict_one(oneline_n);
-		
+
+		double *x_ca, *x_cb, *x_co, *x_n, *x_h, *x_ha;
+
 		//hn
 		if(index.at(i).x2>0)
 		{
@@ -1311,20 +1308,30 @@ void CMainbody::predict_bb_static_ann()
 			for(j=0;j<5;j++)
 				oneline_h.push_back(ring_effect.at(index.at(i).x2-1).x[j]);
 			for(j=0;j<4;j++)
-				oneline_h.push_back(ani_effect.at(index.at(i).x2-1).x[j]);	
-			pre[3]=ann_h.predict_one(oneline_h);
+				oneline_h.push_back(ani_effect.at(index.at(i).x2-1).x[j]);
+			x_h = oneline_h.data();
+			pre[3]=ann_h.predict_one(x_h, oneline_h.size());
 		}
 		else
 			pre[3]=-999.0;
-	
 
-		//ha 
-		oneline_ha=oneline;
+		oneline_ha = oneline;
+
+		//ha
 		for(j=0;j<5;j++)
 			oneline_ha.push_back(ring_effect_ha.at(index.at(i).x1-1).x[j]);
 		for(j=0;j<4;j++)
 			oneline_ha.push_back(ani_effect_ha.at(index.at(i).x1-1).x[j]);
-		pre[5]=ann_ha.predict_one(oneline_ha);
+		x_ha = oneline_ha.data();
+		pre[5]=ann_ha.predict_one(x_ha, oneline_ha.size());
+		x_ca = oneline.data();
+		pre[0] = ann_ca.predict_one(x_ca, oneline.size());
+		x_cb = oneline_cb.data();
+		pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
+		x_co = oneline_co.data();
+		pre[2] = ann_co.predict_one(x_co, oneline_co.size());
+		x_n = oneline_n.data();
+		pre[4] = ann_n.predict_one(x_n, oneline_n.size());
 
 		pdb->attach_bbprediction(id,pre);
 	}

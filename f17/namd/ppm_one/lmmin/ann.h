@@ -10,7 +10,7 @@ typedef struct
 	int n_neuron;
 	double *input;  //size is n_dim*m_dat
 	double *y;      //size is m_dat
-	double (*f)(int ndim, int nneuron, double *x, const double *p);
+	double (*f)(int ndim, int nneuron, double *x, const double *p, int offset);
 }data_struct_neuron;
 
 
@@ -61,6 +61,7 @@ private:
 	void mapminmax(void);
 	void mapminmax_md(void);
 	void xapplyminmax(void);
+	void xapplyminmax(double *xx);
 	void xapplyminmax_md(void);
 	bool loadx(string name);
 	bool loadx_md(string name);
@@ -81,7 +82,7 @@ public:
 	int train_md(int,string,string,int,double);
 	vector<double> predict(int,string,string,vector<vector< double> >);
 	vector<double> predict_md(int,string,string,vector<vector< double> >);
-	double predict_one(vector<double>);
+	double predict_one(double *xx, int vec_size);
 	double predict_one_md(int,vector<double>);
 	double assess(string,string,string);
 	double assess_md(string,string,string);
@@ -94,7 +95,7 @@ public:
 	~CAnn();
 
 	//callback functions.
-	static double myfunc_neuron(int ndim, int nneuron, double *x, const double *p);
+	static double myfunc_neuron(int ndim, int nneuron, double *x, const double *p, int offset);
 	static void   evaluation_neuron(const double *par, int n_dat, const void *pdata, double *fvect, int *user);
 
 	static double myfunc_mix(int nneuron, double *x, const double *p);
