@@ -23,7 +23,7 @@ typedef struct _set
 } Set;
 
 //hash function definition
-int hash(int x)
+int set_hash(int x)
 {
     return (x % SIZE);
 }
@@ -48,10 +48,10 @@ void release(Set* hash_set, int value)
 }
 
 // contains checks if the value is in the hash set
-bool contains(Set* hash_set, int value)
+bool set_contains(Set* hash_set, int value)
 {
     acquire(hash_set,value);
-    int slot = hash(value);
+    int slot = set_hash(value);
     for (int i = 0; i < CAP; i++)
     {
         if (hash_set->table[slot][i] == value)
@@ -69,7 +69,7 @@ bool contains(Set* hash_set, int value)
 int findItem(Set* hash_set, int value)
 {
     acquire(hash_set,value);
-    int slot = hash(value);
+    int slot = set_hash(value);
     for (int i = 0; i < CAP; i++)
     {
         if (hash_set->table[slot][i] == value)
@@ -83,14 +83,14 @@ int findItem(Set* hash_set, int value)
 }
 
 //resize policy to check if load factor exceeds a set limit
-int policy(Set* hash_set) //UNIMPLEMENTED
+int set_policy(Set* hash_set) //UNIMPLEMENTED
 {
     double pol = (double) (hash_set->items / (SIZE*CAP));
     return (pol > 0.75);
 }
 
 //called if policy is true or a bucket is overfull
-bool resize(Set* hash_set) //UNIMPLEMENTED
+bool set_resize(Set* hash_set) //UNIMPLEMENTED
 {
     printf("Time to resize...\n");
     int oldSIZE = SIZE;
@@ -125,7 +125,7 @@ bool resize(Set* hash_set) //UNIMPLEMENTED
 */
 
 //adds an item to the set
-bool add(Set* hash_set, int value)
+bool set_add(Set* hash_set, int value)
 {
     if(contains(hash_set,value)) //Don't insert duplicates
     {
@@ -135,7 +135,7 @@ bool add(Set* hash_set, int value)
     else
     {
         acquire(hash_set,value);
-        int slot = hash(value);
+        int slot = set_hash(value);
         for (int i = 0; i < CAP; i++)
         {
             if (hash_set->table[slot][i] == 0)
@@ -144,8 +144,8 @@ bool add(Set* hash_set, int value)
                 printf("%s inserted.\n", value);
                 hash_set->items++;
                 release(hash_set,value);
-                //if (policy(hash_set))
-                //   resize(hash_set);
+                //if (set_policy(hash_set))
+                //   set_resize(hash_set);
                 return true;
             }
         }
@@ -156,15 +156,15 @@ bool add(Set* hash_set, int value)
     }
 }
 
-//discard removes items from the set
-bool discard(Set* hash_set, int value)
+//remove removes items from the set
+bool set_remove(Set* hash_set, int value)
 {
-    bool present = contains(hash_set,value);
+    bool present = set_contains(hash_set,value);
     int ind = findItem(hash_set,value);
     if(present) //remove
     {
         acquire(hash_set,value);
-        hash_set->table[hash(value)][ind] = 0;
+        hash_set->table[set_hash(value)][ind] = 0;
         printf("%s removed.\n", value);
         hash_set->items--;
         release(hash_set,value);
@@ -233,25 +233,25 @@ int main(int argc, char* argv[])
     
     //basic tests
     printTable(&sHash);
-    add(&sHash,15);
-    add(&sHash,11);
-    add(&sHash,29);
-    add(&sHash,30);
-    add(&sHash,42);
+    set_add(&sHash,15);
+    set_add(&sHash,11);
+    set_add(&sHash,29);
+    set_add(&sHash,30);
+    set_add(&sHash,42);
     printTable(&sHash);
-    discard(&sHash,15);
+    set_remove(&sHash,15);
     testCheck(&sHash,15);
     testCheck(&sHash,24);
-    discard(&sHash,18);
+    set_remove(&sHash,18);
     printTable(&sHash);
     
 
     /*
     $parfor (int i : 0 .. 4)
     {
-        add(&sHash,i+1);
-        add(&sHash,i*2);
-        add(&sHash,i*4);
+        set_add(&sHash,i+1);
+        set_add(&sHash,i*2);
+        set_add(&sHash,i*4);
     }
     */
     printTable(&sHash);
