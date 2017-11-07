@@ -17,42 +17,45 @@ struct _set;
 
 typedef struct _set
 {
-    int** table; // table
-    bool* locks; // locks
-    int items; //running count of items
+    int** table;          //table array of arrays
+    bool* locks;          //locks array
+    int items;            //running count of items
+    int size;             //number of buckets
+    int locksSize;        //number of locks
+    int cap;              //limit on bucket entries
 } Set;
 
 //hash function definition
-int hash(int x)
+int set_hash(Set* hash_set, int x)
 {
-    return (x % SIZE);
+    return (x % hash_set->size);
 }
 
 //lock hash function definition
-int lock_hash(int x)
+int lock_hash(Set* hash_set, int x)
 {
-    return (x % LOCKS);
+    return (x % hash_set->locksSize);
 }
 
 // acquire (-1), release (0) locks (implement _Bool)
 void acquire(Set* hash_set, int value)
 {
-    $when(hash_set->locks[((value % SIZE) & LOCKS)] == false) hash_set->locks[lock_hash(value)] = true;
-    printf("Lock %s acquired.\n", lock_hash(value));
+    $when(hash_set->locks[((value % hash_set->size) & hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
+    printf("Lock %s acquired.\n", lock_hash(hash_set,value));
 }
 
 void release(Set* hash_set, int value)
 {
-    hash_set->locks[lock_hash(value)] = false;
-    printf("Lock %s released.\n", lock_hash(value));
+    hash_set->locks[lock_hash(hash_set,value)] = false;
+    printf("Lock %s released.\n", lock_hash(hash_set,value));
 }
 
 // contains checks if the value is in the hash set
-bool contains(Set* hash_set, int value)
+bool set_contains(Set* hash_set, int value)
 {
     acquire(hash_set,value);
-    int slot = hash(value);
-    for (int i = 0; i < CAP; i++)
+    int slot = set_hash(hash_set,value);
+    for (int i = 0; i < hash_set->cap; i++)
     {
         if (hash_set->table[slot][i] == value)
         {
@@ -69,8 +72,8 @@ bool contains(Set* hash_set, int value)
 int findItem(Set* hash_set, int value)
 {
     acquire(hash_set,value);
-    int slot = hash(value);
-    for (int i = 0; i < CAP; i++)
+    int slot = set_hash(hash_set,value);
+    for (int i = 0; i < hash_set->cap; i++)
     {
         if (hash_set->table[slot][i] == value)
         {
@@ -83,33 +86,38 @@ int findItem(Set* hash_set, int value)
 }
 
 //resize policy to check if load factor exceeds a set limit
-int policy(Set* hash_set) //UNIMPLEMENTED
+int set_policy(Set* hash_set) //UNIMPLEMENTED
 {
-    double pol = (double) (hash_set->items / (SIZE*CAP));
+    double pol = (double) (hash_set->items / (hash_set->size*hash_set->cap));
     return (pol > 0.75);
 }
 
 //called if policy is true or a bucket is overfull
-bool resize(Set* hash_set) //UNIMPLEMENTED
+bool set_resize(Set* hash_set) //UNIMPLEMENTED
 {
     printf("Time to resize...\n");
-    int oldSIZE = SIZE;
-    for (int i = 0; i < LOCKS; i++)
+    int oldSize = hash_set->size;
+    for (int i = 0; i < hash_set->locksSize; i++)
         acquire(hash_set,i);
-    if (oldSIZE == SIZE)
+    if (oldSize == hash_set->size)
     {
-        int** temp[SIZE][CAP]; //Making a copy of the current table
-        printf("Generating memcpy...\n");
+        int** temp[hash_set->size][hash_set->cap]; //Making a copy of the current table
+        printf("Generating temp copy...\n");
         memcpy(temp, hash_set->table, sizeof(hash_set->table));
         printf("TEMP TABLE STATE:\n");
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < hash_set->size; j++)
         {
-            for (int k = 0; k < CAP; k++)
+            for (int k = 0; k < hash_set->cap; k++)
                 printf("%d ", temp[j][k]);
             printf("\n");
         }
+        //hash_set->table = (int **) realloc((hash_set->size*2), sizeof(int *));
+        //for (int i = 0; i < hash_set->size; i++)
+        //    hash_set->table[i] = (int *) calloc(hash_set->cap, sizeof(int));
+
+
     }
-    for (int j = 0; j < LOCKS; j++)
+    for (int j = 0; j < hash_set->locksSize; j++)
         release(hash_set,j);
 }
 
@@ -125,9 +133,9 @@ bool resize(Set* hash_set) //UNIMPLEMENTED
 */
 
 //adds an item to the set
-bool add(Set* hash_set, int value)
+bool set_add(Set* hash_set, int value)
 {
-    if(contains(hash_set,value)) //Don't insert duplicates
+    if(set_contains(hash_set,value)) //Don't insert duplicates
     {
         printf("%s not inserted, already present.\n", value);
         return false;
@@ -135,8 +143,8 @@ bool add(Set* hash_set, int value)
     else
     {
         acquire(hash_set,value);
-        int slot = hash(value);
-        for (int i = 0; i < CAP; i++)
+        int slot = set_hash(hash_set,value);
+        for (int i = 0; i < hash_set->cap; i++)
         {
             if (hash_set->table[slot][i] == 0)
             {
@@ -144,8 +152,8 @@ bool add(Set* hash_set, int value)
                 printf("%s inserted.\n", value);
                 hash_set->items++;
                 release(hash_set,value);
-                //if (policy(hash_set))
-                //   resize(hash_set);
+                //if (set_policy(hash_set))
+                //   set_resize(hash_set);
                 return true;
             }
         }
@@ -156,15 +164,15 @@ bool add(Set* hash_set, int value)
     }
 }
 
-//discard removes items from the set
-bool discard(Set* hash_set, int value)
+//remove removes items from the set
+bool set_remove(Set* hash_set, int value)
 {
-    bool present = contains(hash_set,value);
+    bool present = set_contains(hash_set,value);
     int ind = findItem(hash_set,value);
     if(present) //remove
     {
         acquire(hash_set,value);
-        hash_set->table[hash(value)][ind] = 0;
+        hash_set->table[set_hash(hash_set,value)][ind] = 0;
         printf("%s removed.\n", value);
         hash_set->items--;
         release(hash_set,value);
@@ -180,7 +188,7 @@ bool discard(Set* hash_set, int value)
 
 void testCheck(Set* hash_set, int value)
 {
-    if (contains(hash_set,value))
+    if (set_contains(hash_set,value))
         printf("%s found.\n", value);
     else
         printf("%s not found.\n", value);
@@ -189,9 +197,9 @@ void testCheck(Set* hash_set, int value)
 void printTable(Set* hash_set)
 {
     printf("TABLE STATE:\n");
-    for (int j = 0; j < SIZE; j++)
+    for (int j = 0; j < hash_set->size; j++)
     {
-        for (int k = 0; k < CAP; k++)
+        for (int k = 0; k < hash_set->cap; k++)
             printf("%s ", hash_set->table[j][k]);
         printf("\n");
     }
@@ -201,7 +209,7 @@ void printTable(Set* hash_set)
 void printLocks(Set* hash_set)
 {
     printf("LOCKS STATE:");
-    for (int i = 0; i < LOCKS; i++)
+    for (int i = 0; i < hash_set->locksSize; i++)
     {
         printf("%s ", hash_set->locks[i]);
     }
@@ -212,52 +220,57 @@ int main(int argc, char* argv[])
 {
     Set sHash;
     sHash.items = 0; //init item counter
+    sHash.size = 9;
+    sHash.locksSize = sHash.size;
+    sHash.cap = 3;
         
-    //alloc table SIZE * CAP
-    sHash.table = (int **) malloc(SIZE * sizeof(int *));
-    for (int i = 0; i < SIZE; i++)
-       sHash.table[i] = (int *) malloc(CAP * sizeof(int));
+    //alloc table sHash.size * sHash.cap
+    sHash.table = (int **) malloc(sHash.size * sizeof(int *));
+    for (int i = 0; i < sHash.size; i++)
+       sHash.table[i] = (int *) calloc(sHash.cap, sizeof(int));
     
+    /*
     //init table at 0 for all elements
-    for (int j = 0; j < SIZE; j++)
-        for (int k = 0; k < CAP; k++)
+    for (int j = 0; j < sHash.size; j++)
+        for (int k = 0; k < sHash.cap; k++)
             sHash.table[j][k] = 0;
+    */
 
     //alloc all locks at open (0)
-    sHash.locks = (bool *) malloc(LOCKS * sizeof(bool));
+    sHash.locks = (bool *) malloc(sHash.locksSize * sizeof(bool));
 
     //init locks at false for all
-    for (int k = 0; k < LOCKS; k++)
+    for (int k = 0; k < sHash.locksSize; k++)
         sHash.locks[k] = false;
 
     
     //basic tests
     printTable(&sHash);
-    add(&sHash,15);
-    add(&sHash,11);
-    add(&sHash,29);
-    add(&sHash,30);
-    add(&sHash,42);
+    set_add(&sHash,15);
+    set_add(&sHash,11);
+    set_add(&sHash,29);
+    set_add(&sHash,30);
+    set_add(&sHash,42);
     printTable(&sHash);
-    discard(&sHash,15);
+    set_remove(&sHash,15);
     testCheck(&sHash,15);
     testCheck(&sHash,24);
-    discard(&sHash,18);
+    set_remove(&sHash,18);
     printTable(&sHash);
     
 
     /*
     $parfor (int i : 0 .. 4)
     {
-        add(&sHash,i+1);
-        add(&sHash,i*2);
-        add(&sHash,i*4);
+        set_add(&sHash,i+1);
+        set_add(&sHash,i*2);
+        set_add(&sHash,i*4);
     }
     */
     printTable(&sHash);
     
     //free memory
-    for (int l = 0; l < SIZE; l++)
+    for (int l = 0; l < sHash.size; l++)
         free(sHash.table[l]);
     free(sHash.table);
     free(sHash.locks);

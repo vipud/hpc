@@ -5,10 +5,43 @@
 #include "../set.cvh"
 
 #define WORD_SIZE 24
-#define LO_MASK = 0x1;
-#define HI_MASK = 0x008000000;
-#define MASK = 0x00FFFFFF;
+#define LO_MASK  0x1
+#define HI_MASK 0x008000000
+#define MASK  0x00FFFFFF
+
 int size;
+struct _window{
+    node* pred;
+    node* curr;
+};
+typedef struct _window Window;
+
+Window* find(node* head, int key){
+    node* pred = head;
+    node* curr = head->next;
+    Window* new_window;
+    while(curr->val < key){
+        pred = curr;
+        curr = pred->next;
+    }
+    new_window->pred = pred;
+    new_window->curr = curr;
+    return new_window;
+};
+
+int hash(int key){
+    return key % size;
+};
+
+int hashCode(int key){
+    return hash(key) & MASK; // restricted by mask 
+}
+
+int reverse(int key);
+
+int makeRegularKey(int key);
+
+int makeSentinelKey(int key);
 
 /* A bucket consists of a reference into our list
  * When resizing, move buckets rather than individual items
@@ -38,36 +71,10 @@ int size;
  * otherwise continue
  */
 
-struct _set{
-    node* head;
-}  
-
-struct _window{
-    node* pred;
-    node* curr;
-}
-
-typedef struct _set Set;
-typedef struct _window Window;
-
-int reverse(int key);
-
-int makeKey(int key);
-
-int makeSentinelKey(int key);
-
-
 /* To insert a key into our hash table
  * The key must be hashed using recursive split-ordering
  * ...following the pointer to the appropriate location in the sorted items list
  * ...and traversing the list until the key's proper location is found 
  */ 
-bool add(Set* hash_set, int x);
 
-bool contains(Set* hash_set, int x);
 
-bool discard(Set* hash_set, int x);
-
-Set* create(int size);
-
-bool destroy(Set* hash_set);
