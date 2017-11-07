@@ -40,7 +40,7 @@ int lock_hash(Set* hash_set, int x)
 // acquire (-1), release (0) locks (implement _Bool)
 void acquire(Set* hash_set, int value)
 {
-    $when(hash_set->locks[((value % hash_set->size) & hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
+    $when(hash_set->locks[(value % hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
     printf("Lock %s acquired.\n", lock_hash(hash_set,value));
 }
 
@@ -60,7 +60,6 @@ bool set_contains(Set* hash_set, int value)
         if (hash_set->table[slot][i] == value)
         {
             release(hash_set,value);
-            //return (i+1);
             return true;
         }
     }
@@ -101,20 +100,30 @@ bool set_resize(Set* hash_set) //UNIMPLEMENTED
         acquire(hash_set,i);
     if (oldSize == hash_set->size)
     {
-        int** temp[hash_set->size][hash_set->cap]; //Making a copy of the current table
-        printf("Generating temp copy...\n");
-        memcpy(temp, hash_set->table, sizeof(hash_set->table));
+        printf("Initializing temp copy...\n");
+        int** temp; //Making a copy of the current table
+        temp = (int **) malloc(oldSize * sizeof(int *));
+        for (int i = 0; i < oldSize; i++)
+            temp[i] = (int *) calloc(hash_set->cap, sizeof(int));
+        printf("Copying values...\n");
+        for (int j = 0; j < oldSize; j++)
+        {
+            for (int k = 0; k < hash_set->cap; k++)
+                temp[j][k] = hash_set->table[j][k];
+        }
         printf("TEMP TABLE STATE:\n");
-        for (int j = 0; j < hash_set->size; j++)
+        for (int j = 0; j < oldSize; j++)
         {
             for (int k = 0; k < hash_set->cap; k++)
                 printf("%d ", temp[j][k]);
             printf("\n");
         }
-        //hash_set->table = (int **) realloc((hash_set->size*2), sizeof(int *));
+        //hash_set->table = (int **) realloc(hash_set->table, (hash_set->size*2) * sizeof(int *));
         //for (int i = 0; i < hash_set->size; i++)
         //    hash_set->table[i] = (int *) calloc(hash_set->cap, sizeof(int));
-
+        for (int l = 0; l < oldSize; l++)
+            free(temp[l]);
+        free(temp);
 
     }
     for (int j = 0; j < hash_set->locksSize; j++)
@@ -152,14 +161,14 @@ bool set_add(Set* hash_set, int value)
                 printf("%s inserted.\n", value);
                 hash_set->items++;
                 release(hash_set,value);
-                //if (set_policy(hash_set))
-                //   set_resize(hash_set);
+                if (set_policy(hash_set))
+                   set_resize(hash_set);
                 return true;
             }
         }
         printf("%s not inserted, no capacity.\n", value);
         release(hash_set,value);
-        //resize(hash_set);
+        set_resize(hash_set);
         return false;
     }
 }
@@ -243,7 +252,17 @@ int main(int argc, char* argv[])
     for (int k = 0; k < sHash.locksSize; k++)
         sHash.locks[k] = false;
 
-    
+    printTable(&sHash);
+    set_add(&sHash,9);
+    set_add(&sHash,11);
+    set_add(&sHash,18);
+    set_add(&sHash,36);
+    printTable(&sHash);
+    printLocks(&sHash);
+    set_add(&sHash,45);
+    printTable(&sHash);
+
+    /*
     //basic tests
     printTable(&sHash);
     set_add(&sHash,15);
@@ -257,7 +276,7 @@ int main(int argc, char* argv[])
     testCheck(&sHash,24);
     set_remove(&sHash,18);
     printTable(&sHash);
-    
+    */
 
     /*
     $parfor (int i : 0 .. 4)
