@@ -84,6 +84,22 @@ int findItem(Set* hash_set, int value)
     return -1;
 }
 
+bool force_add(Set* hash_set, int value)
+{
+    int slot = set_hash(hash_set,value);
+    for (int i = 0; i < hash_set->cap; i++)
+    {
+        if (hash_set->table[slot][i] == 0)
+        {
+            hash_set->table[slot][i] = value;
+            printf("%s inserted by force_add.\n", value);
+            return true;
+        }
+    }
+    printf("Cap failure!");
+    return false;
+}
+
 //resize policy to check if load factor exceeds a set limit
 int set_policy(Set* hash_set) //UNIMPLEMENTED
 {
@@ -118,12 +134,22 @@ bool set_resize(Set* hash_set) //UNIMPLEMENTED
                 printf("%d ", temp[j][k]);
             printf("\n");
         }
-        //hash_set->table = (int **) realloc(hash_set->table, (hash_set->size*2) * sizeof(int *));
-        //for (int i = 0; i < hash_set->size; i++)
-        //    hash_set->table[i] = (int *) calloc(hash_set->cap, sizeof(int));
+        int** old = hash_set->table;
+        hash_set->size = hash_set->size * 2;
+        hash_set->table = (int **) malloc(hash_set->size * sizeof(int *));
+        for (int i = 0; i < hash_set->size; i++)
+            hash_set->table[i] = (int *) calloc(hash_set->cap, sizeof(int));
+        for (int i = 0; i < oldSize; i++)
+            for (int j = 0; j < hash_set->cap; j++)
+                force_add(hash_set, old[i][j]);
+
+        // free memory
         for (int l = 0; l < oldSize; l++)
             free(temp[l]);
         free(temp);
+        for (int i = 0; i < oldSize; i++)
+            free(old[i]);
+        free(old);
 
     }
     for (int j = 0; j < hash_set->locksSize; j++)
