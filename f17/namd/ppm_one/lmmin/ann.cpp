@@ -959,12 +959,10 @@ double CAnn::predict_one( double *xx, int vec_size )
 	double *psaveflat = p_save_flat;
 	int psavesize = p_save_size;
 
-	#pragma acc enter data copyin(xx[0:n_dim]) async
-
-	#pragma acc wait
+	#pragma acc enter data copyin(xx[0:n_dim])
 
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
-		present(xx[0:ndim],psaveflat[0:npar]) async
+		present(xx[0:ndim],psaveflat[0:npar])
 	for(int j=0;j<psavesize;j++)
 	{
 		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
