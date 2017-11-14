@@ -1,10 +1,9 @@
 /* Aamir Majeed
- * Bucket List Hash Set
+ * Bucket List 
  * All items are kept in a single lock-free linked list
  * A bucket is a reference to a node in the list
  * Our array of references expands as # of buckets increase
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -28,7 +27,25 @@ int reverse(int key){
     return result;
 }
 
-bool add(Set* hash_set, int x){
+bool add(int x){
+    int key = makeRegularKey(x);
+    bool splice;    
+    while(true){
+        Window* window = find(head, key);
+        Node* pred = window->pred;
+        Node* curr = window->curr;
+        if(curr->key == key){
+            return false;
+        } else {
+            Node* entry;
+            entry->key = key;
+        }
+        if(splice){
+            return true;
+        } else {
+            continue;
+        }
+    }
 }
 
 int main(int argc, char* argv[]){

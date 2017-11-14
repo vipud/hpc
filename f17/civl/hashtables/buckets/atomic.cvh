@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/*
+ * atomic.cvh
+ * implementation in CIVL-C
+ * implements atomic functions 
+ * on nodes in lists
+ * verified using CIVL
+ */
+
+
+/* --------------- forward declarations ----------- */
+
+typedef struct Node{
+    int key;
+    int value; // switch to generic value? 
+    bool mark; // for atomic functions
+    struct Node* next;
+} Node;
+
+Node* create_node(int key, int val);
+Node* create_sentinel_node(int key);
+void free_node(Node* node);
+bool get_mark(Node* node);
+Node* get_next(Node* curr);
+$atomic_f bool compare_and_set(Node* ref, Node* expect, Node* new);
+
+/* ----------------------- end -------------------- */
+
+
+// usual constructor
+Node* create_node(int key, int val){
+    Node* node;
+    node = (Node *) malloc (sizeof(Node));
+    node->key = key;
+    node->value = val;
+    node->next = NULL;
+    node->mark = false;
+    return node;
+}
+
+// sentinel constructor
+Node* create_sentinel_node(int key){
+    Node* node;
+    node = (Node *) malloc (sizeof(Node));
+    node->key = key;
+    node->next = NULL;
+    node->mark = false;
+    node->value = -1; // default for sentinel
+    return node;
+}
+
+void free_node(Node* node){
+    Node* cursor = node;
+    while(cursor->next != NULL){
+        Node* temp = cursor;
+        cursor = cursor->next;
+        free(temp);
+    } 
+    free(cursor);
+}
+
+// atomic operation to receive mark
+$atomic_f bool get_mark(Node* node){
+    return node->mark;
+}
+
+// get next, uses marks to determine access
+// uses atomic operations to ensure safe concurrent operations
+Node* get_next(Node* curr){
+    Node* entry = curr->next; 
+    bool entry_mark = get_mark(entry);
+    //if mark is true, meaning the node is being used, check next
+    while(entry_mark){ 
+        Node* succ = entry->next;
+        compare_and_set(curr, entry, succ);
+        Node* entry = curr->next;
+        entry_mark = get_mark(entry);
+    }
+    return entry;
+}
+
+// loosely based off atomic markable reference
+$atomic_f bool compare_and_set(Node* ref, Node* expect, Node* new){
+    if(ref->value != expect->value || ref->mark != expect->mark) 
+       return false;
+    ref = new;
+    return true;
+}
+
+int main(){
+    Node* curr = create_node(1, 10);  
+    free_node(curr);
+    return 0;
+} 

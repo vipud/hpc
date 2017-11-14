@@ -1,29 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "linked_list.h"
 #include "../set.cvh"
+#include "atomic.cvh"
 
 #define WORD_SIZE 24
 #define LO_MASK  0x1
 #define HI_MASK 0x008000000
 #define MASK  0x00FFFFFF
 
-struct _window{
-    node* pred;
-    node* curr;
-};
-typedef struct _window Window;
+/* must define:
+ * - window
+ * - bucketlist 
+ */
+
+/* --------------- forward declarations ----------- */
+
+int SIZE;
+int LENGTH;
+
+typedef struct _window{
+    Node* pred;
+    Node* curr;
+} Window;
+
+Window* find(Node* head, int key);
 
 typedef struct _bucketlist{
-    node* head;
-    node* next;
+    Node* head;
+    Node* next;
     int size;
 } Bucketlist;
 
-Window* find(node* head, int key){
-    node* pred = head;
-    node* curr = head->next;
+int hash(int key);
+int hashCode(int key);
+int reverse(int key);
+int makeRegularKey(int key);
+int makeSentinelKey(int key);
+
+/* ----------------------- end -------------------- */
+
+
+typedef struct _window{
+    Node* pred;
+    Node* curr;
+} Window;
+
+typedef struct _bucketlist{
+    Node* head;
+    Node* next;
+    int size;
+} Bucketlist;
+
+Window* find(Node* head, int key){
+    Node* pred = head;
+    Node* curr = head->next;
     Window* new_window;
     while(curr->val < key){
         pred = curr;
@@ -34,19 +65,35 @@ Window* find(node* head, int key){
     return new_window;
 };
 
+// hash by size
 int hash(int key){
     return key % size;
 };
 
+// placeholder replacement for Java's hashCode()
 int hashCode(int key){
     return hash(key) & MASK; // restricted by mask 
 }
 
-int reverse(int key);
+// returns reverse based on key, masks
+int reverse(int key){
+    int loMask = LO_MASK;
+    int hiMask = HI_MASK;
+    int result = 0;
+    for(int i = 0; i < WORD_SIZE; i++){
+        if((key & loMask) != 0){ // bit set
+            result |= hiMask;
+        }
+        loMask = loMask << 1;
+        hiMask = hiMask >> 1; // fill with 0 from left
+    }
+    return result;
+}
 
-int makeRegularKey(int key);
-
-int makeSentinelKey(int key);
+int makeRegularKey(int val){
+    int code = hashCode(val); // mask hashed val
+    return reverse(code | HI_MASK); 
+}
 
 /* A bucket consists of a reference into our list
  * When resizing, move buckets rather than individual items
@@ -71,8 +118,8 @@ int makeSentinelKey(int key);
 /* Atomic Markable Reference
  * compareAndSet(expected-val,new-val,expected-mark,new-mark) 
  * updates if curr=expected
- * in Shavit's implementation, checks node vals
- * add: if nodes not equal, stop and don't add
+ * in Shavit's implementation, checks Node vals
+ * add: if Nodes not equal, stop and don't add
  * otherwise continue
  */
 

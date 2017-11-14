@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/*
+ * atomic_mark.cvh
+ * implementation in CIVL-C
+ * uses atomic markable references
+ * implements atomic functions 
+ * on nodes in lists
+ * verified using CIVL
+ */
+
+typedef struct AtomicMarkableReference{
+    void* reference;
+    bool mark;
+} AtomicMarkableReference;
+
+typedef struct Node{
+    int value;
+    AtomicMarkableReference* next;
+} Node;
+
+Node* create_node(int val){
+    Node* node;
+    node = (Node *) malloc (sizeof(Node));
+    node->value = val;
+    node->next = NULL;
+    return node;
+}
+
+AtomicMarkableReference* create_atomic_node_reference(Node* reference, bool mark){
+     AtomicMarkableReference* ref;
+     ref = (AtomicMarkableReference *) malloc(sizeof(AtomicMarkableReference));
+     ref->reference = (void *)reference;
+     ref->mark = mark;
+     return ref;
+}
+
+$atomic_f bool compare_and_set(AtomicMarkableReference* ref, int expect, int update){
+    Node* reference = (Node *) reference;
+    if(reference->value != expect)
+       return false;
+    reference->value = update;
+    return true;
+}
+
+/*
+int main(){
+    Node* curr = create_node(10);  
+    AtomicMarkableReference* ref = create_atomic_node_reference(curr, false);
+    free(curr);
+    free(ref);
+    return 0;
+} */
