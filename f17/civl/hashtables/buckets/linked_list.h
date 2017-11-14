@@ -1,15 +1,15 @@
 #include <stdbool.h>
 
-typedef struct node{
+typedef struct Node{
     int val;
-    struct node* next;
-} node;
+    struct Node* next;
+} Node;
 
-node* create_list(int val);
-bool append_list(node* head, int val);
-bool contains_list(node* head, int val);
-bool discard_list(node** head, int val);
-void print_list(node* list);
-void free_list(node* list);
+Node* create_list(int val);
+bool append_list(Node* head, int val);
+bool contains_list(Node* head, int val);
+bool discard_list(Node** head, int val);
+void print_list(Node* list);
+void free_list(Node* list);
 
-node* list;
+Node* list;

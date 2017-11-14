@@ -9,12 +9,17 @@
 #define HI_MASK 0x008000000
 #define MASK  0x00FFFFFF
 
-int size;
 struct _window{
     node* pred;
     node* curr;
 };
 typedef struct _window Window;
+
+typedef struct _bucketlist{
+    node* head;
+    node* next;
+    int size;
+} Bucketlist;
 
 Window* find(node* head, int key){
     node* pred = head;

@@ -1,0 +1,118 @@
+/* Aamir Majeed
+ * Bucket List 
+ * All items are kept in a single lock-free linked list
+ * A bucket is a reference to a node in the list
+ * Our array of references expands as # of buckets increase
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "../set.cvh"
+#include "atomic.cvh"
+#include "buckets.cvh"
+
+int makeRegularKey(int x){
+    int code = hash(x) & MASK;
+    return reverse(code | HI_MASK);
+}
+
+int makeSentinelKey(int x){
+    return reverse(x & MASK);
+}
+
+int reverse(int key){
+    int loMask = LO_MASK;
+    int hiMask = HI_MASK;
+    int result = 0;
+    for(int i = 0; i < WORD_SIZE; i++){
+        if((key & loMask) != 0){
+            result |= hiMask;
+        }
+        loMask <<= 1;
+        hiMask >>= 1;
+    } 
+    return result;
+}
+
+bool add(int x){
+    int key = makeRegularKey(x);
+    bool splice;    
+    while(true){
+        Window* window = find(head, key);
+        Node* pred = window->pred;
+        Node* curr = window->curr;
+        if(curr->key == key){
+            return false;
+        } else {
+            Node* entry;
+            entry->key = key;
+            splice = compare_and_set(pred->next->val, pred->next->val, entry->key);
+            if(splice)
+                return true;
+            else
+                continue;
+        }
+    }
+}
+
+bool remove(int x){
+    int key = makeRegularKey(x);
+    bool snip;    
+    while(true){
+        Window* window = find(head, key);
+        Node* pred = window->pred;
+        Node* curr = window->curr;
+        if(curr->key != key){
+            return false;
+        } else {
+            Node* entry;
+            entry->key = key;
+            splice = compare_and_set(pred->next->val, pred->next->val, entry->key);
+            if(splice)
+                return true;
+            else
+                continue;
+        }
+    }
+}
+
+bool contains(int x){
+    int key = makeRegularKey(x);
+    Window* window;
+    window = find(head, key);
+    Node* pred = window->pred;
+    Node* curr = window->curr;
+    return (curr->key == key); 
+}
+
+Bucketlist* getSentinel(int index){
+    Bucketlist* list;
+    int key = makeSentinelKey(index);
+    bool splice;
+    while(true){
+        Window* window;
+        window = find(head, key);
+        Node* pred = window->pred;
+        Node* curr = window->curr;
+        if(curr->key == key){
+            Bucketlist* list;
+            list.add(index); 
+            return list; 
+        } else {
+            Bucketlist* list;
+            Node* entry;
+            entry->key = key;
+            splice = compare_and_set(pred->next->val, pred->next->val, entry->key);
+            if(splice){
+                list->add(entry->key);
+                return list;
+            } else {
+                continue;
+            }
+        }
+    }
+}
+
+int main(int argc, char* argv[]){
+
+}

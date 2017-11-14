@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+#include "atomic.cvh"
+
+#define WORD_SIZE 24
+#define LO_MASK  0x1
+#define HI_MASK 0x008000000
+#define MASK  0x00FFFFFF
+
+/* must define:
+ * - window
+ * - bucketlist 
+ */
+
+/* --------------- forward declarations ----------- */
+
+int SIZE = 0; // # of curr elements
+int LENGTH = 0; // # of total elements
+
+typedef struct Window{
+    Node* pred;
+    Node* curr;
+} Window;
+
+Window* create_window(Node* head, Node* curr);
+Window* find(Node* head, int key);
+
+typedef struct BucketList{
+    Node* head;
+    Node* next;
+} BucketList;
+
+BucketList* create_emptybucketlist();
+BucketList* create_bucketlist(Node* e);
+int hash(int key);
+int hashCode(int key);
+/* to implement 
+bool add(int key, BucketList* list);
+bool remove(int key, BucketList* list);
+bool contains(int key, BucketList* list);
+BucketList* getSentinel(int index, BucketList* list);
+*/
+int reverse(int key);
+int makeRegularKey(int key);
+int makeSentinelKey(int key);
+
+/* ----------------------- end -------------------- */
+
+Window* create_window(Node* head, Node* curr){
+    Window* window;
+    window->pred = head;
+    window->curr = curr;
+    return window;
+}
+
+Window* find(Node* head, int key){
+    Node* pred = head;
+    Node* curr = get_next(head);
+    Window* new_window;
+    while(curr->key < key){
+        pred = curr;
+        curr = pred->next;
+    }
+    new_window->pred = pred;
+    new_window->curr = curr;
+    return new_window;
+}
+
+BucketList* create_emptybucketlist(){
+    BucketList* list;
+    list->head = create_sentinel_node(0);
+    list->head->next = create_sentinel_node(INT_MAX);
+    return list;
+}
+
+BucketList* create_bucketlist(Node* e){
+    BucketList* list;
+    list->head = e;
+    list->next = NULL;
+    return list;
+}
+
+// hash by length 
+int hash(int key){
+    return key % LENGTH;
+};
+
+// placeholder replacement for Java's hashCode()
+int hashCode(int key){
+    return hash(key) & MASK; // restricted by mask 
+}
+
+/* to implement
+bool add(int key, BucketList* list){
+    return false;
+}
+
+bool remove(int key, BucketList* list){
+    return false;
+}
+
+bool contains(int key, BucketList* list){
+    return false;
+}
+
+BucketList* getSentinel(int index, BucketList* list){
+    return list;
+}
+*/
+
+// returns reverse based on key, masks
+int reverse(int key){
+    int loMask = LO_MASK;
+    int hiMask = HI_MASK;
+    int result = 0;
+    for(int i = 0; i < WORD_SIZE; i++){
+        if((key & loMask) != 0){ // bit set
+            result |= hiMask;
+        }
+        loMask = loMask << 1;
+        hiMask = hiMask >> 1; // fill with 0 from left
+    }
+    return result;
+}
+
+int makeRegularKey(int val){
+    int code = hashCode(val); // mask hashed val
+    return reverse(code | HI_MASK); 
+}
