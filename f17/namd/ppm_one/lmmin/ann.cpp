@@ -940,6 +940,118 @@ double CAnn::assess_md(string ann_name,string x_name,string y_name)
 	return rms;
 };
 
+double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next_size )
+{
+	double tt,out;
+
+	if(vec_size!=n_dim)
+		return 0;
+
+	n_dat=1;
+	xapplyminmax(xx);
+	out=0;
+
+	int ndim = n_dim;
+	int nneuron = n_neuron;
+	int npar = n_par;
+	double ymax = y_max;
+	double ymin = y_min;
+	double *psaveflat = p_save_flat;
+	int psavesize = p_save_size;
+
+	#pragma acc enter data copyin(xx[0:n_dim])
+
+	#pragma acc parallel loop gang reduction(+:out) private(tt) \
+		present(xx[0:ndim],psaveflat[0:npar]) async
+	for(int j=0;j<psavesize;j++)
+	{
+		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
+		tt=(tt+1)/2*(ymax-ymin)+ymin;
+		out+=tt;
+	}
+
+	#pragma acc enter data copyin(next[0:next_size])
+
+	#pragma acc wait
+
+	#pragma acc exit data delete(xx)
+
+	out/=p_save_size;
+	return out;
+}
+
+double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_size)
+{
+	double tt,out;
+
+	if(vec_size!=n_dim)
+		return 0;
+
+	n_dat=1;
+	xapplyminmax(xx);
+	out=0;
+
+	int ndim = n_dim;
+	int nneuron = n_neuron;
+	int npar = n_par;
+	double ymax = y_max;
+	double ymin = y_min;
+	double *psaveflat = p_save_flat;
+	int psavesize = p_save_size;
+
+	#pragma acc parallel loop gang reduction(+:out) private(tt) \
+		present(xx[0:ndim],psaveflat[0:npar]) async
+	for(int j=0;j<psavesize;j++)
+	{
+		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
+		tt=(tt+1)/2*(ymax-ymin)+ymin;
+		out+=tt;
+	}
+
+	#pragma acc enter data copyin(next[0:next_size])
+
+	#pragma acc wait
+
+	#pragma acc exit data delete(xx)
+
+	out/=p_save_size;
+	return out;
+}
+
+double CAnn::predict_one_last( double *xx, int vec_size)
+{
+	double tt,out;
+
+	if(vec_size!=n_dim)
+		return 0;
+
+	n_dat=1;
+	xapplyminmax(xx);
+	out=0;
+
+	int ndim = n_dim;
+	int nneuron = n_neuron;
+	int npar = n_par;
+	double ymax = y_max;
+	double ymin = y_min;
+	double *psaveflat = p_save_flat;
+	int psavesize = p_save_size;
+
+	#pragma acc parallel loop gang reduction(+:out) private(tt) \
+		present(xx[0:ndim],psaveflat[0:npar]) async
+	for(int j=0;j<psavesize;j++)
+	{
+		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
+		tt=(tt+1)/2*(ymax-ymin)+ymin;
+		out+=tt;
+	}
+
+	#pragma acc exit data delete(xx)
+
+	out/=p_save_size;
+	return out;
+}
+
 double CAnn::predict_one( double *xx, int vec_size )
 {
 	double tt,out;

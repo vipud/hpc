@@ -83,6 +83,9 @@ public:
 	vector<double> predict(int,string,string,vector<vector< double> >);
 	vector<double> predict_md(int,string,string,vector<vector< double> >);
 	double predict_one(double *xx, int vec_size);
+	double predict_one_first(double *xx, int vec_size, double *next, int next_size);
+	double predict_one_next(double *xx, int vec_size, double *next, int next_size);
+	double predict_one_last(double *xx, int vec_size);
 	double predict_one_md(int,vector<double>);
 	double assess(string,string,string);
 	double assess_md(string,string,string);

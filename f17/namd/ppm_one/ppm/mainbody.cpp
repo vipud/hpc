@@ -1322,16 +1322,25 @@ void CMainbody::predict_bb_static_ann()
 			oneline_ha.push_back(ring_effect_ha.at(index.at(i).x1-1).x[j]);
 		for(j=0;j<4;j++)
 			oneline_ha.push_back(ani_effect_ha.at(index.at(i).x1-1).x[j]);
+
 		x_ha = oneline_ha.data();
-		pre[5]=ann_ha.predict_one(x_ha, oneline_ha.size());
 		x_ca = oneline.data();
-		pre[0] = ann_ca.predict_one(x_ca, oneline.size());
 		x_cb = oneline_cb.data();
-		pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
 		x_co = oneline_co.data();
-		pre[2] = ann_co.predict_one(x_co, oneline_co.size());
 		x_n = oneline_n.data();
+
+		/*
+		pre[5] = ann_ha.predict_one(x_ha, oneline_ha.size());
+		pre[0] = ann_ca.predict_one(x_ca, oneline.size());
+		pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
+		pre[2] = ann_co.predict_one(x_co, oneline_co.size());
 		pre[4] = ann_n.predict_one(x_n, oneline_n.size());
+		*/
+		pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size());
+		pre[0] = ann_ca.predict_one_next(x_ca, oneline.size(), x_cb, oneline_cb.size());
+		pre[1] = ann_cb.predict_one_next(x_cb, oneline_cb.size(), x_co, oneline_co.size());
+		pre[2] = ann_co.predict_one_next(x_co, oneline_co.size(), x_n, oneline_n.size());
+		pre[4] = ann_n.predict_one_last(x_n, oneline_n.size());
 
 		pdb->attach_bbprediction(id,pre);
 	}
