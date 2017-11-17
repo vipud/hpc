@@ -972,7 +972,7 @@ double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next
 
 	next_CAnn->n_dat = 1;
 	next_CAnn->xapplyminmax(next);
-	#pragma acc enter data copyin(next[0:next_size])
+	#pragma acc enter data copyin(next[0:next_size]) async
 
 	#pragma acc wait
 
@@ -989,8 +989,6 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 	if(vec_size!=n_dim)
 		return 0;
 
-	n_dat=1;
-	//xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
@@ -1000,8 +998,6 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 	double ymin = y_min;
 	double *psaveflat = p_save_flat;
 	int psavesize = p_save_size;
-
-	//#pragma acc enter data copyin(xx[0:ndim])
 
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
 		present(xx[0:ndim],psaveflat[0:npar]) async
@@ -1015,7 +1011,7 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 	next_cann->n_dat = 1;
 	next_cann->xapplyminmax(next);
 
-	#pragma acc enter data copyin(next[0:next_size])
+	#pragma acc enter data copyin(next[0:next_size]) async
 
 	#pragma acc wait
 
@@ -1032,8 +1028,6 @@ double CAnn::predict_one_last( double *xx, int vec_size)
 	if(vec_size!=n_dim)
 		return 0;
 
-	n_dat=1;
-	//xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
@@ -1043,8 +1037,6 @@ double CAnn::predict_one_last( double *xx, int vec_size)
 	double ymin = y_min;
 	double *psaveflat = p_save_flat;
 	int psavesize = p_save_size;
-
-	//#pragma acc enter data copyin(xx[0:ndim])
 
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
 		present(xx[0:ndim],psaveflat[0:npar])
