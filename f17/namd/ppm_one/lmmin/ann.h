@@ -43,7 +43,7 @@ class CAnn
 private:
 	int n_neuron;
 	int n_dat;
-	int n_dim;
+	//int n_dim;
 	int n_par;
 	int n_conf;
 
@@ -61,6 +61,7 @@ private:
 	void mapminmax(void);
 	void mapminmax_md(void);
 	void xapplyminmax(void);
+	void xapplyminmax(double *xx);
 	void xapplyminmax_md(void);
 	bool loadx(string name);
 	bool loadx_md(string name);
@@ -77,13 +78,14 @@ private:
 protected:
 
 public:
+	int n_dim;
 	int train(int,string,string,int,double);
 	int train_md(int,string,string,int,double);
 	vector<double> predict(int,string,string,vector<vector< double> >);
 	vector<double> predict_md(int,string,string,vector<vector< double> >);
 	double predict_one(double *xx, int vec_size);
-	double predict_one_first(double *xx, int vec_size, double *next, int next_size, CAnn next_cann);
-	double predict_one_next(double *xx, int vec_size, double *next, int next_size, CAnn next_cann);
+	double predict_one_first(double *xx, int vec_size, double *next, int next_size, CAnn *next_cann);
+	double predict_one_next(double *xx, int vec_size, double *next, int next_size, CAnn *next_cann);
 	double predict_one_last(double *xx, int vec_size);
 	double predict_one_md(int,vector<double>);
 	double assess(string,string,string);
@@ -92,8 +94,6 @@ public:
 	void loadp(double *);
 	void save(string filename);
 	void close(void);
-
-	void xapplyminmax(double *xx);
 	
 	CAnn();
 	~CAnn();

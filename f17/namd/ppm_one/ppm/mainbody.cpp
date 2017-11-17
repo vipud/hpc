@@ -1336,10 +1336,10 @@ void CMainbody::predict_bb_static_ann()
 		pre[2] = ann_co.predict_one(x_co, oneline_co.size());
 		pre[4] = ann_n.predict_one(x_n, oneline_n.size());
 		*/
-		pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size(), ann_ca);
-		pre[0] = ann_ca.predict_one_next(x_ca, oneline.size(), x_cb, oneline_cb.size(), ann_cb);
-		pre[1] = ann_cb.predict_one_next(x_cb, oneline_cb.size(), x_co, oneline_co.size(), ann_co);
-		pre[2] = ann_co.predict_one_next(x_co, oneline_co.size(), x_n, oneline_n.size(), ann_n);
+		pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size(), &ann_ca);
+		pre[0] = ann_ca.predict_one_next(x_ca, oneline.size(), x_cb, oneline_cb.size(), &ann_cb);
+		pre[1] = ann_cb.predict_one_next(x_cb, oneline_cb.size(), x_co, oneline_co.size(), &ann_co);
+		pre[2] = ann_co.predict_one_next(x_co, oneline_co.size(), x_n, oneline_n.size(), &ann_n);
 		pre[4] = ann_n.predict_one_last(x_n, oneline_n.size());
 
 		pdb->attach_bbprediction(id,pre);

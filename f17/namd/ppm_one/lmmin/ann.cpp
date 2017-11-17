@@ -469,7 +469,7 @@ void CAnn::xapplyminmax(double *xx)
 {
 	double tmin,tmax;
 	int i,j,step;
-
+	int ndim = n_dim;
 	for(i = 0; i < n_dim; i++)
 	{
 		tmin=v_min[i];
@@ -940,7 +940,7 @@ double CAnn::assess_md(string ann_name,string x_name,string y_name)
 	return rms;
 };
 
-double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next_size, CAnn next_cann )
+double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next_size, CAnn *next_CAnn )
 {
 	double tt,out;
 
@@ -970,7 +970,8 @@ double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next
 		out+=tt;
 	}
 
-	next_cann.xapplyminmax(next);
+	next_CAnn->n_dat = 1;
+	next_CAnn->xapplyminmax(next);
 	#pragma acc enter data copyin(next[0:next_size])
 
 	#pragma acc wait
@@ -981,7 +982,7 @@ double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next
 	return out;
 }
 
-double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_size, CAnn next_cann )
+double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_size, CAnn *next_cann )
 {
 	double tt,out;
 
@@ -989,6 +990,7 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 		return 0;
 
 	n_dat=1;
+	//xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
@@ -999,6 +1001,8 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 	double *psaveflat = p_save_flat;
 	int psavesize = p_save_size;
 
+	//#pragma acc enter data copyin(xx[0:ndim])
+
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
 		present(xx[0:ndim],psaveflat[0:npar]) async
 	for(int j=0;j<psavesize;j++)
@@ -1008,7 +1012,9 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 		out+=tt;
 	}
 
-	next_cann.xapplyminmax(next);
+	next_cann->n_dat = 1;
+	next_cann->xapplyminmax(next);
+
 	#pragma acc enter data copyin(next[0:next_size])
 
 	#pragma acc wait
@@ -1027,6 +1033,7 @@ double CAnn::predict_one_last( double *xx, int vec_size)
 		return 0;
 
 	n_dat=1;
+	//xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
@@ -1037,8 +1044,10 @@ double CAnn::predict_one_last( double *xx, int vec_size)
 	double *psaveflat = p_save_flat;
 	int psavesize = p_save_size;
 
+	//#pragma acc enter data copyin(xx[0:ndim])
+
 	#pragma acc parallel loop gang reduction(+:out) private(tt) \
-		present(xx[0:ndim],psaveflat[0:npar]) async
+		present(xx[0:ndim],psaveflat[0:npar])
 	for(int j=0;j<psavesize;j++)
 	{
 		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
