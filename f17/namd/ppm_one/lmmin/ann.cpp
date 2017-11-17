@@ -940,7 +940,7 @@ double CAnn::assess_md(string ann_name,string x_name,string y_name)
 	return rms;
 };
 
-double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next_size )
+double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next_size, CAnn next_cann )
 {
 	double tt,out;
 
@@ -970,6 +970,7 @@ double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next
 		out+=tt;
 	}
 
+	next_cann.xapplyminmax(next);
 	#pragma acc enter data copyin(next[0:next_size])
 
 	#pragma acc wait
@@ -980,7 +981,7 @@ double CAnn::predict_one_first( double *xx, int vec_size, double *next, int next
 	return out;
 }
 
-double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_size)
+double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_size, CAnn next_cann )
 {
 	double tt,out;
 
@@ -988,7 +989,6 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 		return 0;
 
 	n_dat=1;
-	xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
@@ -1008,6 +1008,7 @@ double CAnn::predict_one_next( double *xx, int vec_size, double *next, int next_
 		out+=tt;
 	}
 
+	next_cann.xapplyminmax(next);
 	#pragma acc enter data copyin(next[0:next_size])
 
 	#pragma acc wait
@@ -1026,7 +1027,6 @@ double CAnn::predict_one_last( double *xx, int vec_size)
 		return 0;
 
 	n_dat=1;
-	xapplyminmax(xx);
 	out=0;
 
 	int ndim = n_dim;
