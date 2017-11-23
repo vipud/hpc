@@ -37,17 +37,17 @@ int lock_hash(Set* hash_set, int x)
     return (x % hash_set->locksSize);
 }
 
-// acquire (-1), release (0) locks (implement _Bool)
+// acquire (true), release (false) locks 
 void acquire(Set* hash_set, int value)
 {
     $when(hash_set->locks[(value % hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
-    printf("Lock %s acquired.\n", lock_hash(hash_set,value));
+    //printf("Lock %s acquired.\n", lock_hash(hash_set,value));
 }
 
 void release(Set* hash_set, int value)
 {
     hash_set->locks[lock_hash(hash_set,value)] = false;
-    printf("Lock %s released.\n", lock_hash(hash_set,value));
+    //printf("Lock %s released.\n", lock_hash(hash_set,value));
 }
 
 // contains checks if the value is in the hash set
@@ -101,14 +101,14 @@ bool force_add(Set* hash_set, int value)
 }
 
 //resize policy to check if load factor exceeds a set limit
-int set_policy(Set* hash_set) //UNIMPLEMENTED
+bool set_policy(Set* hash_set)
 {
     double pol = (double) (hash_set->items / (hash_set->size*hash_set->cap));
     return (pol > 0.75);
 }
 
 //called if policy is true or a bucket is overfull
-bool set_resize(Set* hash_set) //UNIMPLEMENTED
+bool set_resize(Set* hash_set) 
 {
     printf("Time to resize...\n");
     int oldSize = hash_set->size;
@@ -116,24 +116,6 @@ bool set_resize(Set* hash_set) //UNIMPLEMENTED
         acquire(hash_set,i);
     if (oldSize == hash_set->size)
     {
-        printf("Initializing temp copy...\n");
-        int** temp; //Making a copy of the current table
-        temp = (int **) malloc(oldSize * sizeof(int *));
-        for (int i = 0; i < oldSize; i++)
-            temp[i] = (int *) calloc(hash_set->cap, sizeof(int));
-        printf("Copying values...\n");
-        for (int j = 0; j < oldSize; j++)
-        {
-            for (int k = 0; k < hash_set->cap; k++)
-                temp[j][k] = hash_set->table[j][k];
-        }
-        printf("TEMP TABLE STATE:\n");
-        for (int j = 0; j < oldSize; j++)
-        {
-            for (int k = 0; k < hash_set->cap; k++)
-                printf("%d ", temp[j][k]);
-            printf("\n");
-        }
         int** old = hash_set->table;
         hash_set->size = hash_set->size * 2;
         hash_set->table = (int **) malloc(hash_set->size * sizeof(int *));
@@ -144,28 +126,13 @@ bool set_resize(Set* hash_set) //UNIMPLEMENTED
                 force_add(hash_set, old[i][j]);
 
         // free memory
-        for (int l = 0; l < oldSize; l++)
-            free(temp[l]);
-        free(temp);
         for (int i = 0; i < oldSize; i++)
             free(old[i]);
         free(old);
-
     }
     for (int j = 0; j < hash_set->locksSize; j++)
         release(hash_set,j);
 }
-
-/*
- * Notes on resize steps:
- * 1. Acquire all locks *
- * 2. Make sure the table hasn't been resized already *
- * 3. Make a temp copy of the table *
- * 4. Resize (x2) the "real" table in memory, changing hash()
- * 5. Reinit the real table to all 0's
- * 6. Place every item in temp in real using new hash()
- * 7. Free temp, release all locks
-*/
 
 //adds an item to the set
 bool set_add(Set* hash_set, int value)
@@ -175,7 +142,7 @@ bool set_add(Set* hash_set, int value)
         printf("%s not inserted, already present.\n", value);
         return false;
     }
-    else
+    else //ISSUE: Lock handoff between procs adding the same value!
     {
         acquire(hash_set,value);
         int slot = set_hash(hash_set,value);
@@ -220,7 +187,6 @@ bool set_remove(Set* hash_set, int value)
     }
 }
 
-
 void testCheck(Set* hash_set, int value)
 {
     if (set_contains(hash_set,value))
@@ -257,20 +223,13 @@ int main(int argc, char* argv[])
     sHash.items = 0; //init item counter
     sHash.size = 9;
     sHash.locksSize = sHash.size;
-    sHash.cap = 3;
+    sHash.cap = 5;
         
     //alloc table sHash.size * sHash.cap
     sHash.table = (int **) malloc(sHash.size * sizeof(int *));
     for (int i = 0; i < sHash.size; i++)
        sHash.table[i] = (int *) calloc(sHash.cap, sizeof(int));
     
-    /*
-    //init table at 0 for all elements
-    for (int j = 0; j < sHash.size; j++)
-        for (int k = 0; k < sHash.cap; k++)
-            sHash.table[j][k] = 0;
-    */
-
     //alloc all locks at open (0)
     sHash.locks = (bool *) malloc(sHash.locksSize * sizeof(bool));
 
@@ -278,6 +237,7 @@ int main(int argc, char* argv[])
     for (int k = 0; k < sHash.locksSize; k++)
         sHash.locks[k] = false;
 
+    /*
     printTable(&sHash);
     set_add(&sHash,9);
     set_add(&sHash,11);
@@ -288,7 +248,7 @@ int main(int argc, char* argv[])
     set_add(&sHash,45);
     printTable(&sHash);
 
-    /*
+    
     //basic tests
     printTable(&sHash);
     set_add(&sHash,15);
@@ -304,14 +264,15 @@ int main(int argc, char* argv[])
     printTable(&sHash);
     */
 
-    /*
+    
     $parfor (int i : 0 .. 4)
     {
-        set_add(&sHash,i+1);
-        set_add(&sHash,i*2);
-        set_add(&sHash,i*4);
+        $for (int j : 1 .. 6)
+        {
+            set_add(&sHash,10);
+        }
     }
-    */
+    
     printTable(&sHash);
     
     //free memory

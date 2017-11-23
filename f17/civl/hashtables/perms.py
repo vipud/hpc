@@ -40,5 +40,5 @@ def perm(counts):
 			permAux(len(counts), modified, [i], i)
 
 
-perm([2,1,1])
+perm([1,1,1])
 #print(results)
