@@ -287,8 +287,6 @@ int main(){
 
 //#pragma acc data copyin (N[:N_traj][:n_specs], t_trunc[:N_traj], t[:N_traj], t_prev[:N_traj], dt[:N_traj], rxn_to_fire_ind[:N_traj], ind_rec[:N_traj], props[:N_traj][:n_rxns], W[:N_traj][:n_params], prop_ders[:N_traj][:n_rxns][:n_params], prop_ders_sum[:N_traj][:n_params], spec_profile[:N_traj][:N_record][:n_specs], traj_deriv_profile[:N_traj][:N_record][:n_params], stoich_mat[:n_rxns][:n_specs], rate_const[:n_rxns], randomNumbers[:][:][:], t_rec[:N_record])
 
-  #pragma acc parallel
-  #pragma acc loop
   for (int x = 0; x < N_traj; x++){
     
     int r = 0;
