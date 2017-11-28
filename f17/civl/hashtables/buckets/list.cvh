@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/* --------------- forward declarations ----------- */
+
+typedef struct list{
+    int* array;
+    int size;
+} list;
+
+list* create_list(int size);
+list* append(list* ptr, int val);
+list* remove(list* ptr, int val);
+    
+/* ----------------------- end -------------------- */
+
+list* create_list(int size){
+    list* new_list;
+    new_list->array = (int *)malloc(size * sizeof(int));
+    new_list->size = size;
+    return new_list;
+}
+
+list* append(list* ptr, int val){
+    
+}
+
+list* remove(list* ptr, int val){
+}

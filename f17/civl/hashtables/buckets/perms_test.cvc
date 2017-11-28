@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+
+/* --------------- forward declarations ----------- */
+
+int counts_size; // size of counts, {1,1,1}
+int results_size; // number of permutations
+int result_array_size; // size of end result array: ex: {0,1,2}, {1,0,2}...
+
+int fact(int n); // returns factorial of n
+int num_perms(int n, int* counts); // returns number of permutations for count array
+
+/* ----------------------- end -------------------- */
+
+/* fact(int n)
+ * Input: a non-negative integer n 
+ * Output: the factorial of n
+ */
+int fact(int n){
+    int result = 1;
+
+    for (int i = 1; i <= n; i++){
+        result *= i;
+    }
+    return result;
+}
+
+/* num_perms(int n, int *counts)
+ * Input:  n, size of counts array
+ *         counts, an array of size n 
+ *         represents counts from 0...(n-1) 
+ * Output: number of permutations resulting from the array
+ */
+int num_perms(int n, int *counts){
+    int sum = 0;
+    for (int i = 0; i < n; i++){
+        sum += counts[i];
+    }
+    int numerator = fact(sum);
+    int denom = 1;
+    for (int i = 0; i < n; i++){
+        denom *= fact(counts[i]);
+    }
+    return numerator/denom;
+}
+
+bool zeroCheck(int* array, int size){
+    for(int i = 0; i < size; i++){
+        if(array[i] != 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+void compute_perms(int* counts, int counts_size, int*** results){
+    for(int i = 0; i < counts_size; i++){
+        if(counts[i] > 0){
+        }
+    }
+    // modifies results
+}
+
+int main(int argc, char* argv[]){
+   // initialize
+   counts_size = 3;
+   int* counts = (int*) calloc(counts_size, sizeof(int));   
+   counts[0] = 1;
+   counts[1] = 1;
+   counts[2] = 1;
+   //printf("num perms = %d\n", num_perms(3,counts));
+   results_size = num_perms(counts_size, counts);
+   int** results = (int**) malloc(results_size * sizeof(int*));
+   result_array_size = 0;
+   for(int i = 0; i < counts_size; i++){
+      result_array_size += counts[i];
+   } 
+   for(int i = 0; i < results_size; i++){
+       results[i] = (int *) malloc (result_array_size * sizeof(int));
+   }
+   compute_perms(counts, counts_size, &results);
+   free(counts);
+   for(int i = 0; i < results_size; i++){
+       free(results[i]);
+   }
+   free(results);
+   return 0;
+}
