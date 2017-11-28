@@ -37,17 +37,29 @@ int lock_hash(Set* hash_set, int x)
     return (x % hash_set->locksSize);
 }
 
-// acquire (true), release (false) locks 
-void acquire(Set* hash_set, int value)
+$atomic_f void printLocks(Set* hash_set)
 {
-    $when(hash_set->locks[(value % hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
-    //printf("Lock %s acquired.\n", lock_hash(hash_set,value));
+    printf("LOCKS STATE:");
+    for (int i = 0; i < hash_set->locksSize; i++)
+    {
+        printf("%s ", hash_set->locks[i]);
+    }
+    printf("\n");
 }
 
-void release(Set* hash_set, int value)
+// acquire (true), release (false) locks 
+$atomic_f void acquire(Set* hash_set, int value)
+{
+    $when(hash_set->locks[(value % hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
+    printf("Lock %s acquired.\n", lock_hash(hash_set,value));
+    printLocks(hash_set);
+}
+
+$atomic_f void release(Set* hash_set, int value)
 {
     hash_set->locks[lock_hash(hash_set,value)] = false;
-    //printf("Lock %s released.\n", lock_hash(hash_set,value));
+    printf("Lock %s released.\n", lock_hash(hash_set,value));
+    printLocks(hash_set);
 }
 
 // contains checks if the value is in the hash set
@@ -137,14 +149,24 @@ bool set_resize(Set* hash_set)
 //adds an item to the set
 bool set_add(Set* hash_set, int value)
 {
-    if(set_contains(hash_set,value)) //Don't insert duplicates
+    acquire(hash_set,value);
+    bool duplicate = false;
+    int slot = set_hash(hash_set,value);
+    for (int i = 0; i < hash_set->cap; i++)
+    {
+        if (hash_set->table[slot][i] == value)
+        {
+            duplicate = true;
+        }
+    }
+    if(duplicate) //Don't insert duplicates
     {
         printf("%s not inserted, already present.\n", value);
+        release(hash_set,value);
         return false;
     }
-    else //ISSUE: Lock handoff between procs adding the same value!
+    else
     {
-        acquire(hash_set,value);
         int slot = set_hash(hash_set,value);
         for (int i = 0; i < hash_set->cap; i++)
         {
@@ -195,7 +217,7 @@ void testCheck(Set* hash_set, int value)
         printf("%s not found.\n", value);
 }
 
-void printTable(Set* hash_set)
+$atomic_f void printTable(Set* hash_set)
 {
     printf("TABLE STATE:\n");
     for (int j = 0; j < hash_set->size; j++)
@@ -205,16 +227,6 @@ void printTable(Set* hash_set)
         printf("\n");
     }
     printf("# OF ITEMS: %s\n", hash_set->items);
-}
-
-void printLocks(Set* hash_set)
-{
-    printf("LOCKS STATE:");
-    for (int i = 0; i < hash_set->locksSize; i++)
-    {
-        printf("%s ", hash_set->locks[i]);
-    }
-    printf("\n");
 }
 
 int main(int argc, char* argv[])
@@ -265,9 +277,9 @@ int main(int argc, char* argv[])
     */
 
     
-    $parfor (int i : 0 .. 4)
+    $parfor (int i : 0 .. 5)
     {
-        $for (int j : 1 .. 6)
+        $for (int j : 1 .. 2)
         {
             set_add(&sHash,10);
         }
