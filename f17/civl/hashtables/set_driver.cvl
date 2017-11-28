@@ -2,20 +2,21 @@
 
 $input int VALUE_B = 3; // upper bound on values
 $input int THREAD_B = 3; // bound on number of threads
-$input int STEP_B; // bound on number of steps
+$input int STEP_B = 9; // bound on number of steps
 $input int nthreads; // number of threads
 $assume(1<=nthreads && nthreads<=THREAD_B);
 
 int nsteps[nthreads]; // num steps for each thread
 _Bool isAdd[nthreads][STEP_B];
 int vals[nthreads][STEP_B];
-
 /* oracle[i] indicates value i should be in the set */
 _Bool oracle[VALUE_B+1];
+_Bool actual[VALUE_B+1];
+/* Total number of steps */
+int step_total = 0;
 
 
 void init() {
-  int step_total = 0;
   for (int i=0; i<nthreads; i++) {
     int n = $choose_int(STEP_B+1-step_total);
     nsteps[i] = n;
@@ -28,11 +29,13 @@ void init() {
 }
 
 void thread(int i) {
-  for (int j=0; j<nsteps[i]; j++) {
+  int n = nsteps[i];
+  
+  for (int j=0; j<n; j++) {
     if (isAdd[i][j])
-      add(vals[i][j]);
+      set_add(set, vals[i][j]);
     else
-      remove(vals[i][j]);
+      remove(set, vals[i][j]);
   }
 }
 
@@ -40,4 +43,14 @@ int main() {
   init();
   $parfor (int i : 0..nthreads-1) thread(i);
   // check...
+  // get the contents
+  for (int i=0; i<=VALUE_B; i++)
+    actual[i] = contains(i);
+
+  // how to iterate over all interleavings
+  // 
+  for () {
+  }
+  
+  
 }
