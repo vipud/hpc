@@ -30,20 +30,20 @@ int hash_fxn(int x){
 }
 
 // acquire (-1), release (0) locks
-void acquire(Set* hash_set, int value)
+$atomic_f void acquire(Set* hash_set, int value)
 {
     $when(hash_set->lock == false) hash_set->lock = true;
     
 }
 
-void release(Set* hash_set, int value)
+$atomic_f void release(Set* hash_set, int value)
 {
     hash_set->lock = false;
     
 }
 
 
-bool contains(Set* hash_set, int value){
+bool set_contains(Set* hash_set, int value){
 	acquire(hash_set,value);
 	
 	int val;
@@ -57,7 +57,7 @@ bool contains(Set* hash_set, int value){
   
 }
 
-bool add(Set* hash_set, int value){
+bool set_add(Set* hash_set, int value){
 	acquire(hash_set,value);
 	
 	if (!contains(hash_set,value)){ //if the hash set does not contain the element
@@ -73,7 +73,7 @@ bool add(Set* hash_set, int value){
 	 
 }
 
-bool discard(Set* hash_set, int value){
+bool set_remove(Set* hash_set, int value){
 	acquire(hash_set,value);
 	
 	int val;
@@ -117,6 +117,7 @@ void print_hash(Set* hash_set){
 
 
 int main(){
+	//set_create
 	Set set;
 	set.table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
 	for (int i = 0; i < SIZE; i++){
@@ -137,6 +138,6 @@ int main(){
 	// test0();
 	
 	
-	free(set.table);
+	free(set.table); //set_destroy
 	return 0;
 }
