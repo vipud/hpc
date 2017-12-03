@@ -217,7 +217,7 @@ void testCheck(Set* hash_set, int value)
         printf("%s not found.\n", value);
 }
 
-$atomic_f void printTable(Set* hash_set)
+$atomic_f void print_set(Set* hash_set)
 {
     printf("TABLE STATE:\n");
     for (int j = 0; j < hash_set->size; j++)
@@ -229,68 +229,51 @@ $atomic_f void printTable(Set* hash_set)
     printf("# OF ITEMS: %s\n", hash_set->items);
 }
 
-int main(int argc, char* argv[])
+Set* set_create()
 {
-    Set sHash;
-    sHash.items = 0; //init item counter
-    sHash.size = 9;
-    sHash.locksSize = sHash.size;
-    sHash.cap = 5;
+    Set* set;
+    set = (Set *) malloc(sizeof(Set));
+    set->items = 0; //init item counter
+    set->size = 9;
+    set->locksSize = set->size;
+    set->cap = 5;
         
-    //alloc table sHash.size * sHash.cap
-    sHash.table = (int **) malloc(sHash.size * sizeof(int *));
-    for (int i = 0; i < sHash.size; i++)
-       sHash.table[i] = (int *) calloc(sHash.cap, sizeof(int));
+    //alloc table set->size * set->cap
+    set->table = (int **) malloc(set->size * sizeof(int *));
+    for (int i = 0; i < set->size; i++)
+       set->table[i] = (int *) calloc(set->cap, sizeof(int));
     
     //alloc all locks at open (0)
-    sHash.locks = (bool *) malloc(sHash.locksSize * sizeof(bool));
+    set->locks = (bool *) malloc(set->locksSize * sizeof(bool));
 
     //init locks at false for all
-    for (int k = 0; k < sHash.locksSize; k++)
-        sHash.locks[k] = false;
+    for (int k = 0; k < set->locksSize; k++)
+        set->locks[k] = false;
 
-    /*
-    printTable(&sHash);
-    set_add(&sHash,9);
-    set_add(&sHash,11);
-    set_add(&sHash,18);
-    set_add(&sHash,36);
-    printTable(&sHash);
-    printLocks(&sHash);
-    set_add(&sHash,45);
-    printTable(&sHash);
+    return set;
+}
 
-    
-    //basic tests
-    printTable(&sHash);
-    set_add(&sHash,15);
-    set_add(&sHash,11);
-    set_add(&sHash,29);
-    set_add(&sHash,30);
-    set_add(&sHash,42);
-    printTable(&sHash);
-    set_remove(&sHash,15);
-    testCheck(&sHash,15);
-    testCheck(&sHash,24);
-    set_remove(&sHash,18);
-    printTable(&sHash);
-    */
 
+int main(int argc, char* argv[])
+{
+    Set* sHash;
+    sHash = set_create();
     
     $parfor (int i : 0 .. 5)
     {
         $for (int j : 1 .. 2)
         {
-            set_add(&sHash,10);
+            set_add(sHash,10);
         }
     }
     
-    printTable(&sHash);
+    print_set(sHash);
     
     //free memory
-    for (int l = 0; l < sHash.size; l++)
-        free(sHash.table[l]);
-    free(sHash.table);
-    free(sHash.locks);
+    for (int l = 0; l < sHash->size; l++)
+        free(sHash->table[l]);
+    free(sHash->table);
+    free(sHash->locks);
+    free(sHash);
     return 0;
 }
