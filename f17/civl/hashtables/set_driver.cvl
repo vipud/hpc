@@ -1,4 +1,6 @@
+#include "num_perms.c"
 #include "set.cvh"
+#include "striped/striped_hash.cvl"
 
 $input int VALUE_B = 3; // upper bound on values
 $input int THREAD_B = 3; // bound on number of threads
@@ -10,47 +12,112 @@ int nsteps[nthreads]; // num steps for each thread
 _Bool isAdd[nthreads][STEP_B];
 int vals[nthreads][STEP_B];
 /* oracle[i] indicates value i should be in the set */
-_Bool oracle[VALUE_B+1];
+_Bool oracle[nthreads][VALUE_B+1];
 _Bool actual[VALUE_B+1];
 /* Total number of steps */
 int step_total = 0;
 
+Set** oracle_sets; 
+Set* actual_set;
 
 void init() {
+  oracle_sets = (Set **) malloc(nthreads * sizeof(Set*));
+  actual_set = set_create();
+  // init thread parameters
   for (int i=0; i<nthreads; i++) {
-    int n = $choose_int(STEP_B+1-step_total);
+    int n = $choose_int(STEP_B+1-step_total); // between 0 and bound - steps
+    oracle_sets[i] = set_create();
     nsteps[i] = n;
     step_total += n;
     for (int j=0; j<n; j++) {
-      isAdd = $choose_int(2);
+      isAdd[i][j] = $choose_int(2);
       vals[i][j] = $choose_int(VALUE_B + 1);
     }
   }
 }
 
-void thread(int i) {
+void thread(int i, Set* set) {
   int n = nsteps[i];
   
   for (int j=0; j<n; j++) {
     if (isAdd[i][j])
       set_add(set, vals[i][j]);
     else
-      remove(set, vals[i][j]);
+      set_remove(set, vals[i][j]);
   }
 }
 
+/* single thread, run through 0
+void sequential_test_set(int** test_set){
+    int n = nsteps[0];
+    for(int j = 0; j < n; j++){
+        if(isAdd[0][j]){
+            set_add(&test_set, vals[0][j]);
+        } else {
+            set_remove(&test_set, vals[0][j]);
+        }
+    }
+}*/
+
+bool check_sets(){
+  for(int i = 0; i < nthreads; i++){
+    int j = 0;
+    bool isValid = true;
+    while(j <= VALUE_B){
+      if(oracle[i][j] != actual[j]){
+        isValid = false;
+      }
+      j += 1;
+    }
+    if(isValid)
+      return true;
+  }
+  return false;
+}
+
 int main() {
+
+  bool isValid = false;
+
   init();
-  $parfor (int i : 0..nthreads-1) thread(i);
+  $for(int i : 0 .. nthreads-1){
+   //call threads, oracle[i] 
+   thread(i, oracle_sets[i]);
+   print_set(oracle_sets[i]);
+  }
+  //$parfor (int i : 0..nthreads-1) thread(i);
   // check...
   // get the contents
+  
+  set_add(actual_set, 1);
+  set_add(actual_set, 2);
+  set_add(actual_set, 3);
+  //set_remove(actual_set, 2);
+  print_set(actual_set);
+
   for (int i=0; i<=VALUE_B; i++)
-    actual[i] = contains(i);
+    actual[i] = set_contains(actual_set, i);
 
   // how to iterate over all interleavings
-  // 
-  for () {
+  // save in oracle?
+  for (int i = 0; i < nthreads; i++) {
+    for(int j=0; j<=VALUE_B; j++){
+       oracle[i][j] = set_contains(oracle_sets[i], j); 
+    }
   }
-  
-  
+
+  if(check_sets()){
+      printf("Set is valid.\n");
+  } else {
+      printf("Set is not valid.\n");
+  }
+  // sequential
+  // creates a set, run through test,    
+  // sequential_test_set(&test_set); 
+  set_destroy(actual_set);
+  $for (int i : 0 .. nthreads - 1){
+      set_destroy(oracle_sets[i]);
+  }
+  free(oracle_sets);
+  return 0; 
 }

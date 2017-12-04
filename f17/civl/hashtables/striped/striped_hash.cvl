@@ -253,7 +253,17 @@ Set* set_create()
     return set;
 }
 
+bool set_destroy(Set* sHash){
+     //free memory
+    for (int l = 0; l < sHash->size; l++)
+        free(sHash->table[l]);
+    free(sHash->table);
+    free(sHash->locks);
+    free(sHash);
+    return true;
+}
 
+/*
 int main(int argc, char* argv[])
 {
     Set* sHash;
@@ -268,12 +278,5 @@ int main(int argc, char* argv[])
     }
     
     print_set(sHash);
-    
-    //free memory
-    for (int l = 0; l < sHash->size; l++)
-        free(sHash->table[l]);
-    free(sHash->table);
-    free(sHash->locks);
-    free(sHash);
     return 0;
-}
+}*/
