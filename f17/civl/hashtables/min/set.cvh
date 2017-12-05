@@ -1,0 +1,83 @@
+// set.cvl
+#include <stdbool.h>
+
+struct _set;
+typedef struct _set Set;
+
+
+/* add(Set* set, int value)
+ * Input:  set, a pointer to a given Hash Set
+ *         value, a positive integer
+ * Output: true if the value is successfully added,
+ *         false if the value is not added
+ * If add is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * the code will return false for wrong input
+ * A value is successfully added if:
+ * - it is a non-negative integer
+ * - the value does not already exist in the set
+ * - the set exists and is unlocked
+ * - the value is successfully stored in the set 
+ */
+bool set_add(Set* set, int value);
+
+
+/* remove(Set* set, int value)
+ * Input:  set, a pointer to a given Hash Set
+ *         value, a positive integer
+ * Output: true if the value is successfully discarded from the set
+ *         false if the value is not discarded 
+ * If discard is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * the code will return false for wrong input
+ * A value is successfully discarded if:
+ * - it is a non-negative integer
+ * - the value initially exists in the set
+ * - the set exists and is unlocked
+ * - the value is successfully removed from the set
+ */
+bool set_remove(Set* set, int value);
+
+
+/* contains(Set* set, int value)
+ * Input:  set, a pointer to a given Hash Set
+ *         value, a positive integer
+ * Output: true if the value exists in the set
+ *         false if the value does not exist in the set 
+ * If contains is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * the code will return false for wrong input
+ * A value exists in the set if
+ * - it is a non-negative integer
+ * - the set exists and is unlocked
+ * - the value can be referenced at some location in the set
+ */
+bool set_contains(Set* set, int value);
+
+
+/* create()
+ * Output: Pointer to created set
+ * If create is given faulty input (ex: a negative number, a non-integer, etc.), 
+ * the code will return NULL for wrong input
+ * A set is created if
+ * - its memory has been allocated
+ * - its values are initialized to 0
+ * - the set can be referenced at some location in memory
+ */
+Set* set_create();
+
+/* destroy(Set* set)
+ * Input:  set, a pointer to a given Hash Set
+ * Output: true if the set was sucessesfully destroyed,
+ * false otherwise.
+ * If destroy is given a non-Set* or null pointer the code will
+ * return false for wrong input
+ * A set is destroyed if:
+ * - its memory has been freed 
+ */
+bool set_destroy(Set* set); 
+
+/* set_equals(Set* set1, Set* set2)
+ * Input: 2 Sets, each
+ *
+ */
+bool set_equals(Set* set1, Set* set2);
+
+int set_getsize(Set* set);

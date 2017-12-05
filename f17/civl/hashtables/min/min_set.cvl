@@ -1,0 +1,64 @@
+/* Minimum implementation of Set for testing the driver.
+ * Dec-5-2017 
+ * Wenhao Wu 
+ * VSL Lab; Dept. CIS; UDel
+ */
+/* Dependent Headers */
+#include "set.cvh"	// Set Interface 
+#include <stdlib.h>	// Malloc
+#include <stdio.h>	// Printing outputs
+#include <string.h>	// Output content.
+
+int SIZE = 10;		// Default initial size
+
+struct _set;
+
+typedef struct _set {
+  int size;	// Set size
+  bool* table;	// Set values
+} Set;
+
+void printS(Set* s) {
+  printf("\t{");
+  for (int v = 0; v < s->size; v++)
+    if (s->table[v] == true)
+      printf("%d, ", v);
+  printf("}\n");
+}
+
+$atomic_f bool set_contains(Set* s, int v) {
+  return s->table[v];
+}
+
+$atomic_f bool set_add(Set* s, int v) {
+  if (v >= 0 && s->table[v] == false) {
+    s->table[v] = true;
+    return true;
+  }
+  return false;
+}
+
+$atomic_f bool set_remove(Set* s, int v) {
+  if (v >= 0) {
+    s->table[v] = false;
+    return true;
+  }
+  return false;
+}
+
+Set* set_create() {
+  Set* s;
+
+  s = malloc(sizeof *s);
+  s->size = SIZE;
+  s->table = malloc(SIZE * sizeof *(s->table));
+  for (int i = 0; i < s->size; i++)
+    s->table[i] = false;
+  return s;
+}
+
+bool set_destroy(Set* s) {
+  free(s->table);
+  free(s);
+  return true;
+}

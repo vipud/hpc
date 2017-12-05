@@ -1,0 +1,182 @@
+/* Minimum implementation of set driver for CIVL
+ * Dec-5-2017
+ * Wenhao Wu
+ * VSL Lab; Dept. CIS; UDel
+ */
+
+// Dependencies
+#include "set.cvh"
+#include "min_set.cvl"
+#include "num_perms.c"
+#include <stdio.h>	// Printing outputs
+#include <string.h>	// Output content.
+
+// Defs
+#define ADD true
+#define ACTUAL -1
+#define RESULT -2
+
+//CIVL Inputs
+$input int VAL_B = 1;	// Vals are in [0, VAL_B]
+$input int THD_B = 2;   // Maximum number of threads
+$input int STP_B = 2;	// Maximum number of total steps
+$input int nthreads;	// Actual number of threads
+$assume(1 <= nthreads && nthreads <= THD_B);
+
+//Global Vars
+int num_vals;
+int num_steps;
+int num_perms;
+int nsteps[nthreads];
+bool ops[nthreads][STP_B];
+int vals[nthreads][STP_B];
+
+void printInitInfo() {
+  printf("[Init]\t Num of threads: %d\n", nthreads);
+  printf("[Init]\t Num of steps: %d\n", num_steps);
+}
+
+void printSet(bool* s) {
+  printf("\t{");
+  for (int v = 0; v < num_vals; v++) {
+    if (s[v] == true)
+      printf("%d, ", v);
+  }
+  printf("}");
+}
+
+void printOpInfo(int type, int tid, bool op, int val, bool* results) {
+  if (type == RESULT) {
+    printf("[RESULT]");
+  } else if (type == ACTUAL) {
+    printf("[ACTUAL]");
+  } else {
+    printf("[PERMS%d]", type);
+  }
+  printf("\tThread[%d] performs ", tid);
+  printf((op==ADD?"<ADD>":"<DEL>"));
+  printf(" value: %d", val);
+  printSet(results);
+  printf("\n");
+}
+
+void printOpInfo_set(int type, int tid, bool op, int val, Set* set) {
+  bool temp_results[num_vals];
+
+  for (int val = 0; val < num_vals; val++)
+    temp_results[val] = set_contains(set, val);
+  printOpInfo(type, tid, op, val, temp_results);
+}
+
+void printEquivSeqInfo(int* perms, bool* results) {
+  int step_counters[nthreads];
+
+  for (int tid = 0; tid < nthreads; tid++)
+    step_counters[tid] = 0;
+
+  printf("Equivalent sequential execution: \n");
+  for (int step = 0; step < num_steps; step++) {
+    int tid = perms[step];
+    int step_local = step_counters[tid];
+    bool op = ops[tid][step_local];
+    int val = vals[tid][step_local];
+
+    printOpInfo(RESULT, tid, op, val, results);
+    step_counters[tid]++;
+  }
+}
+
+void init() {
+  num_vals = VAL_B + 1;
+  num_steps = 0;
+  
+  for (int tid = 0; tid < nthreads; tid++) {
+    int num_steps_local = $choose_int(STP_B+1-num_steps);
+    
+    nsteps[tid] = num_steps_local;
+    for (int step = 0; step < num_steps_local; step++) {
+      ops[tid][step] = $choose_int(2) == 1;
+      vals[tid][step] = $choose_int(num_vals);
+      num_steps++;
+    }
+  }
+  num_perms = calc_num_perms(nthreads, nsteps);
+}
+
+void thread(int tid, Set* set) {
+  int num_steps_local = nsteps[tid];
+  
+  for (int step = 0; step < num_steps_local; step++) {
+    bool op = ops[tid][step];
+    int val = vals[tid][step];
+
+    if (op == ADD) 
+      set_add(set, val);
+    else
+      set_remove(set, val);
+    //printOpInfo_set(ACTUAL, tid, op, val, set);
+  }
+}
+
+void permseq(int pid, int* perm, bool* oracle_results) {
+  int step_counters[nthreads];
+
+  for (int tid = 0; tid < nthreads; tid++)
+    step_counters[tid] = 0;
+
+  for (int step_seq = 0; step_seq < num_steps; step_seq++) {
+    int tid = perm[step_seq];
+    int step = step_counters[tid];
+    bool op = ops[tid][step];
+    int val = vals[tid][step];
+
+    if (op == ADD)
+      oracle_results[val] = true;
+    else 
+      oracle_results[val] = false;
+    step_counters[tid]++;
+    //printOpInfo(pid, tid, op, val, oracle_results);
+  }
+}
+
+bool isEqual(bool* actual, bool* oracle) {
+  for (int val = 0; val < num_vals; val++)
+    if (actual[val] != oracle[val])
+      return false;
+  return true;
+}
+
+int main() {
+  init(); 
+  printInitInfo();
+
+  int pid = 0;
+  int** perms = compute_perms(nthreads, nsteps);
+  bool actual_results[num_vals];
+  bool oracle_results[num_vals];
+  Set* actual_set = set_create();
+ 
+  $parfor (int tid : 0 .. nthreads-1) {
+    thread(tid, actual_set);
+  }
+
+  for (int val = 0; val < num_vals; val++)
+    actual_results[val] = set_contains(actual_set, val);
+  
+  for (pid = 0; pid < num_perms; pid++) {
+    for (int val = 0; val < num_vals; val++)
+      oracle_results[val] = false;
+    permseq(pid, perms[pid], oracle_results);
+    if (isEqual(actual_results, oracle_results) == true) {
+      printEquivSeqInfo(perms[pid], oracle_results);
+      break;
+    }
+  }
+  $assert(num_steps < 1 || pid < num_perms);
+  
+  set_destroy(actual_set);
+  for (int i = 0; i < num_perms; i++)
+    free(perms[i]);
+  free(perms);
+}
+
