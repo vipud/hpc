@@ -98,16 +98,24 @@ void print_hash(Set* hash_set){
    printf("\n");
 }
 
-void set_create(){
-	Set set;
-	set.table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
+Set* set_create(){
+	Set *set;
+	set->item = 0;
+	set->lock = false;
+	set->table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
 	for (int i = 0; i < SIZE; i++){
-		set.table[i] = (int *) calloc (1 , sizeof(int));
+		set->table[i] = (int *) calloc (1 , sizeof(int));
 	}
+	return set;
 }
 
-void set_destroy(){
-	free(set.table);
+bool set_destroy(){
+	for(int i = 0; i < SIZE; i++){
+		free(set->table[i]);
+	}
+	free(table);
+	free(set);
+	return true;
 }
 
 
