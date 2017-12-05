@@ -2,7 +2,7 @@
 # CHANGE/DELETE AS NEEDED
 
 CC = gcc
-CIVL = java -jar /home/vmubuntu/CIVL/civl.jar
+CIVL = civl
 
 naive_2 : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
