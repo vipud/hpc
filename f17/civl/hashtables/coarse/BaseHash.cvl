@@ -34,6 +34,9 @@ $atomic_f void release(Set* hash_set, int value)
     
 }
 
+bool set_resize(Set* hash_set){
+	
+}
 
 bool set_contains(Set* hash_set, int value){
 	acquire(hash_set,value);
@@ -109,22 +112,22 @@ void set_destroy(){
 
 
 
-int main(){
-	set_create();
-	
-	add(&set,20);
-	print_hash(&set);
-	add(&set,17);
-	print_hash(&set);
-	discard(&set,17);
-	print_hash(&set);
-	add(&set,46);
-	print_hash(&set);
-	add(&set,30);
-	print_hash(&set);
-	
-	
-	
-	set_destroy();
-	return 0;
-}
+// int main(){
+// 	set_create();
+//
+// 	add(&set,20);
+// 	print_hash(&set);
+// 	add(&set,17);
+// 	print_hash(&set);
+// 	discard(&set,17);
+// 	print_hash(&set);
+// 	add(&set,46);
+// 	print_hash(&set);
+// 	add(&set,30);
+// 	print_hash(&set);
+//
+//
+//
+// 	set_destroy();
+// 	return 0;
+// }
