@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/* --------------- forward declarations ----------- */
+
+int** results;
+int length; // number of perm arrays
+int result_length; // length of perm array
+
+int fact(int n); // returns factorial of n
+int num_perms(int n, int* counts); // returns number of permutations for count array
+
+void print_array(int* array, int size);
+void permAux(int n, int* counts, int* stack, int loc);
+bool zeroCheck(int* arr, int size);
+int* perm(int* counts, int size);
+
+/* ----------------------- end -------------------- */
+
+int fact(int n){
+    int result = 1;
+
+    for (int i = 1; i <= n; i++){
+        result *= i;
+    }
+    return result;
+}
+
+int num_perms(int n, int * counts){
+    int sum = 0;
+    for (int i = 0; i < n; i++){
+        sum += counts[i];
+    }
+    int numerator = fact(sum);
+    int denom = 1;
+    for (int i = 0; i < n; i++){
+        denom *= fact(counts[i]);
+    }
+    return numerator/denom;
+}
+
+void append(int* array, int n){
+}
+
+void result_append(int** array, int* n){
+}
+
+void permAux(n, counts, stack, loc){
+	for (int i = 0; i < 3; i++){
+		if (counts[i] > 0){ // print array
+			stack.append(i);
+			int* modified = counts;
+			modified[i] -= 1;
+			if (!zeroCheck(modified)){
+				tempStack = stack;
+				stack = tempStack;
+				permAux(n, modified, tempStack, loc);
+				stack = loc;
+            }
+			else{
+				printf("Appending this stack to results: %s", stack);
+				result_append(results, stack);
+            }
+        }
+    }
+}
+
+// checks modified counts 
+// if all are 0 then return true
+// else return false
+bool zeroCheck(int* arr, int size){
+	for(int i = 0; i < size; i++){
+		if(arr[i] != 0)
+			return false;
+    }
+	return true;
+}
+
+int** perm(int* counts, int size){
+    result_length = num_perms(size, counts);
+    results = (int **) malloc (result_length * sizeof(int *));
+	for(int i = 0; i < size; i++){
+		if(counts[i] > 0){
+            int* stack = (int*) calloc(length, sizeof(int));
+            append(stack, i);
+			modified = counts;
+			modified[i] -= 1;
+			permAux(len(counts), modified, [i], i);
+        }
+    }
+    return results;
+}
+
+int main(int argc, char* argv[]){
+    int* counts = (int *){1,1,1};
+    length = 3;
+    int** results = perm(counts, length);
+    for(int i = 0; i < result_length; i++){
+        for(int j = 0; j < length; j++){
+            printf("%d ", results[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
