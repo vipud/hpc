@@ -55,8 +55,13 @@ bool set_contains(Set* hash_set, int value){
 bool set_add(Set* hash_set, int value){
 	acquire(hash_set,value);
 	
-	if (!contains(hash_set,value)){ //if the hash set does not contain the element
-		hash_set->table[hash_fxn(value)] = (int*) value;
+	int val;
+	
+	val =  hash_set->table[hash_fxn(value)][0];
+	
+	printf("%d\n", (int) val);
+	if (val == 0){ //if the hash set does not contain the element
+		hash_set->table[hash_fxn(value)][0] = value;
 		printf("added %d to table[%d]\n", value, hash_fxn(value));
 		release(hash_set,value);
 		return true;
@@ -73,11 +78,11 @@ bool set_remove(Set* hash_set, int value){
 	
 	int val;
 	
-	val = (int) hash_set->table[hash_fxn(value)];
+	val =  hash_set->table[hash_fxn(value)][0];
 	
 	if (val == value){
 		int temp = val;
-		hash_set->table[hash_fxn(value)] = 0;
+		hash_set->table[hash_fxn(value)][0] = 0;
 		printf("removed %d from table[%d]\n", temp, hash_fxn(value));
 		release(hash_set,value);
 		return true;
@@ -93,41 +98,50 @@ void print_hash(Set* hash_set){
    // print table
    printf("table: ");
    for(int i = 0; i < SIZE; i++){
-       printf("%d ", hash_set->table[i]);
+       printf("%d ", hash_set->table[i][0]);
    }
    printf("\n");
 }
 
-void set_create(){
-	Set set;
-	set.table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
+Set* set_create(){
+	Set *set;
+	set = (Set *) malloc (sizeof(Set));
+	set->items = 0;
+	set->lock = false;
+	set->table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
 	for (int i = 0; i < SIZE; i++){
-		set.table[i] = (int *) calloc (1 , sizeof(int));
+		set->table[i] = (int *) calloc (1 , sizeof(int));
 	}
+	return set;
 }
 
-void set_destroy(){
-	free(set.table);
+bool set_destroy(Set* set){
+	for(int i = 0; i < SIZE; i++){
+		free(set->table[i]);
+	}
+	free(set->table);
+	free(set);
+	return true;
 }
 
 
 
-// int main(){
-// 	set_create();
-//
-// 	add(&set,20);
-// 	print_hash(&set);
-// 	add(&set,17);
-// 	print_hash(&set);
-// 	discard(&set,17);
-// 	print_hash(&set);
-// 	add(&set,46);
-// 	print_hash(&set);
-// 	add(&set,30);
-// 	print_hash(&set);
-//
-//
-//
-// 	set_destroy();
-// 	return 0;
-// }
+int main(){
+	Set* set = set_create();
+
+	set_add(set,20);
+	print_hash(set);
+	set_add(set,17);
+	print_hash(set);
+	set_remove(set,17);
+	print_hash(set);
+	set_add(set,46);
+	print_hash(set);
+	set_add(set,30);
+	print_hash(set);
+
+
+
+	set_destroy(set);
+	return 0;
+}
