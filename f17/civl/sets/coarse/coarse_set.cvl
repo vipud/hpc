@@ -57,7 +57,7 @@ bool set_add(Set* hash_set, int value){
 	
 	int val;
 	
-	val = (int) hash_set->table[hash_fxn(value)];
+	val =  hash_set->table[hash_fxn(value)][0];
 	
 	printf("%d\n", (int) val);
 	if (val == 0){ //if the hash set does not contain the element
@@ -78,7 +78,7 @@ bool set_remove(Set* hash_set, int value){
 	
 	int val;
 	
-	val = (int) hash_set->table[hash_fxn(value)];
+	val =  hash_set->table[hash_fxn(value)][0];
 	
 	if (val == value){
 		int temp = val;
