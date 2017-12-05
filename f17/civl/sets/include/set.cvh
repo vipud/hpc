@@ -1,6 +1,4 @@
 // set.cvl
-#include <stdbool.h>
-
 struct _set;
 typedef struct _set Set;
 
@@ -18,7 +16,7 @@ typedef struct _set Set;
  * - the set exists and is unlocked
  * - the value is successfully stored in the set 
  */
-bool set_add(Set* set, int value);
+_Bool set_add(Set* set, int value);
 
 
 /* remove(Set* set, int value)
@@ -34,7 +32,7 @@ bool set_add(Set* set, int value);
  * - the set exists and is unlocked
  * - the value is successfully removed from the set
  */
-bool set_remove(Set* set, int value);
+_Bool set_remove(Set* set, int value);
 
 
 /* contains(Set* set, int value)
@@ -49,7 +47,7 @@ bool set_remove(Set* set, int value);
  * - the set exists and is unlocked
  * - the value can be referenced at some location in the set
  */
-bool set_contains(Set* set, int value);
+_Bool set_contains(Set* set, int value);
 
 
 /* create()
@@ -72,12 +70,6 @@ Set* set_create();
  * A set is destroyed if:
  * - its memory has been freed 
  */
-bool set_destroy(Set* set); 
-
-/* set_equals(Set* set1, Set* set2)
- * Input: 2 Sets, each
- *
- */
-bool set_equals(Set* set1, Set* set2);
+_Bool set_destroy(Set* set); 
 
 int set_getsize(Set* set);

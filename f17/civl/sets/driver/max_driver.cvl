@@ -5,11 +5,11 @@
  */
 
 // Dependencies
-#include "set.cvh"
-#include "min_set.cvl"
-#include "num_perms.c"
+#include "../include/set.cvh"
+#include "perm_util.c"
 #include <stdio.h>	// Printing outputs
 #include <string.h>	// Output content.
+#include <stdbool.h>
 
 // Defs
 #define ADD true
@@ -28,7 +28,7 @@ int num_vals;
 int num_steps;
 int num_perms;
 int nsteps[nthreads];
-bool ops[nthreads][STP_B];
+_Bool ops[nthreads][STP_B];
 int vals[nthreads][STP_B];
 
 void printInitInfo() {
@@ -36,7 +36,7 @@ void printInitInfo() {
   printf("[Init]\t Num of steps: %d\n", num_steps);
 }
 
-void printSet(bool* s) {
+void printSet(_Bool* s) {
   printf("\t{");
   for (int v = 0; v < num_vals; v++) {
     if (s[v] == true)
@@ -45,7 +45,7 @@ void printSet(bool* s) {
   printf("}");
 }
 
-void printOpInfo(int type, int tid, bool op, int val, bool* results) {
+void printOpInfo(int type, int tid, _Bool op, int val, _Bool* results) {
   if (type == RESULT) {
     printf("[RESULT]");
   } else if (type == ACTUAL) {
@@ -60,15 +60,15 @@ void printOpInfo(int type, int tid, bool op, int val, bool* results) {
   printf("\n");
 }
 
-void printOpInfo_set(int type, int tid, bool op, int val, Set* set) {
-  bool temp_results[num_vals];
+void printOpInfo_set(int type, int tid, _Bool op, int val, Set* set) {
+  _Bool temp_results[num_vals];
 
   for (int val = 0; val < num_vals; val++)
     temp_results[val] = set_contains(set, val);
   printOpInfo(type, tid, op, val, temp_results);
 }
 
-void printEquivSeqInfo(int* perms, bool* results) {
+void printEquivSeqInfo(int* perms, _Bool* results) {
   int step_counters[nthreads];
 
   for (int tid = 0; tid < nthreads; tid++)
@@ -78,7 +78,7 @@ void printEquivSeqInfo(int* perms, bool* results) {
   for (int step = 0; step < num_steps; step++) {
     int tid = perms[step];
     int step_local = step_counters[tid];
-    bool op = ops[tid][step_local];
+    _Bool op = ops[tid][step_local];
     int val = vals[tid][step_local];
 
     printOpInfo(RESULT, tid, op, val, results);
@@ -107,7 +107,7 @@ void thread(int tid, Set* set) {
   int num_steps_local = nsteps[tid];
   
   for (int step = 0; step < num_steps_local; step++) {
-    bool op = ops[tid][step];
+    _Bool op = ops[tid][step];
     int val = vals[tid][step];
 
     if (op == ADD) 
@@ -118,7 +118,7 @@ void thread(int tid, Set* set) {
   }
 }
 
-void permseq(int pid, int* perm, bool* oracle_results) {
+void permseq(int pid, int* perm, _Bool* oracle_results) {
   int step_counters[nthreads];
 
   for (int tid = 0; tid < nthreads; tid++)
@@ -127,7 +127,7 @@ void permseq(int pid, int* perm, bool* oracle_results) {
   for (int step_seq = 0; step_seq < num_steps; step_seq++) {
     int tid = perm[step_seq];
     int step = step_counters[tid];
-    bool op = ops[tid][step];
+    _Bool op = ops[tid][step];
     int val = vals[tid][step];
 
     if (op == ADD)
@@ -139,7 +139,7 @@ void permseq(int pid, int* perm, bool* oracle_results) {
   }
 }
 
-bool isEqual(bool* actual, bool* oracle) {
+_Bool isEqual(_Bool* actual, _Bool* oracle) {
   for (int val = 0; val < num_vals; val++)
     if (actual[val] != oracle[val])
       return false;
@@ -152,8 +152,8 @@ int main() {
 
   int pid = 0;
   int** perms = compute_perms(nthreads, nsteps);
-  bool actual_results[num_vals];
-  bool oracle_results[num_vals];
+  _Bool actual_results[num_vals];
+  _Bool oracle_results[num_vals];
   Set* actual_set = set_create();
  
   $parfor (int tid : 0 .. nthreads-1) {
@@ -172,8 +172,10 @@ int main() {
       break;
     }
   }
-  $assert(num_steps < 1 || pid < num_perms);
-  
+  if (num_steps > 0 && pid >= num_perms) {
+    printEquivSeqInfo(perms[0], oracle_results);
+    $assert(false);
+  }
   set_destroy(actual_set);
   for (int i = 0; i < num_perms; i++)
     free(perms[i]);

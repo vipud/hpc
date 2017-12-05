@@ -2,7 +2,17 @@
 # CHANGE/DELETE AS NEEDED
 
 CC = gcc
-CIVL = civl
+CIVL = java -jar /home/vmubuntu/CIVL/civl.jar
+
+naive_2 : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
+          include/set.cvh
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=2 \
+                driver/max_driver.cvl naive/naive_set.cvl 
+
+striped_2 : striped/striped_set.cvl driver/max_driver.cvl driver/perm_util.c \
+          include/set.cvh
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=2 \
+                driver/max_driver.cvl striped/striped_set.cvl
 
 # replace 'example.c' with your file name!
 # compile - 'make example'

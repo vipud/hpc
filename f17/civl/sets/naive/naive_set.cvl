@@ -4,19 +4,22 @@
  * VSL Lab; Dept. CIS; UDel
  */
 /* Dependent Headers */
-#include "set.cvh"	// Set Interface 
+#include "../include/set.cvh"	// Set Interface 
 #include <stdlib.h>	// Malloc
 #include <stdio.h>	// Printing outputs
 #include <string.h>	// Output content.
+#include <stdbool.h>
 
 int SIZE = 10;		// Default initial size
 
-struct _set;
+//struct _set;
 
-typedef struct _set {
+struct _set {
   int size;	// Set size
-  bool* table;	// Set values
-} Set;
+  _Bool* table;	// Set values
+};
+
+typedef struct _set Set;
 
 void printS(Set* s) {
   printf("\t{");
@@ -26,11 +29,11 @@ void printS(Set* s) {
   printf("}\n");
 }
 
-$atomic_f bool set_contains(Set* s, int v) {
+$atomic_f _Bool set_contains(Set* s, int v) {
   return s->table[v];
 }
 
-$atomic_f bool set_add(Set* s, int v) {
+$atomic_f _Bool set_add(Set* s, int v) {
   if (v >= 0 && s->table[v] == false) {
     s->table[v] = true;
     return true;
@@ -38,7 +41,7 @@ $atomic_f bool set_add(Set* s, int v) {
   return false;
 }
 
-$atomic_f bool set_remove(Set* s, int v) {
+$atomic_f _Bool set_remove(Set* s, int v) {
   if (v >= 0) {
     s->table[v] = false;
     return true;
@@ -57,7 +60,7 @@ Set* set_create() {
   return s;
 }
 
-bool set_destroy(Set* s) {
+_Bool set_destroy(Set* s) {
   free(s->table);
   free(s);
   return true;

@@ -7,15 +7,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "../set.cvh"
+#include "../include/set.cvh"
 
 int SIZE = 9;
 int LOCKS = SIZE;
 int CAP = 3;
 
-struct _set;
-
-typedef struct _set
+struct _set
 {
     int** table;          //table array of arrays
     bool* locks;          //locks array
@@ -23,7 +21,9 @@ typedef struct _set
     int size;             //number of buckets
     int locksSize;        //number of locks
     int cap;              //limit on bucket entries
-} Set;
+};
+
+typedef struct _set Set;
 
 //hash function definition
 int set_hash(Set* hash_set, int x)
