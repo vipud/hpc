@@ -278,11 +278,12 @@ _Bool set_add(Set* hashset, int x){
       mustResize = true;
     }
     //release(hashset, x);
-  }
-  if(set_contains(hashset, x)){
-    printf("set already contains %d\n", x);
+  } else if(set_contains(hashset, x)){
+    //printf("set already contains %d\n", x);
     return true;
-  } else if(mustResize){
+  }
+
+  if(mustResize){
     printf("resize and add\n");
     set_resize(hashset);
     //set_add(hashset, x);
@@ -357,24 +358,39 @@ int main(int argc, char* argv[]){
   printf("Working\n");
   Set* hset;
   hset = set_create();
-  
-  
-  // printf("%d\n", set_contains(hset, 3));
-  // printf("%d\n", set_contains(hset, 0));
 
+  printf("\nTESTING ADD\n");
   set_add(hset, 3);
   set_add(hset, 5);
+  set_add(hset, 32);
+  set_add(hset, 54);
+  set_add(hset, 31);
+  set_add(hset, 25);
+  set_add(hset, 63);
+  set_add(hset, 34);
+  set_add(hset, 39);
+  set_add(hset, 15);
+  set_add(hset, 53);
+  set_add(hset, 65);
+  set_add(hset, 43);
+  set_add(hset, 2);
+  set_add(hset, 1);
+  set_add(hset, 9);
+  set_add(hset, 30);
+  set_add(hset, 50);
   set_print(hset);
-  /*
-  printf("\n");
+  
+  printf("\nTESTING CONTAINS\n");
+  printf("%d\n", set_contains(hset, 3));
+  printf("%d\n", set_contains(hset, 16));
+
+  
+  printf("\nTESTING REMOVE\n");
   set_remove(hset, 91);
   set_remove(hset, 88);
   set_remove(hset, 3);
   set_remove(hset, 5);
   set_print(hset);
-  */
-  set_resize(hset);
-
   //free memory
   set_destroy(hset);
 
