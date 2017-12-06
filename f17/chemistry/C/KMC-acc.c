@@ -225,7 +225,7 @@ int main(){
     }
   }
 //////////////////////////////////////////////////////////////////////////
-  double randomNumbers[N_traj][2][2000];
+  double randomNumbers[N_traj][2][500];
   for(int i =0; i< N_traj; i++){
     srand(rand_seed + i);
     for(int j = 0; j<2; j++){
@@ -398,7 +398,6 @@ int main(){
    // printf("trial %i \n ", countiii++);
   }
 }
-
 /////////////////////////////////////////////////////////////////////////////////
   for(int i = 0; i<N_traj; i++){
     for(int j = 0; j< N_record; j++){
