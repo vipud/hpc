@@ -225,11 +225,11 @@ int main(){
     }
   }
 //////////////////////////////////////////////////////////////////////////
-  double randomNumbers[N_traj][2][500];
+  double randomNumbers[N_traj][2][2000];
   for(int i =0; i< N_traj; i++){
     srand(rand_seed + i);
     for(int j = 0; j<2; j++){
-      for(int k =0; k< 500; k++){
+      for(int k =0; k< 2000; k++){
         randomNumbers[i][j][k] = ((double) rand() / (double)(RAND_MAX));
       }
     }
