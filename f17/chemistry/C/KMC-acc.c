@@ -225,11 +225,12 @@ int main(){
     }
   }
 //////////////////////////////////////////////////////////////////////////
-  double randomNumbers[N_traj][2][2000];
+  int numOfRandom = 2000;
+  double randomNumbers[N_traj][2][numOfRandom];
   for(int i =0; i< N_traj; i++){
     srand(rand_seed + i);
     for(int j = 0; j<2; j++){
-      for(int k =0; k< 2000; k++){
+      for(int k =0; k< numOfRandom; k++){
         randomNumbers[i][j][k] = ((double) rand() / (double)(RAND_MAX));
       }
     }
@@ -286,7 +287,7 @@ int main(){
     }
   }
 
-#pragma acc data copyin (N[:N_traj][:n_specs], t_trunc[:N_traj], t[:N_traj], t_prev[:N_traj], dt[:N_traj], rxn_to_fire_ind[:N_traj], ind_rec[:N_traj], props[:N_traj][:n_rxns], W[:N_traj][:n_params], prop_ders[:N_traj][:n_rxns][:n_params], prop_ders_sum[:N_traj][:n_params], spec_profile[:N_traj][:N_record][:n_specs], traj_deriv_profile[:N_traj][:N_record][:n_params], stoich_mat[:n_rxns][:n_specs], rate_const[:n_rxns], randomNumbers[:N_traj][:2][:2000], t_rec[:N_record]) copyout(spec_profile[:N_traj][:N_record][:n_specs], traj_deriv_profile[:N_traj][:N_record][:n_params])
+#pragma acc data copyin (N[:N_traj][:n_specs], t_trunc[:N_traj], t[:N_traj], t_prev[:N_traj], dt[:N_traj], rxn_to_fire_ind[:N_traj], ind_rec[:N_traj], props[:N_traj][:n_rxns], W[:N_traj][:n_params], prop_ders[:N_traj][:n_rxns][:n_params], prop_ders_sum[:N_traj][:n_params], spec_profile[:N_traj][:N_record][:n_specs], traj_deriv_profile[:N_traj][:N_record][:n_params], stoich_mat[:n_rxns][:n_specs], rate_const[:n_rxns], randomNumbers[:N_traj][:2][:numOfRandom], t_rec[:N_record]) copyout(spec_profile[:N_traj][:N_record][:n_specs], traj_deriv_profile[:N_traj][:N_record][:n_params])
 {
 #pragma acc parallel loop independent
   for (int x = 0; x < N_traj; x++){
@@ -398,6 +399,7 @@ int main(){
    // printf("trial %i \n ", countiii++);
   }
 }
+
 /////////////////////////////////////////////////////////////////////////////////
   for(int i = 0; i<N_traj; i++){
     for(int j = 0; j< N_record; j++){
