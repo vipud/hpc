@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define LOAD_FACTOR 0.75
+
 int SIZE = 5;
 bool LOCK = false;
 
@@ -35,7 +37,18 @@ $atomic_f void release(Set* hash_set, int value)
 }
 
 bool set_resize(Set* hash_set){
+	int old_size = SIZE;
+	int ** new_table;
+	new_table = (int **) malloc (new_size * sizeof(int*));
+	for (int i = 0; i < new_size; i++){
+		new_table[i] = (int *) calloc (1, sizeof(int));
+	}
 	
+	
+	
+	for (int i = 0; i < SIZE; i++){
+		int value = hash_set->table[i][0]
+	}
 }
 
 bool set_contains(Set* hash_set, int value){
@@ -63,6 +76,10 @@ bool set_add(Set* hash_set, int value){
 	if (val == 0){ //if the hash set does not contain the element
 		hash_set->table[hash_fxn(value)][0] = value;
 		printf("added %d to table[%d]\n", value, hash_fxn(value));
+		hash_set->items+=1;
+		if((items / SIZE) > LOAD_FACTOR){
+			set_resize(hash_set);
+		}
 		release(hash_set,value);
 		return true;
 	}
@@ -84,6 +101,7 @@ bool set_remove(Set* hash_set, int value){
 		int temp = val;
 		hash_set->table[hash_fxn(value)][0] = 0;
 		printf("removed %d from table[%d]\n", temp, hash_fxn(value));
+		hash_set->items-=1;
 		release(hash_set,value);
 		return true;
 	}
