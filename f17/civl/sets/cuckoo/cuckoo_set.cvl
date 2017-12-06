@@ -29,6 +29,7 @@ void locks_print(Set* hashset){
     }
     printf("\n");
   }
+  printf("\n");
 }
 
 //hash function definition for table0
@@ -49,16 +50,14 @@ $atomic_f void acquire(Set* hashset, int value)
   int h1 = set_hash1(hashset, value);
   $when(hashset->locks[0][h0] == false) hashset->locks[0][h0] = true;
   $when(hashset->locks[1][h1] == false) hashset->locks[1][h1] = true;
+  //locks_print(hashset);
 }
 
 $atomic_f void release(Set* hashset, int value)
 {
     hashset->locks[0][set_hash0(hashset, value)] = false;
     hashset->locks[1][set_hash1(hashset, value)] = false;
-}
-
-_Bool set_resize(Set* hashset){
-  return true;
+    //locks_print(hashset);
 }
 
 //returns true if hashtable contains item x
@@ -93,6 +92,56 @@ void set_print(Set* hashset){
     }
     printf("\n");
   }
+  printf("\n");
+}
+
+_Bool set_resize(Set* hashset){
+  printf("Time to resize...\n");
+  //int oldSize = hashset->probe_size;
+  //acquire all locks
+  for (int i = 0; i < hashset->num_probes; i++){
+    acquire(hashset,i);
+  }
+  
+  //if (oldSize == hash_set->size)
+  //{
+  int*** old = hashset->table;
+  hashset->probe_size = hashset->probe_size * 2;
+  hashset->threshold = hashset->threshold * 2;
+  hashset->table = (int ***) malloc(NUM_TABLES * sizeof(int **));
+  for (int i = 0; i < NUM_TABLES; i++){
+    hashset->table[i] = (int **) malloc(hashset->num_probes * sizeof(int *));
+    for (int j = 0; j < hashset->num_probes; j++){
+      hashset->table[i][j] = (int *) calloc(hashset->probe_size, sizeof(int));
+    }
+  }
+
+  //add the old elements to the new table
+  for(int i = 0; i < NUM_TABLES; i++){
+    for(int j = 0; j < hashset->num_probes; j++){
+      for(int k = 0; k < hashset->probe_size/2; k++){
+        if(old[i][j][k] != 0)
+          hashset->table[i][j][k] = old[i][j][k];
+      }
+    }
+  }
+
+  // free memory of old table
+  for(int j = 0; j < NUM_TABLES; j++){
+    for (int i = 0; i < hashset->probe_size/2; i++){
+      free(old[j][i]);
+    }
+    free(old[j]);
+  }
+  free(old);
+  
+  for (int j = 0; j < hashset->num_probes; j++){
+    release(hashset, j);
+  }
+
+  set_print(hashset);
+
+  return true;
 }
 
 int probe_get_items(Set* hashset, int tableIndex, int probeIndex){
@@ -309,55 +358,23 @@ int main(int argc, char* argv[]){
   Set* hset;
   hset = set_create();
   
-  printf("%d\n", set_contains(hset, 3));
-  printf("%d\n", set_contains(hset, 0));
   
-  /*
+  // printf("%d\n", set_contains(hset, 3));
+  // printf("%d\n", set_contains(hset, 0));
+
   set_add(hset, 3);
   set_add(hset, 5);
-  set_add(hset, 30);
-  set_add(hset, 54);
-  set_add(hset, 32);
-  set_add(hset, 51);
-  set_add(hset, 32);
-  set_add(hset, 45);
-  set_add(hset, 45);
-  set_add(hset, 31);
-  set_add(hset, 52);
-  set_add(hset, 39);
-  set_add(hset, 52);
-  set_add(hset, 36);
-  set_add(hset, 99);
-  set_add(hset, 8);
-  set_add(hset, 17);
-  set_add(hset, 11);
-  set_add(hset, 37);
-  set_add(hset, 51);
-  set_add(hset, 32);
-  set_add(hset, 59);
-  set_add(hset, 31);
-  set_add(hset, 50);
-  set_add(hset, 34);
-  set_add(hset, 49);
-  set_add(hset, 47);
-  set_add(hset, 37);
-  set_add(hset, 58);
-  set_add(hset, 33);
-  set_add(hset, 5);
-  set_add(hset, 6);
-  */
-  set_add(hset, 91);
-  set_add(hset, 88);
-  set_add(hset, 14);
-  set_add(hset, 19);
   set_print(hset);
+  /*
   printf("\n");
   set_remove(hset, 91);
   set_remove(hset, 88);
   set_remove(hset, 3);
   set_remove(hset, 5);
   set_print(hset);
-  
+  */
+  set_resize(hset);
+
   //free memory
   set_destroy(hset);
 
