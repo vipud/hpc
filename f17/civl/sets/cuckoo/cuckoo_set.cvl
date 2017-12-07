@@ -11,6 +11,8 @@
 #define NUM_TABLES 2
 
 struct _set{
+  // int* moved; //elements moved by the relocate() function
+  // int* locations; //corresponding locations of the moved elements
   int items; //number of entries in a table
   int num_probes; //number of probes per table
   int probe_size; //max number of items in a probe
@@ -80,15 +82,7 @@ _Bool set_contains(Set* hashset, int x)
   acquire(hashset, x);
   int h0 = set_hash0(hashset, x);
   int h1 = set_hash1(hashset, x);
-  if(x == 3 || x == 21){
-    printf("h0: %d, h1: %d\n", h0, h1);
-    set_print(hashset);
-  }
   for(int i = 0; i < hashset->probe_size; i++){
-    if(x == 3 || x == 21){
-      //printf("i: %d, probesize: %d, h0: %d, h1: %d\n", i, hashset->probe_size, h0, h1);
-      //printf("hashset->[0][h0][i]: %d, hashset->[1][h1][i]: %d\n", hashset->table[0][h0][i], hashset->table[1][h1][i]);
-    }
     if(hashset->table[0][h0][i] == x){
       release(hashset, x);
       //printf("%d is in table 0, node %d, index %d\n", x, h0, i);
@@ -99,7 +93,7 @@ _Bool set_contains(Set* hashset, int x)
       return true;
     }
   }
-  
+
   release(hashset, x);
   //printf("%d is not in the table\n", x);
   return false;
@@ -223,6 +217,19 @@ _Bool set_remove(Set* hashset, int x){
       }
     }
   }
+
+  for(int i=0; i<NUM_TABLES; i++){
+    for(int j=0; j<hashset->num_probes; j++){
+      for(int k=0; k<hashset->probe_size; k++){
+        if(hashset->table[i][j][k] == x){
+          hashset->table[i][j][k] = -1;
+          return true;
+        }
+      }
+    }
+  }
+
+  
   printf("Failed to remove %d\n", x);
   return false; //x is not in set
 }
@@ -281,12 +288,10 @@ _Bool set_add(Set* hashset, int x){
       probe_add(hashset, 1, h1, x);
       return true;
     } else if(h0_size < hashset->probe_size){
-      printf("h0 < probe_size\n");
       i = 0;
       h = h0;
       probe_add(hashset, i, h, x);
     } else if(h1_size < hashset->probe_size){
-      printf("h1 < probe_size\n");
       i = 1;
       h = h1;
       probe_add(hashset, i, h, x);
@@ -368,7 +373,7 @@ Set* set_create()
     return set;
 }
 
-
+/*
 int main(int argc, char* argv[]){
   printf("Working\n");
   Set* hset;
@@ -396,3 +401,4 @@ int main(int argc, char* argv[]){
 
   return 0;
 }
+*/
