@@ -32,6 +32,20 @@ void locks_print(Set* hashset){
   printf("\n");
 }
 
+void set_print(Set* hashset){
+  for (int i = 0; i < NUM_TABLES; i++){
+    printf("Table %d\n", i);
+    for (int j = 0; j < hashset->num_probes; j++){
+      for (int k = 0; k < hashset->probe_size; k++){
+        printf("%d ", hashset->table[i][j][k]);
+      }
+      printf("\n");
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
 //hash function definition for table0
 int set_hash0(Set* hashset, int x)
 {
@@ -66,7 +80,15 @@ _Bool set_contains(Set* hashset, int x)
   acquire(hashset, x);
   int h0 = set_hash0(hashset, x);
   int h1 = set_hash1(hashset, x);
+  if(x == 3 || x == 21){
+    printf("h0: %d, h1: %d\n", h0, h1);
+    set_print(hashset);
+  }
   for(int i = 0; i < hashset->probe_size; i++){
+    if(x == 3 || x == 21){
+      //printf("i: %d, probesize: %d, h0: %d, h1: %d\n", i, hashset->probe_size, h0, h1);
+      //printf("hashset->[0][h0][i]: %d, hashset->[1][h1][i]: %d\n", hashset->table[0][h0][i], hashset->table[1][h1][i]);
+    }
     if(hashset->table[0][h0][i] == x){
       release(hashset, x);
       //printf("%d is in table 0, node %d, index %d\n", x, h0, i);
@@ -77,23 +99,13 @@ _Bool set_contains(Set* hashset, int x)
       return true;
     }
   }
+  
   release(hashset, x);
   //printf("%d is not in the table\n", x);
   return false;
 
 }
 
-void set_print(Set* hashset){
-  for (int i = 0; i < NUM_TABLES; i++){
-    for (int j = 0; j < hashset->num_probes; j++){
-      for (int k = 0; k < hashset->probe_size; k++){
-        printf("%d ", hashset->table[i][j][k]);
-      }
-    }
-    printf("\n");
-  }
-  printf("\n");
-}
 
 _Bool set_resize(Set* hashset){
   printf("Time to resize...\n");
@@ -114,11 +126,21 @@ _Bool set_resize(Set* hashset){
     }
   }
 
+  for(int i = 0; i < NUM_TABLES; i++){
+    for(int j = 0; j < hashset->num_probes; j++){
+      for(int k = 0; k < hashset->probe_size; k++){
+        hashset->table[i][j][k] = -1;
+      }
+    }
+  }
+
+  set_print(hashset);
+
   //add the old elements to the new table
   for(int i = 0; i < NUM_TABLES; i++){
     for(int j = 0; j < hashset->num_probes; j++){
       for(int k = 0; k < hashset->probe_size/2; k++){
-        if(old[i][j][k] != 0)
+        if(old[i][j][k] != -1)
           hashset->table[i][j][k] = old[i][j][k];
       }
     }
@@ -145,7 +167,7 @@ _Bool set_resize(Set* hashset){
 int probe_get_items(Set* hashset, int tableIndex, int probeIndex){
   int count = 0;
   for(int i = 0; i < hashset->probe_size; i++){
-    if(hashset->table[tableIndex][probeIndex][i] != 0)
+    if(hashset->table[tableIndex][probeIndex][i] != -1)
       count++;
   }
   return count;
@@ -154,7 +176,7 @@ int probe_get_items(Set* hashset, int tableIndex, int probeIndex){
 _Bool probe_add(Set* hashset, int tableIndex, int probeIndex, int x){
   acquire(hashset, x);
   for(int i = 0; i < hashset->probe_size; i++){
-    if(hashset->table[tableIndex][probeIndex][i] == 0){
+    if(hashset->table[tableIndex][probeIndex][i] == -1){
       hashset->table[tableIndex][probeIndex][i] = x;
       printf("%d added at table %d and probe %d\n", x, tableIndex, probeIndex);
       release(hashset, x);
@@ -170,7 +192,7 @@ _Bool probe_remove(Set* hashset, int tableIndex, int probeIndex, int x){
   acquire(hashset, x);
   for(int i = 0; i < hashset->probe_size; i++){
     if(hashset->table[tableIndex][probeIndex][i] == x){
-      hashset->table[tableIndex][probeIndex][i] = 0;
+      hashset->table[tableIndex][probeIndex][i] = -1;
       printf("Successful removed %d\n", x);
       release(hashset, x);
       return true;
@@ -189,16 +211,19 @@ _Bool set_remove(Set* hashset, int x){
     acquire(hashset, x);
     for(int i = 0; i < hashset->probe_size; i++){
       if(hashset->table[0][h0][i] == x){
-        hashset->table[0][h0][i] = 0;
+        hashset->table[0][h0][i] = -1;
         release(hashset, x);
+        printf("Successfully removed %d\n", x);
         return true;
       } else if(hashset->table[1][h1][i] == x){
-        hashset->table[1][h1][i] = 0;
+        hashset->table[1][h1][i] = -1;
         release(hashset, x);
+        printf("Successfully removed %d\n", x);
         return true;
       }
     }
   }
+  printf("Failed to remove %d\n", x);
   return false; //x is not in set
 }
 
@@ -209,7 +234,7 @@ _Bool relocate(Set* hashset, int i, int hi){
   int j = 1 - i;
   for(int round = 0; round < hashset->limit; round++){
     int y = hashset->table[i][hi][0];
-    if(i == 0){
+    if(i == -1){
       hj = set_hash1(hashset, y);
     } else if(i == 1){
       hj = set_hash0(hashset, y);
@@ -318,6 +343,14 @@ Set* set_create()
       }
     }
 
+    for(int i = 0; i < NUM_TABLES; i++){
+      for (int j = 0; j < set->num_probes; j++){
+        for(int k = 0; k < set->probe_size; k++){
+          set->table[i][j][k] = -1;
+        }
+      }
+    }
+
     set->locks = (_Bool **) malloc(NUM_TABLES * sizeof(int*));
     for(int i = 0; i < NUM_TABLES; i++){
       set->locks[i] = (_Bool *) malloc(set->num_probes * sizeof(_Bool));
@@ -335,7 +368,7 @@ Set* set_create()
     return set;
 }
 
-/*
+
 int main(int argc, char* argv[]){
   printf("Working\n");
   Set* hset;
@@ -363,4 +396,3 @@ int main(int argc, char* argv[]){
 
   return 0;
 }
-*/
