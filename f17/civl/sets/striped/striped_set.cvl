@@ -51,15 +51,15 @@ $atomic_f void printLocks(Set* hash_set)
 $atomic_f void acquire(Set* hash_set, int value)
 {
     $when(hash_set->locks[(value % hash_set->locksSize)] == false) hash_set->locks[lock_hash(hash_set,value)] = true;
-    printf("Lock %s acquired.\n", lock_hash(hash_set,value));
-    printLocks(hash_set);
+    //printf("Lock %s acquired.\n", lock_hash(hash_set,value));
+    //printLocks(hash_set);
 }
 
 $atomic_f void release(Set* hash_set, int value)
 {
     hash_set->locks[lock_hash(hash_set,value)] = false;
-    printf("Lock %s released.\n", lock_hash(hash_set,value));
-    printLocks(hash_set);
+    //printf("Lock %s released.\n", lock_hash(hash_set,value));
+    //printLocks(hash_set);
 }
 
 // contains checks if the value is in the hash set
@@ -101,7 +101,7 @@ bool force_add(Set* hash_set, int value)
     int slot = set_hash(hash_set,value);
     for (int i = 0; i < hash_set->cap; i++)
     {
-        if (hash_set->table[slot][i] == 0)
+        if (hash_set->table[slot][i] == -1)
         {
             hash_set->table[slot][i] = value;
             printf("%s inserted by force_add.\n", value);
@@ -132,8 +132,15 @@ bool set_resize(Set* hash_set)
         hash_set->size = hash_set->size * 2;
         hash_set->table = (int **) malloc(hash_set->size * sizeof(int *));
         for (int i = 0; i < hash_set->size; i++)
-            hash_set->table[i] = (int *) calloc(hash_set->cap, sizeof(int));
-        for (int i = 0; i < oldSize; i++)
+            hash_set->table[i] = (int *) malloc(hash_set->cap * sizeof(int));
+
+        //init to -1 new table
+        for (int i = 0; i < hash_set->size; i++)
+            for (int j = 0; j < hash_set->cap; j++)
+                hash_set->table[i][j] = -1;
+
+        //rehash values from old table
+        for (int i = 0; i < oldSize; i++)   
             for (int j = 0; j < hash_set->cap; j++)
                 force_add(hash_set, old[i][j]);
 
@@ -170,7 +177,7 @@ bool set_add(Set* hash_set, int value)
         int slot = set_hash(hash_set,value);
         for (int i = 0; i < hash_set->cap; i++)
         {
-            if (hash_set->table[slot][i] == 0)
+            if (hash_set->table[slot][i] == -1)
             {
                 hash_set->table[slot][i] = value;
                 printf("%s inserted.\n", value);
@@ -196,7 +203,7 @@ bool set_remove(Set* hash_set, int value)
     if(present) //remove
     {
         acquire(hash_set,value);
-        hash_set->table[set_hash(hash_set,value)][ind] = 0;
+        hash_set->table[set_hash(hash_set,value)][ind] = -1;
         printf("%s removed.\n", value);
         hash_set->items--;
         release(hash_set,value);
@@ -241,9 +248,14 @@ Set* set_create()
     //alloc table set->size * set->cap
     set->table = (int **) malloc(set->size * sizeof(int *));
     for (int i = 0; i < set->size; i++)
-       set->table[i] = (int *) calloc(set->cap, sizeof(int));
+        set->table[i] = (int *) malloc(set->cap * sizeof(int));
+
+    //init all entries to -1
+    for (int i = 0; i < set->size; i++)
+        for (int j = 0; j < set->cap; j++)
+            set->table[i][j] = -1;
     
-    //alloc all locks at open (0)
+    //alloc all locks
     set->locks = (bool *) malloc(set->locksSize * sizeof(bool));
 
     //init locks at false for all
