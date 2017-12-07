@@ -10,7 +10,7 @@
 
 #define NUM_TABLES 2
 
-typedef struct _set{
+struct _set{
   int items; //number of entries in a table
   int num_probes; //number of probes per table
   int probe_size; //max number of items in a probe
@@ -18,7 +18,9 @@ typedef struct _set{
   int limit; //resize when chain of phases exceeds this
   int*** table; //table of arrays
   _Bool** locks;  //locks array
-} Set;
+};
+
+typedef struct _set Set;
 
 void locks_print(Set* hashset){
   for(int i = 0; i < NUM_TABLES; i++){
@@ -283,7 +285,7 @@ _Bool set_add(Set* hashset, int x){
 }
 
 
-void set_destroy(Set* hashset){
+_Bool set_destroy(Set* hashset){
   for(int i = 0; i < NUM_TABLES; i++){
     for(int j = 0; j < hashset->num_probes; j++){
       free(hashset->table[i][j]);
@@ -294,6 +296,7 @@ void set_destroy(Set* hashset){
   free(hashset->locks);
   free(hashset->table);
   free(hashset);
+  return true;
 }
 
 
@@ -332,7 +335,7 @@ Set* set_create()
     return set;
 }
 
-
+/*
 int main(int argc, char* argv[]){
   printf("Working\n");
   Set* hset;
@@ -360,3 +363,4 @@ int main(int argc, char* argv[]){
 
   return 0;
 }
+*/
