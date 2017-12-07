@@ -1,5 +1,5 @@
-# GENERIC MAKEFILE
-# CHANGE/DELETE AS NEEDED
+# make <algorithmname_type>
+# For running test driver with your algorithm interfaced
 
 CC = gcc
 CIVL = civl
