@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "linked_list.h"
+#include "../include/set.cvh"
 
 #define LOAD_FACTOR 0.75
 
@@ -8,17 +9,17 @@ int SIZE = 5;
 _Bool LOCK = false;
 struct _set;
 
-typedef struct _set{
+struct _set{
 	List** table; // array of linked lists
 	_Bool lock; // lock to enable concurrent operations
 	int items; // number of items in the set
-} Set;
-
-_Bool set_policy(Set* set){
-    float numerator = set->items;
+};
+typedef struct _set Set;
+_Bool set_policy(Set* hash_set){
+    float numerator = hash_set->items;
     float denominator = SIZE;
     float result = (float)(numerator / denominator);
-    printf("policy val = %0.2f\n", result);
+    //printf("policy val = %0.2f\n", result);
     return (result > 0.75); 
 }
 
@@ -55,6 +56,7 @@ _Bool set_resize(Set* hash_set){
         while(temp != NULL){ // hash all values in list
             int value = temp->val;
             if(value != -1){ // -1 = null val, ignore 
+                //printf("value = %d\n", value);
                 int hash_val = hash_fxn(value);
                 append_list(new_table[hash_val], value); 
             }
@@ -88,9 +90,11 @@ _Bool set_add(Set* hash_set, int value){
     _Bool contains = contains_list(hash_set->table[hash_val], value);
 	if (!contains){ // if the hash set does not contain the element
         append_list(hash_set->table[hash_val], value);
-		printf("added %d to table[%d]\n", value, hash_fxn(value));
-		hash_set->items+=1;
+		//printf("added %d to table[%d]\n", value, hash_fxn(value));
+		hash_set->items += 1;
+        //print_hash(hash_set);
 		if(set_policy(hash_set)){
+            //printf("load factor passed, resizing...\n");
 			set_resize(hash_set);
 		}
 		release(hash_set,value);
@@ -111,7 +115,7 @@ _Bool set_remove(Set* hash_set, int value){
     _Bool contains = contains_list(hash_set->table[hash_val], value);
 	if (contains){
         remove_list(&(hash_set->table[hash_val]), value);
-        //append_list(hash_set->table[hash_val], -1); // null val
+        //append_list(hash_set->table[hash_val], -1);
 		hash_set->items-=1;
 		release(hash_set,value);
 		return true;
@@ -123,7 +127,6 @@ _Bool set_remove(Set* hash_set, int value){
 
 void print_hash(Set* hash_set){
    // print table
-   printf("table: ");
    for(int i = 0; i < SIZE; i++){
        printf("table[%d]: ", i);
        print_list(hash_set->table[i]);
@@ -152,6 +155,7 @@ _Bool set_destroy(Set* set){
 	return true;
 }
 
+/*
 int main(){
 	Set* set = set_create();
 
@@ -165,11 +169,14 @@ int main(){
     print_hash(set);
 	set_add(set,46);
 	print_hash(set);
+    printf("adding 30\n");
 	set_add(set,30);
 	print_hash(set);
+    printf("adding 2\n");
     set_add(set,2);
     print_hash(set);
 
 	set_destroy(set);
 	return 0;
 }
+*/

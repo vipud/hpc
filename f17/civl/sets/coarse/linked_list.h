@@ -18,7 +18,8 @@ List* create_list(int val){
 // add a new List
 bool append_list(List* head, int val){
     if(head == NULL){
-        return false;
+        head = create_list(-1);
+        return true;
     }
     if(head->val == -1){
         head->val = val;
@@ -62,11 +63,16 @@ bool remove_list(List** head, int val){
         return false;
     }
     else if(cursor->val == val){
-        temp = *head;
-        *head = (*head)->next;
-        printf("deleting %d\n", temp->val);
-        free(temp);
-        return true;
+        if(cursor->next == NULL){ // if head, replace w/ -1
+            cursor->val = -1;
+            return true;
+        } else {
+            temp = *head;
+            *head = (*head)->next;
+            printf("deleting %d\n", temp->val);
+            free(temp);
+            return true;
+        }
     }
     List* cursor_next = (*head)->next;;
     while(cursor != NULL && cursor_next != NULL){ // run through list
