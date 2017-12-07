@@ -44,24 +44,24 @@ cuckoo_6v : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
 	$(CIVL) verify -inputVAL_B=6 -inputTHD_B=2 -inputSTP_B=2 \
                 driver/max_driver.cvl cuckoo/cuckoo_set.cvl
 
-naive_4t : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
+naive_3t : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
-	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=4 -inputSTP_B=2 \
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
                 driver/max_driver.cvl naive/naive_set.cvl 
 
-striped_4t : striped/striped_set.cvl driver/max_driver.cvl driver/perm_util.c \
+striped_3t : striped/striped_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
-	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=4 -inputSTP_B=2 \
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
                 driver/max_driver.cvl striped/striped_set.cvl
 
-coarse_4t : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
+coarse_3t : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
-	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=4 -inputSTP_B=2 \
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
                 driver/max_driver.cvl coarse/coarse_set.cvl
 
-cuckoo_4t : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
+cuckoo_3t : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
-	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=4 -inputSTP_B=2 \
+	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
                 driver/max_driver.cvl cuckoo/cuckoo_set.cvl
 
 naive_3s : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
