@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include "linked_list.h"
 
 #define LOAD_FACTOR 0.75
 
 int SIZE = 5;
-bool LOCK = false;
-
-
+_Bool LOCK = false;
 struct _set;
 
 typedef struct _set{
-	int** table;
-	bool lock;
-	int items;
+	List** table; // array of linked lists
+	_Bool lock; // lock to enable concurrent operations
+	int items; // number of items in the set
 } Set;
 
-
-
+_Bool set_policy(Set* set){
+    float numerator = set->items;
+    float denominator = SIZE;
+    float result = (float)(numerator / denominator);
+    printf("policy val = %0.2f\n", result);
+    return (result > 0.75); 
+}
 
 int hash_fxn(int x){
     return (x % SIZE);
@@ -27,57 +30,67 @@ int hash_fxn(int x){
 $atomic_f void acquire(Set* hash_set, int value)
 {
     $when(hash_set->lock == false) hash_set->lock = true;
-    
 }
 
 $atomic_f void release(Set* hash_set, int value)
 {
     hash_set->lock = false;
-    
 }
 
-bool set_resize(Set* hash_set){
+// resize and rehash 
+_Bool set_resize(Set* hash_set){
 	int old_size = SIZE;
-	int ** new_table;
-	new_table = (int **) malloc (new_size * sizeof(int*));
+    int new_size = old_size*2;
+	List** new_table;
+    // allocate memory for new table
+	new_table = (List **) malloc (new_size * sizeof(List*));
 	for (int i = 0; i < new_size; i++){
-		new_table[i] = (int *) calloc (1, sizeof(int));
+        new_table[i] =  create_list(-1);
 	}
-	
-	
-	
-	for (int i = 0; i < SIZE; i++){
-		int value = hash_set->table[i][0]
+    // rehash from old table to new table
+    List** old_table = hash_set->table;
+    SIZE = new_size; // update hash_fxn
+    for(int i = 0; i < old_size; i++){
+        List* temp = old_table[i];
+        while(temp != NULL){ // hash all values in list
+            int value = temp->val;
+            if(value != -1){ // -1 = null val, ignore 
+                int hash_val = hash_fxn(value);
+                append_list(new_table[hash_val], value); 
+            }
+            temp = temp->next;
+        }
+    }
+    for(int i = 0; i < old_size; i++){
+		free_list(old_table[i]);
 	}
+	free(old_table);
+    hash_set->table = new_table;
+    return true;
 }
 
-bool set_contains(Set* hash_set, int value){
+// check if list at hash contains the value within lock
+_Bool set_contains(Set* hash_set, int value){
 	acquire(hash_set,value);
-	
-	int val;
-	
-	val = (int) hash_set->table[hash_fxn(value)];
-	
+	int hash_val;
+    hash_val = hash_fxn(value); // hash value
+    _Bool result = contains_list(hash_set->table[hash_val], value);  
 	release(hash_set,value);
-	
-	return (val == value);
-  //use a hash code to check and see if item is in the bucket
-  
+	return result;
 }
 
-bool set_add(Set* hash_set, int value){
+// add an element to the hash set
+_Bool set_add(Set* hash_set, int value){
 	acquire(hash_set,value);
-	
-	int val;
-	
-	val =  hash_set->table[hash_fxn(value)][0];
-	
-	printf("%d\n", (int) val);
-	if (val == 0){ //if the hash set does not contain the element
-		hash_set->table[hash_fxn(value)][0] = value;
+
+	int hash_val;
+	hash_val = hash_fxn(value); 
+    _Bool contains = contains_list(hash_set->table[hash_val], value);
+	if (!contains){ // if the hash set does not contain the element
+        append_list(hash_set->table[hash_val], value);
 		printf("added %d to table[%d]\n", value, hash_fxn(value));
 		hash_set->items+=1;
-		if((items / SIZE) > LOAD_FACTOR){
+		if(set_policy(hash_set)){
 			set_resize(hash_set);
 		}
 		release(hash_set,value);
@@ -87,26 +100,22 @@ bool set_add(Set* hash_set, int value){
 		release(hash_set,value);
 		return false;
 	}
-	 
 }
 
-bool set_remove(Set* hash_set, int value){
+// remove a value from the hash set
+_Bool set_remove(Set* hash_set, int value){
 	acquire(hash_set,value);
 	
-	int val;
-	
-	val =  hash_set->table[hash_fxn(value)][0];
-	
-	if (val == value){
-		int temp = val;
-		hash_set->table[hash_fxn(value)][0] = 0;
-		printf("removed %d from table[%d]\n", temp, hash_fxn(value));
+	int hash_val;
+    hash_val = hash_fxn(value);
+    _Bool contains = contains_list(hash_set->table[hash_val], value);
+	if (contains){
+        remove_list(&(hash_set->table[hash_val]), value);
+        //append_list(hash_set->table[hash_val], -1); // null val
 		hash_set->items-=1;
 		release(hash_set,value);
 		return true;
-	}
-	
-	else{
+    } else {
 		release(hash_set,value);
 		return false;
 	}
@@ -116,7 +125,8 @@ void print_hash(Set* hash_set){
    // print table
    printf("table: ");
    for(int i = 0; i < SIZE; i++){
-       printf("%d ", hash_set->table[i][0]);
+       printf("table[%d]: ", i);
+       print_list(hash_set->table[i]);
    }
    printf("\n");
 }
@@ -126,23 +136,21 @@ Set* set_create(){
 	set = (Set *) malloc (sizeof(Set));
 	set->items = 0;
 	set->lock = false;
-	set->table = (int **) malloc(SIZE * sizeof(int*)); //table of size 5
+	set->table = (List**) malloc(SIZE * sizeof(List*)); //table of size 5
 	for (int i = 0; i < SIZE; i++){
-		set->table[i] = (int *) calloc (1 , sizeof(int));
+		set->table[i] = create_list(-1); // default empty value (-1)
 	}
 	return set;
 }
 
-bool set_destroy(Set* set){
+_Bool set_destroy(Set* set){
 	for(int i = 0; i < SIZE; i++){
-		free(set->table[i]);
+		free_list(set->table[i]);
 	}
 	free(set->table);
 	free(set);
 	return true;
 }
-
-
 
 int main(){
 	Set* set = set_create();
@@ -153,12 +161,14 @@ int main(){
 	print_hash(set);
 	set_remove(set,17);
 	print_hash(set);
+    set_remove(set,19);
+    print_hash(set);
 	set_add(set,46);
 	print_hash(set);
 	set_add(set,30);
 	print_hash(set);
-
-
+    set_add(set,2);
+    print_hash(set);
 
 	set_destroy(set);
 	return 0;
