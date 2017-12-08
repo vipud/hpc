@@ -79,20 +79,16 @@ bool set_contains(Set* hash_set, int value)
     return false;
 }
 
-// find item returns the index of the item or -1 if not found
-int findItem(Set* hash_set, int value)
+// find item returns the index of the item or -1 if not found (only call if lock acquired)
+int findItem(Set* hash_set, int value, int slot)
 {
-    acquire(hash_set,value);
-    int slot = set_hash(hash_set,value);
     for (int i = 0; i < hash_set->cap; i++)
     {
         if (hash_set->table[slot][i] == value)
         {
-            release(hash_set,value);
             return i;
         }
     }
-    release(hash_set,value);
     return -1;
 }
 
@@ -122,7 +118,7 @@ bool set_policy(Set* hash_set)
 //called if policy is true or a bucket is overfull
 bool set_resize(Set* hash_set) 
 {
-    printf("Time to resize...\n");
+    printf("!!!Time to resize!!!...\n");
     int oldSize = hash_set->size;
     for (int i = 0; i < hash_set->locksSize; i++)
         acquire(hash_set,i);
@@ -164,6 +160,7 @@ bool set_add(Set* hash_set, int value)
         if (hash_set->table[slot][i] == value)
         {
             duplicate = true;
+            break;
         }
     }
     if(duplicate) //Don't insert duplicates
@@ -174,7 +171,6 @@ bool set_add(Set* hash_set, int value)
     }
     else
     {
-        int slot = set_hash(hash_set,value);
         for (int i = 0; i < hash_set->cap; i++)
         {
             if (hash_set->table[slot][i] == -1)
@@ -198,12 +194,21 @@ bool set_add(Set* hash_set, int value)
 //remove removes items from the set
 bool set_remove(Set* hash_set, int value)
 {
-    bool present = set_contains(hash_set,value);
-    int ind = findItem(hash_set,value);
+    acquire(hash_set,value);
+    bool present = false;
+    int slot = set_hash(hash_set,value);
+    for (int i = 0; i < hash_set->cap; i++)
+    {
+        if (hash_set->table[slot][i] == value)
+        {
+            present = true;
+            break;
+        }
+    }
     if(present) //remove
     {
-        acquire(hash_set,value);
-        hash_set->table[set_hash(hash_set,value)][ind] = -1;
+        int ind = findItem(hash_set,value,slot);
+        hash_set->table[slot][ind] = -1;
         //printf("%s removed.\n", value);
         hash_set->items--;
         release(hash_set,value);
@@ -212,6 +217,7 @@ bool set_remove(Set* hash_set, int value)
     else
     {
         //printf("%s not removed, not present\n", value);
+        release(hash_set,value);
         return false;
     }
 }
@@ -241,9 +247,9 @@ Set* set_create()
     Set* set;
     set = (Set *) malloc(sizeof(Set));
     set->items = 0; //init item counter
-    set->size = 9;
+    set->size = 5;
     set->locksSize = set->size;
-    set->cap = 5;
+    set->cap = 2;
         
     //alloc table set->size * set->cap
     set->table = (int **) malloc(set->size * sizeof(int *));
