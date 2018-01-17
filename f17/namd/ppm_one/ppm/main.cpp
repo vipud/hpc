@@ -31,6 +31,8 @@ int main(int argc, char ** argv)
 	cout << "With OpenACC" << endl;
 	#endif
 
+	double st, et;
+	st = omp_get_wtime();
 	class CMainbody mainbody;
 	int begin,stop;
 	string pdbname;
@@ -77,6 +79,10 @@ int main(int argc, char ** argv)
 	mainbody.predict_bb_static_ann();
 	mainbody.predict_proton_static_new();
 	mainbody.print_prediction(pre);
+
+	et = omp_get_wtime();
+
+	cout << "Seconds: " << et - st << endl;
 
 	return 0;
 
