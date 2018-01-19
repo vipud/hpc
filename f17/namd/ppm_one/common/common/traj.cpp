@@ -2193,21 +2193,21 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 	for(j=0;j<(int)used.size();j++)
 	{
 		jj=used_arr[j];
-		if(jj<0)
-			continue;
-		jj--;
-		xx = x_arr[jj];
-		yy = y_arr[jj];
-		zz = z_arr[jj];
-		rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
-		rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
-		rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);
-		rr1=sqrt(rr1);
-		rr2=sqrt(rr2);
-		rr3=sqrt(rr3);
-		contact1+=exp(-rr1/3.0);
-		contact2+=exp(-rr2/3.0);
-		contact3+=exp(-rr3/3.0);				
+		if(jj>=0){
+			jj--;
+			xx = x_arr[jj];
+			yy = y_arr[jj];
+			zz = z_arr[jj];
+			rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
+			rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
+			rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);
+			rr1=sqrt(rr1);
+			rr2=sqrt(rr2);
+			rr3=sqrt(rr3);
+			contact1+=exp(-rr1/3.0);
+			contact2+=exp(-rr2/3.0);
+			contact3+=exp(-rr3/3.0);
+		}				
 	}
 	if(ii1 < -1){
 		result->push_back(-1.0);
@@ -2253,7 +2253,6 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 		result->push_back(contact);
 	}
 */
-	return;
 }
 
 
