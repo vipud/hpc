@@ -1215,6 +1215,9 @@ void CMainbody::predict_bb_static_ann()
 	for(i=0;i<(int)bbnh.size();i++)
 		index.at(bbnh.at(i).id-1).x2=i+1;
 
+///////////////////////////////////////////////////////////////
+	c2=pdb->getselect(":1-%@allheavy");
+///////////////////////////////////////////////////////////////
 	for(i=0+1;i<(int)index.size()-1;i++)
 	{
 		//cout<<i<<endl;
@@ -1288,7 +1291,7 @@ void CMainbody::predict_bb_static_ann()
 		c1.push_back(bb.at(index.at(i).x1-1).capos);
 		c1.push_back(bb.at(index.at(i).x1-1).cbpos);
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
-		c2=pdb->getselect(":1-%@allheavy");
+		//c2=pdb->getselect(":1-%@allheavy");
 		result.clear();
 		traj->get_contact(c1,c2,&result);
 
