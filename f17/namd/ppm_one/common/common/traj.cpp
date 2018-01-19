@@ -16,10 +16,12 @@ using namespace ldw_math;
 
 void CTraj::clear()
 {
+/*
 	x.clear();
 	y.clear();
 	z.clear();
 	nframe=0;
+*/
 }
 
 
@@ -27,6 +29,7 @@ void CTraj::clear()
 
 int CTraj::appendcoor(string filename)
 {
+/*
 	double xx,yy,zz;
 	string line,part;
 
@@ -58,9 +61,11 @@ int CTraj::appendcoor(string filename)
 
 	nframe=x.size()/natom;
 	return nframe;
+*/
 }
 
 
+// Used!
 int CTraj::loadcoor(string filename)
 {
 	double xx,yy,zz;
@@ -113,6 +118,7 @@ int CTraj::loadcoor(string filename)
 
 int CTraj::set_range(int begin,int stop)
 {
+/*
 	if(begin<0)
 	{
 		begin=0;
@@ -146,12 +152,14 @@ int CTraj::set_range(int begin,int stop)
 
 	cout<<"Using frames from "<<begin<<" to "<<stop<<endl;
 	return nframe;
+*/
 }
 
 
 
 void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_group> *bb, vector< vector<ehbond> > *effect, vector< vector<eschbond> > *effect_sc)
 {
+/*
 	int i,j,k;
 	int base;
 	int n,h[3],c,o;
@@ -246,7 +254,7 @@ void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_gr
 					phi*=phi;
 					psi*=psi;
 					nid=protons->at(i).id-1;
-					cid=bb->at(j).id-1; /* C start from 0*/
+					cid=bb->at(j).id-1; /* C start from 0*//*
 					
 					//effect->at(nid).at(k).n_length=d;
 					//effect->at(nid).at(k).n_phi=phi;
@@ -271,9 +279,11 @@ void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_gr
 	}//for i
 
 	return;
+*/
 }
 
 
+// Used!
 //hbond type (1, bb) (12, sc OH) (13,sc NH) (22 or 23, sc CO)
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 {
@@ -364,7 +374,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 //hbond type (1, bb) (12, sc OH) (13,sc NH) (22 or 23, sc CO)
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double cutoff)
 {
-
+/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -417,7 +427,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*/
+					cid=hbond->at(j).id-1; /* C start from 0*//*
 
 					if(d>cutoff)
 						d=cutoff;
@@ -449,13 +459,14 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double
 		effect->at(i).c_psi/=nframe;
 	}
 	return;
+*/
 }
 
 
 
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect)
 {
-
+/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -518,7 +529,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effe
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*/
+					cid=hbond->at(j).id-1; /* C start from 0*//*
 					if(hbond->at(i).type==1)
 					{
 						effect->at(nid).at(k).n_length+=d;
@@ -536,12 +547,13 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effe
 		}
 	}
 	return;
+*/
 }
 
 
 void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect)
 {
-
+/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -604,7 +616,7 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*/
+					cid=hbond->at(j).id-1; /* C start from 0*//*
 					if(hbond->at(i).type==1)
 					{
 						effect->at(nid).at(k).n_length=d;
@@ -622,6 +634,7 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 		}
 	}
 	return;
+*/
 }
 
 
@@ -629,6 +642,7 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 
 void CTraj::dis_matrix(vector<int> *index,vector<double> *dis)
 {
+/*
 	int i,j,n1,n2;
 	double d1,d2,d3,d;
 	for(i=0;i<(int)index->size();i++)
@@ -645,11 +659,13 @@ void CTraj::dis_matrix(vector<int> *index,vector<double> *dis)
 		}
 	}
 	return;
+*/
 }
 
 
 void CTraj::getangle(vector<struct dihe_group> *index, vector<double> * angle)
 {
+/*
 	int i,j;
 	int x1,x2,x3,x4;
 	int base;
@@ -672,11 +688,13 @@ void CTraj::getangle(vector<struct dihe_group> *index, vector<double> * angle)
 		}
 	}
 	return;
+*/
 }
 
 
 
 
+// Used!
 void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 {	
 	int i,j;
@@ -707,6 +725,7 @@ void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 }
 
 
+// Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector<struct double_five> *ring_effect)
 {	
 	int i,j,ii,jj,m;
@@ -817,6 +836,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector< vector<struct double_five> > *ring_effect)
 {	
+/*
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -919,132 +939,13 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 	}
 
 	return;
+*/
 }
 
 
 
-void CTraj::getring(vector<struct ring_group> *index, vector<struct methyl_group>* select, vector<struct double_five> *ring_effect, enum methyl c)
-{	
-	int i,j,ii,jj,m,k;
-	int base;
-	int t[6];
-	double p1[3],t1[3],t2[3],t3[3];
-	double u[6][3];
-	double sum[3];
-	double ori[3];
-	double e;
-	struct double_five temp;
-	
-	for(i=0;i<5;i++)
-		temp.x[i]=0;
-	for(i=0;i<(int)select->size();i++)
-		ring_effect->push_back(temp);
 
-
-	for(i=0;i<nframe;i++)
-	{
-		base=i*natom;  
-		for(j=0;j<(int)index->size();j++)
-		{
-			switch(index->at(j).x1)
-			{
-				case 1:
-                case 2:
-                case 5:
-					m=6;
-					break;
-				case 4:
-				case 3:
-					m=5;
-					break;
-			}
-			t[0]=index->at(j).x2;
-			t[1]=index->at(j).x3;
-			t[2]=index->at(j).x4;
-			t[3]=index->at(j).x5;
-			t[4]=index->at(j).x6;
-			t[5]=index->at(j).x7;
-
-           
-            for(ii=0;ii<m;ii++)
-			{
-				u[ii][0]=x[t[ii]+base-1];
-                u[ii][1]=y[t[ii]+base-1];
-                u[ii][2]=z[t[ii]+base-1];
-            }
-           
-            for(jj=0;jj<3;jj++)
-				sum[jj]=0; 
-			for(ii=0;ii<m;ii++)
-            {
-				for(jj=0;jj<3;jj++)
-				{
-					sum[jj]+=u[ii][jj];
-				}
-			}
-			for(jj=0;jj<3;jj++)
-				sum[jj]/=m; 
-			for(ii=0;ii<m;ii++)
-			{
-				for(jj=0;jj<3;jj++)
-					u[ii][jj]-=sum[jj];
-			}
-
-			ring(u,m,ori);
-
-            for(jj=0;jj<3;jj++)
-            {
-                   t1[jj]=u[0][jj]-u[1][jj];
-                   t2[jj]=u[2][jj]-u[1][jj];
-            }
-            cross(t3,t1,t2);
-            if(dot(t3,ori)<0)
-            {
-				for(jj=0;jj<3;jj++)
-					ori[jj]=-ori[jj];
-			}
-
-			for(ii=0;ii<(int)select->size();ii++)
-			{
-				e=0;
-
-				switch(c)
-				{
-				case hydrogen:
-					for(k=0;k<3;k++)
-					{
-						p1[0]=x[base+select->at(ii).hpos[k]-1]-sum[0];
-						p1[1]=y[base+select->at(ii).hpos[k]-1]-sum[1];
-						p1[2]=z[base+select->at(ii).hpos[k]-1]-sum[2];
-						//cout<<"Ori is "<<ori[0]<<" "<<ori[1]<<" "<<ori[2]<<endl;
-						//cout<<"X is "<<p1[0]<<" "<<p1[1]<<" "<<p1[2]<<endl;
-						e+=effect(u,m,ori,p1); 
-					}
-					break;
-				case carbon:
-					p1[0]=x[base+select->at(ii).cpos-1]-sum[0];
-					p1[1]=y[base+select->at(ii).cpos-1]-sum[1];
-					p1[2]=z[base+select->at(ii).cpos-1]-sum[2];
-					e+=effect(u,m,ori,p1); 
-					break;
-				}
-
-				e=e*10;
-				ring_effect->at(ii).x[index->at(j).x1-1]+=e;
-			}
-		}
-	}
-
-	for(ii=0;ii<(int)select->size();ii++)
-	{
-		for(jj=0;jj<5;jj++)
-		{
-			ring_effect->at(ii).x[jj]/=nframe;
-		}
-	}
-	return;
-}
-
+// Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* select, vector<struct double_five> *ring_effect)
 {	
 	int i,j,ii,jj,m,k;
@@ -1156,6 +1057,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 
 void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* select, vector< vector<struct double_five> > *ring_effect)
 {	
+/*
 	int i,j,ii,jj,m,k;
 	int base;
 	int t[6];
@@ -1257,11 +1159,13 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 		}
 	}
 	return;
+*/
 }
 
 
 void CTraj::getring_bb(vector<struct ring_group> *index, vector<struct bb_group>* select, vector<struct double_five> *ring_effect, enum bb_carbon c)
 {	
+/*
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -1379,12 +1283,14 @@ void CTraj::getring_bb(vector<struct ring_group> *index, vector<struct bb_group>
 		}
 	}
 	return;
+*/
 }
 
 
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>* select, vector<struct double_four> *ani_effect, enum methyl c)
 {
+/*
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
@@ -1472,9 +1378,11 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>*
 		}
 	}
 	return;
+*/
 }
 
 
+// Used!
 void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* select, vector<struct double_four> *ani_effect)
 {
 	int i,j,ii,jj,k;
@@ -1550,8 +1458,10 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 }
 
 
+
 void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* select, vector< vector<struct double_four>  > *ani_effect)
 {
+/*
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
@@ -1622,6 +1532,7 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 
 
 	return;
+*/
 }
 
 
@@ -1699,49 +1610,11 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 }
 
 
-void CTraj::do_rmsf(void)
-{
-	int i,j;
-	int jump;
-	double meanx,meany,meanz;
-	double rms;
-	double t,tt;
-
-	rmsf.clear();
-	for(i=0;i<natom;i++)
-	{
-		meanx=meany=meanz=0.0;
-		for(j=0;j<nframe;j++)
-		{
-			jump=j*natom+i;
-			meanx+=x.at(jump);
-			meany+=y.at(jump);
-			meanz+=z.at(jump);
-		}
-		meanx/=nframe;
-		meany/=nframe;
-		meanz/=nframe;
-
-		rms=0.0;
-		for(j=0;j<nframe;j++)
-		{
-			jump=j*nframe+i;
-			t=x.at(jump)-meanx;tt=t*t;
-			t=y.at(jump)-meany;tt+=t*t;
-			t=z.at(jump)-meanz;tt+=t*t;
-			rms+=tt;
-		}
-		rms=sqrt(rms/nframe);
-		rmsf.push_back(rms);
-	}
-
-	return;
-}
-
 
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector< vector<struct double_four>  > *ani_effect)
 {
+/*
 	int i,j,ii,jj;
 	int i1,i2,i3;
 	int base;
@@ -1810,11 +1683,12 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 	}
 
 	return;
+*/
 }
 
 double CTraj::noedistance_frame(vector<int> *att1, vector<int> *att2,int j)
 {
-
+/*
 	double x0,y0,z0;
 	double r2,r6,sum,sumsum;
 	int i1,j1;
@@ -1841,10 +1715,12 @@ double CTraj::noedistance_frame(vector<int> *att1, vector<int> *att2,int j)
 	sumsum/=j1;
 	r2=pow(sumsum,-1/6.0);
 	return r2;
+*/
 }
 
 double CTraj::noedistance(vector<int> *att1, vector<int> *att2)
 {
+/*
 	double x0,y0,z0;
 	double r2,r6,sum,sumsum;
 	int i1,j1;
@@ -1877,11 +1753,13 @@ double CTraj::noedistance(vector<int> *att1, vector<int> *att2)
 	sumsum/=j1;
 	r2=pow(sumsum,-1/6.0);
 	return r2;
+*/
 }
 
 
 void CTraj::evaluatenmrcons_frame(vector<struct noeline> *nmrcons, double cutoff)
 {
+/*
 	int ii,i,j;
 	int pos1,pos2;
 	int n1,n2;
@@ -1953,10 +1831,12 @@ void CTraj::evaluatenmrcons_frame(vector<struct noeline> *nmrcons, double cutoff
 	}
 	fout2.close();
 	return;
+*/
 }
 
 void CTraj::evulatenmrcons(vector<struct noeline> *nmrcons, double cutoff)
 {
+/*
 	int i,j;
 	int pos1,pos2;
 	int n1,n2;
@@ -2063,11 +1943,13 @@ void CTraj::evulatenmrcons(vector<struct noeline> *nmrcons, double cutoff)
 
 
 	return;
+*/
 }
 
 
 void CTraj::rmsd_matrix(vector< vector<double> > *rmsd,vector<int> *ca, int skip)
 {
+/*
 	float *x1,*y1,*z1,*x2,*y2,*z2;
 	int nca,jumpi,jumpj;
 	int i,j,k;
@@ -2116,12 +1998,14 @@ void CTraj::rmsd_matrix(vector< vector<double> > *rmsd,vector<int> *ca, int skip
 		}
 	}
 	return;
+*/
 }
 
 
 
 void CTraj::getvector(vector<struct index_three> nh,vector<double> *xx,vector<double> *yy,vector<double> *zz)
 {
+/*
 	int i,m,j;
 	double r;
 	double x1,y1,z1;
@@ -2147,20 +2031,24 @@ void CTraj::getvector(vector<struct index_three> nh,vector<double> *xx,vector<do
 			zz->push_back(z1);		
 		}
 	}
+*/
 }
 
 
 void CTraj:: getcoor(int ipos,int iframe,double *xx,double *yy,double *zz)
 {
+/*
 	ipos+=iframe*natom-1;
 	*xx=x.at(ipos);
 	*yy=y.at(ipos);
 	*zz=z.at(ipos);
+*/
 }
 
 
 void CTraj::getcoor(vector<int> pos,int iframe,vector<double> *xx,vector<double> *yy,vector<double> *zz)
 {
+/*
 	int j;
 	int adj;
 	unsigned int i;
@@ -2174,11 +2062,13 @@ void CTraj::getcoor(vector<int> pos,int iframe,vector<double> *xx,vector<double>
 		zz->push_back(z.at(j));
 	}
 	return;
+*/
 }
 
 
 void CTraj::getcoor(vector<int> pos,vector<float> *xx,vector<float> *yy,vector<float> *zz)
 {
+/*
 	int j;
 	int adj;
 	unsigned int i,iframe;
@@ -2195,24 +2085,10 @@ void CTraj::getcoor(vector<int> pos,vector<float> *xx,vector<float> *yy,vector<f
 		}
 	}
 	return;
+*/
 }
 
-void CTraj::getcoor(vector<int> pos,int iframe,vector<float> *xx,vector<float> *yy,vector<float> *zz)
-{
-	int j;
-	int adj;
-	unsigned int i;
 
-	adj=iframe*natom-1;
-	for(i=0;i<pos.size();i++)
-	{
-		j=pos.at(i)+adj;
-		xx->push_back(x.at(j));
-		yy->push_back(y.at(j));
-		zz->push_back(z.at(j));
-	}
-	return;
-}
 
 void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
 {
@@ -2254,12 +2130,103 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 
 void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * result)
 {
-	int i,j;
-	int ii,jj;
-	float contact;
-	float x0,y0,z0;
-	float rr;
+	int j;
+	int ii1, ii2, ii3 ,jj;
+	float contact1, contact2, contact3;
+	float x1,y1,z1,x2,y2,z2,x3,y3,z3;
+	float rr1,rr2,rr3;
+	double xx,yy,zz;
 
+//////////////////////////////////////////////////////////////
+
+
+	int *pos_arr = pos.data();
+	int *used_arr = used.data();
+	int used_size = used.size();
+	double *x_arr = x.data();
+	int x_size = x.size();
+	double *y_arr = y.data();
+	int y_size = y.size();
+	double *z_arr = z.data();
+	int z_size = z.size();
+
+	contact1=0.0;
+	contact2=0.0;
+	contact3=0.0;
+
+	ii1=pos_arr[0];
+	ii2=pos_arr[1];
+	ii3=pos_arr[2];
+
+	if(ii1 < 0){
+		x1=0;
+		y1=0;
+		z1=0;
+	} else {
+		ii1--;
+		x1=x.at(ii1);
+		y1=y.at(ii1);
+		z1=z.at(ii1);
+	}
+	if(ii2 < 0){
+		x2=0;
+		y2=0;
+		z2=0;
+	} else {
+		ii2--;
+		x2=x.at(ii2);
+		y2=y.at(ii2);
+		z2=z.at(ii2);
+	}if(ii3 < 0){
+		x3=0;
+		y3=0;
+		z3=0;
+	} else {
+		ii3--;
+		x3=x.at(ii3);
+		y3=y.at(ii3);
+		z3=z.at(ii3);
+	}
+
+	#pragma acc parallel loop copyin(used_arr[0:used_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size]) \
+		reduction(+:contact1) reduction(+:contact2) reduction(+:contact3) private(jj,xx,yy,zz,rr1,rr2,rr3)
+	for(j=0;j<(int)used.size();j++)
+	{
+		jj=used_arr[j];
+		if(jj<0)
+			continue;
+		jj--;
+		xx = x_arr[jj];
+		yy = y_arr[jj];
+		zz = z_arr[jj];
+		rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
+		rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
+		rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);
+		rr1=sqrt(rr1);
+		rr2=sqrt(rr2);
+		rr3=sqrt(rr3);
+		contact1+=exp(-rr1/3.0);
+		contact2+=exp(-rr2/3.0);
+		contact3+=exp(-rr3/3.0);				
+	}
+	if(ii1 < -1){
+		result->push_back(-1.0);
+	} else {
+		result->push_back(contact1);
+	}
+	if(ii2 < -1){
+		result->push_back(-1.0);
+	} else {
+		result->push_back(contact2);
+	}if(ii3 < -1){
+		result->push_back(-1.0);
+	} else {
+		result->push_back(contact3);
+	}
+
+//////////////////////////////////////////////////////////////
+
+/*
 	for(i=0;i<(int)pos.size();i++)
 	{
 		contact=0.0;
@@ -2285,7 +2252,7 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 		}
 		result->push_back(contact);
 	}
-
+*/
 	return;
 }
 
@@ -2304,330 +2271,3 @@ CTraj::~CTraj()
 };
 
 
-
-
-
-
-
-void smtry::getdata(double x[3][3],double y[3])
-{
-	int i,j;
-	for(i=0;i<3;i++)
-	for(j=0;j<3;j++)
-		matrix[i][j]=x[i][j];
-	for(i=0;i<3;i++)
-		motion[i]=y[i];
-	return;
-}
-
-void smtry::trans(double x[3],double y[3])
-{
-	for(int i=0;i<3;i++)
-		y[i]=x[0]*matrix[i][0]+x[1]*matrix[i][1]+x[2]*matrix[i][2]+motion[i];
-	return;
-}
-
-void smtry::print()
-{
-	int j;
-	for(int i=0;i<3;i++)
-	{
-		for(j=0;j<3;j++)
-			cout<<matrix[i][j]<<" ";
-		cout<<motion[i]<<endl;
-	}
-	return ;
-}
-
-
-
-
-
-void CTraj2::clear()
-{
-	x.clear();
-	y.clear();
-	z.clear();
-	b.clear();
-	crystal_sym_array.clear();
-	nframe=0;
-	natom=0;
-	nres=0;
-	memset(translation,0,sizeof(double)*9);
-	memset(scale,0,sizeof(double)*9);
-	btrans=0;
-	bsmtry=0;
-}
-
-int CTraj2::select(vector<int> t)
-{	
-	int i,j;
-	int nmiss=0;
-	vector<double> xx,yy,zz,bb;
-	for(i=0;i<(int)t.size();i++)
-	{
-		j=t.at(i)-1;
-		if(j>=0)
-		{
-			xx.push_back(x.at(j));
-			yy.push_back(y.at(j));
-			zz.push_back(z.at(j));
-			bb.push_back(b.at(j));
-		}
-		else
-		{
-			nmiss++;
-		}
-	}
-	x=xx;
-	y=yy;
-	z=zz;
-	b=bb;
-	natom=x.size();
-	return nmiss;
-}
-
-
-int CTraj2::loadcoor(string filename)
-{
-	double xx,yy,zz,bb;
-	string line,part,part1,part2;
-	double cx[3][3];
-	double cy[3];
-	class smtry crystal_sym;
-	crystal_sym_array.clear();
-
-
-	ifstream fin(filename.c_str());
-	while(getline(fin,line))
-	{
-		part1.clear();
-		part2.clear();
-
-		if(line.size()>18)
-		{
-			part1=line.substr(0,10);
-			part2=line.substr(13,5);
-		}
-		if(part1=="REMARK 290" && part2=="SMTRY")
-		{
-			bsmtry=1;
-			cx[0][0]=atof(line.substr(24,9).c_str());
-			cx[0][1]=atof(line.substr(34,9).c_str());
-			cx[0][2]=atof(line.substr(44,9).c_str());
-			cy[0]=atof(line.substr(59,9).c_str());
-			getline(fin,line);
-			cx[1][0]=atof(line.substr(24,9).c_str());
-			cx[1][1]=atof(line.substr(34,9).c_str());
-			cx[1][2]=atof(line.substr(44,9).c_str());
-			cy[1]=atof(line.substr(59,9).c_str());
-			getline(fin,line);
-			cx[2][0]=atof(line.substr(24,9).c_str());
-			cx[2][1]=atof(line.substr(34,9).c_str());
-			cx[2][2]=atof(line.substr(44,9).c_str());
-			cy[2]=atof(line.substr(59,9).c_str());
-			
-			if(!(cx[0][0]==1 && cx[1][1]==1 && cx[2][2]==1 && cx[0][1]==0 && cx[1][0]==0 && cx[0][2]==0 && cx[2][0]==0
-						  && cx[1][2]==0 && cx[2][1]==0 && cy[0]==0 && cy[1]==0 && cy[2]==0))
-			{
-				crystal_sym.getdata(cx,cy);crystal_sym_array.push_back(crystal_sym);
-			}
-		}
-
-		if(line.size()>5)
-			part1=line.substr(0,5);
-		else
-			part1.clear();
-		if(part1=="SCALE")
-		{
-			scale[0][0]=atof(line.substr(10,10).c_str());
-			scale[0][1]=atof(line.substr(20,10).c_str());
-			scale[0][2]=atof(line.substr(30,10).c_str());
-			getline(fin,line);
-			scale[1][0]=atof(line.substr(10,10).c_str());
-			scale[1][1]=atof(line.substr(20,10).c_str());
-			scale[1][2]=atof(line.substr(30,10).c_str());
-			getline(fin,line);
-			scale[2][0]=atof(line.substr(10,10).c_str());
-			scale[2][1]=atof(line.substr(20,10).c_str());
-			scale[2][2]=atof(line.substr(30,10).c_str());
-			process_tran();
-			btrans=1;
-		}
-		if(part1=="CRYST")
-		{
-			part1=line.substr(67,4);
-			ncry=atoi(part1.c_str());
-		}
-
-		if(line.size()>6)
-			part=line.substr(0,6);
-		else
-			part.clear();
-		if(part=="ENDMDL")
-		{
-			//finished read first molecule 
-			if(x.size()%natom!=0)
-				cout<<"In traj reading, suppose to read "<<natom<<" coors but actually read in "<<x.size()<<endl;
-		}
-
-
-		part=line.substr(0,6);
-		if(part!="ATOM  " && part!="HETATM")
-			continue;
-
-		part=line.substr(17,3);
-		if(part=="HOH" || part=="WAT")
-			continue;
-
-		part=line.substr(30,8);
-		xx=atof(part.c_str());
-		x.push_back(xx);
-		part=line.substr(38,8);
-		yy=atof(part.c_str());
-		y.push_back(yy);
-		part=line.substr(46,8);
-		zz=atof(part.c_str());
-		z.push_back(zz);
-		part=line.substr(60,6);
-		bb=atof(part.c_str());
-		b.push_back(bb);
-		part=line.substr(12,4);
-		atomname.push_back(part);
-	};
-
-	if(natom==0)
-		nframe=0;
-	else
-		nframe=x.size()/natom;
-	return nframe;
-}
-
-void CTraj2::process_tran()
-{
-	if(scale[1][0]!=0 || scale[2][0]!=0 || scale[2][1]!=0)
-		return;
-		
-	translation[0][0]=1/scale[0][0];
-	translation[0][1]=-scale[0][1]/(scale[1][1]*scale[0][0]);
-	translation[0][2]=(scale[0][1]*scale[1][2]/scale[1][1]-scale[0][2])/(scale[0][0]*scale[2][2]);
-
-	translation[1][0]=0;
-	translation[1][1]=1/scale[1][1];
-	translation[1][2]=-scale[1][2]/(scale[1][1]*scale[2][2]);
-
-	translation[2][0]=0;
-	translation[2][1]=0;
-	translation[2][2]=1/scale[2][2];
-	
-	return;
-}
-
-
-
-int CTraj2::unitcell(void)
-{
-	class smtry crystal_sym;
-	double xmean,ymean,zmean;
-	double xscale,yscale,zscale;
-	double xtran,ytran,ztran;
-	double yold[3];
-	double ynew[3];
-	int n;
-	int i,j;
-
-
-	n=x.size();
-	for(i=0;i<(int)crystal_sym_array.size();i++)
-	{
-		xmean=ymean=zmean=0;
-		crystal_sym=crystal_sym_array.at(i);			
-		for(j=0;j<n;j++)
-		{
-			yold[0]=x.at(j);
-			yold[1]=y.at(j);
-			yold[2]=z.at(j);
-			crystal_sym.trans(yold,ynew);
-			x.push_back(ynew[0]);
-			y.push_back(ynew[1]);
-			z.push_back(ynew[2]);
-			xmean+=ynew[0];
-			ymean+=ynew[1];
-			zmean+=ynew[2];				
-		}
-		xmean/=n;
-		ymean/=n;
-		zmean/=n;
-
-		xscale=scale[0][0]*xmean+scale[0][1]*ymean+scale[0][2]*zmean;
-		yscale=scale[1][0]*xmean+scale[1][1]*ymean+scale[1][2]*zmean;
-		zscale=scale[2][0]*xmean+scale[2][1]*ymean+scale[2][2]*zmean;
-		
-		xscale= xscale>=0 ? -((int)xscale) : -((int)(xscale-0.9999));
-		yscale= yscale>=0 ? -((int)yscale) : -((int)(yscale-0.9999));
-		zscale= zscale>=0 ? -((int)zscale) : -((int)(zscale-0.9999));	
-		
-		
-		xtran=xscale*translation[0][0]+yscale*translation[0][1]+zscale*translation[0][2];
-		ytran=yscale*translation[1][1]+zscale*translation[1][2];
-		ztran=zscale*translation[2][2];
-		
-		for(j=0;j<natom;j++)
-		{
-			x.at(j+natom*(i+1))+=xtran;
-			y.at(j+natom*(i+1))+=ytran;
-			z.at(j+natom*(i+1))+=ztran;
-		}			
-	}
-
-	return i;
-}
-
-void CTraj2::ninecells(void)
-{
-	int i,m,k,n;
-	double xtran,ytran,ztran;
-	int nnow;
-
-	nnow=x.size();
-
-	for(m=-1;m<=1;m++)
-	for(n=-1;n<=1;n++)
-	for(k=-1;k<=1;k++)
-	{
-		if(m==0 && n==0 && k==0)
-			continue;
-		xtran=m*translation[0][0]+n*translation[0][1]+k*translation[0][2];
-		ytran=n*translation[1][1]+k*translation[1][2];
-		ztran=k*translation[2][2];
-		for(i=0;i<nnow;i++)
-		{
-			x.push_back(x.at(i)+xtran);
-			y.push_back(y.at(i)+ytran);
-			z.push_back(z.at(i)+ztran);
-		}
-	}
-	return;
-}
-
-
-CTraj2::CTraj2()
-{
-	x.clear();
-	y.clear();
-	z.clear();
-	b.clear();
-	crystal_sym_array.clear();
-	nframe=0;
-	natom=0;
-	nres=0;
-	memset(translation,0,sizeof(double)*9);
-	memset(scale,0,sizeof(double)*9);
-	btrans=0;
-	bsmtry=0;
-};
-
-CTraj2::~CTraj2()
-{
-
-};
