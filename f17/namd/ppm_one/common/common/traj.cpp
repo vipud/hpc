@@ -113,6 +113,15 @@ int CTraj::loadcoor(string filename)
 	else
 		nframe=x.size()/natom;
 
+	x_arr = x.data();
+	x_size = x.size();
+	y_arr = y.data();
+	y_size = y.size();
+	z_arr = z.data();
+	z_size = z.size();
+
+#pragma acc enter data copyin( x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size])
+
 	return nframe;
 }
 
@@ -2128,7 +2137,7 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 }
 
 
-void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * result)
+void CTraj::get_contact(vector<int> pos, int* used, int used_size, vector<float> * result)
 {
 	int j;
 	int ii1, ii2, ii3 ,jj;
@@ -2141,14 +2150,6 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 
 
 	int *pos_arr = pos.data();
-	int *used_arr = used.data();
-	int used_size = used.size();
-	double *x_arr = x.data();
-	int x_size = x.size();
-	double *y_arr = y.data();
-	int y_size = y.size();
-	double *z_arr = z.data();
-	int z_size = z.size();
 
 	contact1=0.0;
 	contact2=0.0;
@@ -2164,9 +2165,9 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 		z1=0;
 	} else {
 		ii1--;
-		x1=x.at(ii1);
-		y1=y.at(ii1);
-		z1=z.at(ii1);
+		x1=x[ii1];
+		y1=y[ii1];
+		z1=z[ii1];
 	}
 	if(ii2 < 0){
 		x2=0;
@@ -2174,25 +2175,25 @@ void CTraj::get_contact(vector<int> pos, vector<int> used, vector<float> * resul
 		z2=0;
 	} else {
 		ii2--;
-		x2=x.at(ii2);
-		y2=y.at(ii2);
-		z2=z.at(ii2);
+		x2=x[ii2];
+		y2=y[ii2];
+		z2=z[ii2];
 	}if(ii3 < 0){
 		x3=0;
 		y3=0;
 		z3=0;
 	} else {
 		ii3--;
-		x3=x.at(ii3);
-		y3=y.at(ii3);
-		z3=z.at(ii3);
+		x3=x[ii3];
+		y3=y[ii3];
+		z3=z[ii3];
 	}
 
-	#pragma acc parallel loop copyin(used_arr[0:used_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size]) \
+	#pragma acc parallel loop \
 		reduction(+:contact1) reduction(+:contact2) reduction(+:contact3) private(jj,xx,yy,zz,rr1,rr2,rr3)
-	for(j=0;j<(int)used.size();j++)
+	for(j=0;j<used_size;j++)
 	{
-		jj=used_arr[j];
+		jj=used[j];
 		if(jj>=0){
 			jj--;
 			xx = x_arr[jj];
@@ -2266,7 +2267,7 @@ CTraj::CTraj()
 
 CTraj::~CTraj()
 {
-
+#pragma acc exit data delete(x_arr, y_arr, z_arr)
 };
 
 

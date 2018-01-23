@@ -21,6 +21,13 @@ public:
 		vector<double> x;
 		vector<double> y;
 		vector<double> z;
+		double* x_arr;
+		double* y_arr;
+		double* z_arr;
+		int x_size;
+		int y_size;
+		int z_size;
+
 		vector<string> atomname;
 		vector<double> rmsf;
 
@@ -59,7 +66,7 @@ public:
 		void getvector(vector<struct index_three>,vector<double> *,vector<double> *,vector<double> *);
 		void do_rmsf(void);
 
-		void get_contact(vector<int> pos, vector<int> used, vector<float> * result);
+		void get_contact(vector<int> pos, int* used, int used_size, vector<float> * result);
 		void get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result);
 
 		void getcoor(int,int,double *,double *,double *);
