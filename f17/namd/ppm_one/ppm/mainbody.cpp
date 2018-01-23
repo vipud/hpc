@@ -774,7 +774,7 @@ CMainbody::~CMainbody()
 
 int CMainbody::loadpdb(CPdb *p_pdb, CTraj * p_traj)
 {
-	pdb=p_pdb;
+/*	pdb=p_pdb;
 	traj=p_traj;
 
 	natom=pdb->getnatom();
@@ -782,13 +782,14 @@ int CMainbody::loadpdb(CPdb *p_pdb, CTraj * p_traj)
 	nconf=traj->getnframe();
 
 	return nconf;
+*/
 }
 
 
 
 int CMainbody::loadpdb(string name)
 {
-	pdb=new CPdb;
+/*	pdb=new CPdb;
 	traj=new CTraj;
 	bnew=1;
 
@@ -798,8 +799,10 @@ int CMainbody::loadpdb(string name)
 	traj->setnatom(natom);
 	nconf=traj->loadcoor(name);
 	return nconf;
+*/
 }
 
+// USED
 int CMainbody::loadpdb(string name,string name2)
 {
 	pdb=new CPdb;
@@ -813,10 +816,9 @@ int CMainbody::loadpdb(string name,string name2)
 	traj->setnres(nres);
 	traj->setnatom(natom);
 
-	
-	
+		
     nconf=traj->loadcoor(name);
-
+ 
 
 	return nconf;
 }
@@ -1152,6 +1154,9 @@ void CMainbody::predict_bb_static_ann()
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
 
+	double st;
+	st = omp_get_wtime();
+
 	//ann_ca.load("ann_ca.dat");
 	ann_ca.loadp(p_ann_ca);
 	ann_cb.loadp(p_ann_cb);
@@ -1216,7 +1221,10 @@ void CMainbody::predict_bb_static_ann()
 		index.at(bbnh.at(i).id-1).x2=i+1;
 
 ///////////////////////////////////////////////////////////////
-	c2=pdb->getselect(":1-%@allheavy");
+	c2=pdb->getselect(":1-%@allheavy");	
+	int* c2_arr = c2.data();
+	int c2_size = c2.size();
+#pragma acc enter data copyin(c2_arr[0:c2_size])
 ///////////////////////////////////////////////////////////////
 	for(i=0+1;i<(int)index.size()-1;i++)
 	{
@@ -1293,7 +1301,7 @@ void CMainbody::predict_bb_static_ann()
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
 		//c2=pdb->getselect(":1-%@allheavy");
 		result.clear();
-		traj->get_contact(c1,c2,&result);
+		traj->get_contact(c1,c2_arr,c2_size,&result);
 
 		oneline_co=oneline_cb=oneline;
 
@@ -1349,9 +1357,12 @@ void CMainbody::predict_bb_static_ann()
 	}
 
 	cal_error();
+
+	cout << omp_get_wtime() - st << " seconds." << endl;
+#pragma acc exit data delete(c2_arr)
 };
 
-
+// NOT USED
 void CMainbody::predict_bb_static_new()
 {
 	int i,j,jj;
@@ -1584,8 +1595,11 @@ void CMainbody::predict_bb_static_new()
 		c1.push_back(bb.at(index.at(i).x1-1).cbpos);
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
 		c2=pdb->getselect(":1-%@allheavy");
+		int* c2_arr = c2.data();
+		int c2_size = c2.size();
+
 		result.clear();
-		traj->get_contact(c1,c2,&result);
+		traj->get_contact(c1,c2_arr, c2_size,&result);
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
