@@ -120,6 +120,7 @@ int CTraj::loadcoor(string filename)
 	z_arr = z.data();
 	z_size = z.size();
 
+	cout << "Preparing to make GPU copies of x, y, and z" << endl;
 #pragma acc enter data copyin( x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size])
 
 	return nframe;
@@ -2210,6 +2211,7 @@ void CTraj::get_contact(vector<int> pos, int* used, int used_size, vector<float>
 			contact3+=exp(-rr3/3.0);
 		}				
 	}
+	
 	if(ii1 < -1){
 		result->push_back(-1.0);
 	} else {
@@ -2267,6 +2269,7 @@ CTraj::CTraj()
 
 CTraj::~CTraj()
 {
+	cout << "Preparing to delete GPU copies of x, y, and z" << endl;
 #pragma acc exit data delete(x_arr, y_arr, z_arr)
 };
 

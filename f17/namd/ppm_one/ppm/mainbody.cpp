@@ -1220,12 +1220,12 @@ void CMainbody::predict_bb_static_ann()
 	for(i=0;i<(int)bbnh.size();i++)
 		index.at(bbnh.at(i).id-1).x2=i+1;
 
-///////////////////////////////////////////////////////////////
+	
 	c2=pdb->getselect(":1-%@allheavy");	
 	int* c2_arr = c2.data();
 	int c2_size = c2.size();
-#pragma acc enter data copyin(c2_arr[0:c2_size])
-///////////////////////////////////////////////////////////////
+	
+#pragma acc data copyin(c2_arr[0:c2_size])
 	for(i=0+1;i<(int)index.size()-1;i++)
 	{
 		//cout<<i<<endl;
@@ -1301,7 +1301,7 @@ void CMainbody::predict_bb_static_ann()
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
 		//c2=pdb->getselect(":1-%@allheavy");
 		result.clear();
-		traj->get_contact(c1,c2_arr,c2_size,&result);
+		//traj->get_contact(c1,c2_arr,c2_size,&result);
 
 		oneline_co=oneline_cb=oneline;
 
@@ -1359,7 +1359,6 @@ void CMainbody::predict_bb_static_ann()
 	cal_error();
 
 	cout << omp_get_wtime() - st << " seconds." << endl;
-#pragma acc exit data delete(c2_arr)
 };
 
 // NOT USED
