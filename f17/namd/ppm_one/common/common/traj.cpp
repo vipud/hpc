@@ -2190,16 +2190,20 @@ void CTraj::get_contact(vector<int> pos, int* used, int used_size, vector<float>
 		z3=z[ii3];
 	}
 
-	#pragma acc parallel loop \
+	double *x_arr_this = x_arr;
+	double *y_arr_this = y_arr;
+	double *z_arr_this = z_arr;
+
+	#pragma acc parallel loop present(used[0:used_size],x_arr_this[0:x_size],y_arr_this[0:y_size],z_arr_this[0:z_size]) \
 		reduction(+:contact1) reduction(+:contact2) reduction(+:contact3) private(jj,xx,yy,zz,rr1,rr2,rr3)
 	for(j=0;j<used_size;j++)
 	{
 		jj=used[j];
 		if(jj>=0){
 			jj--;
-			xx = x_arr[jj];
-			yy = y_arr[jj];
-			zz = z_arr[jj];
+			xx = x_arr_this[jj];
+			yy = y_arr_this[jj];
+			zz = z_arr_this[jj];
 			rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
 			rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
 			rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);

@@ -1225,7 +1225,7 @@ void CMainbody::predict_bb_static_ann()
 	int* c2_arr = c2.data();
 	int c2_size = c2.size();
 	
-#pragma acc data copyin(c2_arr[0:c2_size])
+#pragma acc enter data copyin(c2_arr[0:c2_size])
 	for(i=0+1;i<(int)index.size()-1;i++)
 	{
 		//cout<<i<<endl;
@@ -1301,8 +1301,7 @@ void CMainbody::predict_bb_static_ann()
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
 		//c2=pdb->getselect(":1-%@allheavy");
 		result.clear();
-		//traj->get_contact(c1,c2_arr,c2_size,&result);
-
+		traj->get_contact(c1,c2_arr,c2_size,&result);
 		oneline_co=oneline_cb=oneline;
 
 		oneline.insert(oneline.begin()+60,result.at(0));
@@ -1355,6 +1354,7 @@ void CMainbody::predict_bb_static_ann()
 
 		pdb->attach_bbprediction(id,pre);
 	}
+#pragma acc exit data delete(c2_arr)
 
 	cal_error();
 
@@ -1598,7 +1598,7 @@ void CMainbody::predict_bb_static_new()
 		int c2_size = c2.size();
 
 		result.clear();
-		traj->get_contact(c1,c2_arr, c2_size,&result);
+		//traj->get_contact(c1,c2_arr, c2_size,&result);
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
