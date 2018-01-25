@@ -91,6 +91,8 @@ protected:
 	vector<ring_group> ring_index_internal;
 	vector<ring_group> ring_index_external;
 	vector<struct ani_group> anistropy;
+	ani_group * anistropy_new;
+	int anistropy_size;
 	vector<double> dihe;
 	vector<double> angle;
 	vector<struct bb_group> bb;
@@ -99,6 +101,8 @@ protected:
 	vector<struct proton> protons;
 	vector<struct proton> allprotons;
 	vector<struct proton> allprotons3;
+	proton * allprotons3_new;
+	int allprotons3_size;
 	vector<int> heavy;
 
 	double hill(double contact, double v1, double v2);

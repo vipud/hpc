@@ -1393,38 +1393,38 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>*
 
 
 // Used!
-void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* select, vector<struct double_four> *ani_effect)
+void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
 {
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
 	double center[3];
-	double v1[3];
-	double v2[3];
-	double ori[3];
+	double v1[3]; //potentially need to be copied
+	double v2[3]; //potentially need to be copied
+	double ori[3]; //potentially need to be copied
 	double cosa;
 	double length;
 	double e;
-
-
 	struct double_four temp;
 	
 	for(i=0;i<4;i++)
 		temp.x[i]=0;
-	for(i=0;i<(int)select->size();i++)
+	for(i=0;i<select_size;i++)  
 		ani_effect->push_back(temp);
-	
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-		for(j=0;j<(int)index->size();j++)
+#pragma acc parallel present(index[0:index_size], select[0:select_size])
+{
+#pragma acc loop 
+		for(j=0;j<index_size;j++)
 		{
-			i1=index->at(j).pos[0]+base-1;
-			i2=index->at(j).pos[1]+base-1;
-			i3=index->at(j).pos[2]+base-1;
+			i1=index[j].pos[0]+base-1;
+			i2=index[j].pos[1]+base-1;
+			i3=index[j].pos[2]+base-1;
 			center[0]=(x[i1]+x[i2]+x[i3])/3;
-			center[1]=(y[i1]+y[i2]+y[i3])/3;
-			center[2]=(z[i1]+z[i2]+z[i3])/3;
+			center[1]=(y[i1]+y[i2]+y[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
+			center[2]=(z[i1]+z[i2]+z[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
 
 			v1[0]=x[i1]-x[i2];
 			v1[1]=y[i1]-y[i2];
@@ -1435,14 +1435,15 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 			v2[2]=z[i3]-z[i2];
 
 			cross(ori,v1,v2);
-
-			for(jj=0;jj<(int)select->size();jj++)
+#pragma acc loop seq
+			for(jj=0;jj<select_size;jj++) 
 			{
-				//cout<<jj<<endl;
-				e=0;				
-				for(k=0;k<(int)select->at(jj).nh;k++)
-				{
-					i1=base+select->at(jj).hpos[k]-1;
+				e=0;	
+#pragma acc loop seq							
+				for(k=0;k<select[jj].nh;k++)
+				{	
+					
+					i1=base+select[jj].hpos[k]-1;
 					v1[0]=center[0]-x[i1];
 					v1[1]=center[1]-y[i1];
 					v1[2]=center[2]-z[i1];
@@ -1452,12 +1453,12 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
-				ani_effect->at(jj).x[index->at(j).type-1]+=e/select->at(jj).nh*1000;
+				ani_effect->at(jj).x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
 		}
 	}
-
-	for(ii=0;ii<(int)select->size();ii++)
+}
+	for(ii=0;ii<select_size;ii++)
 	{
 		for(jj=0;jj<4;jj++)
 		{

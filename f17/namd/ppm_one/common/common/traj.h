@@ -52,7 +52,7 @@ public:
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector<double_four> *);
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct methyl_group>* , vector<double_four> *, enum methyl);
-		void getani(vector<ani_group> *, vector<struct proton>* , vector<double_four> *);
+		void getani(ani_group *, int, proton *, int, vector<double_four> *);
 		void getani(vector<ani_group> *, vector<struct proton>* , vector< vector<double_four> > *);
 		void getring_bb(vector<ring_group> *, vector<struct bb_group> *, vector<double_five> *,enum bb_carbon);
 		void gethbond(vector<bbhbond_group> *bond,vector<ehbond> *effect);

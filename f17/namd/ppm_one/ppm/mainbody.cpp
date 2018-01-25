@@ -17,6 +17,7 @@ using namespace std;
 
 //class Dihe_process, used by ppm only
 
+
 void CDihe_process::init(vector<int> innum,vector<double> *indihe)
 {
 	num=innum;
@@ -768,6 +769,8 @@ CMainbody::~CMainbody()
 		delete traj;
 	}
 	delete [] sep_table;
+#pragma acc exit data delete(anistropy_new)
+#pragma acc exit data delete(allprotons3_new)
 };
 
 
@@ -836,10 +839,16 @@ void CMainbody::load(string bmrbname)
 	pdb->getdihe(&dihe_index,&dihe_num);
 	pdb->getring(&ring_index);
 	pdb->ani(&anistropy);
+	anistropy_new = anistropy.data();
+	anistropy_size = anistropy.size();
+#pragma acc enter data copyin(anistropy_new[0:anistropy_size])
 	pdb->proton(&protons);
 	pdb->allproton(&allprotons);
 	pdb->process_ambig(2);
 	pdb->allproton3(&allprotons3);
+	allprotons3_new = allprotons3.data();
+	allprotons3_size = allprotons3.size();
+#pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
 	heavy=pdb->getheavy();
 	pdb->getbb(&bb);
 	pdb->bbnh(&bbnh);
@@ -1208,7 +1217,11 @@ void CMainbody::predict_bb_static_ann()
 
 		ha_protons.push_back(ha);
 	}
-	traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
+	proton * ha_protons_new = ha_protons.data();
+	int ha_protons_size = ha_protons.size();
+#pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
+	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
+#pragma acc exit data delete(ha_protons_new)
 	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 
 
@@ -1427,7 +1440,7 @@ void CMainbody::predict_bb_static_new()
 
 		ha_protons.push_back(ha);
 	}
-	traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
+//	traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
 	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 
 
@@ -1962,7 +1975,7 @@ void CMainbody::predict_proton()
 	vector<struct double_five> ring_effect;
 	vector<struct double_four> ani_effect;
 
-	traj->getani(&anistropy,&protons,&ani_effect);
+	//traj->getani(&anistropy,&protons,&ani_effect);
 	traj->getring(&ring_index,&protons,&ring_effect);
 		
 
@@ -2083,7 +2096,7 @@ void CMainbody::predict_proton_static_new(void)
 	
 	
 	allprotons=allprotons3;
-	traj->getani(&anistropy,&allprotons,&ani_effect);
+	traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
 	traj->getring(&ring_index,&allprotons,&ring_effect);
 
 	hs.resize(2);

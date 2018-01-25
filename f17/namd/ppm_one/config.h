@@ -3,9 +3,9 @@
 #ifndef  CONFIG
 #define  CONFIG
 
-#define NMR_VERSION_MAJOR @NMR_VERSION_MAJOR@
-#define NMR_VERSION_MINOR @NMR_VERSION_MINOR@
-#cmakedefine WIN32 
-#cmakedefine USE_OPENMP
+#define NMR_VERSION_MAJOR 1
+#define NMR_VERSION_MINOR 0
+/* #undef WIN32 */
+/* #undef USE_OPENMP */
 
 #endif
