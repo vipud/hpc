@@ -11,6 +11,21 @@ using namespace std;
 #include "traj.h"
 using namespace ldw_math;
 
+#pragma acc routine seq
+	void my_cross(double z[3],double x[3],double y[3])
+	{
+			z[0]=x[1]*y[2]-x[2]*y[1];
+			z[1]=-x[0]*y[2]+x[2]*y[0];
+			z[2]=x[0]*y[1]-x[1]*y[0];
+			return;
+	}
+
+#pragma acc routine seq
+	double my_dot(double x[3],double y[3])
+	{
+			return x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
+	}
+
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1439,7 +1454,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			v2[1]=y_arr[i3]-y_arr[i2];
 			v2[2]=z_arr[i3]-z_arr[i2];
 
-			cross(ori,v1,v2);
+			my_cross(ori,v1,v2);
 #pragma acc loop seq
 			for(jj=0;jj<select_size;jj++) 
 			{
@@ -1453,7 +1468,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					v1[1]=center[1]-y[i1];
 					v1[2]=center[2]-z[i1];
 					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
-					cosa=dot(v1,ori);
+					cosa=my_dot(v1,ori);
 					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
