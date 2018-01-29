@@ -1406,15 +1406,20 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double length;
 	double e;
 	struct double_four temp;
+
+	double_four *ani_effect_arr = ani_effect->data();
 	
-	for(i=0;i<4;i++)
-		temp.x[i]=0;
-	for(i=0;i<select_size;i++)  
-		ani_effect->push_back(temp);
+	//for(i=0;i<4;i++)
+	//	temp.x[i]=0;
+	//for(i=0;i<select_size;i++)  
+	//	ani_effect->push_back(temp);
+
+#pragma acc enter data create(ani_effect_arr[0:select_size])
+
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel present(index[0:index_size], select[0:select_size])
+#pragma acc parallel present(index[0:index_size], select[0:select_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3])
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
@@ -1422,17 +1427,17 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			i1=index[j].pos[0]+base-1;
 			i2=index[j].pos[1]+base-1;
 			i3=index[j].pos[2]+base-1;
-			center[0]=(x[i1]+x[i2]+x[i3])/3;
-			center[1]=(y[i1]+y[i2]+y[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
-			center[2]=(z[i1]+z[i2]+z[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
+			center[0]=(x_arr[i1]+x_arr[i2]+x_arr[i3])/3;
+			center[1]=(y_arr[i1]+y_arr[i2]+y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
+			center[2]=(z_arr[i1]+z_arr[i2]+z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
 
-			v1[0]=x[i1]-x[i2];
-			v1[1]=y[i1]-y[i2];
-			v1[2]=z[i1]-z[i2];
+			v1[0]=x_arr[i1]-x_arr[i2];
+			v1[1]=y_arr[i1]-y_arr[i2];
+			v1[2]=z_arr[i1]-z_arr[i2];
 
-			v2[0]=x[i3]-x[i2];
-			v2[1]=y[i3]-y[i2];
-			v2[2]=z[i3]-z[i2];
+			v2[0]=x_arr[i3]-x_arr[i2];
+			v2[1]=y_arr[i3]-y_arr[i2];
+			v2[2]=z_arr[i3]-z_arr[i2];
 
 			cross(ori,v1,v2);
 #pragma acc loop seq
@@ -1453,11 +1458,14 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
-				ani_effect->at(jj).x[index[j].type-1]+=e/select[jj].nh*1000;
+				ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
 		}
 	}
 }
+
+#pragma acc exit data copyout(ani_effect_arr[0:select_size])
+
 	for(ii=0;ii<select_size;ii++)
 	{
 		for(jj=0;jj<4;jj++)

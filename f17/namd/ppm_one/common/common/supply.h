@@ -46,7 +46,7 @@ struct double_five
 
 struct double_four
 {
-	double x[4];
+	double x[4] {0.0, 0.0, 0.0, 0.0};
 };
 
 struct double_three
