@@ -1146,7 +1146,7 @@ void CMainbody::predict_bb_static_ann()
 	vector<double> in,in2;
 	vector<struct double_five> ring_effect,ring_effect_ha;
 	vector<struct ehbond> hbond_effect;
-	vector<struct double_four> ani_effect,ani_effect_ha;
+	vector<struct double_four> ani_effect;//,ani_effect_ha;
 	vector<struct index_two> index;
 	vector<int> c1,c2;
 	vector<float> result;
@@ -1219,6 +1219,7 @@ void CMainbody::predict_bb_static_ann()
 	}
 	proton * ha_protons_new = ha_protons.data();
 	int ha_protons_size = ha_protons.size();
+	vector<double_four> ani_effect_ha(ha_protons_size);
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
 	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
 #pragma acc exit data delete(ha_protons_new)
@@ -2092,7 +2093,7 @@ void CMainbody::predict_proton_static_new(void)
 
 
 	vector<struct double_five> ring_effect;
-	vector<struct double_four> ani_effect;
+	vector<struct double_four> ani_effect(allprotons3_size);
 	
 	
 	allprotons=allprotons3;
