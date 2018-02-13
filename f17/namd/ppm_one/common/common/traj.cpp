@@ -1429,23 +1429,14 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//for(i=0;i<select_size;i++)  
 	//	ani_effect->push_back(temp);
 
-	for(i=0; i<select_size;i++)
-	{
-		if(ani_effect_arr[i].x[0] || ani_effect_arr[i].x[1] ||
-			ani_effect_arr[i].x[2] || ani_effect_arr[i].x[3])
-		{
-			cout << "ani_effect messed up at " << i << endl;
-		}
-	}
-
-#pragma acc enter data create(ani_effect_arr[0:select_size])
-// Pointers to avoid having to explicitly copy 'this'
-double *my_x_arr = x_arr;
-double *my_y_arr = y_arr;
-double *my_z_arr = z_arr;
-int my_x_size = x_size;
-int my_y_size = y_size;
-int my_z_size = z_size;
+#pragma acc enter data copyin(ani_effect_arr[0:select_size])
+	// Pointers to avoid having to explicitly copy 'this'
+	double *my_x_arr = x_arr;
+	double *my_y_arr = y_arr;
+	double *my_z_arr = z_arr;
+	int my_x_size = x_size;
+	int my_y_size = y_size;
+	int my_z_size = z_size;
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
