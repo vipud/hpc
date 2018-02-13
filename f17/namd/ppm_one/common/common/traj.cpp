@@ -1431,8 +1431,8 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 
 	for(i=0; i<select_size;i++)
 	{
-		if(ani_effect_arr[0] || ani_effect_arr[1] ||
-			ani_effect_arr[2] || ani_effect_arr[3])
+		if(ani_effect_arr[i].x[0] || ani_effect_arr[i].x[1] ||
+			ani_effect_arr[i].x[2] || ani_effect_arr[i].x[3])
 		{
 			cout << "ani_effect messed up at " << i << endl;
 		}
