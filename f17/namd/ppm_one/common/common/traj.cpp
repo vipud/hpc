@@ -1483,7 +1483,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
-				ani_effect_flat[j*jj*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
+				ani_effect_flat[j*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
 				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
 		}
@@ -1493,7 +1493,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	for(i=0; i<index_size; i++)
 		for(j=0; j<select_size; j++)
 			for(int k=0; k<4; k++)
-				ani_effect_arr[j].x[k] += ani_effect_flat[i*j*4 + j*4 + k];
+				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
 
 	delete(ani_effect_flat);
 
