@@ -1429,6 +1429,15 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//for(i=0;i<select_size;i++)  
 	//	ani_effect->push_back(temp);
 
+	for(i=0; i<select_size;i++)
+	{
+		if(ani_effect_arr[0] || ani_effect_arr[1] ||
+			ani_effect_arr[2] || ani_effect_arr[3])
+		{
+			cout << "ani_effect messed up at " << i << endl;
+		}
+	}
+
 #pragma acc enter data create(ani_effect_arr[0:select_size])
 // Pointers to avoid having to explicitly copy 'this'
 double *my_x_arr = x_arr;
@@ -1440,7 +1449,7 @@ int my_z_size = z_size;
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3])
+#pragma acc parallel present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3)
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
