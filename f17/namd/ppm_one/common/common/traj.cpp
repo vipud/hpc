@@ -1490,12 +1490,24 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	}
 } // end parallel region
 
+	ofstream myfile;
+ 	myfile.open ("example.txt");
+
+
 	for(i=0; i<index_size; i++)
 		for(j=0; j<select_size; j++)
+		{
 			for(int k=0; k<4; k++)
+			{
+				myfile << ani_effect_flat[i*select_size*4 + j*4 + k] << " ";
 				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
+			}
+			myfile << endl;
+		}
 
 	delete(ani_effect_flat);
+
+	myfile.close();
 
 #pragma acc exit data copyout(ani_effect_arr[0:select_size])
 
