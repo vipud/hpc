@@ -1442,39 +1442,47 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	memset(ani_effect_flat, 0, select_size*index_size*4*sizeof(double));
 
 	int *debug_i = new int[3];
-	double *debug_d = new double[15];
+	double *debug_d = new double[18];
 
-	for(i=0;i<nframe;i++)
+	for(i=0;i<1;i++)
 	{
 		base=i*natom;
-#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3], debug_d[0:15]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
+#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3], debug_d[0:18]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
-		for(j=0;j<index_size;j++)
+		for(j=0;j<1;j++)
 		{
 			i1=index[j].pos[0]+base-1;
 			i2=index[j].pos[1]+base-1;
 			i3=index[j].pos[2]+base-1;
-			/*if(j==0)
-			{
-				debug_d[0] = index[0].pos[0];
-				debug_d[1] = index[0].pos[1];
-				debug_d[2] = index[0].pos[2];
+
 				debug_i[0] = i1;
 				debug_i[1] = i2;
 				debug_i[2] = i3;
-			}*/
+
 			center[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
 			center[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
 			center[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
+
+debug_d[0] = center[0];
+debug_d[1] = center[1];
+debug_d[2] = center[2];
 
 			v1[0]=my_x_arr[i1]-my_x_arr[i2];
 			v1[1]=my_y_arr[i1]-my_y_arr[i2];
 			v1[2]=my_z_arr[i1]-my_z_arr[i2];
 
+debug_d[3] = v1[0];
+debug_d[4] = v1[1];
+debug_d[5] = v1[2];
+
 			v2[0]=my_x_arr[i3]-my_x_arr[i2];
 			v2[1]=my_y_arr[i3]-my_y_arr[i2];
 			v2[2]=my_z_arr[i3]-my_z_arr[i2];
+
+debug_d[6] = v2[0];
+debug_d[7] = v2[1];
+debug_d[8] = v2[2];
 
 /*if(j==0){
 					debug_d[3] = v1[0];
@@ -1489,8 +1497,13 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 }*/
 
 			my_cross(ori,v1,v2);
+
+debug_d[9] = ori[0];
+debug_d[10] = ori[1];
+debug_d[11] = ori[2];
+
 #pragma acc loop seq
-			for(jj=0;jj<select_size;jj++) 
+			for(jj=0;jj<1;jj++) 
 			{
 				e=0;	
 #pragma acc loop seq							
@@ -1498,16 +1511,22 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				{	
 					
 					i1=base+select[jj].hpos[k]-1;
+debug_d[12] = i1;
 					v1[0]=center[0]-my_x_arr[i1];
 					v1[1]=center[1]-my_y_arr[i1];
 					v1[2]=center[2]-my_z_arr[i1];
+debug_d[13] = v1[0];
+debug_d[14] = v1[1];
+debug_d[15] = v1[2];
 					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
+debug_d[16] = length;
 					cosa=my_dot(v1,ori);
+debug_d[17]=cosa;
 					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
-				if(j == 0 && jj == 0){
+				/*if(j == 0 && jj == 0){
 					debug_i[0] = i1;
 					debug_i[1] = i2;
 					debug_i[2] = i3;
@@ -1526,7 +1545,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					debug_d[12] = cosa;
 					debug_d[13] = length;
 					debug_d[14] = e;
-				}
+				}*/
 				ani_effect_flat[j*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
 				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
@@ -1539,10 +1558,34 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 
 	for(i=0;i<3;i++)
 		myfile << debug_i[i] << " ";
-
-	for(i=0;i<15;i++)
-		myfile << debug_d[i] << " ";
 	myfile << endl;
+
+	myfile << debug_d[0] << " ";
+	myfile << debug_d[1] << " ";
+	myfile << debug_d[2] << " ";
+	myfile << endl;
+	myfile << debug_d[3] << " ";
+	myfile << debug_d[4] << " ";
+	myfile << debug_d[5] << " ";
+	myfile << endl;
+	myfile << debug_d[6] << " ";
+	myfile << debug_d[7] << " ";
+	myfile << debug_d[8] << " ";
+	myfile << endl;
+	myfile << debug_d[9] << " ";
+	myfile << debug_d[10] << " ";
+	myfile << debug_d[11] << " ";
+	myfile << endl;
+	myfile << debug_d[12] << " ";
+	myfile << debug_d[13] << " ";
+	myfile << debug_d[14] << " ";
+	myfile << endl;
+	myfile << debug_d[15] << " ";
+	myfile << debug_d[16] << " ";
+	myfile << debug_d[17] << " ";
+	myfile << debug_d[18] << " ";
+	myfile << endl;
+
 
 
 	for(i=0; i<index_size; i++)
