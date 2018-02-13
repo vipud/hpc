@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+
+int INITIAL_SIZE = 8;
+int LIMIT = 10;
+
+int size;
+
+int *table[2];
+
+
+void init() {
+  size = INITIAL_SIZE;
+  for (int i=0; i<2; i++) {
+    table[i] = malloc(size*sizeof(int));
+    for (int j=0; j<size; j++) {
+      table[i][j] = -1;
+    }
+  }
+}
+
+int hash0(int x) {
+  return (x%9)%size;
+}
+
+int hash1(int x) {
+  return (x%11)%size;
+}
+
+void finalize() {
+  for (int i=0; i<2; i++) {
+    free(table[i]);
+  }
+}
+
+
+void print() {
+  for (int i=0; i<2; i++) {
+    printf("Table %d:\n", i);
+    for (int j=0; j<size; j++) {
+      if (table[i][j] == -1)
+	printf("%d:\n", j);
+      else
+	printf("%d: %d\n", j, table[i][j]);
+    }
+  }
+}
+
+_Bool contains(int x) {
+  if (table[0][hash0(x)]==x)
+    return true;
+  if (table[1][hash1(x)]==x)
+    return true;
+  return false;
+}
+
+int swap_int(int i, int j, int value) {
+  int old = table[i][j];
+  table[i][j] = value;
+  return old;
+}
+
+void resize() {
+  
+}
+
+
+_Bool add(int x) {
+  if (x<0)
+    return false;
+  for (int i=0; i<LIMIT; i++) {
+    if ((x = swap_int(0, hash0(x), x)) == -1) {
+      return true;
+    } else if ((x = swap_int(1, hash1(x), x)) == -1) {
+      return true;
+    }
+  }
+  resize();
+  add(x);
+}
+
+
+
+
+int main() {
+  init();
+  add(1);
+  add(5);
+  add(17);
+  add(32);
+  print();
+  finalize();
+}
+
