@@ -1446,11 +1446,12 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double *debug_v2 = new double[3*index_size];
 	double *debug_ori = new double[3*index_size];
 	double *debug_center = new double[3*index_size];
+	double *debug_extra = new double[3*index_size];
 
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3*index_size], debug_v1[0:3*index_size], debug_v2[0:3*index_size], debug_ori[0:3*index_size], debug_center[0:3*index_size]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
+#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3*index_size], debug_v1[0:3*index_size], debug_v2[0:3*index_size], debug_ori[0:3*index_size], debug_center[0:3*index_size], debug_extra[0:3*index_size]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
@@ -1516,6 +1517,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				ani_effect_flat[j*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
 				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
+			debug_extra[j*3 + 0] = e;
+			debug_extra[j*3 + 1] = length;
+			debug_extra[j*3 + 2] = cosa;
 		}
 	}
 } // end parallel region
@@ -1540,6 +1544,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 		myfile << debug_center[i*3 + 0] << " ";
 		myfile << debug_center[i*3 + 1] << " ";
 		myfile << debug_center[i*3 + 2] << " " << endl;
+		myfile << debug_extra[i*3 + 0] << " ";
+		myfile << debug_extra[i*3 + 1] << " ";
+		myfile << debug_extra[i*3 + 2] << " " << endl;
 	}
 
 
