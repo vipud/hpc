@@ -1476,6 +1476,18 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			v2[1]=my_y_arr[i3]-my_y_arr[i2];
 			v2[2]=my_z_arr[i3]-my_z_arr[i2];
 
+if(j==0){
+					debug_d[3] = v1[0];
+					debug_d[4] = v1[1];
+					debug_d[5] = v1[2];
+					debug_d[6] = v2[0];
+					debug_d[7] = v2[1];
+					debug_d[8] = v2[2];
+					debug_d[9] = center[0];
+					debug_d[10] = center[1];
+					debug_d[11] = center[2];
+}
+
 			my_cross(ori,v1,v2);
 #pragma acc loop seq
 			for(jj=0;jj<select_size;jj++) 
@@ -1502,15 +1514,15 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					//debug_d[0] = ori[0];
 					//debug_d[1] = ori[1];
 					//debug_d[2] = ori[2];
-					debug_d[3] = v1[0];
-					debug_d[4] = v1[1];
-					debug_d[5] = v1[2];
-					debug_d[6] = v2[0];
-					debug_d[7] = v2[1];
-					debug_d[8] = v2[2];
-					debug_d[9] = center[0];
-					debug_d[10] = center[1];
-					debug_d[11] = center[2];
+					//debug_d[3] = v1[0];
+					//debug_d[4] = v1[1];
+					//debug_d[5] = v1[2];
+					//debug_d[6] = v2[0];
+					//debug_d[7] = v2[1];
+					//debug_d[8] = v2[2];
+					//debug_d[9] = center[0];
+					//debug_d[10] = center[1];
+					//debug_d[11] = center[2];
 					debug_d[12] = cosa;
 					debug_d[13] = length;
 					debug_d[14] = e;
