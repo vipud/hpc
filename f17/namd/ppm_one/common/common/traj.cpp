@@ -1429,7 +1429,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//for(i=0;i<select_size;i++)  
 	//	ani_effect->push_back(temp);
 
-#pragma acc enter data copyin(ani_effect_arr[0:select_size])
+#pragma acc enter data create(ani_effect_arr[0:select_size])
 	// Pointers to avoid having to explicitly copy 'this'
 	double *my_x_arr = x_arr;
 	double *my_y_arr = y_arr;
@@ -1437,6 +1437,10 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	int my_x_size = x_size;
 	int my_y_size = y_size;
 	int my_z_size = z_size;
+
+	double *ani_effect_flat = new double[select_size*index_size*4];
+	memset(ani_effect_flat, 0, select_size*index_size*4*sizeof(double));
+
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
@@ -1479,11 +1483,19 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
-				ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
+				ani_effect_flat[j*jj*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
+				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
 		}
 	}
-}
+} // end parallel region
+
+	for(i=0; i<index_size; i++)
+		for(j=0; j<select_size; j++)
+			for(int k=0; k<4; k++)
+				ani_effect_arr[j].x[k] += ani_effect_flat[i*j*4 + j*4 + k];
+
+	delete(ani_effect_flat);
 
 #pragma acc exit data copyout(ani_effect_arr[0:select_size])
 
