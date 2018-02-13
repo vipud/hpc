@@ -1444,7 +1444,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3)
+#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
