@@ -1460,6 +1460,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				debug_d[0] = index[0].pos[0];
 				debug_d[1] = index[0].pos[1];
 				debug_d[2] = index[0].pos[2];
+				debug_i[0] = i1;
+				debug_i[1] = i2;
+				debug_i[2] = i3;
 			}
 			center[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
 			center[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
@@ -1493,9 +1496,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
 				if(j == 0 && i == 0){
-					debug_i[0] = i1;
-					debug_i[1] = i2;
-					debug_i[2] = i3;
+					//debug_i[0] = i1;
+					//debug_i[1] = i2;
+					//debug_i[2] = i3;
 					//debug_d[0] = ori[0];
 					//debug_d[1] = ori[1];
 					//debug_d[2] = ori[2];
