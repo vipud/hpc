@@ -12,12 +12,12 @@ using namespace std;
 using namespace ldw_math;
 
 #pragma acc routine seq
-	void my_cross(double z[3],double x[3],double y[3])
+	int my_cross(double z[3],double x[3],double y[3])
 	{
 			z[0]=x[1]*y[2]-x[2]*y[1];
 			z[1]=-x[0]*y[2]+x[2]*y[0];
 			z[2]=x[0]*y[1]-x[1]*y[0];
-			return;
+			return 0;
 	}
 
 #pragma acc routine seq
@@ -1430,11 +1430,17 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//	ani_effect->push_back(temp);
 
 #pragma acc enter data create(ani_effect_arr[0:select_size])
-
+// Pointers to avoid having to explicitly copy 'this'
+double *my_x_arr = x_arr;
+double *my_y_arr = y_arr;
+double *my_z_arr = z_arr;
+int my_x_size = x_size;
+int my_y_size = y_size;
+int my_z_size = z_size;
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel present(index[0:index_size], select[0:select_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3])
+#pragma acc parallel present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3])
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
@@ -1442,17 +1448,17 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			i1=index[j].pos[0]+base-1;
 			i2=index[j].pos[1]+base-1;
 			i3=index[j].pos[2]+base-1;
-			center[0]=(x_arr[i1]+x_arr[i2]+x_arr[i3])/3;
-			center[1]=(y_arr[i1]+y_arr[i2]+y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
-			center[2]=(z_arr[i1]+z_arr[i2]+z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
+			center[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
+			center[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
+			center[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
 
-			v1[0]=x_arr[i1]-x_arr[i2];
-			v1[1]=y_arr[i1]-y_arr[i2];
-			v1[2]=z_arr[i1]-z_arr[i2];
+			v1[0]=my_x_arr[i1]-my_x_arr[i2];
+			v1[1]=my_y_arr[i1]-my_y_arr[i2];
+			v1[2]=my_z_arr[i1]-my_z_arr[i2];
 
-			v2[0]=x_arr[i3]-x_arr[i2];
-			v2[1]=y_arr[i3]-y_arr[i2];
-			v2[2]=z_arr[i3]-z_arr[i2];
+			v2[0]=my_x_arr[i3]-my_x_arr[i2];
+			v2[1]=my_y_arr[i3]-my_y_arr[i2];
+			v2[2]=my_z_arr[i3]-my_z_arr[i2];
 
 			my_cross(ori,v1,v2);
 #pragma acc loop seq
@@ -1464,9 +1470,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				{	
 					
 					i1=base+select[jj].hpos[k]-1;
-					v1[0]=center[0]-x[i1];
-					v1[1]=center[1]-y[i1];
-					v1[2]=center[2]-z[i1];
+					v1[0]=center[0]-my_x_arr[i1];
+					v1[1]=center[1]-my_y_arr[i1];
+					v1[2]=center[2]-my_z_arr[i1];
 					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
 					cosa=my_dot(v1,ori);
 					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
