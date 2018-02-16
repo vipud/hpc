@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 
-int INITIAL_SIZE = 8;
+int INITIAL_SIZE = 4;
 int LIMIT = 10;
 
 int size;
@@ -62,8 +62,41 @@ int swap_int(int i, int j, int value) {
   return old;
 }
 
+_Bool rehash(int x) {
+  if (x<0)
+    return false;
+  for (int i=0; i<LIMIT; i++) {
+    if ((x = swap_int(0, hash0(x), x)) == -1) {
+      return true;
+    } else if ((x = swap_int(1, hash1(x), x)) == -1) {
+      return true;
+    }
+  }
+  printf("ERROR: Could not rehash %d\n", x);
+}
+
 void resize() {
-  
+  printf("IT'S TIME TO RESIZE!\n");
+  int *oldTable[2];
+  oldTable = table;
+  int oldSize = size;
+  size = size * 2;
+  for (int i=0; i<2; i++) {
+    table[i] = malloc(size*sizeof(int));
+    for (int j=0; j<size; j++) {
+      table[i][j] = -1;
+    }
+  }
+  for (int i=0; i<2; i++) {
+    for (int j=0; j<oldSize; j++) {
+      if (oldTable[i][j] != -1) {
+        rehash(oldTable[i][j]);
+      }
+    }
+  }
+  for (int i=0; i<2; i++) {
+    free(oldTable[i]);
+  }
 }
 
 
@@ -90,6 +123,12 @@ int main() {
   add(5);
   add(17);
   add(32);
+  add(12);
+  add(2);
+  add(8);
+  add(23);
+  add(20);
+  add(11);
   print();
   finalize();
 }
