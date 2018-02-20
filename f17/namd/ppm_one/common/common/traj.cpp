@@ -1447,11 +1447,12 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double *debug_ori = new double[3*index_size];
 	double *debug_center = new double[3*index_size];
 	double *debug_extra = new double[3*index_size];
+	double *debug_inner = new double[index_size*select_size*8];
 
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3*index_size], debug_v1[0:3*index_size], debug_v2[0:3*index_size], debug_ori[0:3*index_size], debug_center[0:3*index_size], debug_extra[0:3*index_size]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
+#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) copyout(debug_i[0:3*index_size], debug_v1[0:3*index_size], debug_v2[0:3*index_size], debug_ori[0:3*index_size], debug_center[0:3*index_size], debug_extra[0:3*index_size], debug_inner[0:index_size*select_size*8]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
@@ -1495,6 +1496,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			for(jj=0;jj<select_size;jj++) 
 			{
 				e=0;	
+				debug_inner[j*select_size*8 + jj*8 + 0] = e;
 #pragma acc loop seq							
 				for(k=0;k<select[jj].nh;k++)
 				{	
@@ -1513,6 +1515,13 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
+				debug_inner[j*select_size*8 + jj*8 + 1] = i1;
+				debug_inner[j*select_size*8 + jj*8 + 2] = v1[0];
+				debug_inner[j*select_size*8 + jj*8 + 3] = v1[1];
+				debug_inner[j*select_size*8 + jj*8 + 4] = v1[2];
+				debug_inner[j*select_size*8 + jj*8 + 5] = length;
+				debug_inner[j*select_size*8 + jj*8 + 6] = cosa;
+				debug_inner[j*select_size*8 + jj*8 + 7] = e;
 
 				ani_effect_flat[j*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
 				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
