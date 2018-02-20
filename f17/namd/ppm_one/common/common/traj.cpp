@@ -1496,7 +1496,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			for(jj=0;jj<select_size;jj++) 
 			{
 				e=0;	
-				debug_inner[j*select_size*14 + jj*14 + 0] = e;
+				debug_inner[j*select_size*14 + jj*14 + 0] = base;
 				debug_inner[j*select_size*14 + jj*14 + 1] = 0.0;
 				debug_inner[j*select_size*14 + jj*14 + 2] = 0.0;
 				debug_inner[j*select_size*14 + jj*14 + 3] = 0.0;
