@@ -1514,7 +1514,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				{	
 					debug_inner[j*select_size*20 + jj*20 + (k+1)] = select[jj].hpos[k];
 					i1=base+select[jj].hpos[k]-1;
-					debug_inner[j*select_size*20 + jj*20 + k+14] = i1;
+					debug_inner[j*select_size*20 + jj*20 + (k+14)] = my_x_arr[i1];
 
 					v1[0]=center[0]-my_x_arr[i1];
 					v1[1]=center[1]-my_y_arr[i1];
