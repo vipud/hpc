@@ -1556,6 +1556,14 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 		myfile << debug_extra[i*3 + 0] << " ";
 		myfile << debug_extra[i*3 + 1] << " ";
 		myfile << debug_extra[i*3 + 2] << " " << endl;
+		for(j = 0; j < select_size; j++){
+			myfile << j << " ";
+			for(int k = 0; k <8; k++){
+				myfile << debug_inner[i*select_size*8 + j*8 + k];
+			}
+			myfile << endl;
+		}
+		myfile << endl;
 	}
 
 
