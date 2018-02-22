@@ -1429,7 +1429,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//for(i=0;i<select_size;i++)  
 	//	ani_effect->push_back(temp);
 
-#pragma acc enter data create(ani_effect_arr[0:select_size])
+//#pragma acc enter data create(ani_effect_arr[0:select_size])
 	// Pointers to avoid having to explicitly copy 'this'
 	double *my_x_arr = x_arr;
 	double *my_y_arr = y_arr;
