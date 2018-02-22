@@ -1458,6 +1458,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 		for(j=0;j<index_size;j++)
 		{
 			double center_p[3];
+			double v1_p[3];
+			double v2_p[3];
+			double ori_p[3];
 			i1=index[j].pos[0]+base-1;
 			i2=index[j].pos[1]+base-1;
 			i3=index[j].pos[2]+base-1;
@@ -1472,26 +1475,26 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			debug_center[j*3 + 1] = center_p[1];
 			debug_center[j*3 + 2] = center_p[2];
 
-			v1[0]=my_x_arr[i1]-my_x_arr[i2];
-			v1[1]=my_y_arr[i1]-my_y_arr[i2];
-			v1[2]=my_z_arr[i1]-my_z_arr[i2];
-			debug_v1[j*3 + 0] = v1[0];
-			debug_v1[j*3 + 1] = v1[1];
-			debug_v1[j*3 + 2] = v1[2];
+			v1_p[0]=my_x_arr[i1]-my_x_arr[i2];
+			v1_p[1]=my_y_arr[i1]-my_y_arr[i2];
+			v1_p[2]=my_z_arr[i1]-my_z_arr[i2];
+			debug_v1[j*3 + 0] = v1_p[0];
+			debug_v1[j*3 + 1] = v1_p[1];
+			debug_v1[j*3 + 2] = v1_p[2];
 
 
-			v2[0]=my_x_arr[i3]-my_x_arr[i2];
-			v2[1]=my_y_arr[i3]-my_y_arr[i2];
-			v2[2]=my_z_arr[i3]-my_z_arr[i2];
-			debug_v2[j*3 + 0] = v2[0];
-			debug_v2[j*3 + 1] = v2[1];
-			debug_v2[j*3 + 2] = v2[2];
+			v2_p[0]=my_x_arr[i3]-my_x_arr[i2];
+			v2_p[1]=my_y_arr[i3]-my_y_arr[i2];
+			v2_p[2]=my_z_arr[i3]-my_z_arr[i2];
+			debug_v2[j*3 + 0] = v2_p[0];
+			debug_v2[j*3 + 1] = v2_p[1];
+			debug_v2[j*3 + 2] = v2_p[2];
 
 
-			my_cross(ori,v1,v2);
-			debug_ori[j*3 + 0] = ori[0];
-			debug_ori[j*3 + 1] = ori[1];
-			debug_ori[j*3 + 2] = ori[2];
+			my_cross(ori_p,v1_p,v2_p);
+			debug_ori[j*3 + 0] = ori_p[0];
+			debug_ori[j*3 + 1] = ori_p[1];
+			debug_ori[j*3 + 2] = ori_p[2];
 
 #pragma acc loop seq
 			for(jj=0;jj<select_size;jj++) 
@@ -1518,22 +1521,22 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 					i1=base+select[jj].hpos[k]-1;
 					debug_inner[j*select_size*20 + jj*20 + (k+14)] = center_p[0];
 
-					v1[0]=center_p[0]-my_x_arr[i1];
-					v1[1]=center_p[1]-my_y_arr[i1];
-					v1[2]=center_p[2]-my_z_arr[i1];
+					v1_p[0]=center_p[0]-my_x_arr[i1];
+					v1_p[1]=center_p[1]-my_y_arr[i1];
+					v1_p[2]=center_p[2]-my_z_arr[i1];
 
-					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
+					length=v1_p[0]*v1_p[0]+v1_p[1]*v1_p[1]+v1_p[2]*v1_p[2];
 
-					cosa=my_dot(v1,ori);
+					cosa=my_dot(v1_p,ori_p);
 
-					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
+					cosa/=sqrt(ori_p[0]*ori_p[0]+ori_p[1]*ori_p[1]+ori_p[2]*ori_p[2]);
 					cosa/=sqrt(length);					 
 					e+=(1-3*cosa*cosa)/(length*sqrt(length));
 				}
 				debug_inner[j*select_size*20 + jj*20 + 7] = i1;
-				debug_inner[j*select_size*20 + jj*20 + 8] = v1[0];
-				debug_inner[j*select_size*20 + jj*20 + 9] = v1[1];
-				debug_inner[j*select_size*20 + jj*20 + 10] = v1[2];
+				debug_inner[j*select_size*20 + jj*20 + 8] = v1_p[0];
+				debug_inner[j*select_size*20 + jj*20 + 9] = v1_p[1];
+				debug_inner[j*select_size*20 + jj*20 + 10] = v1_p[2];
 				debug_inner[j*select_size*20 + jj*20 + 11] = length;
 				debug_inner[j*select_size*20 + jj*20 + 12] = cosa;
 				debug_inner[j*select_size*20 + jj*20 + 13] = e;
