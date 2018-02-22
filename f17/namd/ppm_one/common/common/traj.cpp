@@ -1465,7 +1465,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			remaining = index_size % block_size;
 		//cout << "Block=" << block << endl;
 		//cout << "Remaining=" << remaining << endl;
-#pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
+#pragma acc parallel copy(ani_effect_flat[0:select_size*block_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
 		for(j=block*block_size;j<block*block_size+remaining;j++)
