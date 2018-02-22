@@ -1442,7 +1442,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	const int block_size = 1024;
 	int num_blocks = ((index_size-1)/block_size)+1;
 	double *ani_effect_flat = new double[block_size*select_size*4];
-	memset(ani_effect_flat, 0, block_size*select_size*4*sizeof(double));
+	//memset(ani_effect_flat, 0, block_size*select_size*4*sizeof(double));
 	//cout << "num_blocks=" << num_blocks << endl;
 
 	/*int *debug_i = new int[3*index_size];
@@ -1453,7 +1453,11 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double *debug_extra = new double[3*index_size];
 	double *debug_inner = new double[index_size*select_size*20];*/
 	//cout << "GetAni: " << index_size << "x" << select_size << endl;
-#pragma acc enter data copyin(ani_effect_flat[0:block_size*select_size*4])
+#pragma acc enter data create(ani_effect_flat[0:block_size*select_size*4])
+#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4])
+for(i=0; i<block_size*select_size*4; i++)
+	ani_effect_flat[i]=0.0;
+
 	for(i=0;i<nframe;i++)
 	{
 		//cout << "START OF NFRAME LOOP" << endl;
