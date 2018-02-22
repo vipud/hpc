@@ -1441,8 +1441,9 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	//double *ani_effect_flat = new double[select_size*index_size*4];
 	const int block_size = 1024;
 	int num_blocks = ((index_size-1)/block_size)+1;
-	double *ani_effect_flat = new double[block_size*index_size*4];
-	memset(ani_effect_flat, 0, block_size*index_size*4*sizeof(double));
+	double *ani_effect_flat = new double[block_size*select_size*4];
+	memset(ani_effect_flat, 0, block_size*select_size*4*sizeof(double));
+	//cout << "num_blocks=" << num_blocks << endl;
 
 	/*int *debug_i = new int[3*index_size];
 	double *debug_v1 = new double[3*index_size];
@@ -1451,21 +1452,25 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double *debug_center = new double[3*index_size];
 	double *debug_extra = new double[3*index_size];
 	double *debug_inner = new double[index_size*select_size*20];*/
-
+	//cout << "GetAni: " << index_size << "x" << select_size << endl;
 	for(i=0;i<nframe;i++)
 	{
+		//cout << "START OF NFRAME LOOP" << endl;
 		base=i*natom;
 		j=0;
 		for(int block = 0; block < num_blocks; block++)
 		{
 		int remaining = block_size;
-		if(block == num_blocks-1)
+		if(block >= (num_blocks-1))
 			remaining = index_size % block_size;
+		//cout << "Block=" << block << endl;
+		//cout << "Remaining=" << remaining << endl;
 #pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
 		for(j=block*block_size;j<block*block_size+remaining;j++)
 		{
+			//cout << "j=" << j << endl;
 			double center_p[3];
 			double v1_p[3];
 			double v2_p[3];
@@ -1558,9 +1563,12 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			//debug_extra[j*3 + 2] = cosa;
 		}
 	} // end parallel region
+		block++;
+		//cout << "Block At End=" << block << endl;
 		} // end block loop
+		//cout << "Broke out of block loop" << endl;
 } // end nframe loop
-
+//cout << "Outside nframe loop" << endl;
 	//ofstream myfile;
  	//myfile.open ("example.txt");
 /*
@@ -1595,17 +1603,22 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	}
 */
 
-	for(i=0; i<index_size; i++)
+	for(i=0; i<block_size; i++)
+	{
+		//cout << "i=" << i << endl;
 		for(j=0; j<select_size; j++)
 		{
+			//cout << "j=" << j << endl;
 			for(int k=0; k<4; k++)
 			{
+				//cout << "k=" << k << endl;
 				//myfile << ani_effect_flat[i*select_size*4 + j*4 + k] << " ";
 				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
 			}
 			//myfile << endl;
 		}
-
+	}
+	//cout << "Outside min loop" << endl;
 	delete(ani_effect_flat);
 
 	//myfile.close();
