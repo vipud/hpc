@@ -1457,6 +1457,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 #pragma acc loop 
 		for(j=0;j<index_size;j++)
 		{
+			double center_p[3];
 			i1=index[j].pos[0]+base-1;
 			i2=index[j].pos[1]+base-1;
 			i3=index[j].pos[2]+base-1;
@@ -1464,12 +1465,12 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 			debug_i[j*3 + 1] = i2;
 			debug_i[j*3 + 2] = i3;
 
-			center[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
-			center[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
-			center[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
-			debug_center[j*3 + 0] = center[0];
-			debug_center[j*3 + 1] = center[1];
-			debug_center[j*3 + 2] = center[2];
+			center_p[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
+			center_p[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
+			center_p[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
+			debug_center[j*3 + 0] = center_p[0];
+			debug_center[j*3 + 1] = center_p[1];
+			debug_center[j*3 + 2] = center_p[2];
 
 			v1[0]=my_x_arr[i1]-my_x_arr[i2];
 			v1[1]=my_y_arr[i1]-my_y_arr[i2];
@@ -1509,16 +1510,17 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				debug_inner[j*select_size*20 + jj*20 + 17] = 0.0;
 				debug_inner[j*select_size*20 + jj*20 + 18] = 0.0;
 				debug_inner[j*select_size*20 + jj*20 + 19] = 0.0;
+
 #pragma acc loop seq							
 				for(k=0;k<select[jj].nh;k++)
 				{	
 					debug_inner[j*select_size*20 + jj*20 + (k+1)] = select[jj].hpos[k];
 					i1=base+select[jj].hpos[k]-1;
-					debug_inner[j*select_size*20 + jj*20 + (k+14)] = my_x_arr[i1];
+					debug_inner[j*select_size*20 + jj*20 + (k+14)] = center_p[0];
 
-					v1[0]=center[0]-my_x_arr[i1];
-					v1[1]=center[1]-my_y_arr[i1];
-					v1[2]=center[2]-my_z_arr[i1];
+					v1[0]=center_p[0]-my_x_arr[i1];
+					v1[1]=center_p[1]-my_y_arr[i1];
+					v1[2]=center_p[2]-my_z_arr[i1];
 
 					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
 
