@@ -1438,8 +1438,11 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	int my_y_size = y_size;
 	int my_z_size = z_size;
 
-	double *ani_effect_flat = new double[select_size*index_size*4];
-	memset(ani_effect_flat, 0, select_size*index_size*4*sizeof(double));
+	//double *ani_effect_flat = new double[select_size*index_size*4];
+	const int block_size = 1024;
+	int num_blocks = ((index_size-1)/block_size)+1;
+	double *ani_effect_flat = new double[block_size*index_size*4];
+	memset(ani_effect_flat, 0, block_size*index_size*4*sizeof(double));
 
 	/*int *debug_i = new int[3*index_size];
 	double *debug_v1 = new double[3*index_size];
@@ -1452,10 +1455,16 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
+		j=0;
+		for(int block = 0; block < num_blocks; block++)
+		{
+		int remaining = block_size;
+		if(block == num_blocks-1)
+			remaining = index_size % block_size;
 #pragma acc parallel copy(ani_effect_flat[0:select_size*index_size*4]) present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop 
-		for(j=0;j<index_size;j++)
+		for(j=block*block_size;j<block*block_size+remaining;j++)
 		{
 			double center_p[3];
 			double v1_p[3];
@@ -1541,15 +1550,16 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 				debug_inner[j*select_size*20 + jj*20 + 12] = cosa;
 				debug_inner[j*select_size*20 + jj*20 + 13] = e;*/
 
-				ani_effect_flat[j*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
+				ani_effect_flat[(j%block_size)*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
 				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
 			}
 			//debug_extra[j*3 + 0] = e;
 			//debug_extra[j*3 + 1] = length;
 			//debug_extra[j*3 + 2] = cosa;
 		}
-	}
-} // end parallel region
+	} // end parallel region
+		} // end block loop
+} // end nframe loop
 
 	//ofstream myfile;
  	//myfile.open ("example.txt");
