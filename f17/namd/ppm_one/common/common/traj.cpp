@@ -2320,6 +2320,109 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 	return;
 }
 
+void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results)
+{
+
+	cout << "Get all contacts" << endl;
+	// Variables
+	int i, j;
+	int ii1, ii2, ii3 ,jj;
+	float contact1, contact2, contact3;
+	float x1,y1,z1,x2,y2,z2,x3,y3,z3;
+	float rr1,rr2,rr3;
+	double xx,yy,zz;
+
+	// Array containing all coordinates
+	int *c1 = new int[(index->size()-2)*3];
+
+	// Avoid copying "this" pointer
+	double *x_arr_this = x_arr;
+	double *y_arr_this = y_arr;
+	double *z_arr_this = z_arr;
+
+	// Load up c1 same way as in predict_bb_static_ann
+	//          index0           index1             index(index_size-2)
+	// c1[ {coords at i=1}, {coords at i=2},... {coords at i=index_size-1} ]
+	for(i=0+1;i<(int)index->size()-1;i++)
+	{
+		if(index->at(i).x1 <= 0)
+		{
+			c1[((i-1)*3)+0]=-1;
+			c1[((i-1)*3)+1]=-1;
+			c1[((i-1)*3)+2]=-1;
+		} else {
+			c1[((i-1)*3)+0]=bb->at(index->at(i).x1-1).capos;
+			c1[((i-1)*3)+1]=bb->at(index->at(i).x1-1).cbpos;
+			c1[((i-1)*3)+2]=bb->at(index->at(i).x1-1).copos;
+		}
+	}
+
+	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3)
+	for(i=0+1;i<(int)index_size-1;i++)
+	{
+		contact1=0.0; contact2=0.0; contact3=0.0;
+
+		ii1=c1[((i-1)*3)+0]; ii2=c1[((i-1)*3)+1]; ii3=c1[((i-1)*3)+2];
+
+		if(ii1 < 0){ 
+			x1=0; y1=0; z1=0;
+		} else { 
+			ii1--; x1=x_arr_this[ii1]; y1=y_arr_this[ii1]; z1=z_arr_this[ii1];
+		}
+
+		if(ii2 < 0){
+			x2=0; y2=0; z2=0;
+		} else {
+			ii2--; x2=x_arr_this[ii2]; y2=y_arr_this[ii2]; z2=z_arr_this[ii2];
+		}
+		
+		if(ii3 < 0){
+			x3=0; y3=0; z3=0;
+		} else {
+			ii3--; x3=x_arr_this[ii3]; y3=y_arr_this[ii3]; z3=z_arr_this[ii3];
+		}
+
+		#pragma acc loop independent reduction(+:contact1) reduction(+:contact2) \
+		reduction(+:contact3) private(jj,xx,yy,zz,rr1,rr2,rr3)
+		for(j=0;j<c2_size;j++)
+		{
+			jj=c2[j];
+			if(jj>=0){
+				jj--;
+				xx = x_arr_this[jj];
+				yy = y_arr_this[jj];
+				zz = z_arr_this[jj];
+				rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
+				rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
+				rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);
+				rr1=sqrt(rr1);
+				rr2=sqrt(rr2);
+				rr3=sqrt(rr3);
+				contact1+=exp(-rr1/3.0);
+				contact2+=exp(-rr2/3.0);
+				contact3+=exp(-rr3/3.0);
+			}				
+		}
+	
+		if(ii1 < -1){
+			results[((i-1)*3)+0]=-1.0;
+		} else {
+			results[((i-1)*3)+0]=contact1;
+		}
+		if(ii2 < -1){
+			results[((i-1)*3)+1]=-1.0;
+		} else {
+			results[((i-1)*3)+1]=contact2;
+		}if(ii3 < -1){
+			results[((i-1)*3)+2]=-1.0;
+		} else {
+			results[((i-1)*3)+2]=contact3;
+		}
+
+	}
+	cout << "End get all contacts" << endl;
+}	
+
 
 void CTraj::get_contact(vector<int> pos, int* used, int used_size, vector<float> * result)
 {
