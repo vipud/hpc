@@ -25,6 +25,8 @@ int main(int argc, char ** argv)
 
 {
 
+	double st = omp_get_wtime();
+
 	#ifdef _OPENACC
 	cout << "OpenACC seems to be working." << endl;
 	#endif
@@ -136,6 +138,8 @@ int main(int argc, char ** argv)
 	{
 		cout<<"Unrecognized command line arguments!\n";
 	}
+
+	cout << "Total Program Runtime: " << omp_get_wtime() - st << " seconds" << endl;
 
 	return 0;
 }

@@ -9,6 +9,7 @@
 using namespace std;
 
 #include "traj.h"
+#include <omp.h>
 using namespace ldw_math;
 
 #pragma acc routine seq
@@ -135,7 +136,7 @@ int CTraj::loadcoor(string filename)
 	z_arr = z.data();
 	z_size = z.size();
 
-	cout << "Preparing to make GPU copies of x, y, and z" << endl;
+	//cout << "Preparing to make GPU copies of x, y, and z" << endl;
 #pragma acc enter data copyin( x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size])
 
 	return nframe;
@@ -1410,6 +1411,7 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>*
 // Used!
 void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
 {
+	double st = omp_get_wtime();
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
@@ -1647,6 +1649,7 @@ for(i=0; i<block_size*select_size*4; i++)
 			ani_effect->at(ii).x[jj]/=nframe;
 		}
 	}*/
+	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -2323,7 +2326,9 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results)
 {
 
-	cout << "Get all contacts" << endl;
+	double st = omp_get_wtime();
+
+	//cout << "Get all contacts" << endl;
 	// Variables
 	int i, j;
 	int ii1, ii2, ii3 ,jj;
@@ -2425,7 +2430,8 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 		}
 
 	}
-	cout << "End get all contacts" << endl;
+	//cout << "End get all contacts" << endl;
+	cout << "get_all_contacts: " << omp_get_wtime() - st << " seconds" << endl;
 }	
 
 
@@ -2564,7 +2570,7 @@ CTraj::CTraj()
 
 CTraj::~CTraj()
 {
-	cout << "Preparing to delete GPU copies of x, y, and z" << endl;
+	//cout << "Preparing to delete GPU copies of x, y, and z" << endl;
 #pragma acc exit data delete(x_arr, y_arr, z_arr)
 };
 

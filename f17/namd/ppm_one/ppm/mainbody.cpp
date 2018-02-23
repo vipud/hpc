@@ -1139,6 +1139,10 @@ void CMainbody::predict_bb()
 
 void CMainbody::predict_bb_static_ann()
 {
+
+	double st;
+	st = omp_get_wtime();
+
 	int i,j;
 	int id;
 	char code,code_pre,code_fol;
@@ -1163,8 +1167,6 @@ void CMainbody::predict_bb_static_ann()
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
 
-	double st;
-	st = omp_get_wtime();
 
 	//ann_ca.load("ann_ca.dat");
 	ann_ca.loadp(p_ann_ca);
@@ -1374,7 +1376,7 @@ void CMainbody::predict_bb_static_ann()
 
 	cal_error();
 
-	cout << omp_get_wtime() - st << " seconds." << endl;
+	cout << "predict_bb_static_ann: " << omp_get_wtime() - st << " seconds" << endl;
 };
 
 // NOT USED
@@ -2083,6 +2085,7 @@ void CMainbody::predict_proton2()
 
 void CMainbody::predict_proton_static_new(void)
 {
+	double st = omp_get_wtime();
 	int i,j;
 	int id;
 	int type;
@@ -2151,6 +2154,7 @@ void CMainbody::predict_proton_static_new(void)
 		hs.at(1).push_back(pre);
 	}
 	compare("Side chain protons",hs);
+	cout << "predict_proton_static_new: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
