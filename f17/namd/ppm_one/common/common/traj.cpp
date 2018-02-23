@@ -1568,7 +1568,7 @@ for(i=0; i<block_size*select_size*4; i++)
 			//debug_extra[j*3 + 2] = cosa;
 		}
 	} // end parallel region
-		block++;
+		//block++;
 		//cout << "Block At End=" << block << endl;
 		} // end block loop
 		//cout << "Broke out of block loop" << endl;
