@@ -2339,9 +2339,9 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 	double *x_arr_this = x_arr;
 	double *y_arr_this = y_arr;
 	double *z_arr_this = z_arr;
-	int x_arr_size_this = x_arr_size;
-	int y_arr_size_this = y_arr_size;
-	int z_arr_size_this = z_arr_size;
+	int x_arr_size_this = x_size;
+	int y_arr_size_this = y_size;
+	int z_arr_size_this = z_size;
 
 	// Load up c1 same way as in predict_bb_static_ann
 	//          index0           index1             index(index_size-2)
