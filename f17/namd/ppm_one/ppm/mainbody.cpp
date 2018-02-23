@@ -1238,6 +1238,8 @@ void CMainbody::predict_bb_static_ann()
 	c2=pdb->getselect(":1-%@allheavy");	
 	int* c2_arr = c2.data();
 	int c2_size = c2.size();
+	float *results = new float[(index.size()-2)*3];
+	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results);
 	
 #pragma acc enter data copyin(c2_arr[0:c2_size])
 	for(i=0+1;i<(int)index.size()-1;i++)
@@ -1314,13 +1316,13 @@ void CMainbody::predict_bb_static_ann()
 		c1.push_back(bb.at(index.at(i).x1-1).cbpos);
 		c1.push_back(bb.at(index.at(i).x1-1).copos);
 		//c2=pdb->getselect(":1-%@allheavy");
-		result.clear();
-		traj->get_contact(c1,c2_arr,c2_size,&result);
+		//result.clear();
+		//traj->get_contact(c1,c2_arr,c2_size,&result);
 		oneline_co=oneline_cb=oneline;
 
-		oneline.insert(oneline.begin()+60,result.at(0));
-		oneline_cb.insert(oneline_cb.begin()+60,result.at(1));
-		oneline_co.insert(oneline_co.begin()+60,result.at(2));
+		oneline.insert(oneline.begin()+60,results[((i-1)*3)+0]);
+		oneline_cb.insert(oneline_cb.begin()+60,results[((i-1)*3)+1]);
+		oneline_co.insert(oneline_co.begin()+60,results[((i-1)*3)+2]);
 		oneline_n=oneline;
 
 		double *x_ca, *x_cb, *x_co, *x_n, *x_h, *x_ha;
