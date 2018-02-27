@@ -56,20 +56,18 @@ _Bool set_contains(Set* set, int value);
  * the code will return NULL for wrong input
  * A set is created if
  * - its memory has been allocated
- * - its values are initialized to 0
+ * - its values are initialized to -1
  * - the set can be referenced at some location in memory
  */
 Set* set_create();
 
+
 /* destroy(Set* set)
  * Input:  set, a pointer to a given Hash Set
- * Output: true if the set was sucessesfully destroyed,
- * false otherwise.
- * If destroy is given a non-Set* or null pointer the code will
- * return false for wrong input
- * A set is destroyed if:
- * - its memory has been freed 
+ * Output: always true (should switch to void)
  */
 _Bool set_destroy(Set* set); 
 
-int set_getsize(Set* set);
+ void set_print(Set* set);
+
+ int set_size(Set* set);

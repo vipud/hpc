@@ -19,10 +19,10 @@ coarse_2 : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=2 \
                 driver/max_driver.cvl coarse/coarse_set.cvl
 
-cuckoo_2 : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
+cuckoo_2 : cuckoo/cuckoo_seq.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=2 \
-                driver/max_driver.cvl cuckoo/cuckoo_set.cvl
+                driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
 
 naive_6v : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
@@ -39,10 +39,10 @@ coarse_6v : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
 	$(CIVL) verify -inputVAL_B=6 -inputTHD_B=2 -inputSTP_B=2 \
                 driver/max_driver.cvl coarse/coarse_set.cvl
 
-cuckoo_6v : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
+cuckoo_6v : cuckoo/cuckoo_seq.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=6 -inputTHD_B=2 -inputSTP_B=2 \
-                driver/max_driver.cvl cuckoo/cuckoo_set.cvl
+                driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
 
 naive_3t : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
@@ -59,10 +59,10 @@ coarse_3t : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
                 driver/max_driver.cvl coarse/coarse_set.cvl
 
-cuckoo_3t : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
+cuckoo_3t : cuckoo/cuckoo_seq.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=3 -inputSTP_B=2 \
-                driver/max_driver.cvl cuckoo/cuckoo_set.cvl
+                driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
 
 naive_3s : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
@@ -79,10 +79,10 @@ coarse_3s : coarse/coarse_set.cvl driver/max_driver.cvl driver/perm_util.c \
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=3 \
                 driver/max_driver.cvl coarse/coarse_set.cvl
 
-cuckoo_3s : cuckoo/cuckoo_set.cvl driver/max_driver.cvl driver/perm_util.c \
+cuckoo_3s : cuckoo/cuckoo_seq.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=3 \
-                driver/max_driver.cvl cuckoo/cuckoo_set.cvl
+                driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
 
 
 # replace 'example.c' with your file name!
