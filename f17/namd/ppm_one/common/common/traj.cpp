@@ -754,6 +754,7 @@ void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 // Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector<struct double_five> *ring_effect)
 {	
+	double st = omp_get_wtime();
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -856,6 +857,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 			ring_effect->at(ii).x[jj]/=nframe;
 		}
 	}
+	cout << "getring1: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -974,6 +976,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 // Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* select, vector<struct double_five> *ring_effect)
 {	
+	double st = omp_get_wtime();
 	int i,j,ii,jj,m,k;
 	int base;
 	int t[6];
@@ -1076,6 +1079,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 			ring_effect->at(ii).x[jj]/=nframe;
 		}
 	}
+	cout << "getring2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -1734,6 +1738,7 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector<struct double_four> *ani_effect)
 {
+	double st = omp_get_wtime();
 	int i,j,ii,jj;
 	int i1,i2,i3;
 	int base;
@@ -1802,6 +1807,7 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 			ani_effect->at(ii).x[jj]/=nframe;
 		}
 	}
+	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
