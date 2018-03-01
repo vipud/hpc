@@ -27,6 +27,472 @@ using namespace ldw_math;
 			return x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
 	}
 
+#pragma acc routine seq
+	double my_mysign(double a,double b)
+	{
+			double result;
+
+			a=fabs(a);
+			if(b>=0)
+			{
+					result=a;
+			}
+			else
+			{
+					result=-a;
+			}
+
+			return result;
+	}
+
+#pragma acc routine seq
+	double my_mymax(double a, double b)
+	{
+			double result;
+			if(a>b)
+			{
+					result=a;
+			}
+			else
+			{
+					result=b;
+			}
+			return result;
+	}
+
+
+#pragma acc routine seq 
+	double my_PYTHAG(double a, double b)
+	{
+		double at = fabs(a), bt = fabs(b), ct, result;
+
+		if (at > bt)       { ct = bt / at; result = at * sqrt(1.0 + ct * ct); }
+		else if (bt > 0.0) { ct = at / bt; result = bt * sqrt(1.0 + ct * ct); }
+		else result = 0.0;
+		return(result);
+	}
+
+
+// TODO
+#pragma acc routine seq
+int my_dsvd(double a[6][3], int m, int n, double *w, double v[3][3])
+	{
+		int flag, i, its, j, jj, k, l, nm;
+		double c, f, h, s, x, y, z;
+		double anorm = 0.0, g = 0.0, scale = 0.0;
+		double *rv1;
+	  
+		//if (m < n) 
+		//{
+			//fprintf(stderr, "#rows must be > #cols \n");
+		//	return 0;
+		//}
+	  
+		rv1 = (double *)malloc((unsigned int) n*sizeof(double));
+
+	/* Householder reduction to bidiagonal form */
+		for (i = 0; i < n; i++) 
+		{
+			/* left-hand reduction */
+			l = i + 1;
+			rv1[i] = scale * g;
+			g = s = scale = 0.0;
+			if (i < m) 
+			{
+				for (k = i; k < m; k++) 
+					scale += fabs((double)a[k][i]);
+				if (scale) 
+				{
+					for (k = i; k < m; k++) 
+					{
+						a[k][i] = (double)((double)a[k][i]/scale);
+						s += ((double)a[k][i] * (double)a[k][i]);
+					}
+					f = (double)a[i][i];
+	                
+					g = -my_mysign(sqrt(s), f);
+	                
+					h = f * g - s;
+					a[i][i] = (double)(f - g);
+					if (i != n - 1) 
+					{
+						for (j = l; j < n; j++) 
+						{
+							for (s = 0.0, k = i; k < m; k++) 
+								s += ((double)a[k][i] * (double)a[k][j]);
+							f = s / h;
+							for (k = i; k < m; k++) 
+								a[k][j] += (double)(f * (double)a[k][i]);
+						}
+					}
+					for (k = i; k < m; k++) 
+						a[k][i] = (double)((double)a[k][i]*scale);
+				}
+			}
+			w[i] = (double)(scale * g);
+	    
+			/* right-hand reduction */
+			g = s = scale = 0.0;
+			if (i < m && i != n - 1) 
+			{
+				for (k = l; k < n; k++) 
+					scale += fabs((double)a[i][k]);
+				if (scale) 
+				{
+					for (k = l; k < n; k++) 
+					{
+						a[i][k] = (double)((double)a[i][k]/scale);
+						s += ((double)a[i][k] * (double)a[i][k]);
+					}
+					f = (double)a[i][l];
+					g = -my_mysign(sqrt(s), f);
+					h = f * g - s;
+					a[i][l] = (double)(f - g);
+					for (k = l; k < n; k++) 
+						rv1[k] = (double)a[i][k] / h;
+					if (i != m - 1) 
+					{
+						for (j = l; j < m; j++) 
+						{
+							for (s = 0.0, k = l; k < n; k++) 
+								s += ((double)a[j][k] * (double)a[i][k]);
+							for (k = l; k < n; k++) 
+								a[j][k] += (double)(s * rv1[k]);
+						}
+					}
+					for (k = l; k < n; k++) 
+						a[i][k] = (double)((double)a[i][k]*scale);
+				}
+			}
+			anorm = my_mymax(anorm, (fabs((double)w[i]) + fabs(rv1[i])));
+		}
+	  
+		/* accumulate the right-hand transformation */
+		for (i = n - 1; i >= 0; i--) 
+		{
+			if (i < n - 1) 
+			{
+				if (g) 
+				{
+					for (j = l; j < n; j++)
+						v[j][i] = (double)(((double)a[i][j] / (double)a[i][l]) / g);
+						/* double division to avoid underflow */
+					for (j = l; j < n; j++) 
+					{
+						for (s = 0.0, k = l; k < n; k++) 
+							s += ((double)a[i][k] * (double)v[k][j]);
+						for (k = l; k < n; k++) 
+							v[k][j] += (double)(s * (double)v[k][i]);
+					}
+				}
+				for (j = l; j < n; j++) 
+					v[i][j] = v[j][i] = 0.0;
+			}
+			v[i][i] = 1.0;
+			g = rv1[i];
+			l = i;
+		}
+	  
+		/* accumulate the left-hand transformation */
+		for (i = n - 1; i >= 0; i--) 
+		{
+			l = i + 1;
+			g = (double)w[i];
+			if (i < n - 1) 
+				for (j = l; j < n; j++) 
+					a[i][j] = 0.0;
+			if (g) 
+			{
+				g = 1.0 / g;
+				if (i != n - 1) 
+				{
+					for (j = l; j < n; j++) 
+					{
+						for (s = 0.0, k = l; k < m; k++) 
+							s += ((double)a[k][i] * (double)a[k][j]);
+						f = (s / (double)a[i][i]) * g;
+						for (k = i; k < m; k++) 
+							a[k][j] += (double)(f * (double)a[k][i]);
+					}
+				}
+				for (j = i; j < m; j++) 
+					a[j][i] = (double)((double)a[j][i]*g);
+			}
+			else 
+			{
+				for (j = i; j < m; j++) 
+					a[j][i] = 0.0;
+			}
+			++a[i][i];
+		}
+
+		/* diagonalize the bidiagonal form */
+		for (k = n - 1; k >= 0; k--) 
+		{                             /* loop over singular values */
+			for (its = 0; its < 30; its++) 
+			{                         /* loop over allowed iterations */
+				flag = 1;
+				for (l = k; l >= 0; l--) 
+				{                     /* test for splitting */
+					nm = l - 1;
+					if (fabs(rv1[l]) + anorm == anorm) 
+					{
+						flag = 0;
+						break;
+					}
+					if (fabs((double)w[nm]) + anorm == anorm) 
+						break;
+				}
+				if (flag) 
+				{
+					c = 0.0;
+					s = 1.0;
+					for (i = l; i <= k; i++) 
+					{
+						f = s * rv1[i];
+						if (fabs(f) + anorm != anorm) 
+						{
+							g = (double)w[i];
+							h = my_PYTHAG(f, g);
+							w[i] = (double)h; 
+							h = 1.0 / h;
+							c = g * h;
+							s = (- f * h);
+							for (j = 0; j < m; j++) 
+							{
+								y = (double)a[j][nm];
+								z = (double)a[j][i];
+								a[j][nm] = (double)(y * c + z * s);
+								a[j][i] = (double)(z * c - y * s);
+							}
+						}
+					}
+				}
+				z = (double)w[k];
+				if (l == k) 
+				{                  /* convergence */
+					if (z < 0.0) 
+					{              /* make singular value nonnegative */
+						w[k] = (double)(-z);
+						for (j = 0; j < n; j++) 
+							v[j][k] = (-v[j][k]);
+					}
+					break;
+				}
+				//if (its >= 30) {
+				//	free((void*) rv1);
+				//	fprintf(stderr, "No convergence after 30,000! iterations \n");
+				//	return(0);
+				//}
+	    
+				/* shift from bottom 2 x 2 minor */
+				x = (double)w[l];
+				nm = k - 1;
+				y = (double)w[nm];
+				g = rv1[nm];
+				h = rv1[k];
+				f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);
+				g = my_PYTHAG(f, 1.0);
+				f = ((x - z) * (x + z) + h * ((y / (f + my_mysign(g, f))) - h)) / x;
+	          
+				/* next QR transformation */
+				c = s = 1.0;
+				for (j = l; j <= nm; j++) 
+				{
+					i = j + 1;
+					g = rv1[i];
+					y = (double)w[i];
+					h = s * g;
+					g = c * g;
+					z = my_PYTHAG(f, h);
+					rv1[j] = z;
+					c = f / z;
+					s = h / z;
+					f = x * c + g * s;
+					g = g * c - x * s;
+					h = y * s;
+					y = y * c;
+					for (jj = 0; jj < n; jj++) 
+					{
+						x = (double)v[jj][j];
+						z = (double)v[jj][i];
+						v[jj][j] = (double)(x * c + z * s);
+						v[jj][i] = (double)(z * c - x * s);
+					}
+					z = my_PYTHAG(f, h);
+					w[j] = (double)z;
+					if (z) 
+					{
+						z = 1.0 / z;
+						c = f * z;
+						s = h * z;
+					}
+					f = (c * g) + (s * y);
+					x = (c * y) - (s * g);
+					for (jj = 0; jj < m; jj++) 
+					{
+						y = (double)a[jj][j];
+						z = (double)a[jj][i];
+						a[jj][j] = (double)(y * c + z * s);
+						a[jj][i] = (double)(z * c - y * s);
+					}
+				}
+				rv1[l] = 0.0;
+				rv1[k] = f;
+				w[k] = (double)x;
+			}
+		}
+		free((void*) rv1);
+		return(1);
+	}
+
+
+#pragma acc routine seq
+	void my_ring(double x[6][3], int m, double ori[3])
+	{
+			int i,j;
+			int id;
+			double w[3];
+			double v[3][3];
+			double d;
+			double xx[6][3];
+
+			for(i=0;i<m;i++)
+			for(j=0;j<3;j++)
+					xx[i][j]=x[i][j];
+
+
+			dsvd(xx, m, 3, w,v);
+
+			d=w[0];id=0;
+			if(w[1]<d)
+			{
+					d=w[1];
+					id=1;
+			}
+			if(w[2]<d)
+			{
+					d=w[2];
+					id=2;
+			}
+
+			for(i=0;i<3;i++)
+					ori[i]=v[i][id];
+
+			return;
+	}
+
+#pragma acc routine seq
+	double my_area( double a, double b, double c )
+	{
+	  double s;
+	  double y;
+	  s = (a + b + c)/2;
+	  s =  s * (s - a)*(s - b)*(s - c);
+	  if(s<0)
+		y=0;
+	  else
+		y = sqrt( s );
+	  return y;
+	}
+
+#pragma acc routine seq
+	double my_veclength(double x[3])
+	{
+			return sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]);
+	}
+
+#pragma acc routine seq
+	void my_project(double ori[3], double p1[3], double p2[3])
+	{
+			double d;
+			int i;
+
+			d=ori[0]*p1[0]+ori[1]*p1[1]+ori[2]*p1[2];
+			for(i=0;i<3;i++)
+			{
+					p2[i]=p1[i]-d*ori[i];
+			}
+			return;
+	}
+
+#pragma acc routine seq
+	double my_effect(double x[6][3], int m, double ori[3], double p1[3])
+	{
+			int i,j;
+			double t1[3];
+			double t2[3];
+			double t3[3];
+			double t4[3];
+			double tt,d;
+			double s,ss;
+			double leg1,leg2,leg3;
+			double p2[3];
+
+			ss=0;
+			my_project(ori,p1,p2);
+			for(i=0;i<m-1;i++)
+			{
+					for(j=0;j<3;j++)
+					{
+							t1[j]=x[i][j]-p1[j];
+							t2[j]=x[i+1][j]-x[i][j];
+							t3[j]=x[i+1][j]-p1[j];
+					}
+					leg1=my_veclength(t1);
+					leg3=my_veclength(t3);
+					d=1/(leg1*leg1*leg1)+1/(leg3*leg3*leg3);
+					my_cross(t4,t2,t1);
+					tt=my_dot(t4,ori);
+
+					for(j=0;j<3;j++)
+					{
+							t1[j]=x[i][j]-p2[j];
+							t3[j]=x[i+1][j]-p2[j];
+					}
+					leg1=my_veclength(t1);
+					leg2=my_veclength(t2);
+					leg3=my_veclength(t3);
+					s=my_area(leg1,leg2,leg3);
+					if(tt<0)
+							s=-s;
+					ss+=s*d;
+			}
+
+			//special case
+			{
+					i=m-1;
+					for(j=0;j<3;j++)
+					{
+							t1[j]=x[i][j]-p1[j];
+							t2[j]=x[0][j]-x[i][j];
+							t3[j]=x[0][j]-p1[j];
+					}
+					leg1=my_veclength(t1);
+					leg3=my_veclength(t3);
+					d=1/(leg1*leg1*leg1)+1/(leg3*leg3*leg3);
+					my_cross(t4,t2,t1);
+					tt=my_dot(t4,ori);
+
+					for(j=0;j<3;j++)
+					{
+							t1[j]=x[i][j]-p2[j];
+							t3[j]=x[0][j]-p2[j];
+					}
+					leg1=my_veclength(t1);
+					leg2=my_veclength(t2);
+					leg3=my_veclength(t3);
+					s=my_area(leg1,leg2,leg3);
+					if(tt<0)
+							s=-s;
+					ss+=s*d;
+			}
+
+			return ss;
+	}
+
+
+
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -754,6 +1220,7 @@ void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 // Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector<struct double_five> *ring_effect)
 {	
+	double st = omp_get_wtime();
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -778,15 +1245,14 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 			switch(index->at(j).x1)
 			{
 				case 1:
-                case 2:
-                case 5:
-					m=6;
-					break;
+		        	case 2:
+		       		case 5:
+				m=6; break;
 				case 4:
 				case 3:
-					m=5;
-					break;
+				m=5;break;
 			}
+
 			t[0]=index->at(j).x2;
 			t[1]=index->at(j).x3;
 			t[2]=index->at(j).x4;
@@ -795,17 +1261,17 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 			t[5]=index->at(j).x7;
 
            
-            for(ii=0;ii<m;ii++)
+            		for(ii=0;ii<m;ii++)
 			{
 				u[ii][0]=x[t[ii]+base-1];
-                u[ii][1]=y[t[ii]+base-1];
-                u[ii][2]=z[t[ii]+base-1];
-            }
+                		u[ii][1]=y[t[ii]+base-1];
+                		u[ii][2]=z[t[ii]+base-1];
+            		}
            
-            for(jj=0;jj<3;jj++)
+            		for(jj=0;jj<3;jj++)
 				sum[jj]=0; 
 			for(ii=0;ii<m;ii++)
-            {
+            		{
 				for(jj=0;jj<3;jj++)
 				{
 					sum[jj]+=u[ii][jj];
@@ -821,14 +1287,14 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 
 			ring(u,m,ori);
 
-            for(jj=0;jj<3;jj++)
-            {
-                   t1[jj]=u[0][jj]-u[1][jj];
-                   t2[jj]=u[2][jj]-u[1][jj];
-            }
-            cross(t3,t1,t2);
-            if(dot(t3,ori)<0)
-            {
+			for(jj=0;jj<3;jj++)
+			{
+				t1[jj]=u[0][jj]-u[1][jj];
+				t2[jj]=u[2][jj]-u[1][jj];
+			}
+           		cross(t3,t1,t2);
+            		if(dot(t3,ori)<0)
+            		{
 				for(jj=0;jj<3;jj++)
 					ori[jj]=-ori[jj];
 			}
@@ -856,6 +1322,7 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 			ring_effect->at(ii).x[jj]/=nframe;
 		}
 	}
+	cout << "getring1: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -972,8 +1439,10 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 
 
 // Used!
-void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* select, vector<struct double_five> *ring_effect)
+// Need to initialize vector with correct size
+void CTraj::getring(ring_group *index, int index_size, proton *select, int select_size, vector<struct double_five> *ring_effect)
 {	
+	double st = omp_get_wtime();
 	int i,j,ii,jj,m,k;
 	int base;
 	int t[6];
@@ -982,100 +1451,141 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 	double sum[3];
 	double ori[3];
 	double e;
-	struct double_five temp;
+	//struct double_five temp;
 	
-	for(i=0;i<5;i++)
-		temp.x[i]=0;
-	for(i=0;i<(int)select->size();i++)
-		ring_effect->push_back(temp);
+	//for(i=0;i<5;i++)
+	//	temp.x[i]=0;
+	//for(i=0;i<(int)select->size();i++)
+	//	ring_effect->push_back(temp);
 
+	double_five *ring_effect_arr = ring_effect->data();
+	int ring_effect_size = ring_effect->size();
+
+	double *my_x_arr = x_arr;
+	double *my_y_arr = y_arr;
+	double *my_z_arr = z_arr;
+	int my_x_size = x_size;
+	int my_y_size = y_size;
+	int my_z_size = z_size;
 
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;  
-		for(j=0;j<(int)index->size();j++)
+		//#pragma acc parallel loop independent present(index[0:index_size],select[0:select_size], \
+		//my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size]) \
+		//private(i,j,ii,jj,m,k,e)
+		for(j=0;j<index_size;j++)
 		{
-			switch(index->at(j).x1)
+
+			int t_p[6];
+			double t1_p[3],t2_p[3],t3_p[3];
+			double u_p[6][3];
+			double sum_p[3];
+			double ori_p[3];
+			
+			/*switch(index[j].x1)
 			{
 				case 1:
-                case 2:
-                case 5:
-					m=6;
-					break;
+                		case 2:
+                		case 5:
+				m=6; break;
 				case 4:
 				case 3:
-					m=5;
-					break;
-			}
-			t[0]=index->at(j).x2;
-			t[1]=index->at(j).x3;
-			t[2]=index->at(j).x4;
-			t[3]=index->at(j).x5;
-			t[4]=index->at(j).x6;
-			t[5]=index->at(j).x7;
+				m=5; break;
+			}*/
 
-           
-            for(ii=0;ii<m;ii++)
+			if(index[j].x1 == 1 || index[j].x1 == 2 || index[j].x1 == 5){
+				m=6;
+			} else if(index[j].x1 == 4 || index[j].x1 == 3) {
+				m=5;
+			}
+				
+
+			t_p[0]=index[j].x2;
+			t_p[1]=index[j].x3;
+			t_p[2]=index[j].x4;
+			t_p[3]=index[j].x5;
+			t_p[4]=index[j].x6;
+			t_p[5]=index[j].x7;
+
+			//#pragma acc loop seq
+            		for(ii=0;ii<m;ii++)
 			{
-				u[ii][0]=x[t[ii]+base-1];
-                u[ii][1]=y[t[ii]+base-1];
-                u[ii][2]=z[t[ii]+base-1];
-            }
-           
-            for(jj=0;jj<3;jj++)
-				sum[jj]=0; 
+				u_p[ii][0]=my_x_arr[t_p[ii]+base-1];
+                		u_p[ii][1]=my_y_arr[t_p[ii]+base-1];
+                		u_p[ii][2]=my_z_arr[t_p[ii]+base-1];
+            		}
+
+			//#pragma acc loop seq
+            		for(jj=0;jj<3;jj++)
+				sum_p[jj]=0; 
+
+			//#pragma acc loop seq
 			for(ii=0;ii<m;ii++)
-            {
+            		{
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
 				{
-					sum[jj]+=u[ii][jj];
+					sum_p[jj]+=u_p[ii][jj];
 				}
 			}
+
+			#pragma acc loop seq
 			for(jj=0;jj<3;jj++)
-				sum[jj]/=m; 
+				sum_p[jj]/=m; 
+
+			//#pragma acc loop seq
 			for(ii=0;ii<m;ii++)
 			{
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
-					u[ii][jj]-=sum[jj];
+					u_p[ii][jj]-=sum_p[jj];
 			}
 
-			ring(u,m,ori);
+			my_ring(u_p,m,ori_p);
 
-            for(jj=0;jj<3;jj++)
-            {
-                   t1[jj]=u[0][jj]-u[1][jj];
-                   t2[jj]=u[2][jj]-u[1][jj];
-            }
-            cross(t3,t1,t2);
-            if(dot(t3,ori)<0)
-            {
+			//#pragma acc loop seq
+            		for(jj=0;jj<3;jj++)
+            		{
+                   		t1_p[jj]=u_p[0][jj]-u_p[1][jj];
+                   		t2_p[jj]=u_p[2][jj]-u_p[1][jj];
+            		}
+            		my_cross(t3_p,t1_p,t2_p);
+            		if(my_dot(t3_p,ori_p)<0)
+            		{
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
-					ori[jj]=-ori[jj];
+					ori_p[jj]=-ori_p[jj];
 			}
 
-			for(ii=0;ii<(int)select->size();ii++)
+			//#pragma acc loop seq reduction(*:e)
+			for(ii=0;ii<select_size;ii++)
 			{
-				e=0;	
-				for(k=0;k<(int)select->at(ii).nh;k++)
+				double p1_p[3];
+				e=0;
+				//#pragma acc loop seq reduction(+:e)
+				for(k=0;k<select[ii].nh;k++)
 				{
-					p1[0]=x[base+select->at(ii).hpos[k]-1]-sum[0];
-					p1[1]=y[base+select->at(ii).hpos[k]-1]-sum[1];
-					p1[2]=z[base+select->at(ii).hpos[k]-1]-sum[2];
-					e+=effect(u,m,ori,p1); 
+					p1_p[0]=my_x_arr[base+select[ii].hpos[k]-1]-sum_p[0];
+					p1_p[1]=my_y_arr[base+select[ii].hpos[k]-1]-sum_p[1];
+					p1_p[2]=my_z_arr[base+select[ii].hpos[k]-1]-sum_p[2];
+					e+=my_effect(u_p,m,ori_p,p1_p); 
 				}
-				e=e*10*3/select->at(ii).nh;
-				ring_effect->at(ii).x[index->at(j).x1-1]+=e;
+				e*=(10*3/select[ii].nh);
+				//#pragma acc atomic update
+				ring_effect_arr[ii].x[index[j].x1-1]+=e;
 			}
 		}
 	}
 
-	for(ii=0;ii<(int)select->size();ii++)
+	for(ii=0;ii<select_size;ii++)
 	{
 		for(jj=0;jj<5;jj++)
 		{
-			ring_effect->at(ii).x[jj]/=nframe;
+			ring_effect_arr[ii].x[jj]/=nframe;
 		}
 	}
+	cout << "getring2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -1732,8 +2242,142 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 }
 
 
+void CTraj::getani(ani_group *index, int index_size, nh_group *select, int select_size, vector<struct double_four> *ani_effect)
+{
+	double st = omp_get_wtime();
+	int i,j,ii,jj;
+	int i1,i2,i3;
+	int base;
+	double center[3];
+	double v1[3];
+	double v2[3];
+	double ori[3];
+	double cosa;
+	double length;
+	double e;
+
+
+	struct double_four temp;
+
+	double_four *ani_effect_arr = ani_effect->data();
+	
+	//for(i=0;i<4;i++)
+	//	temp.x[i]=0;
+	//for(i=0;i<(int)select->size();i++)
+	//	ani_effect->push_back(temp);
+
+	double *my_x_arr = x_arr;
+	double *my_y_arr = y_arr;
+	double *my_z_arr = z_arr;
+	int my_x_size = x_size;
+	int my_y_size = y_size;
+	int my_z_size = z_size;
+	
+	const int block_size = 1024;
+	int num_blocks = ((index_size-1)/block_size)+1;
+	double *ani_effect_flat = new double[block_size*select_size*4];
+
+	#pragma acc enter data create(ani_effect_flat[0:block_size*select_size*4])
+	#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4])
+	for(i=0; i<block_size*select_size*4; i++)
+		ani_effect_flat[i]=0.0;
+
+	for(i=0;i<nframe;i++)
+	{
+		base=i*natom;
+		j=0;
+		for(int block = 0; block < num_blocks; block++)
+		{
+			int remaining = block_size;
+			if(block >= (num_blocks-1))
+				remaining = index_size % block_size;
+#pragma acc parallel present(index[0:index_size],select[0:select_size],my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],ani_effect_flat[0:block_size*select_size*4]) private(i1,i2,i3,e,cosa,length,jj)
+{
+		for(j=block*block_size;j<block*block_size+remaining;j++)
+		{
+			double center_p[3];
+			double v1_p[3];
+			double v2_p[3];
+			double ori_p[3];
+			i1=index[j].pos[0]+base-1;
+			i2=index[j].pos[1]+base-1;
+			i3=index[j].pos[2]+base-1;
+			center_p[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
+			center_p[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3;
+			center_p[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3;
+
+			v1_p[0]=my_x_arr[i1]-my_x_arr[i2];
+			v1_p[1]=my_y_arr[i1]-my_y_arr[i2];
+			v1_p[2]=my_z_arr[i1]-my_z_arr[i2];
+
+			v2_p[0]=x[i3]-x[i2];
+			v2_p[1]=my_y_arr[i3]-my_y_arr[i2];
+			v2_p[2]=my_z_arr[i3]-my_z_arr[i2];
+
+			my_cross(ori_p,v1_p,v2_p);
+
+			#pragma acc loop seq
+			for(jj=0;jj<select_size;jj++)
+			{
+				if(select[jj].hpos>=1)
+				{
+					e=0;				
+					i1=base+select[jj].hpos-1;
+					v1_p[0]=center_p[0]-my_x_arr[i1];
+					v1_p[1]=center_p[1]-my_y_arr[i1];
+					v1_p[2]=center_p[2]-my_z_arr[i1];
+					length=v1_p[0]*v1_p[0]+v1_p[1]*v1_p[1]+v1_p[2]*v1_p[2];
+					cosa=my_dot(v1_p,ori_p);
+					cosa/=sqrt(ori_p[0]*ori_p[0]+ori_p[1]*ori_p[1]+ori_p[2]*ori_p[2]);
+					cosa/=sqrt(length);					 
+					e+=(1-3*cosa*cosa)/(length*sqrt(length));
+					ani_effect_flat[(j%block_size)*select_size*4 + jj*4 + (index[j].type-1)]+=e*1000;
+					//ani_effect->at(jj).x[index->at(j).type-1]+=e*1000;
+				}
+			}
+		}
+} // end parallel region
+		} // end block loop
+	} // end frame loop
+
+
+	#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4]) \
+	copy(ani_effect_arr[0:select_size])
+	for(j=0; j<select_size; j++)
+	{
+		#pragma acc loop seq
+		for(i=0; i < block_size; i++)
+		{
+			#pragma acc loop seq
+			for(int k=0; k<4; k++)
+			{
+				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
+			}
+		}
+		ani_effect_arr[j].x[0] /= nframe;
+		ani_effect_arr[j].x[1] /= nframe;
+		ani_effect_arr[j].x[2] /= nframe;
+		ani_effect_arr[j].x[3] /= nframe;
+	}
+	#pragma acc exit data delete(ani_effect_flat)
+
+	delete(ani_effect_flat);
+
+	/*for(ii=0;ii<(int)select->size();ii++)
+	{
+		for(jj=0;jj<4;jj++)
+		{
+			ani_effect->at(ii).x[jj]/=nframe;
+		}
+	}*/
+	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
+	return;
+}
+
+/*
 void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector<struct double_four> *ani_effect)
 {
+	double st = omp_get_wtime();
 	int i,j,ii,jj;
 	int i1,i2,i3;
 	int base;
@@ -1802,9 +2446,10 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 			ani_effect->at(ii).x[jj]/=nframe;
 		}
 	}
+	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
-
+*/
 
 
 

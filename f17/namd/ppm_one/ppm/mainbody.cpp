@@ -771,6 +771,7 @@ CMainbody::~CMainbody()
 	delete [] sep_table;
 #pragma acc exit data delete(anistropy_new)
 #pragma acc exit data delete(allprotons3_new)
+#pragma acc exit data delete(ring_index_new)
 };
 
 
@@ -838,6 +839,11 @@ void CMainbody::load(string bmrbname)
 
 	pdb->getdihe(&dihe_index,&dihe_num);
 	pdb->getring(&ring_index);
+	// getring ///
+	ring_index_new = ring_index.data();
+	ring_index_size = ring_index.size();
+#pragma acc enter data copyin(ring_index_new[0:ring_index_size])
+	//////////////
 	pdb->ani(&anistropy);
 	anistropy_new = anistropy.data();
 	anistropy_size = anistropy.size();
@@ -1018,7 +1024,7 @@ void CMainbody::predict_bb()
 	
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
@@ -1148,9 +1154,9 @@ void CMainbody::predict_bb_static_ann()
 	char code,code_pre,code_fol;
 	vector<double> out;
 	vector<double> in,in2;
-	vector<struct double_five> ring_effect,ring_effect_ha;
+	vector<struct double_five> ring_effect;//,ring_effect_ha;
 	vector<struct ehbond> hbond_effect;
-	vector<struct double_four> ani_effect;//,ani_effect_ha;
+	//vector<struct double_four> ani_effect;//,ani_effect_ha;
 	vector<struct index_two> index;
 	vector<int> c1,c2;
 	vector<float> result;
@@ -1178,7 +1184,14 @@ void CMainbody::predict_bb_static_ann()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+
+	nh_group *bbnh_new = bbnh.data();
+	int bbnh_size = bbnh.size();
+	vector<struct double_four> ani_effect(bbnh_size);
+	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
+	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
+	#pragma acc exit data delete(bbnh_new)
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 
@@ -1224,8 +1237,10 @@ void CMainbody::predict_bb_static_ann()
 	vector<double_four> ani_effect_ha(ha_protons_size);
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
 	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
+	vector<struct double_five> ring_effect_ha(ha_protons_size);
+	traj->getring(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, &ring_effect_ha);
+	//traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 #pragma acc exit data delete(ha_protons_new)
-	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 
 
 	index.resize(pdb->getnres());
@@ -1403,7 +1418,7 @@ void CMainbody::predict_bb_static_new()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 
@@ -1446,7 +1461,7 @@ void CMainbody::predict_bb_static_new()
 		ha_protons.push_back(ha);
 	}
 //	traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
-	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
+//	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 
 
 
@@ -1767,7 +1782,7 @@ void CMainbody::predict_bb2()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
@@ -1981,7 +1996,7 @@ void CMainbody::predict_proton()
 	vector<struct double_four> ani_effect;
 
 	//traj->getani(&anistropy,&protons,&ani_effect);
-	traj->getring(&ring_index,&protons,&ring_effect);
+//	traj->getring(&ring_index,&protons,&ring_effect);
 		
 
 
@@ -2097,13 +2112,15 @@ void CMainbody::predict_proton_static_new(void)
 
 
 
-	vector<struct double_five> ring_effect;
+	vector<struct double_five> ring_effect(allprotons3_size);
 	vector<struct double_four> ani_effect(allprotons3_size);
 	
 	
 	allprotons=allprotons3;
 	traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
-	traj->getring(&ring_index,&allprotons,&ring_effect);
+	//TODO
+	//traj->getring(&ring_index,&allprotons,&ring_effect);
+	traj->getring(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, &ring_effect);
 
 	hs.resize(2);
 
