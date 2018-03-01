@@ -1182,9 +1182,9 @@ void CMainbody::predict_bb_static_ann()
 	nh_group *bbnh_new = bbnh.data();
 	int bbnh_size = bbnh.size();
 	vector<struct double_four> ani_effect(bbnh_size);
-	#pragma acc copyin(bbnh_new[0:bbnh_size])
+	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
 	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
-	#pragma acc delete(bbnh_new)
+	#pragma acc exit data delete(bbnh_new)
 	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
