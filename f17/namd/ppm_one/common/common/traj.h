@@ -49,7 +49,8 @@ public:
 		void getring(vector<ring_group> *, vector<struct proton>* , vector< vector<struct double_five> > *);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector<struct double_five> *ring_effect);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector< vector<struct double_five>  > *ring_effect);
-		void getani(vector<ani_group> *, vector<struct nh_group>* , vector<double_four> *);
+		//void getani(vector<ani_group> *, vector<struct nh_group>* , vector<double_four> *);
+		void getani(ani_group *, int, nh_group *, int, vector<struct double_four> *);
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct methyl_group>* , vector<double_four> *, enum methyl);
 		void getani(ani_group *, int, proton *, int, vector<double_four> *);

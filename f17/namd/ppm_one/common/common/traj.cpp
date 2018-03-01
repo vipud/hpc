@@ -1736,6 +1736,139 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 }
 
 
+void CTraj::getani(ani_group *index, int index_size, nh_group *select, int select_size, vector<struct double_four> *ani_effect)
+{
+	double st = omp_get_wtime();
+	int i,j,ii,jj;
+	int i1,i2,i3;
+	int base;
+	double center[3];
+	double v1[3];
+	double v2[3];
+	double ori[3];
+	double cosa;
+	double length;
+	double e;
+
+
+	struct double_four temp;
+
+	double_four *ani_effect_arr = ani_effect->data();
+	
+	//for(i=0;i<4;i++)
+	//	temp.x[i]=0;
+	//for(i=0;i<(int)select->size();i++)
+	//	ani_effect->push_back(temp);
+
+	double *my_x_arr = x_arr;
+	double *my_y_arr = y_arr;
+	double *my_z_arr = z_arr;
+	int my_x_size = x_size;
+	int my_y_size = y_size;
+	int my_z_size = z_size;
+	
+	const int block_size = 1024;
+	int num_blocks = ((index_size-1)/block_size)+1;
+	double *ani_effect_flat = new double[block_size*select_size*4];
+
+	#pragma acc enter data create(ani_effect_flat[0:block_size*select_size*4])
+	#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4])
+	for(i=0; i<block_size*select_size*4; i++)
+		ani_effect_flat[i]=0.0;
+
+	for(i=0;i<nframe;i++)
+	{
+		base=i*natom;
+		j=0;
+		for(int block = 0; block < num_blocks; block++)
+		{
+			int remaining = block_size;
+			if(block >= (num_blocks-1))
+				remaining = index_size % block_size;
+#pragma acc parallel present(index[0:index_size],select[0:select_size],my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],ani_effect_flat[0:block_size*select_size*4]) private(i1,i2,i3,e,cosa,length,jj,k)
+{
+		for(j=block*block_size;j<block*block_size+remaining;j++)
+		{
+			double center_p[3];
+			double v1_p[3];
+			double v2_p[3];
+			double ori_p[3];
+			i1=index[j].pos[0]+base-1;
+			i2=index[j].pos[1]+base-1;
+			i3=index[j].pos[2]+base-1;
+			center_p[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
+			center_p[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3;
+			center_p[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3;
+
+			v1_p[0]=my_x_arr[i1]-my_x_arr[i2];
+			v1_p[1]=my_y_arr[i1]-my_y_arr[i2];
+			v1_p[2]=my_z_arr[i1]-my_z_arr[i2];
+
+			v2_p[0]=x[i3]-x[i2];
+			v2_p[1]=my_y_arr[i3]-my_y_arr[i2];
+			v2_p[2]=my_z_arr[i3]-my_z_arr[i2];
+
+			my_cross(ori_p,v1_p,v2_p);
+
+			#pragma acc loop seq
+			for(jj=0;jj<select_size;jj++)
+			{
+				if(select[jj].hpos>=1)
+				{
+					e=0;				
+					i1=base+select[jj].hpos-1;
+					v1_p[0]=center_p[0]-my_x_arr[i1];
+					v1_p[1]=center_p[1]-my_y_arr[i1];
+					v1_p[2]=center_p[2]-my_z_arr[i1];
+					length=v1_p[0]*v1_p[0]+v1_p[1]*v1_p[1]+v1_p[2]*v1_p[2];
+					cosa=my_dot(v1_p,ori_p);
+					cosa/=sqrt(ori_p[0]*ori_p[0]+ori_p[1]*ori_p[1]+ori_p[2]*ori_p[2]);
+					cosa/=sqrt(length);					 
+					e+=(1-3*cosa*cosa)/(length*sqrt(length));
+					ani_effect_flat[(j%block_size)*select_size*4 + jj*4 + (index[j].type-1)]+=e*1000;
+					//ani_effect->at(jj).x[index->at(j).type-1]+=e*1000;
+				}
+			}
+		}
+} // end parallel region
+		} // end block loop
+	} // end frame loop
+
+
+	#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4]) \
+	copy(ani_effect_arr[0:select_size])
+	for(j=0; j<select_size; j++)
+	{
+		#pragma acc loop seq
+		for(i=0; i < block_size; i++)
+		{
+			#pragma acc loop seq
+			for(int k=0; k<4; k++)
+			{
+				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
+			}
+		}
+		ani_effect_arr[j].x[0] /= nframe;
+		ani_effect_arr[j].x[1] /= nframe;
+		ani_effect_arr[j].x[2] /= nframe;
+		ani_effect_arr[j].x[3] /= nframe;
+	}
+	#pragma acc exit data delete(ani_effect_flat)
+
+	delete(ani_effect_flat);
+
+	/*for(ii=0;ii<(int)select->size();ii++)
+	{
+		for(jj=0;jj<4;jj++)
+		{
+			ani_effect->at(ii).x[jj]/=nframe;
+		}
+	}*/
+	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
+	return;
+}
+
+/*
 void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector<struct double_four> *ani_effect)
 {
 	double st = omp_get_wtime();
@@ -1810,7 +1943,7 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
-
+*/
 
 
 

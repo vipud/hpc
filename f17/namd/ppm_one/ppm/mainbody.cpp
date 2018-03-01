@@ -1018,7 +1018,7 @@ void CMainbody::predict_bb()
 	
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
@@ -1150,7 +1150,7 @@ void CMainbody::predict_bb_static_ann()
 	vector<double> in,in2;
 	vector<struct double_five> ring_effect,ring_effect_ha;
 	vector<struct ehbond> hbond_effect;
-	vector<struct double_four> ani_effect;//,ani_effect_ha;
+	//vector<struct double_four> ani_effect;//,ani_effect_ha;
 	vector<struct index_two> index;
 	vector<int> c1,c2;
 	vector<float> result;
@@ -1178,7 +1178,14 @@ void CMainbody::predict_bb_static_ann()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+
+	nh_group *bbnh_new = bbnh.data();
+	int bbnh_size = bbnh.size();
+	vector<struct double_four> ani_effect(bbnh_size);
+	#pragma acc copyin(bbnh_new[0:bbnh_size])
+	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
+	#pragma acc delete(bbnh_new)
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 
@@ -1403,7 +1410,7 @@ void CMainbody::predict_bb_static_new()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 
@@ -1767,7 +1774,7 @@ void CMainbody::predict_bb2()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	traj->getani(&anistropy,&bbnh,&ani_effect);
+	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
