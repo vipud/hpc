@@ -82,11 +82,11 @@ int my_dsvd(double a[6][3], int m, int n, double *w, double v[3][3])
 		double anorm = 0.0, g = 0.0, scale = 0.0;
 		double *rv1;
 	  
-		if (m < n) 
-		{
-			fprintf(stderr, "#rows must be > #cols \n");
-			return(0);
-		}
+		//if (m < n) 
+		//{
+			//fprintf(stderr, "#rows must be > #cols \n");
+		//	return 0;
+		//}
 	  
 		rv1 = (double *)malloc((unsigned int) n*sizeof(double));
 
@@ -279,11 +279,11 @@ int my_dsvd(double a[6][3], int m, int n, double *w, double v[3][3])
 					}
 					break;
 				}
-				if (its >= 30) {
-					free((void*) rv1);
-					fprintf(stderr, "No convergence after 30,000! iterations \n");
-					return(0);
-				}
+				//if (its >= 30) {
+				//	free((void*) rv1);
+				//	fprintf(stderr, "No convergence after 30,000! iterations \n");
+				//	return(0);
+				//}
 	    
 				/* shift from bottom 2 x 2 minor */
 				x = (double)w[l];
@@ -1471,9 +1471,9 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;  
-		#pragma acc parallel loop independent present(index[0:index_size],select[0:select_size], \
-		my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size]) \
-		private(i,j,ii,jj,m,k,e)
+		//#pragma acc parallel loop independent present(index[0:index_size],select[0:select_size], \
+		//my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size]) \
+		//private(i,j,ii,jj,m,k,e)
 		for(j=0;j<index_size;j++)
 		{
 
@@ -1508,7 +1508,7 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 			t_p[4]=index[j].x6;
 			t_p[5]=index[j].x7;
 
-			#pragma acc loop seq
+			//#pragma acc loop seq
             		for(ii=0;ii<m;ii++)
 			{
 				u_p[ii][0]=my_x_arr[t_p[ii]+base-1];
@@ -1516,14 +1516,14 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
                 		u_p[ii][2]=my_z_arr[t_p[ii]+base-1];
             		}
 
-			#pragma acc loop seq
+			//#pragma acc loop seq
             		for(jj=0;jj<3;jj++)
 				sum_p[jj]=0; 
 
-			#pragma acc loop seq
+			//#pragma acc loop seq
 			for(ii=0;ii<m;ii++)
             		{
-				#pragma acc loop seq
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
 				{
 					sum_p[jj]+=u_p[ii][jj];
@@ -1534,17 +1534,17 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 			for(jj=0;jj<3;jj++)
 				sum_p[jj]/=m; 
 
-			#pragma acc loop seq
+			//#pragma acc loop seq
 			for(ii=0;ii<m;ii++)
 			{
-				#pragma acc loop seq
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
 					u_p[ii][jj]-=sum_p[jj];
 			}
 
 			my_ring(u_p,m,ori_p);
 
-			#pragma acc loop seq
+			//#pragma acc loop seq
             		for(jj=0;jj<3;jj++)
             		{
                    		t1_p[jj]=u_p[0][jj]-u_p[1][jj];
@@ -1553,17 +1553,17 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
             		my_cross(t3_p,t1_p,t2_p);
             		if(my_dot(t3_p,ori_p)<0)
             		{
-				#pragma acc loop seq
+				//#pragma acc loop seq
 				for(jj=0;jj<3;jj++)
 					ori_p[jj]=-ori_p[jj];
 			}
 
-			#pragma acc loop seq reduction(*:e)
+			//#pragma acc loop seq reduction(*:e)
 			for(ii=0;ii<select_size;ii++)
 			{
 				double p1_p[3];
 				e=0;
-				#pragma acc loop seq reduction(+:e)
+				//#pragma acc loop seq reduction(+:e)
 				for(k=0;k<select[ii].nh;k++)
 				{
 					p1_p[0]=my_x_arr[base+select[ii].hpos[k]-1]-sum_p[0];
@@ -1572,7 +1572,7 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 					e+=my_effect(u_p,m,ori_p,p1_p); 
 				}
 				e*=(10*3/select[ii].nh);
-				#pragma acc atomic update
+				//#pragma acc atomic update
 				ring_effect_arr[ii].x[index[j].x1-1]+=e;
 			}
 		}
