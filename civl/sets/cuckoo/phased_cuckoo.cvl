@@ -1,0 +1,231 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "../include/set.cvh"
+
+int INITIAL_SIZE = 4;
+int PROBE_SIZE = 4;
+int THRESHOLD = PROBE_SIZE / 2;
+int LIMIT = 10;
+
+struct _node
+{
+  int data;
+  Node* next;
+};
+
+typedef struct _node Node;
+
+struct _set
+{
+  int size;
+  Node** table[2];
+  _Bool *locks[2];
+};
+
+typedef struct _set Set;
+
+Set* set_create() {
+  Set* result = (Set*) malloc(sizeof(Set));
+  result->size = INITIAL_SIZE;
+  for (int i=0; i<2; i++) {
+    result->locks[i] = malloc(result->size*sizeof(_Bool));
+    result->table[i] = malloc(result->size*sizeof(Node*));
+    for (int j=0; j<result->size; j++) {
+      result->locks[i][j] = false;
+      result->table[i][j] = malloc(sizeof(Node));
+      result->table[i][j]->data = -1;
+      Node* current_head = result->table[i][j];
+      for (int k=0; k<PROBE_SIZE-1; k++) {
+        current_head = node_add(current_head, -1);
+      }
+    }
+  }
+  return result;
+}
+
+Node* node_add(Node* head, int data) {
+  Node* new_node = (Node*) malloc(sizeof(Node));
+  new_node->data = data;
+  head->next = new_node;
+}
+
+void print_nodes(Node* head) {
+  Node* current_node = head;
+  while (current_node->data != -1 || current_node->next = NULL) {
+    printf("%d ", current_node->data);
+  }
+  printf("\n");
+}
+/*
+Node* list_build(int size) {
+  Node* head = ;
+  for (int i = 0; i < size-1; i++) {}
+}
+*/
+
+int hash0(Set* set, int x) {
+  return (x%5)%set->size;
+}
+
+int hash1(Set* set, int x) {
+  return (x%7)%set->size;
+}
+
+_Bool set_destroy(Set* set) {
+  for (int i=0; i<2; i++) {
+    free(set->table[i]);
+    free(set->locks[i]);
+  }
+  set->size = -1;
+  free(set);
+  return true;
+}
+
+$atomic_f void acquire(Set* set, int x) {
+  h0 = hash0(x);
+  h1 = hash1(x);
+  $when(set->locks[0][h0] == false) set->locks[0][h0] == true;
+  $when(set->locks[1][h1] == false) set->locks[1][h1] == true;
+}
+
+$atomic_f void release(int x) {
+  h0 = hash0(x);
+  h1 = hash1(x);
+  set->locks[0][h0] == false;
+  set->locks[1][h1] == false; 
+}
+
+void set_print(Set* set) {
+  for (int i=0; i<2; i++) {
+    printf("Table %d:\n", i);
+    for (int j=0; j<set->size; j++) {
+        printf("%d: ", j);
+        print_nodes(set->table[i][j]);
+    }
+  }
+}
+
+_Bool set_contains(Set* set, int x) {
+  acquire(set, x);
+  *Node current_node = set->table[0][hash0(set, x)];
+  while (current_node->data != -1 || current_node->next = NULL) {
+    if (current_node->data == x)
+    {
+      release(x);
+      return true;
+    }
+  }
+  current_node = set->table[1][hash1(set, x)];
+  while (current_node->data != -1 || current_node->next = NULL) {
+    if (current_node->data == x)
+    {
+      release(x);
+      return true;
+    }
+  }
+  release(x);
+  return false;
+}
+
+int swap_int(Set* set, int i, int j, int value) {
+  int old = set->table[i][j];
+  set->table[i][j] = value;
+  return old;
+}
+
+_Bool rehash(Set* set, int x) {
+  if (x<0)
+    return false;
+  for (int i=0; i<LIMIT; i++) {
+    if ((x = swap_int(set, 0, hash0(set, x), x)) == -1) {
+      return true;
+    } else if ((x = swap_int(set, 1, hash1(set, x), x)) == -1) {
+      return true;
+    }
+  }
+  printf("ERROR: Could not rehash %d\n", x);
+}
+
+void resize(Set* set) {
+  printf("Begin Resize\n");
+  int *oldTable[2];
+  oldTable = set->table;
+  int oldSize = set->size;
+  set->size = oldSize * 2;
+  for (int i=0; i<2; i++) {
+    set->table[i] = malloc(set->size*sizeof(int));
+    for (int j=0; j<set->size; j++) {
+      set->table[i][j] = -1;
+    }
+  }
+  for (int i=0; i<2; i++) {
+    for (int j=0; j<oldSize; j++) {
+      if (oldTable[i][j] != -1) {
+        rehash(set, oldTable[i][j]);
+      }
+    }
+  }
+  for (int i=0; i<2; i++) {
+    free(oldTable[i]);
+  }
+}
+
+
+_Bool set_add(Set* set, int x) {
+  if (x<0 || set_contains(set, x))
+    return false;
+  for (int i=0; i<LIMIT; i++) {
+    if ((x = swap_int(set, 0, hash0(set, x), x)) == -1) {
+      return true;
+    } else if ((x = swap_int(set, 1, hash1(set, x), x)) == -1) {
+      return true;
+    }
+  }
+  resize(set);
+  set_add(set, x);
+}
+
+_Bool set_remove(Set* set, int x) {
+  if (set->table[0][hash0(set, x)]==x) {
+    set->table[0][hash0(set, x)] = -1;
+    return true;
+  }
+  if (set->table[1][hash1(set, x)]==x) {
+    set->table[1][hash1(set, x)] = -1;
+    return true;
+  }
+  return false;
+}
+
+
+int test1() {
+  Set* s = set_create();
+  set_add(s, 1);
+  set_add(s, 5);
+  set_add(s, 17);
+  set_add(s, 32);
+  set_add(s, 12);
+  set_add(s, 2);
+  set_add(s, 8);
+  set_add(s, 23);
+  set_add(s, 20);
+  set_add(s, 11);
+  set_remove(s, 1);
+  set_add(s, 11);
+  set_remove(s, 8);
+  set_remove(s, 9);
+  $assert(set_contains(s, 12));
+  $assert(!set_contains(s, 100));
+  $assert(set_contains(s, 5));
+  $assert(!set_contains(s, 7));
+  $assert(!set_contains(s, 1));
+  $assert(!set_contains(s, 8));
+  set_print(s);
+  set_destroy(s);
+}
+/*
+int main() {
+  test1();
+}
+*/
