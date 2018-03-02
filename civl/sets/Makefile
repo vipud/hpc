@@ -23,7 +23,7 @@ cuckoo_2 : cuckoo/cuckoo_seq.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=2 -inputTHD_B=2 -inputSTP_B=2 \
                 driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
-
+	#$(CIVL) replay driver/max_driver.cvl cuckoo/cuckoo_seq.cvl
 naive_6v : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=6 -inputTHD_B=2 -inputSTP_B=2 \
