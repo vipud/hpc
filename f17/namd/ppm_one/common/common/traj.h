@@ -45,7 +45,8 @@ public:
 		void getdihe(vector<dihe_group> *, vector<double> *);
 		void getangle(vector<struct dihe_group> *, vector<double> *);
 		void getring(vector<ring_group> *, vector<struct methyl_group> *, vector<double_five> *, enum methyl);
-		void getring(vector<ring_group> *, vector<struct proton>* , vector<struct double_five> *);
+		//void getring(vector<ring_group> *, vector<struct proton>* , vector<struct double_five> *);
+		void getring(ring_group *, int, proton *, int, vector<struct double_five> *);
 		void getring(vector<ring_group> *, vector<struct proton>* , vector< vector<struct double_five> > *);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector<struct double_five> *ring_effect);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector< vector<struct double_five>  > *ring_effect);

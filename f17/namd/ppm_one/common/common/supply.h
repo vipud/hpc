@@ -41,7 +41,7 @@ struct ring_group
 
 struct double_five
 {
-	double x[5];
+	double x[5] {0.0, 0.0, 0.0, 0.0, 0.0};
 };
 
 struct double_four

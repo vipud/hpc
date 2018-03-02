@@ -88,6 +88,8 @@ protected:
 	vector<dihe_group> dihe_index;
 	vector<int> dihe_num;
 	vector<ring_group> ring_index;
+	ring_group *ring_index_new;
+	int ring_index_size;
 	vector<ring_group> ring_index_internal;
 	vector<ring_group> ring_index_external;
 	vector<struct ani_group> anistropy;
