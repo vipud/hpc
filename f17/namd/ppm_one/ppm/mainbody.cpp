@@ -772,6 +772,7 @@ CMainbody::~CMainbody()
 #pragma acc exit data delete(anistropy_new)
 #pragma acc exit data delete(allprotons3_new)
 #pragma acc exit data delete(ring_index_new)
+#pragma acc exit data delete(hbond_arr)
 };
 
 
@@ -860,6 +861,9 @@ void CMainbody::load(string bmrbname)
 	pdb->bbnh(&bbnh);
 	pdb->bbhbond(&hbond);
 	pdb->schbond(&hbond);  //This is new ! 
+	hbond_arr = hbond.data();
+	hbond_size = hbond.size();
+#pragma acc enter data copyin(hbon_arr[0:hbond_size])
 
 	
 
@@ -1184,7 +1188,8 @@ void CMainbody::predict_bb_static_ann()
 	ann_ha.loadp(p_ann_ha);
 
 
-	traj->gethbond(&hbond,&hbond_effect);
+	//traj->gethbond(&hbond,&hbond_effect);
+	traj->gethbond(hbond_arr, hbond_size, &hbond_effect);
 
 	nh_group *bbnh_new = bbnh.data();
 	int bbnh_size = bbnh.size();

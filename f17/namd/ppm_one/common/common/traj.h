@@ -60,6 +60,7 @@ public:
 		void getani(vector<ani_group> *, vector<struct proton>* , vector< vector<double_four> > *);
 		void getring_bb(vector<ring_group> *, vector<struct bb_group> *, vector<double_five> *,enum bb_carbon);
 		void gethbond(vector<bbhbond_group> *bond,vector<ehbond> *effect);
+		void gethbond(bbhbond_group *bond,int,vector<ehbond> *effect);
 		void gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double cutoff);
 		void gethbond(vector<bbhbond_group> *bond,vector< vector<ehbond> > *effect);
 		void gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect);

@@ -100,6 +100,8 @@ protected:
 	vector<struct bb_group> bb;
 	vector<struct nh_group> bbnh;
 	vector<struct bbhbond_group> hbond;
+	bbhbond_group *hbond_arr;
+	int hbond_size;
 	vector<struct proton> protons;
 	vector<struct proton> allprotons;
 	vector<struct proton> allprotons3;

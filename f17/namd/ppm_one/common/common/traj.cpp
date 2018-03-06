@@ -505,6 +505,22 @@ int my_dsvd(double a[6][3], int m, int n, double w[3], double v[3][3])
 			return ss;
 	}
 
+	#pragma acc routine seq
+	double my_coor_to_angle(double x2,double y2,double z2,double x3,double y3,double z3,double x4,double y4,double z4)
+	{
+			double angle;
+			double b[3],c[3];
+
+	        
+			b[0]=x3-x2;b[1]=y3-y2;b[2]=z3-z2;
+			c[0]=x4-x3;c[1]=y4-y3;c[2]=z4-z3;
+			angle=my_dot(b,c)/my_veclength(b)/my_veclength(c);
+			if(angle>1.0) angle=1.0;
+			if(angle<-1.0) angle=-1.0;
+	/*        angle=sqrt(1-angle*angle);*/
+			return angle;
+	}
+
 
 
 
@@ -789,11 +805,106 @@ void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_gr
 }
 
 
+
+void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effect)
+{
+	double st = omp_get_wtime();
+	int i,j,k;
+	int base;
+	int nid,cid;
+	int n,h,c,o;
+	//double u[3];
+	double x2,x3,x4,x5,y2,y3,y4,y5,z2,z3,z4,z5;
+	double d,phi,psi;
+
+	effect->resize(nres);
+	ehbond *effect_arr = effect->data();
+	int effect_size = effect->size();
+
+	double *my_x_arr = x_arr;
+	double *my_y_arr = y_arr;
+	double *my_z_arr = z_arr;
+
+	for(i=0;i<_hbond_size;i++)
+	{
+
+		for(j=0;j<_hbond_size;j++)
+		{
+			k=j-i;
+			if(k<3 && k>-3)
+				continue;
+			n=hbond[i].npos;
+			h=hbond[i].hpos;
+			if(h<=-1 || n<=-1) 
+				continue;
+			c=hbond[j].cpos;
+			o=hbond[j].opos;
+			if(o<=-1 || c<=-1)
+				continue;
+			n--;h--;c--;o--;
+			if(h<0 || n<0 || o<0 || c<0)
+				continue;
+
+			double u[3];
+
+			for(k=0;k<nframe;k++)
+			{
+				//cout<<"i,j,k is "<<i<<" "<<j<<" "<<k<<endl;
+				base=k*natom;
+				u[0]=my_x_arr[h+base]-my_x_arr[o+base];
+				u[1]=my_y_arr[h+base]-my_y_arr[o+base];
+				u[2]=my_z_arr[h+base]-my_z_arr[o+base];
+				d=my_veclength(u);
+				x2=my_x_arr[n+base];y2=my_y_arr[n+base];z2=my_z_arr[n+base];
+				x3=my_x_arr[h+base];y3=my_y_arr[h+base];z3=my_z_arr[h+base];
+				x4=my_x_arr[o+base];y4=my_y_arr[o+base];z4=my_z_arr[o+base];
+				x5=my_x_arr[c+base];y5=my_y_arr[c+base];z5=my_z_arr[c+base];
+				phi=my_coor_to_angle(x2,y2,z2,x3,y3,z3,x4,y4,z4);
+				psi=my_coor_to_angle(x3,y3,z3,x4,y4,z4,x5,y5,z5);
+				if(d<3 && phi>0.5 && psi>0.5)
+				{
+					d=1/(d-1);
+					phi*=phi;
+					psi*=psi;
+					nid=hbond[i].id-1;
+					cid=hbond[j].id-1; /* C start from 0*/
+					if(hbond[i].type==1)
+					{
+						effect_arr[nid].n_length+=d;
+						effect_arr[nid].n_phi+=phi;
+						effect_arr[nid].n_psi+=psi;
+					}
+					if(hbond[j].type==1)
+					{
+						effect_arr[cid].c_length+=d;
+						effect_arr[cid].c_phi+=phi;
+						effect_arr[cid].c_psi+=psi;
+					}
+				}
+			}
+		}
+	}
+
+	for(i=0;i<effect_size;i++)
+	{
+		effect_arr[i].n_length/=nframe;
+		effect_arr[i].c_length/=nframe;
+		effect_arr[i].n_phi/=nframe;
+		effect_arr[i].c_phi/=nframe;
+		effect_arr[i].n_psi/=nframe;
+		effect_arr[i].c_psi/=nframe;
+	}
+	cout << "gethbond: " << omp_get_wtime() - st << " seconds" << endl;
+	return;
+}
+
+
+
 // Used!
 //hbond type (1, bb) (12, sc OH) (13,sc NH) (22 or 23, sc CO)
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 {
-
+	double st = omp_get_wtime();
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -873,6 +984,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 		effect->at(i).n_psi/=nframe;
 		effect->at(i).c_psi/=nframe;
 	}
+	cout << "gethbond: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
