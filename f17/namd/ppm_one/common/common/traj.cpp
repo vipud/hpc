@@ -824,10 +824,18 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 	double *my_x_arr = x_arr;
 	double *my_y_arr = y_arr;
 	double *my_z_arr = z_arr;
+	int my_x_size = x_size;
+	int my_y_size = y_size;
+	int my_z_size = z_size;
 
+	#pragma acc enter data copyin(effect_arr[0:effect_size])
+
+#pragma acc parallel private(x2,x3,x4,x5,y2,y3,y4,y5,z2,z3,z4,z5) present(my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
+{
+#pragma acc loop gang
 	for(i=0;i<_hbond_size;i++)
 	{
-
+#pragma acc loop vector
 		for(j=0;j<_hbond_size;j++)
 		{
 			k=j-i;
@@ -846,7 +854,7 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 				continue;
 
 			double u[3];
-
+#pragma acc loop seq
 			for(k=0;k<nframe;k++)
 			{
 				//cout<<"i,j,k is "<<i<<" "<<j<<" "<<k<<endl;
@@ -884,7 +892,8 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 			}
 		}
 	}
-
+} // end parallel region
+#pragma acc parallel loop present(effect_arr[0:effect_size])
 	for(i=0;i<effect_size;i++)
 	{
 		effect_arr[i].n_length/=nframe;
@@ -894,6 +903,7 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 		effect_arr[i].n_psi/=nframe;
 		effect_arr[i].c_psi/=nframe;
 	}
+#pragma acc exit data copyout(effect_arr[0:effect_size])
 	cout << "gethbond: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
