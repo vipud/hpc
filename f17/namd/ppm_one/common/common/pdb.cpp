@@ -1211,6 +1211,7 @@ void CPdb::setup(CAminoacid *t, CLigand *tt, int iligand, string residue , int i
 // Altered to use a "END" snapshot seperation instead of "ENDMDL"
 int CPdb::loadpdb(string filename)
 {
+	double st = omp_get_wtime();
 	string line,part;
 	ifstream fin(filename.c_str());
 	pdbfilename=filename;
@@ -1508,7 +1509,7 @@ int CPdb::loadpdb(string filename)
 	{
 		pdbseq.push_back(v.at(i)->OneLetterName);
 	}
-
+	cout << "loadpdb: " << omp_get_wtime() - st << " seconds" << endl;
 	return (natom+natom2);
 
 }
