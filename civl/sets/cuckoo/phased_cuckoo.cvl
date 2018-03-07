@@ -6,15 +6,14 @@
 int INITIAL_SIZE = 4;
 int PROBE_SIZE = 4;
 int THRESHOLD = PROBE_SIZE / 2;
-int LIMIT = 10;
+
+typedef struct _node Node;
 
 struct _node
 {
   int data;
   Node* next;
 };
-
-typedef struct _node Node;
 
 struct _set
 {
@@ -25,15 +24,30 @@ struct _set
 
 typedef struct _set Set;
 
+Node* node_add(Node* head, int data) {
+  Node* new_node = (Node*) malloc(sizeof(Node));
+  new_node->data = data;
+  head->next = new_node;
+  return new_node;
+}
+
+void print_nodes(Node* head) {
+  Node* current_node = head;
+  while (current_node->data != -1 || current_node->next == NULL) {
+    printf("%d ", current_node->data);
+  }
+  printf("\n");
+}
+
 Set* set_create() {
   Set* result = (Set*) malloc(sizeof(Set));
   result->size = INITIAL_SIZE;
   for (int i=0; i<2; i++) {
     result->locks[i] = malloc(result->size*sizeof(_Bool));
-    result->table[i] = malloc(result->size*sizeof(Node*));
+    result->table[i] = malloc(result->size*sizeof(Node**));
     for (int j=0; j<result->size; j++) {
       result->locks[i][j] = false;
-      result->table[i][j] = malloc(sizeof(Node));
+      result->table[i][j] = (Node*) malloc(sizeof(Node));
       result->table[i][j]->data = -1;
       Node* current_head = result->table[i][j];
       for (int k=0; k<PROBE_SIZE-1; k++) {
@@ -44,19 +58,6 @@ Set* set_create() {
   return result;
 }
 
-Node* node_add(Node* head, int data) {
-  Node* new_node = (Node*) malloc(sizeof(Node));
-  new_node->data = data;
-  head->next = new_node;
-}
-
-void print_nodes(Node* head) {
-  Node* current_node = head;
-  while (current_node->data != -1 || current_node->next = NULL) {
-    printf("%d ", current_node->data);
-  }
-  printf("\n");
-}
 /*
 Node* list_build(int size) {
   Node* head = ;
@@ -74,6 +75,9 @@ int hash1(Set* set, int x) {
 
 _Bool set_destroy(Set* set) {
   for (int i=0; i<2; i++) {
+    for (int j = 0; j<set->size; j++) {
+      free(set->table[i][j]);
+    }
     free(set->table[i]);
     free(set->locks[i]);
   }
@@ -83,17 +87,17 @@ _Bool set_destroy(Set* set) {
 }
 
 $atomic_f void acquire(Set* set, int x) {
-  h0 = hash0(x);
-  h1 = hash1(x);
-  $when(set->locks[0][h0] == false) set->locks[0][h0] == true;
-  $when(set->locks[1][h1] == false) set->locks[1][h1] == true;
+  int h0 = hash0(set, x);
+  int h1 = hash1(set, x);
+  $when(set->locks[0][h0] == false) set->locks[0][h0] = true;
+  $when(set->locks[1][h1] == false) set->locks[1][h1] = true;
 }
 
-$atomic_f void release(int x) {
-  h0 = hash0(x);
-  h1 = hash1(x);
-  set->locks[0][h0] == false;
-  set->locks[1][h1] == false; 
+$atomic_f void release(Set* set, int x) {
+  int h0 = hash0(set, x);
+  int h1 = hash1(set, x);
+  set->locks[0][h0] = false;
+  set->locks[1][h1] = false; 
 }
 
 void set_print(Set* set) {
@@ -108,26 +112,26 @@ void set_print(Set* set) {
 
 _Bool set_contains(Set* set, int x) {
   acquire(set, x);
-  *Node current_node = set->table[0][hash0(set, x)];
-  while (current_node->data != -1 || current_node->next = NULL) {
+  Node* current_node = set->table[0][hash0(set, x)];
+  while (current_node->data != -1 || current_node->next == NULL) {
     if (current_node->data == x)
     {
-      release(x);
+      release(set, x);
       return true;
     }
   }
   current_node = set->table[1][hash1(set, x)];
-  while (current_node->data != -1 || current_node->next = NULL) {
+  while (current_node->data != -1 || current_node->next == NULL) {
     if (current_node->data == x)
     {
-      release(x);
+      release(set, x);
       return true;
     }
   }
-  release(x);
+  release(set, x);
   return false;
 }
-
+/*
 int swap_int(Set* set, int i, int j, int value) {
   int old = set->table[i][j];
   set->table[i][j] = value;
@@ -197,10 +201,11 @@ _Bool set_remove(Set* set, int x) {
   }
   return false;
 }
-
+*/
 
 int test1() {
   Set* s = set_create();
+  /*
   set_add(s, 1);
   set_add(s, 5);
   set_add(s, 17);
@@ -221,11 +226,11 @@ int test1() {
   $assert(!set_contains(s, 7));
   $assert(!set_contains(s, 1));
   $assert(!set_contains(s, 8));
+  */
   set_print(s);
   set_destroy(s);
 }
-/*
+
 int main() {
   test1();
 }
-*/

@@ -863,7 +863,7 @@ void CMainbody::load(string bmrbname)
 	pdb->schbond(&hbond);  //This is new ! 
 	hbond_arr = hbond.data();
 	hbond_size = hbond.size();
-#pragma acc enter data copyin(hbon_arr[0:hbond_size])
+#pragma acc enter data copyin(hbond_arr[0:hbond_size])
 
 	
 
