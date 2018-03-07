@@ -71,6 +71,7 @@ CDssp::~CDssp()
 
 void CPdb::process_ambig(int flag)
 {
+	double st = omp_get_wtime();
 	//meaning of flag:
 	// 1. remove any ambig assignment
 	// 2. combine all hb2, hb3 into mean value, if code is 1 or 2, otherwise remove ambig
@@ -97,6 +98,7 @@ void CPdb::process_ambig(int flag)
 	{
 		//remove methyl ambig==2 case
 	}
+	cout << "pdb::process_ambig: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 
@@ -2183,6 +2185,7 @@ vector<int> CPdb::getselectca(vector<int> res)
 
 void CPdb::getdihe(vector<dihe_group> *t, vector<int> *n)
 {
+	double st = omp_get_wtime();
 	unsigned int i;
 
 	for(i=0;i<(int)v.size();i++)
@@ -2191,6 +2194,7 @@ void CPdb::getdihe(vector<dihe_group> *t, vector<int> *n)
 		v[i]->dihe(t);
 		n->push_back(t->size());
 	}
+	cout << "pdb::getdihe: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 
@@ -2257,6 +2261,7 @@ void CPdb::getdihe(vector<dihe_group> *t)
 
 void CPdb::getbb(vector<bb_group> *t)
 {
+	double st = omp_get_wtime();
 	int i,j;
 	int begin,stop;
 
@@ -2282,6 +2287,7 @@ void CPdb::getbb(vector<bb_group> *t)
 		}
 		v[stop-1]->bb(t);
 	}
+	cout << "pdb::getbb: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2317,11 +2323,13 @@ void CPdb::getbb_assign(vector<bb_group> *t)
 
 void CPdb::bbhbond(vector<bbhbond_group> *t)
 {	
+	double st = omp_get_wtime();
 	unsigned int i;
 	for(i=0;i<(int)v.size();i++)
 	{
 		v[i]->bbhbond(t);
 	}
+	cout << "pdb::bbhbond: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2331,11 +2339,13 @@ void CPdb::bbhbond(vector<bbhbond_group> *t)
 
 void CPdb::schbond(vector<bbhbond_group> *t)
 {
+	double st = omp_get_wtime();
 	unsigned int i;
 	for(i=0;i<v.size();i++)
 	{
 		v[i]->schbond(t);
 	}
+	cout << "pdb::schbond: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2363,12 +2373,14 @@ void CPdb::bbco(vector<co_group> *t)
 
 void CPdb::bbnh(vector<nh_group> *t)
 {
+	double st = omp_get_wtime();
 	int i;
 	for(i=0+1;i<(int)v.size();i++)
 	{
 		if(v[i]->OneLetterName != 'P')
 			v[i]->bbnh(t);
 	}
+	cout << "pdb::bbnh: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2485,6 +2497,7 @@ void CPdb::loadred(string filename)
 
 void CPdb::getring(vector<ring_group> *t)
 {	
+	double st = omp_get_wtime();
 	int i;
 
 	for(i=0;i<(int)v.size();i++)
@@ -2505,7 +2518,7 @@ void CPdb::getring(vector<ring_group> *t)
 				t->erase(t->begin()+i);
 		}
 	}
-
+	cout << "pdb::getring: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2584,6 +2597,7 @@ void CPdb::proton(vector<struct proton> *sel, int flag)
 
 void CPdb::proton(vector<struct proton> *sel)
 {
+	double st = omp_get_wtime();
 	int i;
 	sel->clear();
 	for(i=0;i<(int)v.size();i++)
@@ -2605,11 +2619,13 @@ void CPdb::proton(vector<struct proton> *sel)
 			i--;
 		}
 	}
+	cout << "pdb::proton: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 
 void CPdb::allproton3(vector<struct proton> *sel)
 {
+	double st = omp_get_wtime();
 	int i;
 	sel->clear();
 	for(i=0;i<(int)(int)v.size();i++)
@@ -2631,10 +2647,12 @@ void CPdb::allproton3(vector<struct proton> *sel)
 			i--;
 		}
 	}
+	cout << "pdb::allproton3: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 void CPdb::allproton(vector<struct proton> *sel)
 {
+	double st = omp_get_wtime();
 	int i;
 	sel->clear();
 	for(i=0;i<(int)(int)v.size();i++)
@@ -2656,10 +2674,12 @@ void CPdb::allproton(vector<struct proton> *sel)
 			i--;
 		}
 	}
+	cout << "pdb::allproton: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 void CPdb::ani(vector<struct ani_group> *anistropy)
 {
+	double st = omp_get_wtime();
 	int i,j;
 	int begin,stop;
 
@@ -2687,7 +2707,7 @@ void CPdb::ani(vector<struct ani_group> *anistropy)
 		if(anistropy->at(i).pos[0]<0 || anistropy->at(i).pos[1]<0 || anistropy->at(i).pos[2]<0 )
 			anistropy->erase(anistropy->begin()+i);
 	}
-
+	cout << "pdb::ani: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2857,6 +2877,7 @@ double CPdb::test_bmbr(class CBmrb bmrb)
 
 int CPdb::attach_bmrb(class CBmrb bmrb)
 {
+	double st = omp_get_wtime();
 	int i,j;
 	vector<int> index;
 	string seq1,seq2;
@@ -2920,7 +2941,7 @@ int CPdb::attach_bmrb(class CBmrb bmrb)
 			}
 		}
 	}
-
+	cout << "pdb::attach_bmrb: " << omp_get_wtime()-st << " seconds" << endl;
 	return m;
 }
 

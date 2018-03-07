@@ -1325,6 +1325,7 @@ void CTraj::getangle(vector<struct dihe_group> *index, vector<double> * angle)
 // Used!
 void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 {	
+	double st = omp_get_wtime();
 	int i,j;
 	int x1,x2,x3,x4;
 	int base;
@@ -1349,6 +1350,7 @@ void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 				dihe->push_back(-1000.0);
 		}
 	}
+	cout << "traj::getdihe: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 

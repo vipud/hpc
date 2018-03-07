@@ -20,6 +20,7 @@ using namespace std;
 
 void CDihe_process::init(vector<int> innum,vector<double> *indihe)
 {
+	double st = omp_get_wtime();
 	num=innum;
 	dihe=indihe;
 	if(num.size()>2)
@@ -32,7 +33,7 @@ void CDihe_process::init(vector<int> innum,vector<double> *indihe)
 		ndihe=0;
 		nframe=0;
 	}
-
+	cout << "dihe_process:mainbody::init: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -834,7 +835,7 @@ int CMainbody::loadpdb(string name,string name2)
 void CMainbody::load(string bmrbname)
 {
 
-	bmrb.process(bmrbname.c_str());
+	bmrb.process(bmrbname.c_str()); // Read from file
 	pdb->attach_bmrb(bmrb);
 
 
@@ -906,6 +907,7 @@ void CMainbody::load(string bmrbname)
 
 void CMainbody::clear(vector<struct proton> &protons)
 {
+	double st = omp_get_wtime();
 	int i;
 	int id,type;
 
@@ -925,11 +927,13 @@ void CMainbody::clear(vector<struct proton> &protons)
 			continue;
 		}
 	}
+	cout << "mainbody::clear(proton): " << omp_get_wtime()-st << " seconds" << endl;
 }
 
 
 void CMainbody::clear(vector<struct bb_group> &bb)
 {
+	double st = omp_get_wtime();
 	int i;
 	int id;
 	char code,code_pre,code_fol;
@@ -995,7 +999,7 @@ void CMainbody::clear(vector<struct bb_group> &bb)
 		}
 
 	}
-
+	cout << "mainbody::clear(bb): " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
