@@ -3457,6 +3457,12 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 	float x0,y0,z0;
 	float rr;
 
+	int *_heavy = used.data();
+	int _heavy_size = used.size();
+	#pragma acc parallel loop present(_heavy[0:_heavy_size])
+	for(i=0;i<_heavy_size;i++)
+		_heavy[i]=0;
+
 	for(i=0;i<(int)pos.size();i++)
 	{
 		contact=0.0;
