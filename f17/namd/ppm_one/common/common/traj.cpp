@@ -3530,7 +3530,7 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 
 	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
 	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this]) \
-	copyin(c1[0:(index_size-2)*3])
+	copyin(c1[0:(index_size-2)*3],c2[0:c2_size])
 	for(i=0+1;i<(int)index_size-1;i++)
 	{
 		contact1=0.0; contact2=0.0; contact3=0.0;

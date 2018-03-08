@@ -1271,7 +1271,6 @@ void CMainbody::predict_bb_static_ann()
 	float *results = new float[(index.size()-2)*3];
 	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results);
 	
-#pragma acc enter data copyin(c2_arr[0:c2_size])
 	for(i=0+1;i<(int)index.size()-1;i++)
 	{
 		//cout<<i<<endl;
@@ -1400,7 +1399,6 @@ void CMainbody::predict_bb_static_ann()
 
 		pdb->attach_bbprediction(id,pre);
 	}
-#pragma acc exit data delete(c2_arr)
 
 	cal_error();
 
