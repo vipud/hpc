@@ -13,6 +13,7 @@ using namespace std;
 
 
 #include "pdb.h"
+#include "supply.h"
 
 
 
@@ -1156,6 +1157,7 @@ int CPdb::dihecons_actualload(vector<string>* block,vector<struct diheline> *dih
 
 int CPdb::buildpdb(string seq)
 {	
+	cout << "BUILDPDB" << endl;
 	string residue;
 	CAminoacid *t;
 	int nres;
@@ -1214,6 +1216,7 @@ void CPdb::setup(CAminoacid *t, CLigand *tt, int iligand, string residue , int i
 // Altered to use a "END" snapshot seperation instead of "ENDMDL"
 int CPdb::loadpdb(string filename)
 {
+	//cout << "LOADPDB" << endl;
 	double st = omp_get_wtime();
 	string line,part;
 	ifstream fin(filename.c_str());
@@ -1512,6 +1515,16 @@ int CPdb::loadpdb(string filename)
 	{
 		pdbseq.push_back(v.at(i)->OneLetterName);
 	}
+	v_oneletternames = new char[v.size()];
+	code_pos = new int[v.size()];
+	for(i=0;i<v.size();i++){
+		v_oneletternames[i]=v.at(i)->OneLetterName;
+		code_pos[i]=Sequence::code2pos(v_oneletternames[i]);
+	}
+	v_arr = v.data();
+	v_size = v.size();
+	// TODO
+	// loap up the gpu with all aminoacids and atoms
 	cout << "loadpdb: " << omp_get_wtime() - st << " seconds" << endl;
 	return (natom+natom2);
 
@@ -1523,6 +1536,7 @@ int CPdb::loadpdb(string filename)
 // This function is marked old, maybe used for ppm instead of ppm_one
 int CPdb::loadpdb_old(string filename)
 {
+	cout << "LOADPDB_OLD" << endl;
 	bool bres;
 	int i,j,n;
 	int begin,stop;
@@ -2541,7 +2555,8 @@ char CPdb::code(int in)
 	if(in<0 || in >(int)v.size()-1)
 		c='X';
 	else
-		c=v[in]->OneLetterName;
+		c=v_oneletternames[in];
+		//c=v[in]->OneLetterName;
 
 	return c;
 }
@@ -2789,6 +2804,10 @@ void CPdb::caoutput(string filename)
 	return;
 }
 
+void CPdb::attach_bbprediction(int id,double ca, double cb, double co, double n, double h, double ha)
+{
+	v.at(id-1)->attach_bbprediction(ca, cb, co, n, h, ha);
+}
 
 
 void CPdb::attach_bbprediction(int id,double pre[])

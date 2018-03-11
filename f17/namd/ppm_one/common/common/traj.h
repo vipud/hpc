@@ -73,7 +73,7 @@ public:
 
 		void get_contact(vector<int> pos, int* used, int used_size, vector<float> * result);
 		void get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result);
-		void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results);
+		void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size);
 
 		void getcoor(int,int,double *,double *,double *);
 		void getcoor(vector<int>,int,vector<double> *,vector<double> *,vector<double> *);

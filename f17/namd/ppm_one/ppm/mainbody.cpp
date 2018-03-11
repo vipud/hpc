@@ -12,6 +12,158 @@ using namespace std;
 #include "ann.h"
 #include "mainbody.h"
 
+static int blosum[400]=
+{4,-1,-2,-2,0,-1,-1,0,-2,-1,-1,-1,-1,-2,-1,1,0,-3,-2,0,
+-1,5,0,-2,-3,1,0,-2,0,-3,-2,2,-1,-3,-2,-1,-1,-3,-2,-3,
+-2,0,6,1,-3,0,0,0,1,-3,-3,0,-2,-3,-2,1,0,-4,-2,-3,
+-2,-2,1,6,-3,0,2,-1,-1,-3,-4,-1,-3,-3,-1,0,-1,-4,-3,-3,
+0,-3,-3,-3,9,-3,-4,-3,-3,-1,-1,-3,-1,-2,-3,-1,-1,-2,-2,-1,
+-1,1,0,0,-3,5,2,-2,0,-3,-2,1,0,-3,-1,0,-1,-2,-1,-2,
+-1,0,0,2,-4,2,5,-2,0,-3,-3,1,-2,-3,-1,0,-1,-3,-2,-2,
+0,-2,0,-1,-3,-2,-2,6,-2,-4,-4,-2,-3,-3,-2,0,-2,-2,-3,-3,
+-2,0,1,-1,-3,0,0,-2,8,-3,-3,-1,-2,-1,-2,-1,-2,-2,2,-3,
+-1,-3,-3,-3,-1,-3,-3,-4,-3,4,2,-3,1,0,-3,-2,-1,-3,-1,3,
+-1,-2,-3,-4,-1,-2,-3,-4,-3,2,4,-2,2,0,-3,-2,-1,-2,-1,1,
+-1,2,0,-1,-3,1,1,-2,-1,-3,-2,5,-1,-3,-1,0,-1,-3,-2,-2,
+-1,-1,-2,-3,-1,0,-2,-3,-2,1,2,-1,5,0,-2,-1,-1,-1,-1,1,
+-2,-3,-3,-3,-2,-3,-3,-3,-1,0,0,-3,0,6,-4,-2,-2,1,3,-1,
+-1,-2,-2,-1,-3,-1,-1,-2,-2,-3,-3,-1,-2,-4,7,-1,-1,-4,-3,-2,
+1,-1,1,0,-1,0,0,0,-1,-2,-2,0,-1,-2,-1,4,1,-3,-2,-2,
+0,-1,0,-1,-1,-1,-1,-2,-2,-1,-1,-1,-1,-2,-1,1,5,-2,-2,0,
+-3,-3,-4,-4,-2,-2,-3,-2,-2,-3,-2,-3,-1,1,-4,-3,-2,11,2,-3,
+-2,-2,-2,-3,-2,-1,-2,-3,2,-1,-1,-2,-1,3,-3,-2,-2,2,7,-1,
+0,-3,-3,-3,-1,-2,-2,-3,-3,3,1,-2,1,-1,-2,-2,0,-3,-1,4};
+
+// Seperate from dihe_process
+// replace out with static sized array of 32
+// These are the 3 functions needed to completely seperate GPU kernel from dihe_process
+
+int * pos(int in, int *num_arr, int num_size, int &index_size)
+{
+	cout << "Pos" << endl;
+	int i;
+	int base,stop;
+	//vector<int> out;
+	int *out_pos;
+
+
+	if(in==1)
+		base=1;
+	else
+		base=num_arr[in-2]+1;
+	
+	stop=num_arr[in-1];
+
+	if(in<=0)
+		base=num_arr[num_size-1]+100;
+	if(in>num_size)
+		base=num_arr[num_size-1]+100;
+
+	index_size = stop-base+1;
+	out_pos = new int[index_size];
+	for(i=base;i<=stop;i++)
+	{
+		out_pos[i-base]=i;//.push_back(i);
+		//cout<<"in is "<<in<<" "<<i<<endl;
+	}
+
+	return out_pos;
+}
+
+int process_static_new(int id,int cut,int order,int order2, double *out_arr, int *num_arr, int num_size, int ndihe, int nframe, double *dihe, int out_index)
+{
+	cout << "process_static_new" << endl;
+	int p,i,j,k,t,base;
+	//vector<int> index;
+	int *index;
+	int index_size;
+	double phi;
+	double cosphi[10];
+	double sinphi[10];
+
+
+	index=pos(id, num_arr, num_size, index_size);
+	if(index_size>=cut)
+		t=cut;
+	else
+		t=index_size;
+
+	for(i=0;i<2;i++)
+	{
+		p=index[i];
+		for(k=1;k<=order;k++)
+			cosphi[k]=sinphi[k]=0.0;
+		for(j=0;j<nframe;j++)
+		{
+			base=j*ndihe;
+			phi=dihe[base+p-1];
+			for(k=1;k<=order;k++)
+			{
+				cosphi[k]+=cos(phi*k);
+				sinphi[k]+=sin(phi*k);
+			}
+		}
+		for(k=1;k<=order;k++)
+		{
+			out_arr[out_index++]=cosphi[k]/nframe;//.push_back(cosphi[k]/nframe);
+			out_arr[out_index++]=sinphi[k]/nframe;//.push_back(sinphi[k]/nframe);
+		}
+	}
+
+	for(i=2;i<t;i++)
+        {
+                p=index[i];
+                for(k=1;k<=order2;k++)
+                        cosphi[k]=sinphi[k]=0.0;
+                for(j=0;j<nframe;j++)
+                {
+                        base=j*ndihe;
+                        phi=dihe[base+p-1];
+                        for(k=1;k<=order2;k++)
+                        {
+                                cosphi[k]+=cos(phi*k);
+                                sinphi[k]+=sin(phi*k);
+                        }
+                }
+                for(k=1;k<=order2;k++)
+                {
+                        out_arr[out_index++]=cosphi[k]/nframe;//.push_back(cosphi[k]/nframe);
+			out_arr[out_index++]=sinphi[k]/nframe;//.push_back(sinphi[k]/nframe);
+                }
+        }
+
+	for(i=t;i<cut;i++)
+	{
+		for(j=0;j<order2*2;j++)
+			out_arr[out_index++]=0.0;//.push_back(0.0);
+	}
+	return out_index;
+}
+
+void ca_ann(int id, double *out_arr, int ndihe, int nframe, double *dihe, int *num_arr, int num_size)
+{
+	cout << "ca_ann" << endl;
+	//out.clear();
+	int out_index = 0;
+	out_index = process_static_new(id-1,4,1,1, out_arr, num_arr, num_size, ndihe, nframe, dihe, out_index);
+	out_index = process_static_new(id  ,4,2,2, out_arr, num_arr, num_size, ndihe, nframe, dihe, out_index);
+	out_index = process_static_new(id+1,4,1,1, out_arr, num_arr, num_size, ndihe, nframe, dihe, out_index);
+  	return;
+}
+
+
+/*char code(CAminoacid *v, int in)
+{
+	char c;
+	in=in-1;
+	if(in<0 || in >(int)v.size()-1)
+		c='X';
+	else
+		c=v[in]->OneLetterName;
+
+	return c;
+}*/
+
 
 
 
@@ -1172,12 +1324,18 @@ void CMainbody::predict_bb_static_ann()
 	double pre[6];
 	vector<double> eca,ecb,eco,eh,en;
 
-	vector<double> oneline;
-	vector<double> oneline_cb;
-	vector<double> oneline_co;
-	vector<double> oneline_h;
-	vector<double> oneline_n;
-	vector<double> oneline_ha;
+	//vector<double> oneline(101);
+	//vector<double> oneline_cb(101);
+	//vector<double> oneline_co(101);
+	//vector<double> oneline_h(110);
+	//vector<double> oneline_n(101);
+	//vector<double> oneline_ha(110);
+	double *oneline = new double[101];
+	double *oneline_cb = new double[101];
+	double *oneline_co = new double[101];
+	double *oneline_n = new double[101];
+	double *oneline_h = new double[110];
+	double *oneline_ha = new double[110];
 
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
@@ -1194,16 +1352,22 @@ void CMainbody::predict_bb_static_ann()
 
 	//traj->gethbond(&hbond,&hbond_effect);
 	traj->gethbond(hbond_arr, hbond_size, &hbond_effect);
+	ehbond *hbond_effect_arr = hbond_effect.data();
+	int hbond_effect_size = hbond_effect.size();
 
 	nh_group *bbnh_new = bbnh.data();
 	int bbnh_size = bbnh.size();
 	vector<struct double_four> ani_effect(bbnh_size);
 	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
 	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
+	double_four *ani_effect_arr = ani_effect.data();
+	int ani_effect_size = ani_effect.size();
 	//traj->getani(&anistropy,&bbnh,&ani_effect);
 	//traj->getring(&ring_index,&bbnh,&ring_effect);
 	vector<struct double_five> ring_effect(bbnh_size);
 	traj->getring(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
+	double_five *ring_effect_arr = ring_effect.data();
+	int ring_effect_size = ring_effect.size();
 	#pragma acc exit data delete(bbnh_new) 
 
 
@@ -1249,9 +1413,13 @@ void CMainbody::predict_bb_static_ann()
 	vector<double_four> ani_effect_ha(ha_protons_size);
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
 	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
+	double_four *ani_effect_ha_arr = ani_effect_ha.data();
+	int ani_effect_ha_size = ani_effect_ha.size();
 	//traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
 	vector<struct double_five> ring_effect_ha(ha_protons_size);
 	traj->getring(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, &ring_effect_ha);
+	double_five *ring_effect_ha_arr = ring_effect_ha.data();
+	int ring_effect_ha_size = ring_effect_ha.size();
 	//traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 #pragma acc exit data delete(ha_protons_new)
 
@@ -1268,138 +1436,500 @@ void CMainbody::predict_bb_static_ann()
 	c2=pdb->getselect(":1-%@allheavy");	
 	int* c2_arr = c2.data();
 	int c2_size = c2.size();
-	float *results = new float[(index.size()-2)*3];
-	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results);
-	
-	for(i=0+1;i<(int)index.size()-1;i++)
+	int results_size = (index.size()-2)*3;
+	float *results = new float[results_size];
+	#pragma acc enter data create(results[0:results_size])
+	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+	index_two *index_arr = index.data();
+	int index_size = index.size();
+
+	//vector<double> oneline_alt(101);
+
+	//ofstream myfile;
+	//myfile.open ("oneline.txt");
+	char *v_oln = pdb->getvoneletter();
+	//int v_size = pdb->getvsize();
+	int *v_pos = pdb->code_pos;
+	int pos;
+	int bi;
+	//for(i=0; i < v_size; i++){
+	//	cout << v_oln[i] << ":" << v_pos[i] << endl;
+	//}
+	int ndihe = dihe_process.ndihe;
+	int nframe = dihe_process.nframe;
+	double *dihe = dihe_process.dihe->data();
+	int *num_arr = dihe_process.num.data();
+	int num_size = dihe_process.num.size();
+	double *predictions = new double[(index_size-2)*6];
+	CAminoacid **v = pdb->v_arr;
+	int v_size = pdb->v_size;
+
+	//for(int q = 0; q < v_size; q++){
+	//	CAminoacid *amino = v[q];
+	//	amino->atoms_arr = amino->atoms.data();
+	//	amino->atoms_size = amino->atoms.size();
+	//}
+
+	for(i=0+1;i<index_size-1;i++)
 	{
+		double out_arr[32];
+		double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
 		//cout<<i<<endl;
-		if(index.at(i).x1<0)
+		if(index_arr[i].x1<0)
 			continue;
 		id=i+1;
-		code=pdb->code(id);
-		code_pre=pdb->code(id-1);
-		code_fol=pdb->code(id+1);
-		oneline.clear();
+		//code=pdb->code(id);
+		if((id-1)<0 || (id-1) >v_size-1)
+			code='X';
+		else
+			code=v_oln[id-1];
 
+		//code_pre=pdb->code(id-1);
+		if((id-2)<0 || (id-2) >v_size-1)
+			code_pre='X';
+		else
+			code_pre=v_oln[id-2];
+
+		//code_fol=pdb->code(id+1);
+		if((id)<0 || (id) >v_size-1)
+			code_fol='X';
+		else
+			code_fol=v_oln[id];
+
+		//oneline.clear();
+
+//cout << "Bang1" << endl;
 		//sequence information
 		//blos62 matrix
 		//total 60 terms
-		Sequence::code2same(code_pre,buffer);
+		//Sequence::code2same(code_pre,buffer)
+		if(code_pre=='X')
+			pos=7;
+		else
+			pos=v_pos[id-2];
+	//	cout << pos << endl;
+		for(bi=0;bi<20;bi++)
+			buffer[bi]=blosum[pos*20+bi];
 		for(j=0;j<20;j++)
 		{
-			oneline.push_back(buffer[j]);
+			//oneline.push_back(buffer[j]);
+			oneline[j] = buffer[j];
+			oneline_cb[j] = buffer[j];
+			oneline_co[j] = buffer[j];
+			oneline_n[j] = buffer[j];
+			oneline_h[j] = buffer[j];
+			oneline_ha[j] = buffer[j];
 		}
 
-		code=pdb->code(id);
-		Sequence::code2same(code,buffer);
+//cout << "Bang2" << endl;
+		//code=pdb->code(id);
+		//if((id-1)<0 || (id-1) >v_size-1)
+		//	code='X';
+		//else
+		//	code=v_oln[id-1];
+		//Sequence::code2same(code,buffer);
+		if(code=='X')
+			pos=7;
+		else
+			pos=v_pos[id-1];
+		for(bi=0;bi<20;bi++)
+			buffer[bi]=blosum[pos*20+bi];
 		for(j=0;j<20;j++)
 		{
-			oneline.push_back(buffer[j]);
+			//oneline.push_back(buffer[j]);
+			oneline[j+20]=buffer[j];
+			oneline_cb[j+20] = buffer[j];
+			oneline_co[j+20] = buffer[j];
+			oneline_n[j+20] = buffer[j];
+			oneline_h[j+20] = buffer[j];
+			oneline_ha[j+20] = buffer[j];
 		}
 
-		Sequence::code2same(code_fol,buffer);
+
+//cout << "Bang3" << endl;
+		//Sequence::code2same(code_fol,buffer);
+		if(code_fol=='X')
+			pos=7;
+		else
+			pos=v_pos[id];
+		for(bi=0;bi<20;bi++)
+			buffer[bi]=blosum[pos*20+bi];
 		for(j=0;j<20;j++)
 		{
-			oneline.push_back(buffer[j]);
+			//oneline.push_back(buffer[j]);
+			oneline[j+40]=buffer[j];
+			oneline_cb[j+40] = buffer[j];
+			oneline_co[j+40] = buffer[j];
+			oneline_n[j+40] = buffer[j];
+			oneline_h[j+40] = buffer[j];
+			oneline_ha[j+40] = buffer[j];
 		}
 
-
+//cout << "Bang4" << endl;
 		//dihedral angle contribution!
 		//total 28 terms
-		dihe_process.ca_ann(id); 
-		out=dihe_process.output();
+		//dihe_process.ca_ann(id); 
+		ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
+		cout << "Outside" << endl;
+		//out=dihe_process.output();
+
+		for(int outi = 0; outi < out.size(); outi++){
+			if(out.at(outi) != out_arr[outi]){
+				cout << "ERROR!" << endl;
+				exit(-1);
+			}
+			//cout << outi << ": " << out.at(outi) << " : " << out_arr[outi] << endl;
+		}
 		for(j=2;j<26;j++)
 		{
-			oneline.push_back(out.at(j));
+			//oneline.push_back(out.at(j));
+			oneline[j+60-2+1]=out_arr[j];
+			oneline_cb[j+60-2+1] = out_arr[j];
+			oneline_co[j+60-2+1] = out_arr[j];
+			oneline_n[j+60-2+1] = out_arr[j];
+			oneline_h[j+60-2+1] = out_arr[j];
+			oneline_ha[j+60-2+1] = out_arr[j];
 		}
-		for(j=28;j<(int)out.size();j++)
+		cout << "Loop1" << endl;
+		//for(j=28;j<(int)out.size();j++)
+		for(j=28;j<32;j++)
 		{
-			oneline.push_back(out.at(j));
-		}
+			//oneline.push_back(out.at(j));
+			oneline[j+84-28+1]=out_arr[j];
+			oneline_cb[j+84-28+1] = out_arr[j];
+			oneline_co[j+84-28+1] = out_arr[j];
+			oneline_n[j+84-28+1] = out_arr[j];
+			oneline_h[j+84-28+1] = out_arr[j];
+			oneline_ha[j+84-28+1] = out_arr[j];
+		} // out seems to always be size 32
+		cout << "Loop2" << endl;
 
-
+		// hbond_effect was already on GPU, might have already been removed. delay it being removed so you can use it here.
 		//hbond effect, 12 terms
-		oneline.push_back(hbond_effect.at(id-2).c_length);
-		oneline.push_back((hbond_effect.at(id-2).c_phi));
-		oneline.push_back((hbond_effect.at(id-2).c_psi));
+		//oneline.push_back(hbond_effect.at(id-2).c_length);
+		oneline[88+1]=hbond_effect_arr[id-2].c_length;
+		oneline_cb[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_co[88+1] =hbond_effect_arr[id-2].c_length;
+		oneline_n[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_h[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_ha[88+1] = hbond_effect_arr[id-2].c_length;
+		//oneline.push_back((hbond_effect.at(id-2).c_phi));
+		oneline[89+1]=hbond_effect_arr[id-2].c_phi;
+		oneline_cb[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_co[89+1] =hbond_effect_arr[id-2].c_phi;
+		oneline_n[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_h[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_ha[89+1] = hbond_effect_arr[id-2].c_phi;
+		//oneline.push_back((hbond_effect.at(id-2).c_psi));
+		oneline[90+1]=hbond_effect_arr[id-2].c_psi;
+		oneline_cb[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_co[90+1] =hbond_effect_arr[id-2].c_psi;
+		oneline_n[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_h[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_ha[90+1] =hbond_effect_arr[id-2].c_psi;
 
 		
 
 
-		oneline.push_back(hbond_effect.at(id-1).c_length);
-		oneline.push_back(hbond_effect.at(id-1).n_length);
-		oneline.push_back((hbond_effect.at(id-1).c_phi));
-		oneline.push_back((hbond_effect.at(id-1).c_psi));
-		oneline.push_back((hbond_effect.at(id-1).n_phi));
-		oneline.push_back((hbond_effect.at(id-1).n_psi));
+		//oneline.push_back(hbond_effect.at(id-1).c_length);
+		//oneline.push_back(hbond_effect.at(id-1).n_length);
+		//oneline.push_back((hbond_effect.at(id-1).c_phi));
+		//oneline.push_back((hbond_effect.at(id-1).c_psi));
+		//oneline.push_back((hbond_effect.at(id-1).n_phi));
+		//oneline.push_back((hbond_effect.at(id-1).n_psi));
 
-		oneline.push_back(hbond_effect.at(id).n_length);
-		oneline.push_back((hbond_effect.at(id).n_phi));
-		oneline.push_back((hbond_effect.at(id).n_psi));
+		oneline[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_cb[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_cb[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_cb[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_cb[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_cb[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_cb[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_co[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_co[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_co[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_co[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_co[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_co[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_n[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_n[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_n[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_n[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_n[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_n[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_h[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_h[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_h[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_h[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_h[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_h[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_ha[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_ha[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_ha[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_ha[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_ha[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_ha[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		//oneline.push_back(hbond_effect.at(id).n_length);
+		//oneline.push_back((hbond_effect.at(id).n_phi));
+		//oneline.push_back((hbond_effect.at(id).n_psi));
+
+		oneline[97+1]=hbond_effect_arr[id].n_length;
+		oneline[98+1]=hbond_effect_arr[id].n_phi;
+		oneline[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_cb[97+1]=hbond_effect_arr[id].n_length;
+		oneline_cb[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_cb[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_co[97+1]=hbond_effect_arr[id].n_length;
+		oneline_co[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_co[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_n[97+1]=hbond_effect_arr[id].n_length;
+		oneline_n[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_n[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_h[97+1]=hbond_effect_arr[id].n_length;
+		oneline_h[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_h[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_ha[97+1]=hbond_effect_arr[id].n_length;
+		oneline_ha[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_ha[99+1]=hbond_effect_arr[id].n_psi;
 
 
 		//contact sum , one term
-		c1.clear();
-		c1.push_back(bb.at(index.at(i).x1-1).capos);
-		c1.push_back(bb.at(index.at(i).x1-1).cbpos);
-		c1.push_back(bb.at(index.at(i).x1-1).copos);
+		//c1.clear();
+		//c1.push_back(bb.at(index_arr[i].x1-1).capos);
+		//c1.push_back(bb.at(index_arr[i].x1-1).cbpos);
+		//c1.push_back(bb.at(index_arr[i].x1-1).copos);
 		//c2=pdb->getselect(":1-%@allheavy");
 		//result.clear();
 		//traj->get_contact(c1,c2_arr,c2_size,&result);
-		oneline_co=oneline_cb=oneline;
+		//oneline_co=oneline_cb=oneline;
 
-		oneline.insert(oneline.begin()+60,results[((i-1)*3)+0]);
-		oneline_cb.insert(oneline_cb.begin()+60,results[((i-1)*3)+1]);
-		oneline_co.insert(oneline_co.begin()+60,results[((i-1)*3)+2]);
-		oneline_n=oneline;
+		//oneline.insert(oneline.begin()+60,results[((i-1)*3)+0]);
+		oneline[60]=results[((i-1)*3)+0];
+		oneline_n[60]=results[((i-1)*3)+0];
+		oneline_h[60]=results[((i-1)*3)+0];
+		oneline_ha[60]=results[((i-1)*3)+0];
+		//oneline_cb.insert(oneline_cb.begin()+60,results[((i-1)*3)+1]);
+		oneline_cb[60]=results[((i-1)*3)+1];
+		//oneline_co.insert(oneline_co.begin()+60,results[((i-1)*3)+2]);
+		oneline_co[60]=results[((i-1)*3)+2];
+		//oneline_n=oneline;
 
-		double *x_ca, *x_cb, *x_co, *x_n, *x_h, *x_ha;
+		/*myfile << out.size() << " | " << oneline.size() << " | ";
+		for(int iii = 0; iii < oneline.size(); iii++){
+			myfile << iii << ":" << oneline.at(iii) << " | ";
+		}
+		myfile << endl;
+		myfile << out.size() << " | " << oneline_alt.size() << " | ";
+		for(int iii = 0; iii < oneline_alt.size(); iii++){
+			myfile << iii << ":" << oneline_alt.at(iii) << " | ";
+		}
+		myfile << endl << endl;*/
+
+		//oneline = oneline_alt;
+		//double *x_ca, *x_cb, *x_co, *x_n, *x_h, *x_ha;
+
+		//cout << i << endl;
 
 		//hn
-		if(index.at(i).x2>0)
+		if(index_arr[i].x2>0)
 		{
-			oneline_h=oneline;
-			for(j=0;j<5;j++)
-				oneline_h.push_back(ring_effect.at(index.at(i).x2-1).x[j]);
-			for(j=0;j<4;j++)
-				oneline_h.push_back(ani_effect.at(index.at(i).x2-1).x[j]);
-			x_h = oneline_h.data();
-			pre[3]=ann_h.predict_one(x_h, oneline_h.size());
+			//cout << "Bang!" << endl;
+			//oneline_h=oneline;
+			//for(j=0;j<5;j++)
+			//	oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[j]);
+			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[0]);
+			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[1]);
+			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[2]);
+			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[3]);
+			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[4]);
+			oneline_h[101]=ring_effect_arr[index_arr[i].x2-1].x[0];
+			oneline_h[102]=ring_effect_arr[index_arr[i].x2-1].x[1];
+			oneline_h[103]=ring_effect_arr[index_arr[i].x2-1].x[2];
+			oneline_h[104]=ring_effect_arr[index_arr[i].x2-1].x[3];
+			oneline_h[105]=ring_effect_arr[index_arr[i].x2-1].x[4];
+			//for(j=0;j<4;j++)
+			//	oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[j]);
+			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[0]);
+			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[1]);
+			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[2]);
+			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[3]);
+			oneline_h[106]=ani_effect_arr[index_arr[i].x2-1].x[0];
+			oneline_h[107]=ani_effect_arr[index_arr[i].x2-1].x[1];
+			oneline_h[108]=ani_effect_arr[index_arr[i].x2-1].x[2];
+			oneline_h[109]=ani_effect_arr[index_arr[i].x2-1].x[3];
+			//x_h = oneline_h.data();
+			//pre[3]=ann_h.predict_one(x_h, oneline_h.size());
+			//pre[3]=ann_h.predict_one(oneline_h,110);
+			pre_h=ann_h.predict_one(oneline_h,110);
 		}
 		else
-			pre[3]=-999.0;
+			pre_h=-999.0;
+			//pre[3]=-999.0;
 
-		oneline_ha = oneline;
+		//oneline_ha = oneline;
 
 		//ha
-		for(j=0;j<5;j++)
-			oneline_ha.push_back(ring_effect_ha.at(index.at(i).x1-1).x[j]);
-		for(j=0;j<4;j++)
-			oneline_ha.push_back(ani_effect_ha.at(index.at(i).x1-1).x[j]);
+		//for(j=0;j<5;j++)
+		//	oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[j]);
+		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[0]);
+		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[1]);
+		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[2]);
+		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[3]);
+		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[4]);
+		//cout << "boom" << endl;
+		//cout << index_arr[i].x2-1 << endl;
+		oneline_ha[101]=ring_effect_ha_arr[index_arr[i].x1-1].x[0];
+		//cout << "bang" << endl;
+		oneline_ha[102]=ring_effect_ha_arr[index_arr[i].x1-1].x[1];
+		//cout << "bang" << endl;
+		oneline_ha[103]=ring_effect_ha_arr[index_arr[i].x1-1].x[2];
+		//cout << "bang" << endl;
+		oneline_ha[104]=ring_effect_ha_arr[index_arr[i].x1-1].x[3];
+		//cout << "bang" << endl;
+		oneline_ha[105]=ring_effect_ha_arr[index_arr[i].x1-1].x[4];
+		//cout << "bang" << endl;
+		//for(j=0;j<4;j++)
+			//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[j]);
+		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[0]);
+		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[1]);
+		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[2]);
+		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[3]);
+		oneline_ha[106]=ani_effect_ha_arr[index_arr[i].x1-1].x[0];
+		oneline_ha[107]=ani_effect_ha_arr[index_arr[i].x1-1].x[1];
+		oneline_ha[108]=ani_effect_ha_arr[index_arr[i].x1-1].x[2];
+		oneline_ha[109]=ani_effect_ha_arr[index_arr[i].x1-1].x[3];
 
-		x_ha = oneline_ha.data();
-		x_ca = oneline.data();
-		x_cb = oneline_cb.data();
-		x_co = oneline_co.data();
-		x_n = oneline_n.data();
+		//x_ha = oneline_ha.data();
+		//x_ca = oneline.data();
+		//x_cb = oneline_cb.data();
+		//x_co = oneline_co.data();
+		//x_n = oneline_n.data();
 
-		/*
-		pre[5] = ann_ha.predict_one(x_ha, oneline_ha.size());
-		pre[0] = ann_ca.predict_one(x_ca, oneline.size());
-		pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
-		pre[2] = ann_co.predict_one(x_co, oneline_co.size());
-		pre[4] = ann_n.predict_one(x_n, oneline_n.size());
-		*/
-		pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size(), &ann_ca);
+		
+		//pre[5] = ann_ha.predict_one(x_ha, oneline_ha.size());
+		//pre[0] = ann_ca.predict_one(x_ca, oneline.size());
+		//pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
+		//pre[2] = ann_co.predict_one(x_co, oneline_co.size());
+		//pre[4] = ann_n.predict_one(x_n, oneline_n.size());
+		//cout << i << endl;
+		//pre[5] = ann_ha.predict_one(oneline_ha, 110);
+		pre_ha=ann_ha.predict_one(oneline_ha,110);
+		//cout << i << endl;
+		//pre[0] = ann_ca.predict_one(oneline, 101);
+		pre_ca=ann_ca.predict_one(oneline,101);
+		//cout << i << endl;
+		//pre[1] = ann_cb.predict_one(oneline_cb, 101);
+		pre_cb=ann_cb.predict_one(oneline_cb,101);
+		//cout << i << endl;
+		//pre[2] = ann_co.predict_one(oneline_co, 101);
+		pre_co=ann_co.predict_one(oneline_co,101);
+		//cout << i << endl;
+		//pre[4] = ann_n.predict_one(oneline_n, 101);
+		pre_n=ann_n.predict_one(oneline_n,101);
+		//cout << i << endl;
+		
+		/*pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size(), &ann_ca);
 		pre[0] = ann_ca.predict_one_next(x_ca, oneline.size(), x_cb, oneline_cb.size(), &ann_cb);
 		pre[1] = ann_cb.predict_one_next(x_cb, oneline_cb.size(), x_co, oneline_co.size(), &ann_co);
 		pre[2] = ann_co.predict_one_next(x_co, oneline_co.size(), x_n, oneline_n.size(), &ann_n);
-		pre[4] = ann_n.predict_one_last(x_n, oneline_n.size());
+		pre[4] = ann_n.predict_one_last(x_n, oneline_n.size());*/
+		cout << "Loop3" << endl;
 
-		pdb->attach_bbprediction(id,pre);
+		/*double pre_ca=pre[0];
+		double pre_cb=pre[1];
+		double pre_c=pre[2];
+		double pre_h=pre[3];
+		double pre_n=pre[4];
+		double pre_ha=pre[5];
+		cout << "A" << endl;
+		if(v_oln[id-1] =='G')
+			pre_cb=999.0;
+		else if(v_oln[id-1] =='C')
+			pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
+		else if(v_oln[id-1] =='P')
+			pre_h=pre_n=999.0;
+		else if(v_oln[id-1] =='U')
+			pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
+
+		cout << "B:" << id << endl;
+			// NAME WON'T WORK NICELY
+
+		for(int vai=0;vai<v[id-1]->atoms_size;vai++) {
+			if(v[id-1]->atoms_arr[vai].name=="CA")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_ca;
+			if(v[id-1]->atoms_arr[vai].name=="CB")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_cb;
+			if(v[id-1]->atoms_arr[vai].name=="C")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_c;
+			if(v[id-1]->atoms_arr[vai].name=="H")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_h;
+			if(v[id-1]->atoms_arr[vai].name=="N")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_n;
+			if(v[id-1]->atoms_arr[vai].name=="HA" || v[id-1]->atoms_arr[vai].name=="HA2" || v[id-1]->atoms_arr[vai].name=="HA3")
+				v[id-1]->atoms_arr[vai].cs_pre=pre_ha;
+
+			
+/*
+				for(int vai=0;vai<v[vi]->atoms_size;vai++) {
+					cout << "C:" << vai << endl;
+					if(v[vi]->atoms_arr[vai].name=="CA")
+						v[vi]->atoms_arr[vai].cs_pre=pre_ca;
+					if(v[vi]->atoms_arr[vai].name=="CB")
+						v[vi]->atoms_arr[vai].cs_pre=pre_cb;
+					if(v[vi]->atoms_arr[vai].name=="C")
+						v[vi]->atoms_arr[vai].cs_pre=pre_c;
+					if(v[vi]->atoms_arr[vai].name=="H")
+						v[vi]->atoms_arr[vai].cs_pre=pre_h;
+					if(v[vi]->atoms_arr[vai].name=="N")
+						v[vi]->atoms_arr[vai].cs_pre=pre_n;
+					if(v[vi]->atoms_arr[vai].name=="HA" || v[vi]->atoms_arr[i].name=="HA2" || v[vi]->atoms_arr[i].name=="HA3")
+						v[vi]->atoms_arr[vai].cs_pre=pre_ha;
+				}
+		}*/
+		/*predictions[((i-1)*6)+0]=pre[0];
+		predictions[((i-1)*6)+1]=pre[1];
+		predictions[((i-1)*6)+2]=pre[2];
+		predictions[((i-1)*6)+3]=pre[3];
+		predictions[((i-1)*6)+4]=pre[4];
+		predictions[((i-1)*6)+5]=pre[5];*/
+		predictions[((i-1)*6)+0]=pre_ca;
+		predictions[((i-1)*6)+1]=pre_cb;
+		predictions[((i-1)*6)+2]=pre_co;
+		predictions[((i-1)*6)+4]=pre_n;
+		predictions[((i-1)*6)+3]=pre_h;
+		predictions[((i-1)*6)+5]=pre_ha;
+		//pdb->attach_bbprediction(id,pre);
 	}
-
+	for(i=1; i<index_size-1; i++){
+		if(index_arr[i].x1<0)
+			continue;
+		id = i+1;
+		//pdb->attach_bbprediction(id,predictions+((i-1)*6));
+		pdb->attach_bbprediction(id,predictions[((i-1)*6)+0],predictions[((i-1)*6)+1],predictions[((i-1)*6)+2],
+			predictions[((i-1)*6)+4],predictions[((i-1)*6)+3],predictions[((i-1)*6)+5]);
+	}
+	//myfile.close();
+#pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
+	delete(results);
+	delete(predictions);
 	cal_error();
 
 	cout << "predict_bb_static_ann: " << omp_get_wtime() - st << " seconds" << endl;
@@ -2184,6 +2714,9 @@ void CMainbody::predict_proton_static_new(void)
 		hs.at(0).push_back(allprotons.at(i).exp);
 		hs.at(1).push_back(pre);
 	}
+	double_four *ani_effect_arr = ani_effect.data();
+	double_five *ring_effect_arr = ring_effect.data();
+	#pragma acc exit data delete(ani_effect_arr, ring_effect_arr)
 	compare("Side chain protons",hs);
 	cout << "predict_proton_static_new: " << omp_get_wtime() - st << " seconds" << endl;
 	return;

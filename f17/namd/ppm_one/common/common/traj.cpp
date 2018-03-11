@@ -903,10 +903,11 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 		effect_arr[i].n_psi/=nframe;
 		effect_arr[i].c_psi/=nframe;
 	}
-#pragma acc exit data copyout(effect_arr[0:effect_size])
+//#pragma acc exit data copyout(effect_arr[0:effect_size])
 	cout << "gethbond: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
+
 
 
 
@@ -1585,7 +1586,7 @@ void CTraj::getring(ring_group *index, int index_size, nh_group *select, int sel
 		}
 	}
 
-	#pragma acc exit data copyout(ring_effect_arr[0:select_size])
+	//#pragma acc exit data copyout(ring_effect_arr[0:select_size])
 
 	cout << "getring1: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
@@ -1847,7 +1848,7 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 			ring_effect_arr[ii].x[jj]/=nframe;
 		}
 	}
-	#pragma acc exit data copyout(ring_effect_arr[0:ring_effect_size])
+	//#pragma acc exit data copyout(ring_effect_arr[0:ring_effect_size])
 	cout << "getring2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
@@ -2384,7 +2385,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 		ani_effect_arr[j].x[3] /= nframe;
 	}
 
-	#pragma acc exit data copyout(ani_effect_arr[0:select_size])
+	//#pragma acc exit data copyout(ani_effect_arr[0:select_size])
 
 	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
@@ -2886,7 +2887,7 @@ void CTraj::getani(ani_group *index, int index_size, nh_group *select, int selec
 		ani_effect_arr[j].x[3] /= nframe;
 	}
 
-	#pragma acc exit data copyout(ani_effect_arr)
+	//#pragma acc exit data copyout(ani_effect_arr)
 
 	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
@@ -3486,7 +3487,7 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 	return;
 }
 
-void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results)
+void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size)
 {
 
 	double st = omp_get_wtime();
@@ -3511,6 +3512,10 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 	int y_arr_size_this = y_size;
 	int z_arr_size_this = z_size;
 
+// NOTE
+// the 40 seconds it takes to do get_all_contacts probably mostly comes from the first loop.
+// NOTE
+
 	// Load up c1 same way as in predict_bb_static_ann
 	//          index0           index1             index(index_size-2)
 	// c1[ {coords at i=1}, {coords at i=2},... {coords at i=index_size-1} ]
@@ -3529,7 +3534,7 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 	}
 
 	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
-	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this]) \
+	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this],results[0:results_size]) \
 	copyin(c1[0:(index_size-2)*3],c2[0:c2_size])
 	for(i=0+1;i<(int)index_size-1;i++)
 	{

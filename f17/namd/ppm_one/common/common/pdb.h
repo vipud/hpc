@@ -3,6 +3,7 @@
 #include "supply.h"
 #include "bmrb.h"
 #include  "aa.h"
+#include <omp.h>
 
 
 #ifndef PDB
@@ -47,6 +48,7 @@ private:
 		vector<int> chain_block;
 		vector<int> chain_ligand;
 		vector<CAminoacid *> v;
+		char *v_oneletternames;
 		vector<CLigand *> ligand;
 		string pdbfilename;
 		string pdbseq;
@@ -65,6 +67,8 @@ protected:
 
 
 public:
+		CAminoacid **v_arr;
+		int v_size;
 	//dssp stuff
 		CDssp dssp;
 	//nmr constrain stuff
@@ -122,6 +126,7 @@ public:
 		void print_prediction();
 		void print_prediction(string);
 		void attach_bbprediction(int,double*);
+		void attach_bbprediction(int, double, double, double, double, double, double);
 		void attach_protonprediction(int,string,double);
 		int attach_bmrb(class CBmrb );
 		double test_bmbr(class CBmrb bmrb);
@@ -160,6 +165,10 @@ public:
 		inline int getnmiss(void) {return nmiss;};
 
 		inline vector<double> get_wishart(int id) {return v.at(id-1)->get_wishart();};
+		inline int getvsize(void) {return v.size(); };
+		inline char *getvoneletter(void) {return v_oneletternames;};
+
+		int *code_pos;
 };
 
 struct modify

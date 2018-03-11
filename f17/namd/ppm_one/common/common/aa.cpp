@@ -283,6 +283,46 @@ struct noeatoms CAminoacid::query(string name)
 }
 
 
+void CAminoacid::attach_bbprediction(double pre_ca, double pre_cb, double pre_c, double pre_n, double pre_h, double pre_ha)
+{
+	int i;
+
+	//pre_ca=pre[0];
+	//pre_cb=pre[1];
+	//pre_c=pre[2];
+	//pre_h=pre[3];
+	//pre_n=pre[4];
+	//pre_ha=pre[5];
+
+	if(OneLetterName=='G')
+		pre_cb=999.0;
+	else if(OneLetterName=='C')
+		pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
+	else if(OneLetterName=='P')
+		pre_h=pre_n=999.0;
+	else if(OneLetterName=='U')
+		pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
+
+
+	for(i=0;i<(int)atoms.size();i++)
+	{
+		if(atoms.at(i).name=="CA")
+			atoms.at(i).cs_pre=pre_ca;
+		if(atoms.at(i).name=="CB")
+			atoms.at(i).cs_pre=pre_cb;
+		if(atoms.at(i).name=="C")
+			atoms.at(i).cs_pre=pre_c;
+		if(atoms.at(i).name=="H")
+			atoms.at(i).cs_pre=pre_h;
+		if(atoms.at(i).name=="N")
+			atoms.at(i).cs_pre=pre_n;
+		if(atoms.at(i).name=="HA" || atoms.at(i).name=="HA2" || atoms.at(i).name=="HA3")
+			atoms.at(i).cs_pre=pre_ha;
+	}
+
+}
+
+
 
 void CAminoacid::attach_bbprediction(double pre[5])
 {

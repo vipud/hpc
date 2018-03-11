@@ -12,10 +12,6 @@ class CDihe_process
 {
 	private:	
 	protected:
-		int ndihe;
-		int nframe;
-		vector<int> num;
-		vector<double> *dihe;
 		vector<dihe_group> *dihe_index;
 		vector<double> *angle;
 		vector<double> out;
@@ -26,7 +22,10 @@ class CDihe_process
 		bool test_good(int id,int cut);
 
 	public:
-
+		int ndihe;
+		int nframe;
+		vector<int> num;
+		vector<double> *dihe;
 		static int hbs[18];
 		bool test(int id, int t1, int t2);
 		bool test_proton(int id,int type);
