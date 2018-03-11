@@ -1927,7 +1927,7 @@ void CMainbody::predict_bb_static_ann()
 			predictions[((i-1)*6)+4],predictions[((i-1)*6)+3],predictions[((i-1)*6)+5]);
 	}
 	//myfile.close();
-#pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
+//#pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
 	delete(results);
 	delete(predictions);
 	cal_error();
@@ -2716,7 +2716,7 @@ void CMainbody::predict_proton_static_new(void)
 	}
 	double_four *ani_effect_arr = ani_effect.data();
 	double_five *ring_effect_arr = ring_effect.data();
-	#pragma acc exit data delete(ani_effect_arr, ring_effect_arr)
+	//#pragma acc exit data delete(ani_effect_arr, ring_effect_arr)
 	compare("Side chain protons",hs);
 	cout << "predict_proton_static_new: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
