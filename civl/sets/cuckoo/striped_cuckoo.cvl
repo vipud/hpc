@@ -5,8 +5,9 @@
 
 int INITIAL_STAGE = 1;
 int INITIAL_SIZE = 2;
-int PROBE_SIZE = 1;
+int PROBE_SIZE = 4;
 int THRESHOLD = PROBE_SIZE / 2;
+int LIMIT = 8;
 
 typedef struct _node Node;
 
@@ -33,9 +34,67 @@ Node* node_add(Node* head, int data) {
   return new_node;
 }
 
+//FIX WHILE LOOP CONDITIONS FOR PROBES TO SHORT CIRCUIT
+
+Node* probe_write(Node* head, int data) {
+  Node* current_node = head;
+  while (current_node->data != -1 && current_node != NULL) {
+    current_node = current_node->next;
+  }
+  if (current_node->data == -1) current_node->data = data; //This is broken
+  else printf("PROBE WRITE FAILED: No empty node found\n");
+}
+
+int probe_length(Node* head) {
+  int result = 0;
+  Node* current_node = head;
+  while (current_node->data != -1 && current_node != NULL) {
+    result++;
+    current_node = current_node->next;
+  }
+  return result;
+}
+
+int probe_get(Node* head, int index) {
+  int i = 0;
+  Node* current_node = head;
+  while (current_node->data != -1 && current_node != NULL) {
+    if (i == index) {
+      return current_node->data;
+    }
+    i++;
+    current_node = current_node->next;
+  }
+  printf("PROBE GET FAILED: Bad index or no data in probe\n");
+  return -1;
+}
+
+//CHECK THIS METHOD!
+//Make test cases for probe methods
+_Bool probe_remove(Node* head, int data, int i. int hi, Set* set) {
+  Node* current_node = head;
+  _Bool clipped = false;
+  while (current_node->data != -1 && current_node != NULL) {
+    if (clipped && current_node->next != NULL) {
+        current_node->next = (Node*) malloc(sizeof(Node));
+        current_node = current_node->next;
+        current_node->data = -1;
+    }
+    if (current_node->data == data) {
+        Node* old_head = current_node;
+        current_node = old_head->next;
+        set->table[i][hi] = current_node;
+        free(old_head);
+        clipped = true;
+    }
+    else current_node = current_node->next;
+  }
+  return false;
+}
+
 void print_nodes(Node* head) {
   Node* current_node = head;
-  while (current_node->data != -1 && current_node->next != NULL) {
+  while (current_node->data != -1 && current_node != NULL) {
     printf("%d ", current_node->data);
   }
   printf("\n");
@@ -128,7 +187,7 @@ void set_print(Set* set) {
 _Bool set_contains(Set* set, int x) {
   acquire(set, x);
   Node* current_node = set->table[0][hash0(set, x)];
-  while (current_node->data != -1 || current_node->next == NULL) {
+  while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x)
     {
       release(set, x);
@@ -136,7 +195,7 @@ _Bool set_contains(Set* set, int x) {
     }
   }
   current_node = set->table[1][hash1(set, x)];
-  while (current_node->data != -1 || current_node->next == NULL) {
+  while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x)
     {
       release(set, x);
@@ -146,77 +205,100 @@ _Bool set_contains(Set* set, int x) {
   release(set, x);
   return false;
 }
-/*
-int swap_int(Set* set, int i, int j, int value) {
-  int old = set->table[i][j];
-  set->table[i][j] = value;
-  return old;
-}
 
-_Bool rehash(Set* set, int x) {
-  if (x<0)
-    return false;
-  for (int i=0; i<LIMIT; i++) {
-    if ((x = swap_int(set, 0, hash0(set, x), x)) == -1) {
-      return true;
-    } else if ((x = swap_int(set, 1, hash1(set, x), x)) == -1) {
-      return true;
-    }
+// unsynchronized version of contains, call only from synchronized methods
+_Bool present(Set* set, int x) {
+  Node* current_node = set->table[0][hash0(set, x)];
+  while (current_node->data != -1 && current_node->next != NULL) {
+    if (current_node->data == x) return true;
   }
-  printf("ERROR: Could not rehash %d\n", x);
-}
-
-void resize(Set* set) {
-  printf("Begin Resize\n");
-  int *oldTable[2];
-  oldTable = set->table;
-  int oldSize = set->size;
-  set->size = oldSize * 2;
-  for (int i=0; i<2; i++) {
-    set->table[i] = malloc(set->size*sizeof(int));
-    for (int j=0; j<set->size; j++) {
-      set->table[i][j] = -1;
-    }
-  }
-  for (int i=0; i<2; i++) {
-    for (int j=0; j<oldSize; j++) {
-      if (oldTable[i][j] != -1) {
-        rehash(set, oldTable[i][j]);
-      }
-    }
-  }
-  for (int i=0; i<2; i++) {
-    free(oldTable[i]);
-  }
-}
-
-
-_Bool set_add(Set* set, int x) {
-  if (x<0 || set_contains(set, x))
-    return false;
-  for (int i=0; i<LIMIT; i++) {
-    if ((x = swap_int(set, 0, hash0(set, x), x)) == -1) {
-      return true;
-    } else if ((x = swap_int(set, 1, hash1(set, x), x)) == -1) {
-      return true;
-    }
-  }
-  resize(set);
-  set_add(set, x);
-}
-
-_Bool set_remove(Set* set, int x) {
-  if (set->table[0][hash0(set, x)]==x) {
-    set->table[0][hash0(set, x)] = -1;
-    return true;
-  }
-  if (set->table[1][hash1(set, x)]==x) {
-    set->table[1][hash1(set, x)] = -1;
-    return true;
+  current_node = set->table[1][hash1(set, x)];
+  while (current_node->data != -1 && current_node->next != NULL) {
+    if (current_node->data == x) return true;
   }
   return false;
 }
-*/
+
+//UNTESTED
+_Bool set_add(Set* set, int x) {
+  acquire(set, x);
+  int h0 = hash0(set, x);
+  int h1 = hash1(set, x);
+  int i = -1; //outer index of item to relocate
+  int h = -1; //inner index of item to relocate
+  _Bool must_resize = false;
+  if (x<0 || present(set, x)) return false;
+  Node* probe_0 = set->table[0][h0];
+  Node* probe_1 = set->table[1][h1];
+  if (probe_length(probe_0) < THRESHOLD) {
+    probe_write(probe_0, x);
+    return true;
+  }
+  else if (probe_length(probe_1) < THRESHOLD) {
+    probe_write(probe_1, x);
+    return true;
+  }
+  else if (probe_length(probe_0) < PROBE_SIZE) {
+    probe_write(probe_0, x);
+    i = 0;
+    h = h0;
+  }
+  else if (probe_length(probe_1) < PROBE_SIZE) {
+    probe_write(probe_1, x);
+    i = 1;
+    h = h1;
+  }
+  else must_resize = true;
+  release(set, x);
+  if (must_resize) {
+    resize(set);
+    set_add(set, x);
+  }
+  else if (!relocate(set, i, h)) {
+    resize(set);
+  }
+  return true;
+}
+
+//UNTESTED
+_Bool relocate(Set* set, int i, int hi) {
+  int hj = 0;
+  int j = 1 - i;
+  for (int round = 0; round < LIMIT; round++) {
+    Node* i_probe = set->table[i][hi];
+    int y = probe_get(i_probe, 0);
+    switch (i) {
+      case 0: hj = hash1(y); break;
+      case 1: hj = hash0(y); break;
+    }
+    acquire(set, y);
+    Node* j_probe = set->table[j][hj];
+    if (probe_remove(i_probe, y)) {
+      if (probe_length(j_probe) < THRESHOLD) {
+        probe_write(j_probe, y);
+        return true;
+      }
+      else if (probe_length(j_probe) < PROBE_SIZE) {
+        probe_write(j_probe, y);
+        i = 1 - i;
+        hi = hj;
+        j = 1 - j;
+      }
+      else {
+        probe_write(i_probe, y);
+        return false;
+      }
+    }
+    else if (probe_length(i_probe) >= THRESHOLD) {
+      continue;
+    }
+    else {
+      return true;
+    }
+    release(set, y);
+  }
+  return false;
+}
 
 int test1() {
   Set* s = set_create();
