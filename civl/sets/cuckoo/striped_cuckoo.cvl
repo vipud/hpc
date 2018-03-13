@@ -34,11 +34,9 @@ Node* node_add(Node* head, int data) {
   return new_node;
 }
 
-//FIX WHILE LOOP CONDITIONS FOR PROBES TO SHORT CIRCUIT
-
 Node* probe_write(Node* head, int data) {
   Node* current_node = head;
-  while (current_node->data != -1 && current_node != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     current_node = current_node->next;
   }
   if (current_node->data == -1) current_node->data = data; //This is broken
@@ -48,7 +46,7 @@ Node* probe_write(Node* head, int data) {
 int probe_length(Node* head) {
   int result = 0;
   Node* current_node = head;
-  while (current_node->data != -1 && current_node != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     result++;
     current_node = current_node->next;
   }
@@ -58,7 +56,7 @@ int probe_length(Node* head) {
 int probe_get(Node* head, int index) {
   int i = 0;
   Node* current_node = head;
-  while (current_node->data != -1 && current_node != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (i == index) {
       return current_node->data;
     }
@@ -71,10 +69,10 @@ int probe_get(Node* head, int index) {
 
 //CHECK THIS METHOD!
 //Make test cases for probe methods
-_Bool probe_remove(Node* head, int data, int i. int hi, Set* set) {
+_Bool probe_remove(Node* head, int data, int i, int hi, Set* set) {
   Node* current_node = head;
   _Bool clipped = false;
-  while (current_node->data != -1 && current_node != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (clipped && current_node->next != NULL) {
         current_node->next = (Node*) malloc(sizeof(Node));
         current_node = current_node->next;
@@ -94,8 +92,10 @@ _Bool probe_remove(Node* head, int data, int i. int hi, Set* set) {
 
 void print_nodes(Node* head) {
   Node* current_node = head;
-  while (current_node->data != -1 && current_node != NULL) {
+  while (current_node != NULL/* && current_node->data != -1*/) {
     printf("%d ", current_node->data);
+    if (current_node->next != NULL) current_node = current_node->next;
+    else current_node = NULL;
   }
   printf("\n");
 }
@@ -115,6 +115,7 @@ Set* set_create() {
       for (int k=0; k<PROBE_SIZE-1; k++) {
         current_head = node_add(current_head, -1);
       }
+      current_head->next = NULL;
     }
   }
   return result;
@@ -220,6 +221,46 @@ _Bool present(Set* set, int x) {
 }
 
 //UNTESTED
+_Bool relocate(Set* set, int i, int hi) {
+  int hj = 0;
+  int j = 1 - i;
+  for (int round = 0; round < LIMIT; round++) {
+    Node* i_probe = set->table[i][hi];
+    int y = probe_get(i_probe, 0);
+    switch (i) {
+      case 0: hj = hash1(set, y); break;
+      case 1: hj = hash0(set, y); break;
+    }
+    acquire(set, y);
+    Node* j_probe = set->table[j][hj];
+    if (probe_remove(i_probe, y, i, hi, set)) {
+      if (probe_length(j_probe) < THRESHOLD) {
+        probe_write(j_probe, y);
+        return true;
+      }
+      else if (probe_length(j_probe) < PROBE_SIZE) {
+        probe_write(j_probe, y);
+        i = 1 - i;
+        hi = hj;
+        j = 1 - j;
+      }
+      else {
+        probe_write(i_probe, y);
+        return false;
+      }
+    }
+    else if (probe_length(i_probe) >= THRESHOLD) {
+      continue;
+    }
+    else {
+      return true;
+    }
+    release(set, y);
+  }
+  return false;
+}
+
+//UNTESTED
 _Bool set_add(Set* set, int x) {
   acquire(set, x);
   int h0 = hash0(set, x);
@@ -251,53 +292,13 @@ _Bool set_add(Set* set, int x) {
   else must_resize = true;
   release(set, x);
   if (must_resize) {
-    resize(set);
+    //resize(set);
     set_add(set, x);
   }
   else if (!relocate(set, i, h)) {
-    resize(set);
+    //resize(set);
   }
   return true;
-}
-
-//UNTESTED
-_Bool relocate(Set* set, int i, int hi) {
-  int hj = 0;
-  int j = 1 - i;
-  for (int round = 0; round < LIMIT; round++) {
-    Node* i_probe = set->table[i][hi];
-    int y = probe_get(i_probe, 0);
-    switch (i) {
-      case 0: hj = hash1(y); break;
-      case 1: hj = hash0(y); break;
-    }
-    acquire(set, y);
-    Node* j_probe = set->table[j][hj];
-    if (probe_remove(i_probe, y)) {
-      if (probe_length(j_probe) < THRESHOLD) {
-        probe_write(j_probe, y);
-        return true;
-      }
-      else if (probe_length(j_probe) < PROBE_SIZE) {
-        probe_write(j_probe, y);
-        i = 1 - i;
-        hi = hj;
-        j = 1 - j;
-      }
-      else {
-        probe_write(i_probe, y);
-        return false;
-      }
-    }
-    else if (probe_length(i_probe) >= THRESHOLD) {
-      continue;
-    }
-    else {
-      return true;
-    }
-    release(set, y);
-  }
-  return false;
 }
 
 int test1() {
