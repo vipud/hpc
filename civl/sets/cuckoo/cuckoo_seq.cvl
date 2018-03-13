@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "../include/set.cvh"
 
-int INITIAL_SIZE = 2;
+int INITIAL_SIZE = 6;
 int LIMIT = 10;
 
 struct _set
@@ -27,11 +27,11 @@ Set* set_create() {
 }
 
 int hash0(Set* set, int x) {
-  return (x%3)%set->size;
+  return (x%7)%set->size;
 }
 
 int hash1(Set* set, int x) {
-  return (x%5)%set->size;
+  return (x%9)%set->size;
 }
 
 _Bool set_destroy(Set* set) {
@@ -160,8 +160,7 @@ int test1() {
   set_print(s);
   set_destroy(s);
 }
-/*
+
 int main() {
   test1();
 }
-*/
