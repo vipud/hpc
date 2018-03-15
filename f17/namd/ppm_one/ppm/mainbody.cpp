@@ -1044,13 +1044,14 @@ void CMainbody::load(string bmrbname)
 	//seperate ring group to two, one for internal, one for surface, according to contact sum !
 	int i;
 	vector<int> ring_atom;
-	vector<float> result;
+	//vector<float> result;
 	ring_atom.clear();
-	result.clear();
+	//result.clear();
 	for(i=0;i<(int)ring_index.size();i++)
 	{
 		ring_atom.push_back(ring_index.at(i).x2);
 	}
+	vector<float> result(ring_atom.size());
 	traj->get_contact(1.00,0.0,ring_atom,heavy,&result);
 	ring_index_internal.clear();
 	ring_index_external.clear();

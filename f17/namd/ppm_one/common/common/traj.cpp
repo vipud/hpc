@@ -3672,7 +3672,7 @@ void CTraj::getcoor(vector<int> pos,vector<float> *xx,vector<float> *yy,vector<f
 
 
 
-void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
+/*void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
 {
 	int i,j;
 	int ii,jj;
@@ -3706,6 +3706,84 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 		result->push_back(contact);
 	}
 	cout << "used=" << used.size() << endl;
+	return;
+}*/
+
+
+// Thomas Version
+void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
+{	
+	//convert used to array
+	int *used_arr = used.data();
+	int used_size = used.size();
+	//convert pos to array
+	int *pos_arr = pos.data();
+	int pos_size = pos.size();
+	//convert result to array
+	float *result_arr = result->data();
+	int result_size = result->size();	
+
+	double start_time = omp_get_wtime();
+	int i,j;
+	int ii,jj;
+	float contact;
+	float x0,y0,z0;
+	float rr;
+
+	double *this_x_arr = x_arr;
+	double *this_y_arr = y_arr;
+	double *this_z_arr = z_arr;
+	
+#pragma acc parallel copyin (used_arr[0:used_size], pos_arr[0:pos_size]) copyout (result_arr[0:result_size]) default(present)
+{
+	#pragma acc loop gang private(ii, x0, y0, z0)
+	for(i=0;i<pos_size;i++) // pos.size() = 16 still worth unraveling?
+	{
+		contact=0.0;
+		ii = pos_arr[i];
+		//ii=pos.at(i);
+		if(ii<0)
+		{
+			//result->push_back(-1.0);
+			result_arr[i] = -1.0;
+			continue;
+		}
+		ii--;
+
+		//x0=x.at(ii);
+                //y0=y.at(ii);
+                //z0=z.at(ii);
+               
+		//x0 = x_arr[ii];
+		//y0 = y_arr[ii];// do x0, y0 need to be pointers?
+		//z0 = z_arr[ii]; 
+		
+		x0 = this_x_arr[ii];
+		y0 = this_y_arr[ii];
+		z0 = this_z_arr[ii];
+		
+		#pragma acc loop vector private(jj, rr) reduction(+: contact)
+		for(j=0;j<used_size;j++)
+		{
+			jj=used_arr[j];
+			if(jj<0)
+				continue;
+			jj--;
+			//rr=(x.at(jj)-x0)*(x.at(jj)-x0)+(y.at(jj)-y0)*(y.at(jj)-y0)+(z.at(jj)-z0)*(z.at(jj)-z0);
+			//rr=(x_arr[jj]-x0)*(x_arr[jj]-x0)+(y_arr[jj]-y0)*(y_arr[jj]-y0)+(z_arr[jj]-z0)*(z_arr[jj]-z0);	
+			rr=(this_x_arr[jj]-x0)*(this_x_arr[jj]-x0)+(this_y_arr[jj]-y0)*(this_y_arr[jj]-y0)+(this_z_arr[jj]-z0)*(this_z_arr[jj]-z0);
+			rr=sqrt(rr)-shift;
+			contact+=exp(-rr/rc);				
+		}
+
+		//result->push_back(contact);
+		result_arr[i] = contact;
+	}
+}
+//	cout << (int)used.size() << endl; used size is around 1700 for kod and 50000 for tube_small, about half the atom size`
+//	printf((int)pos.size()); //tomh
+	cout << "pos.size() =: " << pos.size() << endl;
+	cout << "get_contact: " << omp_get_wtime() - start_time << "seconds" << endl; //speeds: tubesmall: 4 seconds // 11.2 total seconds runtime
 	return;
 }
 
