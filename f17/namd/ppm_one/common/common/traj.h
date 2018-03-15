@@ -56,6 +56,8 @@ public:
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct methyl_group>* , vector<double_four> *, enum methyl);
 		void getani(ani_group *, int, proton *, int, vector<double_four> *);
+		void getani(ani_group *, int, proton *, int, double_four *);
+		void getani(ani_group *, int, proton *, int, double *);
 		void getani(vector<ani_group> *, vector<proton> *, vector<double_four> *);
 		void getani(vector<ani_group> *, vector<struct proton>* , vector< vector<double_four> > *);
 		void getring_bb(vector<ring_group> *, vector<struct bb_group> *, vector<double_five> *,enum bb_carbon);
@@ -73,7 +75,8 @@ public:
 
 		void get_contact(vector<int> pos, int* used, int used_size, vector<float> * result);
 		void get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result);
-		void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results);
+		void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size);
+		void get_all_contacts_double(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, double *results, int results_size);
 
 		void getcoor(int,int,double *,double *,double *);
 		void getcoor(vector<int>,int,vector<double> *,vector<double> *,vector<double> *);

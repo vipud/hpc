@@ -63,7 +63,7 @@ protected:
 	int  original_residue;
 	int  previousc,followingn;
 	char ss;  //secondary structure code
-	vector<struct Atom> atoms;
+	//vector<struct Atom> atoms;
 	vector<struct S2> order_parameters; 
 	double pre_ca,pre_cb,pre_c,pre_h,pre_n,pre_ha;
 
@@ -80,6 +80,9 @@ protected:
 	
 
 public:
+	vector<struct Atom> atoms;
+	Atom *atoms_arr;
+	int atoms_size;
 	struct Atom atom_nouse;
 	bool bexploaded;
 	char OneLetterName;
@@ -127,6 +130,7 @@ public:
 	void attach_rmsf(vector<double>);
 	void print_rmsf(FILE *);
 	void attach_bbprediction(double *);
+	void attach_bbprediction(double pre_ca, double pre_cb, double pre_c, double pre_n, double pre_h, double pre_ha);
 	void attach_protonprediction(string,double);
 	void print_prediction(int *,FILE *);
 	void print_bbprediction(FILE *);
