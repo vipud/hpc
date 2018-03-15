@@ -23,8 +23,8 @@ CAnn::CAnn()
 
 CAnn::~CAnn()
 {
-	//#pragma acc exit data delete(p_save_flat)
-	//#pragma acc exit data delete(this)
+	#pragma acc exit data delete(p_save_flat, v_min, v_max)
+	#pragma acc exit data delete(this)
 	delete(p_save_flat);
 	p_save_size = 0;
 };
@@ -465,15 +465,19 @@ void CAnn::xapplyminmax_md()
 	return;
 };
 
+
+
 void CAnn::xapplyminmax(double *xx)
 {
 	double tmin,tmax;
 	int i,j,step;
-	int ndim = n_dim;
+	//int ndim = n_dim;
+	#pragma acc loop vector independent private(tmin,tmax,step)
 	for(i = 0; i < n_dim; i++)
 	{
 		tmin=v_min[i];
 		tmax=v_max[i];
+		#pragma acc loop seq
 		for(j = 0; j < n_dat; j++)
 		{
 			step = j*n_dim+i;
@@ -642,11 +646,12 @@ double CAnn::myfunc_neuron(int ndim, int nneuron, double *xx, const double *p, i
 	const int p4=p3+nneuron;
 
 	//#pragma acc loop reduction(+:r2) vector
+	#pragma acc loop seq reduction(+:r2)
 	for(int j = 0; j < nneuron; j++)
 	{
 		double r = 0.0;
 		const int p1 = offset+j*ndim;
-		//#pragma acc loop reduction(+:r) seq
+		#pragma acc loop seq reduction(+:r)
 		for(i = 0; i < ndim; i++)
 		{
 			r += xx[i] * p[p1+i];
@@ -835,7 +840,9 @@ void CAnn::loadp(double *pdata)
 			pdata++;
 		}
 	}
-	//#pragma acc enter data copyin(p_save_flat[0:n_set*n_par])
+	#pragma acc enter data copyin(this)
+	#pragma acc enter data copyin(p_save_flat[0:n_set*n_par])
+	#pragma acc enter data copyin(v_min[0:n_dim],v_max[0:n_dim])
 };
 
 
@@ -1064,22 +1071,21 @@ double CAnn::predict_one( double *xx, int vec_size )
 	xapplyminmax(xx);
 	out=0;
 
-	int ndim = n_dim;
-	int nneuron = n_neuron;
-	int npar = n_par;
-	double ymax = y_max;
-	double ymin = y_min;
-	double *psaveflat = p_save_flat;
-	int psavesize = p_save_size;
+	//int ndim = n_dim;
+	//int nneuron = n_neuron;
+	//int npar = n_par;
+	//double ymax = y_max;
+	//double ymin = y_min;
+	//double *psaveflat = p_save_flat;
+	//int psavesize = p_save_size;
 
 	//#pragma acc enter data copyin(xx[0:n_dim])
 
-	//#pragma acc parallel loop gang reduction(+:out) private(tt) \
-	//	present(xx[0:ndim],psaveflat[0:npar])
-	for(int j=0;j<psavesize;j++)
+	#pragma acc loop vector independent reduction(+:out) private(tt)
+	for(int j=0;j<p_save_size;j++)
 	{
-		tt=CAnn::myfunc_neuron(ndim, nneuron, xx, psaveflat, npar*j);
-		tt=(tt+1)/2*(ymax-ymin)+ymin;
+		tt=CAnn::myfunc_neuron(n_dim, n_neuron, xx, p_save_flat, n_par*j);
+		tt=(tt+1)/2*(y_max-y_min)+y_min;
 		out+=tt;
 	}
 
