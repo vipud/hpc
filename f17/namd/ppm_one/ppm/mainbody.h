@@ -154,6 +154,7 @@ public:
 
 	void clear(vector<struct bb_group> &bb);
 	void clear(vector<struct proton> &protons);
+	vector<proton> clear_filter(vector<proton> protons);
 
 
 

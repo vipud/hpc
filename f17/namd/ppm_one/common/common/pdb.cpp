@@ -2601,7 +2601,7 @@ void CPdb::proton(vector<struct proton> *sel, int flag)
 			}
 			if(bmiss==1)
 			{
-				cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+				//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
 				sel->erase(sel->begin()+i);
 				i--;
 			}
@@ -2629,7 +2629,7 @@ void CPdb::proton(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
-			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
 			sel->erase(sel->begin()+i);
 			i--;
 		}
@@ -2657,7 +2657,7 @@ void CPdb::allproton3(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
-			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
 			sel->erase(sel->begin()+i);
 			i--;
 		}
@@ -2684,7 +2684,7 @@ void CPdb::allproton(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
-			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
 			sel->erase(sel->begin()+i);
 			i--;
 		}

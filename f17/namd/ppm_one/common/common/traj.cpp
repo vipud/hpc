@@ -634,6 +634,7 @@ int CTraj::loadcoor(string filename)
 	z_size = z.size();
 
 	//cout << "Preparing to make GPU copies of x, y, and z" << endl;
+cout << "copyin x, y, z " << x_arr << " " << y_arr << " " << z_arr << endl;
 #pragma acc enter data copyin( x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size])
 
 	return nframe;
@@ -829,6 +830,7 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 	int my_y_size = y_size;
 	int my_z_size = z_size;
 
+	cout << "gethbond copyin effect " << effect_arr << endl;
 	#pragma acc enter data copyin(effect_arr[0:effect_size])
 
 #pragma acc parallel present(my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
@@ -1480,7 +1482,7 @@ void CTraj::getring(ring_group *index, int index_size, nh_group *select, int sel
 	int base;
 
 	double_five *ring_effect_arr = ring_effect->data();
-
+cout << "getring(nh) copyin effect " << ring_effect_arr << endl;
 	#pragma acc enter data copyin(ring_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -1734,6 +1736,7 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 	int my_y_size = y_size;
 	int my_z_size = z_size;
 
+cout << "ringeffect(proton) copyin effect " << ring_effect_arr << endl;
 	#pragma acc enter data copyin(ring_effect_arr[0:ring_effect_size])
 
 	for(i=0;i<nframe;i++)
@@ -2524,6 +2527,7 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double e;
 
 	double_four *ani_effect_arr = ani_effect->data();
+cout << "getani(proton) copyin effect " << ani_effect_arr << endl;
 	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -3034,6 +3038,7 @@ void CTraj::getani(ani_group *index, int index_size, nh_group *select, int selec
 	double e;
 
 	double_four *ani_effect_arr = ani_effect->data();
+cout << "getani(nh) copyin effect " << ani_effect_arr << endl;
 	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -3834,6 +3839,7 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 	}
 
 	//#pragma acc enter data copyin(c1[0:(index_size-2)*3],c2[0:c2_size],results[0:results_size])
+cout << "get_all_contacts copyin results " << results << endl;
 	#pragma acc enter data copyin(results[0:results_size])
 	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
 	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this],results[0:results_size]) \
@@ -3952,6 +3958,7 @@ void CTraj::get_all_contacts_double(vector<struct bb_group> *bb, vector<struct i
 	}
 
 	//#pragma acc enter data copyin(c1[0:(index_size-2)*3],c2[0:c2_size],results[0:results_size])
+cout << "get_all_contacts copyin results " << results << endl;
 	#pragma acc enter data copyin(results[0:results_size])
 	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
 	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this],results[0:results_size]) \

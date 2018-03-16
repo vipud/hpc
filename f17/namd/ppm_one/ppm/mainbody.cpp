@@ -931,10 +931,19 @@ CMainbody::~CMainbody()
 		delete traj;
 	}
 	delete [] sep_table;
+
+cout << "Delete anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc exit data delete(anistropy_new)
+system("pause");
+cout << "Delete allprotons3" << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
 #pragma acc exit data delete(allprotons3_new)
+system("pause");
+cout << "Delete ring_index" << ring_index_new << endl;
 #pragma acc exit data delete(ring_index_new)
+system("pause");
+cout << "Delete hbond " << hbond_arr << endl;
 #pragma acc exit data delete(hbond_arr)
+system("pause");
 };
 
 
@@ -1005,19 +1014,20 @@ void CMainbody::load(string bmrbname)
 	// getring ///
 	ring_index_new = ring_index.data();
 	ring_index_size = ring_index.size();
+cout << "copyin ring_index " << ring_index_new << " " << ring_index_new + ring_index_size << endl;
 #pragma acc enter data copyin(ring_index_new[0:ring_index_size])
+system("pause");
 	//////////////
 	pdb->ani(&anistropy);
 	anistropy_new = anistropy.data();
 	anistropy_size = anistropy.size();
+cout << "copyin anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc enter data copyin(anistropy_new[0:anistropy_size])
+system("pause");
 	pdb->proton(&protons);
 	pdb->allproton(&allprotons);
 	pdb->process_ambig(2);
 	pdb->allproton3(&allprotons3);
-	allprotons3_new = allprotons3.data();
-	allprotons3_size = allprotons3.size();
-#pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
 	heavy=pdb->getheavy();
 	pdb->getbb(&bb);
 	pdb->bbnh(&bbnh);
@@ -1025,7 +1035,9 @@ void CMainbody::load(string bmrbname)
 	pdb->schbond(&hbond);  //This is new ! 
 	hbond_arr = hbond.data();
 	hbond_size = hbond.size();
+cout << "copyin hbond " << hbond_arr << " " << hbond_arr + hbond_size << endl;
 #pragma acc enter data copyin(hbond_arr[0:hbond_size])
+system("pause");
 
 	
 
@@ -1037,9 +1049,13 @@ void CMainbody::load(string bmrbname)
 	//process bb to remove all entry that has missing part !!
 	//bbnh willn't take effect if bb is not there for particular residue
 	clear(bb);
-	clear(allprotons);
-	clear(allprotons3);
-	
+	allprotons = clear_filter(allprotons);
+	allprotons3 = clear_filter(allprotons3);
+	allprotons3_new = allprotons3.data();
+	allprotons3_size = allprotons3.size();
+cout << "copyin allprotons3 " << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
+#pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
+system("pause");
 
 	//seperate ring group to two, one for internal, one for surface, according to contact sum !
 	int i;
@@ -1066,6 +1082,17 @@ void CMainbody::load(string bmrbname)
 
 	return;
 }
+
+vector<proton> CMainbody::clear_filter(vector<proton> protons){
+	double st = omp_get_wtime();
+	vector<proton> results;
+	results.reserve(protons.size());
+    	for (auto& p : protons)
+		if((p.id>=1 || p.id<=pdb->getnres()) || (dihe_process.test_proton(p.id,p.type)==0))
+            		results.push_back(p);
+	return results;
+}
+
 
 void CMainbody::clear(vector<struct proton> &protons)
 {
@@ -1315,7 +1342,7 @@ void CMainbody::predict_bb()
 
 void CMainbody::predict_bb_static_ann()
 {
-
+//	getchar();
 	double st;
 	st = omp_get_wtime();
 
@@ -1368,7 +1395,9 @@ void CMainbody::predict_bb_static_ann()
 	nh_group *bbnh_new = bbnh.data();
 	int bbnh_size = bbnh.size();
 	vector<struct double_four> ani_effect(bbnh_size);
+cout << "copyin bbnh " << bbnh_new << " " << bbnh_new + bbnh_size << endl;
 	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
+system("pause");
 	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
@@ -1378,8 +1407,9 @@ void CMainbody::predict_bb_static_ann()
 	traj->getring(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
 	double_five *ring_effect_arr = ring_effect.data();
 	int ring_effect_size = ring_effect.size();
+cout << "delete bbnh " << bbnh_new << endl;
 	#pragma acc exit data delete(bbnh_new) 
-
+system("pause");
 
 	
 	//gather all ha protons to calculate ring and ani.
@@ -1421,7 +1451,9 @@ void CMainbody::predict_bb_static_ann()
 	proton * ha_protons_new = ha_protons.data();
 	int ha_protons_size = ha_protons.size();
 	vector<double_four> ani_effect_ha(ha_protons_size);
+cout << "copyin ha_protons_new " << ha_protons_new << " " << ha_protons_new + ha_protons_size << endl;
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
+system("pause");
 	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
 	double_four *ani_effect_ha_arr = ani_effect_ha.data();
 	int ani_effect_ha_size = ani_effect_ha.size();
@@ -1431,7 +1463,9 @@ void CMainbody::predict_bb_static_ann()
 	double_five *ring_effect_ha_arr = ring_effect_ha.data();
 	int ring_effect_ha_size = ring_effect_ha.size();
 	//traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
+cout << "delete ha_protons_new " << ha_protons_new << endl;
 #pragma acc exit data delete(ha_protons_new)
+system("pause");
 
 
 	index.resize(pdb->getnres());
@@ -1448,7 +1482,9 @@ void CMainbody::predict_bb_static_ann()
 	int c2_size = c2.size();
 	int results_size = (index.size()-2)*3;
 	float *results = new float[results_size];
+cout << "copyin results " << results << " " << results + results_size << endl;
 	#pragma acc enter data create(results[0:results_size])
+system("pause");
 	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
 	//double *results = new double[results_size];
 	//traj->get_all_contacts_double(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
@@ -1489,7 +1525,7 @@ void CMainbody::predict_bb_static_ann()
 	//	amino->atoms_size = amino->atoms.size();
 	//}
 	
-	#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size], \
+	#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size],\
 	num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 	{
 	#pragma acc loop independent gang private(code,code_pre,code_fol,pos,id,pre_ca,pre_cb,pre_co,pre_n,pre_h,pre_ha)
@@ -2012,6 +2048,9 @@ void CMainbody::predict_bb_static_ann()
 	for(i=0; i < (index_size-2); i++){
 		for(int q = 0; q < 101; q++){
 			myfile << i << ":oneline:" << q << ": " << debug[i*(101+101+101+101+110+110)+q] << endl;
+	#pragma acc enter data copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size], \
+	num_arr[0:num_size],v_pos[0:v_size])
+	#pragma acc enter data create(predictions[0:(index_size-2)*6])
 		}
 		myfile << endl;
 		for(int q = 0; q < 101; q++){
@@ -2036,12 +2075,23 @@ void CMainbody::predict_bb_static_ann()
 		myfile << endl;
 	}
 	myfile.close();*/
+cout << "delete hbond_effect " << hbond_effect_arr << endl;
+cout << "delete results " << results << endl;
+cout << "delete ani_effect " << ani_effect_arr << endl;
+cout << "delete ani_effect_ha " << ani_effect_ha_arr << endl;
+cout << "delete ring_effect " << ring_effect_arr << endl;
+cout << "delete ring_effect_ha " << ring_effect_ha_arr << endl;
 #pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
-	delete(results);
-	delete(predictions);
+system("pause");
+	//delete(results);
+	//delete(predictions);
 	cal_error();
+//	getchar();
 	//cout << "MAX=" << MAX << endl;
-	cout << "predict_bb_static_ann: " << omp_get_wtime() - st << " seconds" << endl;
+	//cout << "predict_bb_static_ann: " << omp_get_wtime() - st << " seconds" << endl;
+	//for(int q = 0; q < 100000000; q++){
+	//	predict_proton_static_new();
+	//}
 };
 
 // NOT USED
@@ -2750,6 +2800,7 @@ void CMainbody::predict_proton2()
 
 void CMainbody::predict_proton_static_new(void)
 {
+//	getchar();
 	cout << "predict_proton_static_new" << endl;
 	double st = omp_get_wtime();
 	int i,j;
@@ -2779,8 +2830,15 @@ void CMainbody::predict_proton_static_new(void)
 	//		exit(-1);
 	//	}
 	//}
-
 	allprotons=allprotons3;
+	double_four* tmp = ani_effect.data();
+	if(acc_is_present(tmp,1)){
+		cout << "TMP IS PRESENT" << endl;
+		#pragma acc exit data delete(tmp)
+	} else {
+		cout << "TMP IS NOT PRESENT" << endl;
+	}
+	//allprotons=allprotons3;
 cout << "Before getani" << endl;
 	//traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,vec_arr);
 	traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
@@ -2794,7 +2852,10 @@ cout << "After getani" << endl;
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
 
+cout << "copyout ani_effect(proton_static_new) " << ani_effect_arr << endl;
+cout << "copyout ring_effect(proton_static_new) " << ring_effect_arr << endl;
 	#pragma acc exit data copyout(ani_effect_arr[0:ani_effect_size],ring_effect_arr[0:ring_effect_size])
+system("pause");
 	//#pragma acc exit data copyout(vec_arr[0:allprotons3_size*4],ring_effect_arr[0:allprotons3_size])
 	//for(int q = 0; q < allprotons3_size; q++){
 	//	for(int qq = 0; qq < 4; qq++){

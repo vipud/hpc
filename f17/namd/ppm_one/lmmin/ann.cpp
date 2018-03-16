@@ -23,6 +23,10 @@ CAnn::CAnn()
 
 CAnn::~CAnn()
 {
+cout << "delete p_save_flat " << p_save_flat << endl;
+cout << "delete v_min " << v_min << endl;
+cout << "delete v_max " << v_max << endl;
+cout << "delete this " << this << endl;
 	#pragma acc exit data delete(p_save_flat, v_min, v_max)
 	#pragma acc exit data delete(this)
 	delete(p_save_flat);
@@ -840,8 +844,12 @@ void CAnn::loadp(double *pdata)
 			pdata++;
 		}
 	}
+cout << "copyin this " << this << endl;
 	#pragma acc enter data copyin(this)
+cout << "copyin p_save_flat " << p_save_flat << endl;
 	#pragma acc enter data copyin(p_save_flat[0:n_set*n_par])
+cout << "copyin v_min " << v_min << endl;
+cout << "copyin v_max " << v_max << endl;
 	#pragma acc enter data copyin(v_min[0:n_dim],v_max[0:n_dim])
 };
 
