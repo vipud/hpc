@@ -934,16 +934,16 @@ CMainbody::~CMainbody()
 
 cout << "Delete anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc exit data delete(anistropy_new)
-system("pause");
+//system("pause");
 cout << "Delete allprotons3" << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
 #pragma acc exit data delete(allprotons3_new)
-system("pause");
+//system("pause");
 cout << "Delete ring_index" << ring_index_new << endl;
 #pragma acc exit data delete(ring_index_new)
-system("pause");
+//system("pause");
 cout << "Delete hbond " << hbond_arr << endl;
 #pragma acc exit data delete(hbond_arr)
-system("pause");
+//system("pause");
 };
 
 
@@ -1016,14 +1016,14 @@ void CMainbody::load(string bmrbname)
 	ring_index_size = ring_index.size();
 cout << "copyin ring_index " << ring_index_new << " " << ring_index_new + ring_index_size << endl;
 #pragma acc enter data copyin(ring_index_new[0:ring_index_size])
-system("pause");
+//system("pause");
 	//////////////
 	pdb->ani(&anistropy);
 	anistropy_new = anistropy.data();
 	anistropy_size = anistropy.size();
 cout << "copyin anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc enter data copyin(anistropy_new[0:anistropy_size])
-system("pause");
+//system("pause");
 	pdb->proton(&protons);
 	pdb->allproton(&allprotons);
 	pdb->process_ambig(2);
@@ -1037,7 +1037,7 @@ system("pause");
 	hbond_size = hbond.size();
 cout << "copyin hbond " << hbond_arr << " " << hbond_arr + hbond_size << endl;
 #pragma acc enter data copyin(hbond_arr[0:hbond_size])
-system("pause");
+//system("pause");
 
 	
 
@@ -1055,7 +1055,7 @@ system("pause");
 	allprotons3_size = allprotons3.size();
 cout << "copyin allprotons3 " << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
 #pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
-system("pause");
+//system("pause");
 
 	//seperate ring group to two, one for internal, one for surface, according to contact sum !
 	int i;
@@ -1397,7 +1397,7 @@ void CMainbody::predict_bb_static_ann()
 	vector<struct double_four> ani_effect(bbnh_size);
 cout << "copyin bbnh " << bbnh_new << " " << bbnh_new + bbnh_size << endl;
 	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
-system("pause");
+//system("pause");
 	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
@@ -1409,7 +1409,7 @@ system("pause");
 	int ring_effect_size = ring_effect.size();
 cout << "delete bbnh " << bbnh_new << endl;
 	#pragma acc exit data delete(bbnh_new) 
-system("pause");
+//system("pause");
 
 	
 	//gather all ha protons to calculate ring and ani.
@@ -1453,7 +1453,7 @@ system("pause");
 	vector<double_four> ani_effect_ha(ha_protons_size);
 cout << "copyin ha_protons_new " << ha_protons_new << " " << ha_protons_new + ha_protons_size << endl;
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
-system("pause");
+//system("pause");
 	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
 	double_four *ani_effect_ha_arr = ani_effect_ha.data();
 	int ani_effect_ha_size = ani_effect_ha.size();
@@ -1465,7 +1465,7 @@ system("pause");
 	//traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
 cout << "delete ha_protons_new " << ha_protons_new << endl;
 #pragma acc exit data delete(ha_protons_new)
-system("pause");
+//system("pause");
 
 
 	index.resize(pdb->getnres());
@@ -1484,7 +1484,7 @@ system("pause");
 	float *results = new float[results_size];
 cout << "copyin results " << results << " " << results + results_size << endl;
 	#pragma acc enter data create(results[0:results_size])
-system("pause");
+//system("pause");
 	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
 	//double *results = new double[results_size];
 	//traj->get_all_contacts_double(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
@@ -2082,7 +2082,7 @@ cout << "delete ani_effect_ha " << ani_effect_ha_arr << endl;
 cout << "delete ring_effect " << ring_effect_arr << endl;
 cout << "delete ring_effect_ha " << ring_effect_ha_arr << endl;
 #pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
-system("pause");
+//system("pause");
 	//delete(results);
 	//delete(predictions);
 	cal_error();
@@ -2855,7 +2855,7 @@ cout << "After getani" << endl;
 cout << "copyout ani_effect(proton_static_new) " << ani_effect_arr << endl;
 cout << "copyout ring_effect(proton_static_new) " << ring_effect_arr << endl;
 	#pragma acc exit data copyout(ani_effect_arr[0:ani_effect_size],ring_effect_arr[0:ring_effect_size])
-system("pause");
+//system("pause");
 	//#pragma acc exit data copyout(vec_arr[0:allprotons3_size*4],ring_effect_arr[0:allprotons3_size])
 	//for(int q = 0; q < allprotons3_size; q++){
 	//	for(int qq = 0; qq < 4; qq++){
