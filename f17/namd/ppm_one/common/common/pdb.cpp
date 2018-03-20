@@ -2637,6 +2637,39 @@ void CPdb::proton(vector<struct proton> *sel)
 	cout << "pdb::proton: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
+void CPdb::proton_nofilter(vector<struct proton> * sel)
+{
+	double st = omp_get_wtime();
+	vector<struct proton> tmp;
+	int i,j;
+	bool bmiss;
+	sel->clear();
+	for(i=0;i<(int)v.size();i++)
+	{
+		v.at(i)->proton2(&tmp);
+	}
+	sel->reserve(tmp.size());
+	for(i=0;i<tmp.size();i++)
+	{
+		bmiss=0;
+		for(j=0;j<tmp.at(i).nh;j++)
+		{
+			if(tmp.at(i).hpos[j]<0){
+				bmiss=1;
+				break;
+			}
+		}
+		if(bmiss!=1)
+		{
+			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			//sel->erase(sel->begin()+i);
+			//i--;
+			sel->push_back(tmp.at(i));
+		}
+	}
+	cout << "pdb::proton_nofilter: " << omp_get_wtime()-st << " seconds" << endl;
+}
+
 
 void CPdb::allproton3(vector<struct proton> *sel)
 {

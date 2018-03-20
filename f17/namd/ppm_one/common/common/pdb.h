@@ -103,6 +103,7 @@ public:
 		void getbbdihe_nopro(vector<dihe_group> *, int *);
 		void getring(vector<ring_group> *);
 		void proton(vector<struct proton> *);
+		void proton_nofilter(vector<struct proton> *);
 		void proton(vector<struct proton> *,int);
 		void allproton(vector<struct proton> *);
 		void allproton3(vector<struct proton> *);

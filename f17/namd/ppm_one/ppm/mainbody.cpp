@@ -1024,7 +1024,8 @@ cout << "copyin ring_index " << ring_index_new << " " << ring_index_new + ring_i
 cout << "copyin anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc enter data copyin(anistropy_new[0:anistropy_size])
 //system("pause");
-	pdb->proton(&protons);
+	//pdb->proton(&protons);
+	pdb->proton_nofilter(&protons);
 	pdb->allproton(&allprotons);
 	pdb->process_ambig(2);
 	pdb->allproton3(&allprotons3);
