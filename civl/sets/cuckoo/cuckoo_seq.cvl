@@ -4,10 +4,10 @@
 #include "../include/set.cvh"
 
 int INITIAL_SIZE = 2;
-int LIMIT = 10;
+int LIMIT = 3;
 
 int INITIAL_STAGE = 1;
-int STAGE_BOUND = 10; 
+int STAGE_BOUND = 2; 
 int VALUE_BOUND = 6;
 int hash_vals[2][VALUE_BOUND]; 
 
@@ -61,6 +61,7 @@ int hash0(Set* set, int x) {
   if (hash_vals[0][x] == -1) {
     int s = exp_two(set->stage);
     int choice = $choose_int(s);
+    //printf("choice: %s\n", choice);
     hash_vals[0][x] = choice;
     return hash_vals[0][x];
   }
@@ -70,8 +71,9 @@ int hash0(Set* set, int x) {
 int hash1(Set* set, int x) {
   if (hash_vals[1][x] == -1) {
     int s = exp_two(set->stage);
-    printf("s val: %s\n", s);
+    //printf("s val: %s\n", s);
     int choice = $choose_int(s);
+    //printf("choice: %s\n", choice);
     hash_vals[1][x] = choice;
     return hash_vals[1][x];
   }
@@ -126,6 +128,7 @@ _Bool rehash(Set* set, int x) {
 }
 
 void resize(Set* set) {
+  printf("Attempt resize\n");
   $assume(set->stage < STAGE_BOUND);
   printf("Begin Resize\n");
   int *oldTable[2];
@@ -185,14 +188,19 @@ _Bool set_remove(Set* set, int x) {
 int test1() {
   init_hash_functions(); 
   Set* s = set_create();
+  set_add(s, 0);
+  //set_print(s);
   set_add(s, 1);
-  set_print(s);
-  set_add(s, 5);
-  set_print(s);
+  //set_print(s);
   set_add(s, 2);
+  set_add(s, 5);
+  set_add(s, 4);
+  $assert(set_contains(s, 2));
   set_remove(s, 2);
-  $assert(set_contains(s, 5));
+  $assert(set_contains(s, 0));
   $assert(set_contains(s, 1));
+  $assert(set_contains(s, 5));
+  $assert(set_contains(s, 4));
   $assert(!set_contains(s, 2));
   set_print(s);
   /*
