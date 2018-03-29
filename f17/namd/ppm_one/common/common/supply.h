@@ -39,6 +39,7 @@ struct ring_group
 	bool bgood;
 };
 
+// Edited these data structures to start with initial values of 0.0
 struct double_five
 {
 	double x[5] {0.0, 0.0, 0.0, 0.0, 0.0};
@@ -51,7 +52,7 @@ struct double_four
 
 struct double_three
 {
-	double x[3];
+	double x[3] {0.0, 0.0, 0.0};
 };
 
 struct methyl_group

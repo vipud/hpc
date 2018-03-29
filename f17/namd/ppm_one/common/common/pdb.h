@@ -92,7 +92,7 @@ public:
 		~CPdb(void);
 		void clear();
 		int buildpdb(string);
-		int loadpdb(string);
+		int loadpdb(string); // Updated for OpenACC
 		int loadpdb_old(string);
 		void getca(vector<int> *);
 		vector<int> getselectca(vector<int>);
@@ -103,11 +103,14 @@ public:
 		void getbbdihe_nopro(vector<dihe_group> *, int *);
 		void getring(vector<ring_group> *);
 		void proton(vector<struct proton> *);
-		void proton_nofilter(vector<struct proton> *);
+		void proton_acc(vector<struct proton> *); // Optimized Function
 		void proton(vector<struct proton> *,int);
 		void allproton(vector<struct proton> *);
+		void allproton_acc(vector<struct proton> *); // Optimized Function
 		void allproton3(vector<struct proton> *);
+		void allproton3_acc(vector<struct proton> *); // Optimized Function
 		void ani(vector<struct ani_group> *);
+		void ani_acc(vector<struct ani_group> *); // Optimized Function
 		void getbb(vector<struct bb_group> *);
         void getbb_assign(vector<struct bb_group> *);
 		void bbhbond(vector<bbhbond_group> *);

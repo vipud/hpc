@@ -283,16 +283,11 @@ struct noeatoms CAminoacid::query(string name)
 }
 
 
+// New function for OpenACC
+// Runs sequentially, but works better with how the OpenACC code is laid out
 void CAminoacid::attach_bbprediction(double pre_ca, double pre_cb, double pre_c, double pre_n, double pre_h, double pre_ha)
 {
 	int i;
-
-	//pre_ca=pre[0];
-	//pre_cb=pre[1];
-	//pre_c=pre[2];
-	//pre_h=pre[3];
-	//pre_n=pre[4];
-	//pre_ha=pre[5];
 
 	if(OneLetterName=='G')
 		pre_cb=999.0;

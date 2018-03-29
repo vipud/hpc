@@ -72,8 +72,6 @@ using namespace ldw_math;
 		return(result);
 	}
 
-// TODO
-
 #pragma acc routine seq
 int my_dsvd(double a[6][3], int m, int n, double w[3], double v[3][3])
 	{
@@ -529,12 +527,10 @@ int my_dsvd(double a[6][3], int m, int n, double w[3], double v[3][3])
 
 void CTraj::clear()
 {
-/*
 	x.clear();
 	y.clear();
 	z.clear();
 	nframe=0;
-*/
 }
 
 
@@ -542,7 +538,6 @@ void CTraj::clear()
 
 int CTraj::appendcoor(string filename)
 {
-/*
 	double xx,yy,zz;
 	string line,part;
 
@@ -574,11 +569,12 @@ int CTraj::appendcoor(string filename)
 
 	nframe=x.size()/natom;
 	return nframe;
-*/
 }
 
 
-// Used!
+// Updated function for OpenACC
+// Includes data directives
+// Copy x,y,z arrays into GPU
 int CTraj::loadcoor(string filename)
 {
 	double xx,yy,zz;
@@ -626,6 +622,7 @@ int CTraj::loadcoor(string filename)
 	else
 		nframe=x.size()/natom;
 
+	// New variables to storing underlying x,y,z arrays for better GPU support
 	x_arr = x.data();
 	x_size = x.size();
 	y_arr = y.data();
@@ -633,8 +630,7 @@ int CTraj::loadcoor(string filename)
 	z_arr = z.data();
 	z_size = z.size();
 
-	//cout << "Preparing to make GPU copies of x, y, and z" << endl;
-cout << "copyin x, y, z " << x_arr << " " << y_arr << " " << z_arr << endl;
+#pragma acc enter data copyin(this)
 #pragma acc enter data copyin( x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size])
 
 	return nframe;
@@ -642,7 +638,6 @@ cout << "copyin x, y, z " << x_arr << " " << y_arr << " " << z_arr << endl;
 
 int CTraj::set_range(int begin,int stop)
 {
-/*
 	if(begin<0)
 	{
 		begin=0;
@@ -676,14 +671,12 @@ int CTraj::set_range(int begin,int stop)
 
 	cout<<"Using frames from "<<begin<<" to "<<stop<<endl;
 	return nframe;
-*/
 }
 
 
 
 void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_group> *bb, vector< vector<ehbond> > *effect, vector< vector<eschbond> > *effect_sc)
 {
-/*
 	int i,j,k;
 	int base;
 	int n,h[3],c,o;
@@ -778,7 +771,7 @@ void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_gr
 					phi*=phi;
 					psi*=psi;
 					nid=protons->at(i).id-1;
-					cid=bb->at(j).id-1; /* C start from 0*//*
+					cid=bb->at(j).id-1; /* C start from 0*/
 					
 					//effect->at(nid).at(k).n_length=d;
 					//effect->at(nid).at(k).n_phi=phi;
@@ -803,12 +796,11 @@ void CTraj::getschbond2(vector<struct proton> *protons, vector<struct bbhbond_gr
 	}//for i
 
 	return;
-*/
 }
 
 
-
-void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effect)
+// New funtion for OpenACC
+void CTraj::gethbond_acc(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effect)
 {
 	double st = omp_get_wtime();
 	int i,j,k;
@@ -830,7 +822,6 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 	int my_y_size = y_size;
 	int my_z_size = z_size;
 
-	cout << "gethbond copyin effect " << effect_arr << endl;
 	#pragma acc enter data copyin(effect_arr[0:effect_size])
 
 #pragma acc parallel present(my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
@@ -913,6 +904,7 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 		effect_arr[i].c_psi/=nframe;
 	}
 //#pragma acc exit data copyout(effect_arr[0:effect_size])
+// No need to copyout effect because the next time it gets used is within a GPU region
 	cout << "gethbond: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
@@ -920,7 +912,6 @@ void CTraj::gethbond(bbhbond_group *hbond, int _hbond_size, vector<ehbond> *effe
 
 
 
-// Used!
 //hbond type (1, bb) (12, sc OH) (13,sc NH) (22 or 23, sc CO)
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 {
@@ -1012,7 +1003,6 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect)
 //hbond type (1, bb) (12, sc OH) (13,sc NH) (22 or 23, sc CO)
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double cutoff)
 {
-/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -1065,7 +1055,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*//*
+					cid=hbond->at(j).id-1; /* C start from 0*/
 
 					if(d>cutoff)
 						d=cutoff;
@@ -1097,14 +1087,12 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double
 		effect->at(i).c_psi/=nframe;
 	}
 	return;
-*/
 }
 
 
 
 void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect)
 {
-/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -1167,7 +1155,7 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effe
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*//*
+					cid=hbond->at(j).id-1; /* C start from 0*/
 					if(hbond->at(i).type==1)
 					{
 						effect->at(nid).at(k).n_length+=d;
@@ -1185,13 +1173,11 @@ void CTraj::gethbond(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effe
 		}
 	}
 	return;
-*/
 }
 
 
 void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect)
 {
-/*
 	int i,j,k;
 	int base;
 	int nid,cid;
@@ -1254,7 +1240,7 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 					phi*=phi;
 					psi*=psi;
 					nid=hbond->at(i).id-1;
-					cid=hbond->at(j).id-1; /* C start from 0*//*
+					cid=hbond->at(j).id-1; /* C start from 0*/
 					if(hbond->at(i).type==1)
 					{
 						effect->at(nid).at(k).n_length=d;
@@ -1272,7 +1258,6 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 		}
 	}
 	return;
-*/
 }
 
 
@@ -1280,7 +1265,6 @@ void CTraj::gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *eff
 
 void CTraj::dis_matrix(vector<int> *index,vector<double> *dis)
 {
-/*
 	int i,j,n1,n2;
 	double d1,d2,d3,d;
 	for(i=0;i<(int)index->size();i++)
@@ -1297,13 +1281,11 @@ void CTraj::dis_matrix(vector<int> *index,vector<double> *dis)
 		}
 	}
 	return;
-*/
 }
 
 
 void CTraj::getangle(vector<struct dihe_group> *index, vector<double> * angle)
 {
-/*
 	int i,j;
 	int x1,x2,x3,x4;
 	int base;
@@ -1326,13 +1308,10 @@ void CTraj::getangle(vector<struct dihe_group> *index, vector<double> * angle)
 		}
 	}
 	return;
-*/
 }
 
 
 
-
-// Used!
 void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 {	
 	double st = omp_get_wtime();
@@ -1365,7 +1344,6 @@ void CTraj::getdihe(vector<struct dihe_group> *index, vector<double> * dihe)
 }
 
 
-// Used!
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector<struct double_five> *ring_effect)
 {	
 	double st = omp_get_wtime();
@@ -1474,15 +1452,15 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 	return;
 }
 
-// getring1 gpu version
-void CTraj::getring(ring_group *index, int index_size, nh_group *select, int select_size, vector<struct double_five> *ring_effect)
+
+// New function for OpenACC
+void CTraj::getring_acc(ring_group *index, int index_size, nh_group *select, int select_size, vector<struct double_five> *ring_effect)
 {	
 	double st = omp_get_wtime();
 	int i,j,ii,jj,m;
 	int base;
 
 	double_five *ring_effect_arr = ring_effect->data();
-cout << "getring(nh) copyin effect " << ring_effect_arr << endl;
 	#pragma acc enter data copyin(ring_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -1596,15 +1574,15 @@ cout << "getring(nh) copyin effect " << ring_effect_arr << endl;
 	}
 
 	//#pragma acc exit data copyout(ring_effect_arr[0:select_size])
+	// No need to copyout because the next time effect is used is inside GPU region
 
-	cout << "getring1: " << omp_get_wtime() - st << " seconds" << endl;
+	cout << "getring(nh group): " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
 
 void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* select, vector< vector<struct double_five> > *ring_effect)
 {	
-/*
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -1707,14 +1685,12 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct nh_group>* s
 	}
 
 	return;
-*/
 }
 
 
 
-
-// Used!
-void CTraj::getring(ring_group *index, int index_size, proton *select, int select_size, vector<struct double_five> *ring_effect)
+// New function for OpenACC
+void CTraj::getring_acc(ring_group *index, int index_size, proton *select, int select_size, vector<struct double_five> *ring_effect)
 {	
 	double st = omp_get_wtime();
 	int i,j,ii,jj,m,k;
@@ -1736,7 +1712,6 @@ void CTraj::getring(ring_group *index, int index_size, proton *select, int selec
 	int my_y_size = y_size;
 	int my_z_size = z_size;
 
-cout << "ringeffect(proton) copyin effect " << ring_effect_arr << endl;
 	#pragma acc enter data copyin(ring_effect_arr[0:ring_effect_size])
 
 	for(i=0;i<nframe;i++)
@@ -1859,7 +1834,8 @@ cout << "ringeffect(proton) copyin effect " << ring_effect_arr << endl;
 		}
 	}
 	//#pragma acc exit data copyout(ring_effect_arr[0:ring_effect_size])
-	cout << "getring2: " << omp_get_wtime() - st << " seconds" << endl;
+	// No need to copyout effect because next time it is used is within GPU region
+	cout << "getring(proton): " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
@@ -1977,7 +1953,6 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 
 void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* select, vector< vector<struct double_five> > *ring_effect)
 {	
-/*
 	int i,j,ii,jj,m,k;
 	int base;
 	int t[6];
@@ -2079,13 +2054,11 @@ void CTraj::getring(vector<struct ring_group> *index, vector<struct proton>* sel
 		}
 	}
 	return;
-*/
 }
 
 
 void CTraj::getring_bb(vector<struct ring_group> *index, vector<struct bb_group>* select, vector<struct double_five> *ring_effect, enum bb_carbon c)
 {	
-/*
 	int i,j,ii,jj,m;
 	int base;
 	int t[6];
@@ -2203,14 +2176,12 @@ void CTraj::getring_bb(vector<struct ring_group> *index, vector<struct bb_group>
 		}
 	}
 	return;
-*/
 }
 
 
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>* select, vector<struct double_four> *ani_effect, enum methyl c)
 {
-/*
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
@@ -2298,11 +2269,11 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>*
 		}
 	}
 	return;
-*/
 }
 
 
-void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, double_four *ani_effect_arr)
+// New function for OpenACC
+void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int select_size, double_four *ani_effect_arr)
 {
 	double st = omp_get_wtime();
 	int i,j,ii,jj,k;
@@ -2385,7 +2356,6 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 		}
 } // end parallel region
 	} // end nframe loop
-	cout << "After 1st loop" << endl;
 	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
 	for(j=0; j<select_size; j++)
 	{
@@ -2396,127 +2366,16 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	}
 
 	//#pragma acc exit data copyout(ani_effect_arr[0:select_size])
+	// No need to copyout effect because next time it is used is in GPU region
 
-	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
+	cout << "getani(proton): " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
 
 
-void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, double *ani_effect_arr)
-{
-	double st = omp_get_wtime();
-	int i,j,ii,jj,k;
-	int i1,i2,i3;
-	int base;
-	double cosa;
-	double length;
-	double e;
 
-	if(acc_is_present(ani_effect_arr,1)){
-		cout << "getani: data is present" << endl;
-	} else {
-		cout << "getani: data is not present" << endl;
-	}
-
-	//double_four *ani_effect_arr = ani_effect->data();
-	#pragma acc enter data copyin(ani_effect_arr[0:select_size*4])
-
-	if(acc_is_present(ani_effect_arr,select_size*4*sizeof(double))){
-		cout << "getani: data is present" << endl;
-	} else {
-		cout << "getani: data is not present" << endl;
-	}
-
-	double *my_x_arr = x_arr;
-	double *my_y_arr = y_arr;
-	double *my_z_arr = z_arr;
-	int my_x_size = x_size;
-	int my_y_size = y_size;
-	int my_z_size = z_size;
-
-	for(i=0;i<nframe;i++)
-	{
-		base=i*natom;
-//#pragma acc parallel present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size], ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj,k)
-#pragma acc parallel present(index[0:index_size],select[0:select_size],my_x_arr[0:my_x_size],my_y_arr[0:my_y_size],my_z_arr[0:my_z_size],ani_effect_arr[0:select_size*4])
-{
-#pragma acc loop independent gang private(i1,i2,i3,e,cosa,length,jj,k)
-		for(j=0;j<index_size;j++)
-		{
-			double center_p[3];
-			double v1_p[3];
-			double v2_p[3];
-			double ori_p[3];
-			i1=index[j].pos[0]+base-1;
-			i2=index[j].pos[1]+base-1;
-			i3=index[j].pos[2]+base-1;
-
-			center_p[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
-			center_p[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; 
-			center_p[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3;
-
-			v1_p[0]=my_x_arr[i1]-my_x_arr[i2];
-			v1_p[1]=my_y_arr[i1]-my_y_arr[i2];
-			v1_p[2]=my_z_arr[i1]-my_z_arr[i2];
-
-			v2_p[0]=my_x_arr[i3]-my_x_arr[i2];
-			v2_p[1]=my_y_arr[i3]-my_y_arr[i2];
-			v2_p[2]=my_z_arr[i3]-my_z_arr[i2];
-
-			my_cross(ori_p,v1_p,v2_p);
-
-#pragma acc loop vector
-			for(jj=0;jj<select_size;jj++) 
-			{
-				double e_pp = 0;
-				int i1_pp;
-				double length_pp;
-				double cosa_pp;
-				double v1_pp[3];
-
-#pragma acc loop seq reduction(+:e)				
-				for(k=0;k<select[jj].nh;k++)
-				{	
-					i1_pp=base+select[jj].hpos[k]-1;
-
-					v1_pp[0]=center_p[0]-my_x_arr[i1_pp];
-					v1_pp[1]=center_p[1]-my_y_arr[i1_pp];
-					v1_pp[2]=center_p[2]-my_z_arr[i1_pp];
-
-					length_pp=v1_pp[0]*v1_pp[0]+v1_pp[1]*v1_pp[1]+v1_pp[2]*v1_pp[2];
-
-					cosa_pp=my_dot(v1_pp,ori_p);
-
-					cosa_pp/=sqrt(ori_p[0]*ori_p[0]+ori_p[1]*ori_p[1]+ori_p[2]*ori_p[2]);
-					cosa_pp/=sqrt(length_pp);					 
-					e_pp+=(1-3*cosa_pp*cosa_pp)/(length_pp*sqrt(length_pp));
-				}
-				#pragma acc atomic update
-				ani_effect_arr[(jj*4)+(index[j].type-1)] += e_pp / select[jj].nh*1000;
-				//ani_effect_arr[jj].x[index[j].type-1] += e_pp/select[jj].nh*1000;
-			}
-		}
-} // end parallel region
-	} // end nframe loop
-	cout << "After 1st loop" << endl;
-	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
-	for(j=0; j<select_size; j++)
-	{
-		ani_effect_arr[j*4+0] /= nframe;
-		ani_effect_arr[j*4+1] /= nframe;
-		ani_effect_arr[j*4+2] /= nframe;
-		ani_effect_arr[j*3+3] /= nframe;
-	}
-
-	//#pragma acc exit data copyout(ani_effect_arr[0:select_size])
-
-	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
-	return;
-}
-
-
-// Used!
-void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
+// New function for OpenACC
+void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
 {
 	double st = omp_get_wtime();
 	int i,j,ii,jj,k;
@@ -2527,7 +2386,6 @@ void CTraj::getani(ani_group *index, int index_size, proton *select, int select_
 	double e;
 
 	double_four *ani_effect_arr = ani_effect->data();
-cout << "getani(proton) copyin effect " << ani_effect_arr << endl;
 	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -2600,7 +2458,6 @@ cout << "getani(proton) copyin effect " << ani_effect_arr << endl;
 		}
 } // end parallel region
 	} // end nframe loop
-	cout << "After 1st loop" << endl;
 	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
 	for(j=0; j<select_size; j++)
 	{
@@ -2611,6 +2468,7 @@ cout << "getani(proton) copyin effect " << ani_effect_arr << endl;
 	}
 
 	//#pragma acc exit data copyout(ani_effect_arr[0:select_size])
+	// No need to copyout effect because next time it is used is within GPU region
 
 	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
@@ -2703,256 +2561,9 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 }
 
 
-/*
-void CTraj::getani(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
-{
-	double st = omp_get_wtime();
-	int i,j,ii,jj,k;
-	int i1,i2,i3;
-	int base;
-	double center[3];
-	double v1[3]; //potentially need to be copied
-	double v2[3]; //potentially need to be copied
-	double ori[3]; //potentially need to be copied
-	double cosa;
-	double length;
-	double e;
-	struct double_four temp;
-
-	double_four *ani_effect_arr = ani_effect->data();
-	
-	//for(i=0;i<4;i++)
-	//	temp.x[i]=0;
-	//for(i=0;i<select_size;i++)  
-	//	ani_effect->push_back(temp);
-
-//#pragma acc enter data create(ani_effect_arr[0:select_size])
-	// Pointers to avoid having to explicitly copy 'this'
-	double *my_x_arr = x_arr;
-	double *my_y_arr = y_arr;
-	double *my_z_arr = z_arr;
-	int my_x_size = x_size;
-	int my_y_size = y_size;
-	int my_z_size = z_size;
-
-	//double *ani_effect_flat = new double[select_size*index_size*4];
-	const int block_size = 1024;
-	int num_blocks = ((index_size-1)/block_size)+1;
-	double *ani_effect_flat = new double[block_size*select_size*4];
-	//memset(ani_effect_flat, 0, block_size*select_size*4*sizeof(double));
-	//cout << "num_blocks=" << num_blocks << endl;
-
-	/*int *debug_i = new int[3*index_size];
-	double *debug_v1 = new double[3*index_size];
-	double *debug_v2 = new double[3*index_size];
-	double *debug_ori = new double[3*index_size];
-	double *debug_center = new double[3*index_size];
-	double *debug_extra = new double[3*index_size];
-	double *debug_inner = new double[index_size*select_size*20];*//*
-	//cout << "GetAni: " << index_size << "x" << select_size << endl;
-#pragma acc enter data create(ani_effect_flat[0:block_size*select_size*4])
-#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4])
-for(i=0; i<block_size*select_size*4; i++)
-	ani_effect_flat[i]=0.0;
-
-	for(i=0;i<nframe;i++)
-	{
-		//cout << "START OF NFRAME LOOP" << endl;
-		base=i*natom;
-		j=0;
-		for(int block = 0; block < num_blocks; block++)
-		{
-		int remaining = block_size;
-		if(block >= (num_blocks-1))
-			remaining = index_size % block_size;
-		//cout << "Block=" << block << endl;
-		//cout << "Remaining=" << remaining << endl;
-#pragma acc parallel present(index[0:index_size], select[0:select_size], my_x_arr[0:my_x_size], my_y_arr[0:my_y_size], my_z_arr[0:my_z_size], ani_effect_flat[0:block_size*select_size*4]) private(center[0:3],v1[0:3],v2[0:3],ori[0:3],i1,i2,i3,e,cosa,length,jj,k)
-{
-#pragma acc loop independent
-		for(j=block*block_size;j<block*block_size+remaining;j++)
-		{
-			//cout << "j=" << j << endl;
-			double center_p[3];
-			double v1_p[3];
-			double v2_p[3];
-			double ori_p[3];
-			i1=index[j].pos[0]+base-1;
-			i2=index[j].pos[1]+base-1;
-			i3=index[j].pos[2]+base-1;
-			/*debug_i[j*3 + 0] = i1;
-			debug_i[j*3 + 1] = i2;
-			debug_i[j*3 + 2] = i3;*//*
-
-			center_p[0]=(my_x_arr[i1]+my_x_arr[i2]+my_x_arr[i3])/3;
-			center_p[1]=(my_y_arr[i1]+my_y_arr[i2]+my_y_arr[i3])/3; //x,y, and z are still vectors! look at Ctraj::loadcoor , this is where they get allocated
-			center_p[2]=(my_z_arr[i1]+my_z_arr[i2]+my_z_arr[i3])/3; //x,y, and z ->> change to x_arr , x_size .....
-			/*debug_center[j*3 + 0] = center_p[0];
-			debug_center[j*3 + 1] = center_p[1];
-			debug_center[j*3 + 2] = center_p[2];*//*
-
-			v1_p[0]=my_x_arr[i1]-my_x_arr[i2];
-			v1_p[1]=my_y_arr[i1]-my_y_arr[i2];
-			v1_p[2]=my_z_arr[i1]-my_z_arr[i2];
-			/*debug_v1[j*3 + 0] = v1_p[0];
-			debug_v1[j*3 + 1] = v1_p[1];
-			debug_v1[j*3 + 2] = v1_p[2];*//*
-
-
-			v2_p[0]=my_x_arr[i3]-my_x_arr[i2];
-			v2_p[1]=my_y_arr[i3]-my_y_arr[i2];
-			v2_p[2]=my_z_arr[i3]-my_z_arr[i2];
-			/*debug_v2[j*3 + 0] = v2_p[0];
-			debug_v2[j*3 + 1] = v2_p[1];
-			debug_v2[j*3 + 2] = v2_p[2];*//*
-
-
-			my_cross(ori_p,v1_p,v2_p);
-			/*debug_ori[j*3 + 0] = ori_p[0];
-			debug_ori[j*3 + 1] = ori_p[1];
-			debug_ori[j*3 + 2] = ori_p[2];*//*
-
-#pragma acc loop seq
-			for(jj=0;jj<select_size;jj++) 
-			{
-				e=0;	
-				/*debug_inner[j*select_size*20 + jj*20 + 0] = base;
-				debug_inner[j*select_size*20 + jj*20 + 1] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 2] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 3] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 4] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 5] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 6] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 14] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 15] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 16] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 17] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 18] = 0.0;
-				debug_inner[j*select_size*20 + jj*20 + 19] = 0.0;*//*
-
-#pragma acc loop seq							
-				for(k=0;k<select[jj].nh;k++)
-				{	
-					//debug_inner[j*select_size*20 + jj*20 + (k+1)] = select[jj].hpos[k];
-					i1=base+select[jj].hpos[k]-1;
-					//debug_inner[j*select_size*20 + jj*20 + (k+14)] = center_p[0];
-
-					v1_p[0]=center_p[0]-my_x_arr[i1];
-					v1_p[1]=center_p[1]-my_y_arr[i1];
-					v1_p[2]=center_p[2]-my_z_arr[i1];
-
-					length=v1_p[0]*v1_p[0]+v1_p[1]*v1_p[1]+v1_p[2]*v1_p[2];
-
-					cosa=my_dot(v1_p,ori_p);
-
-					cosa/=sqrt(ori_p[0]*ori_p[0]+ori_p[1]*ori_p[1]+ori_p[2]*ori_p[2]);
-					cosa/=sqrt(length);					 
-					e+=(1-3*cosa*cosa)/(length*sqrt(length));
-				}
-				/*debug_inner[j*select_size*20 + jj*20 + 7] = i1;
-				debug_inner[j*select_size*20 + jj*20 + 8] = v1_p[0];
-				debug_inner[j*select_size*20 + jj*20 + 9] = v1_p[1];
-				debug_inner[j*select_size*20 + jj*20 + 10] = v1_p[2];
-				debug_inner[j*select_size*20 + jj*20 + 11] = length;
-				debug_inner[j*select_size*20 + jj*20 + 12] = cosa;
-				debug_inner[j*select_size*20 + jj*20 + 13] = e;*//*
-
-				ani_effect_flat[(j%block_size)*select_size*4 + jj*4 + (index[j].type-1)] += e/select[jj].nh*1000;
-				//ani_effect_arr[jj].x[index[j].type-1]+=e/select[jj].nh*1000;
-			}
-			//debug_extra[j*3 + 0] = e;
-			//debug_extra[j*3 + 1] = length;
-			//debug_extra[j*3 + 2] = cosa;
-		}
-	} // end parallel region
-		//block++;
-		//cout << "Block At End=" << block << endl;
-		} // end block loop
-		//cout << "Broke out of block loop" << endl;
-} // end nframe loop
-//cout << "Outside nframe loop" << endl;
-	//ofstream myfile;
- 	//myfile.open ("example.txt");
-/*
-	for(i=0; i<index_size; i++){
-		myfile << i << endl;
-		myfile << debug_i[i*3 + 0] << " ";
-		myfile << debug_i[i*3 + 1] << " ";
-		myfile << debug_i[i*3 + 2] << " " << endl;
-		myfile << debug_v1[i*3 + 0] << " ";
-		myfile << debug_v1[i*3 + 1] << " ";
-		myfile << debug_v1[i*3 + 2] << " " << endl;
-		myfile << debug_v2[i*3 + 0] << " ";
-		myfile << debug_v2[i*3 + 1] << " ";
-		myfile << debug_v2[i*3 + 2] << " " << endl;
-		myfile << debug_ori[i*3 + 0] << " ";
-		myfile << debug_ori[i*3 + 1] << " ";
-		myfile << debug_ori[i*3 + 2] << " " << endl;
-		myfile << debug_center[i*3 + 0] << " ";
-		myfile << debug_center[i*3 + 1] << " ";
-		myfile << debug_center[i*3 + 2] << " " << endl;
-		myfile << debug_extra[i*3 + 0] << " ";
-		myfile << debug_extra[i*3 + 1] << " ";
-		myfile << debug_extra[i*3 + 2] << " " << endl;
-		for(j = 0; j < select_size; j++){
-			myfile << j << " ";
-			for(int k = 0; k <20; k++){
-				myfile << debug_inner[i*select_size*20 + j*20 + k] << " ";
-			}
-			myfile << endl;
-		}
-		myfile << endl;
-	}
-*//*
-
-		//cout << "i=" << i << endl;
-	#pragma acc parallel loop independent present(ani_effect_flat[0:block_size*select_size*4]) \
-	copy(ani_effect_arr[0:select_size])
-	for(j=0; j<select_size; j++)
-	{
-		#pragma acc loop seq
-		for(i=0; i < block_size; i++)
-		{
-			//cout << "j=" << j << endl;
-			#pragma acc loop seq
-			for(int k=0; k<4; k++)
-			{
-				//cout << "k=" << k << endl;
-				//myfile << ani_effect_flat[i*select_size*4 + j*4 + k] << " ";
-				ani_effect_arr[j].x[k] += ani_effect_flat[i*select_size*4 + j*4 + k];
-			}
-			//myfile << endl;
-		}
-		ani_effect_arr[j].x[0] /= nframe;
-		ani_effect_arr[j].x[1] /= nframe;
-		ani_effect_arr[j].x[2] /= nframe;
-		ani_effect_arr[j].x[3] /= nframe;
-	}
-	#pragma acc exit data delete(ani_effect_flat)
-	
-	//cout << "Outside min loop" << endl;
-	delete(ani_effect_flat);
-
-	//myfile.close();
-
-#pragma acc exit data copyout(ani_effect_arr[0:select_size])
-
-	/*for(ii=0;ii<select_size;ii++)
-	{
-		for(jj=0;jj<4;jj++)
-		{
-			ani_effect->at(ii).x[jj]/=nframe;
-		}
-	}*//*
-	cout << "getani: " << omp_get_wtime() - st << " seconds" << endl;
-	return;
-}
-*/
-
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* select, vector< vector<struct double_four>  > *ani_effect)
 {
-/*
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
 	int base;
@@ -3023,11 +2634,11 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 
 
 	return;
-*/
 }
 
 
-void CTraj::getani(ani_group *index, int index_size, nh_group *select, int select_size, vector<struct double_four> *ani_effect)
+// New function for OpenACC
+void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int select_size, vector<struct double_four> *ani_effect)
 {
 	double st = omp_get_wtime();
 	int i,j,ii,jj;
@@ -3038,7 +2649,6 @@ void CTraj::getani(ani_group *index, int index_size, nh_group *select, int selec
 	double e;
 
 	double_four *ani_effect_arr = ani_effect->data();
-cout << "getani(nh) copyin effect " << ani_effect_arr << endl;
 	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	double *my_x_arr = x_arr;
@@ -3115,93 +2725,16 @@ cout << "getani(nh) copyin effect " << ani_effect_arr << endl;
 	}
 
 	//#pragma acc exit data copyout(ani_effect_arr)
+	// No need to copyout effect because next time it is used is in a GPU region
 
-	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
+	cout << "getani(nh group): " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
-
-/*
-void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector<struct double_four> *ani_effect)
-{
-	double st = omp_get_wtime();
-	int i,j,ii,jj;
-	int i1,i2,i3;
-	int base;
-	double center[3];
-	double v1[3];
-	double v2[3];
-	double ori[3];
-	double cosa;
-	double length;
-	double e;
-
-
-	struct double_four temp;
-	
-	for(i=0;i<4;i++)
-		temp.x[i]=0;
-	for(i=0;i<(int)select->size();i++)
-		ani_effect->push_back(temp);
-	
-	for(i=0;i<nframe;i++)
-	{
-		base=i*natom;
-		for(j=0;j<(int)index->size();j++)
-		{
-			i1=index->at(j).pos[0]+base-1;
-			i2=index->at(j).pos[1]+base-1;
-			i3=index->at(j).pos[2]+base-1;
-			center[0]=(x[i1]+x[i2]+x[i3])/3;
-			center[1]=(y[i1]+y[i2]+y[i3])/3;
-			center[2]=(z[i1]+z[i2]+z[i3])/3;
-
-			v1[0]=x[i1]-x[i2];
-			v1[1]=y[i1]-y[i2];
-			v1[2]=z[i1]-z[i2];
-
-			v2[0]=x[i3]-x[i2];
-			v2[1]=y[i3]-y[i2];
-			v2[2]=z[i3]-z[i2];
-
-			cross(ori,v1,v2);
-
-			for(jj=0;jj<(int)select->size();jj++)
-			{
-				if(select->at(jj).hpos>=1)
-				{
-					e=0;				
-					i1=base+select->at(jj).hpos-1;
-					v1[0]=center[0]-x[i1];
-					v1[1]=center[1]-y[i1];
-					v1[2]=center[2]-z[i1];
-					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
-					cosa=dot(v1,ori);
-					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
-					cosa/=sqrt(length);					 
-					e+=(1-3*cosa*cosa)/(length*sqrt(length));
-					ani_effect->at(jj).x[index->at(j).type-1]+=e*1000;
-				}
-			}
-		}
-	}
-
-	for(ii=0;ii<(int)select->size();ii++)
-	{
-		for(jj=0;jj<4;jj++)
-		{
-			ani_effect->at(ii).x[jj]/=nframe;
-		}
-	}
-	cout << "getani2: " << omp_get_wtime() - st << " seconds" << endl;
-	return;
-}
-*/
 
 
 
 void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector< vector<struct double_four>  > *ani_effect)
 {
-/*
 	int i,j,ii,jj;
 	int i1,i2,i3;
 	int base;
@@ -3270,12 +2803,86 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* sel
 	}
 
 	return;
-*/
 }
+
+
+void CTraj::getani(vector<struct ani_group> *index, vector<struct nh_group>* select, vector<struct double_four> *ani_effect)
+{
+	int i,j,ii,jj;
+	int i1,i2,i3;
+	int base;
+	double center[3];
+	double v1[3];
+	double v2[3];
+	double ori[3];
+	double cosa;
+	double length;
+	double e;
+
+
+	struct double_four temp;
+	
+	for(i=0;i<4;i++)
+		temp.x[i]=0;
+	for(i=0;i<(int)select->size();i++)
+		ani_effect->push_back(temp);
+	
+	for(i=0;i<nframe;i++)
+	{
+		base=i*natom;
+		for(j=0;j<(int)index->size();j++)
+		{
+			i1=index->at(j).pos[0]+base-1;
+			i2=index->at(j).pos[1]+base-1;
+			i3=index->at(j).pos[2]+base-1;
+			center[0]=(x[i1]+x[i2]+x[i3])/3;
+			center[1]=(y[i1]+y[i2]+y[i3])/3;
+			center[2]=(z[i1]+z[i2]+z[i3])/3;
+
+			v1[0]=x[i1]-x[i2];
+			v1[1]=y[i1]-y[i2];
+			v1[2]=z[i1]-z[i2];
+
+			v2[0]=x[i3]-x[i2];
+			v2[1]=y[i3]-y[i2];
+			v2[2]=z[i3]-z[i2];
+
+			cross(ori,v1,v2);
+
+			for(jj=0;jj<(int)select->size();jj++)
+			{
+				if(select->at(jj).hpos>=1)
+				{
+					e=0;				
+					i1=base+select->at(jj).hpos-1;
+					v1[0]=center[0]-x[i1];
+					v1[1]=center[1]-y[i1];
+					v1[2]=center[2]-z[i1];
+					length=v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2];
+					cosa=dot(v1,ori);
+					cosa/=sqrt(ori[0]*ori[0]+ori[1]*ori[1]+ori[2]*ori[2]);
+					cosa/=sqrt(length);					 
+					e+=(1-3*cosa*cosa)/(length*sqrt(length));
+					ani_effect->at(jj).x[index->at(j).type-1]+=e*1000;
+				}
+			}
+		}
+	}
+
+	for(ii=0;ii<(int)select->size();ii++)
+	{
+		for(jj=0;jj<4;jj++)
+		{
+			ani_effect->at(ii).x[jj]/=nframe;
+		}
+	}
+	return;
+}
+
+
 
 double CTraj::noedistance_frame(vector<int> *att1, vector<int> *att2,int j)
 {
-/*
 	double x0,y0,z0;
 	double r2,r6,sum,sumsum;
 	int i1,j1;
@@ -3302,12 +2909,10 @@ double CTraj::noedistance_frame(vector<int> *att1, vector<int> *att2,int j)
 	sumsum/=j1;
 	r2=pow(sumsum,-1/6.0);
 	return r2;
-*/
 }
 
 double CTraj::noedistance(vector<int> *att1, vector<int> *att2)
 {
-/*
 	double x0,y0,z0;
 	double r2,r6,sum,sumsum;
 	int i1,j1;
@@ -3340,13 +2945,11 @@ double CTraj::noedistance(vector<int> *att1, vector<int> *att2)
 	sumsum/=j1;
 	r2=pow(sumsum,-1/6.0);
 	return r2;
-*/
 }
 
 
 void CTraj::evaluatenmrcons_frame(vector<struct noeline> *nmrcons, double cutoff)
 {
-/*
 	int ii,i,j;
 	int pos1,pos2;
 	int n1,n2;
@@ -3418,12 +3021,10 @@ void CTraj::evaluatenmrcons_frame(vector<struct noeline> *nmrcons, double cutoff
 	}
 	fout2.close();
 	return;
-*/
 }
 
 void CTraj::evulatenmrcons(vector<struct noeline> *nmrcons, double cutoff)
 {
-/*
 	int i,j;
 	int pos1,pos2;
 	int n1,n2;
@@ -3530,13 +3131,11 @@ void CTraj::evulatenmrcons(vector<struct noeline> *nmrcons, double cutoff)
 
 
 	return;
-*/
 }
 
 
 void CTraj::rmsd_matrix(vector< vector<double> > *rmsd,vector<int> *ca, int skip)
 {
-/*
 	float *x1,*y1,*z1,*x2,*y2,*z2;
 	int nca,jumpi,jumpj;
 	int i,j,k;
@@ -3585,14 +3184,12 @@ void CTraj::rmsd_matrix(vector< vector<double> > *rmsd,vector<int> *ca, int skip
 		}
 	}
 	return;
-*/
 }
 
 
 
 void CTraj::getvector(vector<struct index_three> nh,vector<double> *xx,vector<double> *yy,vector<double> *zz)
 {
-/*
 	int i,m,j;
 	double r;
 	double x1,y1,z1;
@@ -3618,24 +3215,20 @@ void CTraj::getvector(vector<struct index_three> nh,vector<double> *xx,vector<do
 			zz->push_back(z1);		
 		}
 	}
-*/
 }
 
 
 void CTraj:: getcoor(int ipos,int iframe,double *xx,double *yy,double *zz)
 {
-/*
 	ipos+=iframe*natom-1;
 	*xx=x.at(ipos);
 	*yy=y.at(ipos);
 	*zz=z.at(ipos);
-*/
 }
 
 
 void CTraj::getcoor(vector<int> pos,int iframe,vector<double> *xx,vector<double> *yy,vector<double> *zz)
 {
-/*
 	int j;
 	int adj;
 	unsigned int i;
@@ -3649,13 +3242,11 @@ void CTraj::getcoor(vector<int> pos,int iframe,vector<double> *xx,vector<double>
 		zz->push_back(z.at(j));
 	}
 	return;
-*/
 }
 
 
 void CTraj::getcoor(vector<int> pos,vector<float> *xx,vector<float> *yy,vector<float> *zz)
 {
-/*
 	int j;
 	int adj;
 	unsigned int i,iframe;
@@ -3672,50 +3263,11 @@ void CTraj::getcoor(vector<int> pos,vector<float> *xx,vector<float> *yy,vector<f
 		}
 	}
 	return;
-*/
 }
 
 
 
-/*void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
-{
-	int i,j;
-	int ii,jj;
-	float contact;
-	float x0,y0,z0;
-	float rr;
-
-	for(i=0;i<(int)pos.size();i++)
-	{
-		contact=0.0;
-		ii=pos.at(i);
-		if(ii<0)
-		{
-			result->push_back(-1.0);
-			continue;
-		}
-		ii--;
-		x0=x.at(ii);
-		y0=y.at(ii);
-		z0=z.at(ii);
-		for(j=0;j<(int)used.size();j++)
-		{
-			jj=used.at(j);
-			if(jj<0)
-				continue;
-			jj--;
-			rr=(x.at(jj)-x0)*(x.at(jj)-x0)+(y.at(jj)-y0)*(y.at(jj)-y0)+(z.at(jj)-z0)*(z.at(jj)-z0);
-			rr=sqrt(rr)-shift;
-			contact+=exp(-rr/rc);				
-		}
-		result->push_back(contact);
-	}
-	cout << "used=" << used.size() << endl;
-	return;
-}*/
-
-
-// Thomas Version
+// Updated function for OpenACC
 void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result)
 {	
 	//convert used to array
@@ -3787,11 +3339,12 @@ void CTraj::get_contact(float rc,float shift, vector<int> pos, vector<int> used,
 }
 //	cout << (int)used.size() << endl; used size is around 1700 for kod and 50000 for tube_small, about half the atom size`
 //	printf((int)pos.size()); //tomh
-	cout << "pos.size() =: " << pos.size() << endl;
 	cout << "get_contact: " << omp_get_wtime() - start_time << "seconds" << endl; //speeds: tubesmall: 4 seconds // 11.2 total seconds runtime
 	return;
 }
 
+
+// New function for OpenACC
 void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size)
 {
 
@@ -3839,7 +3392,6 @@ void CTraj::get_all_contacts(vector<struct bb_group> *bb, vector<struct index_tw
 	}
 
 	//#pragma acc enter data copyin(c1[0:(index_size-2)*3],c2[0:c2_size],results[0:results_size])
-cout << "get_all_contacts copyin results " << results << endl;
 	#pragma acc enter data copyin(results[0:results_size])
 	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
 	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this],results[0:results_size]) \
@@ -3911,126 +3463,8 @@ cout << "get_all_contacts copyin results " << results << endl;
 }	
 
 
-void CTraj::get_all_contacts_double(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, double *results, int results_size)
-{
-
-	double st = omp_get_wtime();
-
-	//cout << "Get all contacts" << endl;
-	// Variables
-	int i, j;
-	int ii1, ii2, ii3 ,jj;
-	double contact1, contact2, contact3;
-	double x1,y1,z1,x2,y2,z2,x3,y3,z3;
-	double rr1,rr2,rr3;
-	double xx,yy,zz;
-
-	// Array containing all coordinates
-	int *c1 = new int[(index->size()-2)*3];
-
-	// Avoid copying "this" pointer
-	double *x_arr_this = x_arr;
-	double *y_arr_this = y_arr;
-	double *z_arr_this = z_arr;
-	int x_arr_size_this = x_size;
-	int y_arr_size_this = y_size;
-	int z_arr_size_this = z_size;
-
-// NOTE
-// the 40 seconds it takes to do get_all_contacts probably mostly comes from the first loop.
-// NOTE
-
-	// Load up c1 same way as in predict_bb_static_ann
-	//          index0           index1             index(index_size-2)
-	// c1[ {coords at i=1}, {coords at i=2},... {coords at i=index_size-1} ]
-	for(i=0+1;i<(int)index->size()-1;i++)
-	{
-		if(index->at(i).x1 <= 0)
-		{
-			c1[((i-1)*3)+0]=-1;
-			c1[((i-1)*3)+1]=-1;
-			c1[((i-1)*3)+2]=-1;
-		} else {
-			c1[((i-1)*3)+0]=bb->at(index->at(i).x1-1).capos;
-			c1[((i-1)*3)+1]=bb->at(index->at(i).x1-1).cbpos;
-			c1[((i-1)*3)+2]=bb->at(index->at(i).x1-1).copos;
-		}
-	}
-
-	//#pragma acc enter data copyin(c1[0:(index_size-2)*3],c2[0:c2_size],results[0:results_size])
-cout << "get_all_contacts copyin results " << results << endl;
-	#pragma acc enter data copyin(results[0:results_size])
-	#pragma acc parallel loop independent private(ii1,ii2,ii3,x1,x2,x3,y1,y2,y3,z1,z2,z3) \
-	present(x_arr_this[0:x_arr_size_this],y_arr_this[0:y_arr_size_this],z_arr_this[0:z_arr_size_this],results[0:results_size]) \
-	copyin(c1[0:(index_size-2)*3],c2[0:c2_size])
-	for(i=0+1;i<(int)index_size-1;i++)
-	{
-		contact1=0.0; contact2=0.0; contact3=0.0;
-
-		ii1=c1[((i-1)*3)+0]; ii2=c1[((i-1)*3)+1]; ii3=c1[((i-1)*3)+2];
-
-		if(ii1 < 0){ 
-			x1=0; y1=0; z1=0;
-		} else { 
-			ii1--; x1=x_arr_this[ii1]; y1=y_arr_this[ii1]; z1=z_arr_this[ii1];
-		}
-
-		if(ii2 < 0){
-			x2=0; y2=0; z2=0;
-		} else {
-			ii2--; x2=x_arr_this[ii2]; y2=y_arr_this[ii2]; z2=z_arr_this[ii2];
-		}
-		
-		if(ii3 < 0){
-			x3=0; y3=0; z3=0;
-		} else {
-			ii3--; x3=x_arr_this[ii3]; y3=y_arr_this[ii3]; z3=z_arr_this[ii3];
-		}
-
-		#pragma acc loop independent reduction(+:contact1) reduction(+:contact2) \
-		reduction(+:contact3) private(jj,xx,yy,zz,rr1,rr2,rr3)
-		for(j=0;j<c2_size;j++)
-		{
-			jj=c2[j];
-			if(jj>=0){
-				jj--;
-				xx = x_arr_this[jj];
-				yy = y_arr_this[jj];
-				zz = z_arr_this[jj];
-				rr1=(xx-x1)*(xx-x1)+(yy-y1)*(yy-y1)+(zz-z1)*(zz-z1);
-				rr2=(xx-x2)*(xx-x2)+(yy-y2)*(yy-y2)+(zz-z2)*(zz-z2);
-				rr3=(xx-x3)*(xx-x3)+(yy-y3)*(yy-y3)+(zz-z3)*(zz-z3);
-				rr1=sqrt(rr1);
-				rr2=sqrt(rr2);
-				rr3=sqrt(rr3);
-				contact1+=exp(-rr1/3.0);
-				contact2+=exp(-rr2/3.0);
-				contact3+=exp(-rr3/3.0);
-			}				
-		}
-	
-		if(ii1 < -1){
-			results[((i-1)*3)+0]=-1.0;
-		} else {
-			results[((i-1)*3)+0]=contact1;
-		}
-		if(ii2 < -1){
-			results[((i-1)*3)+1]=-1.0;
-		} else {
-			results[((i-1)*3)+1]=contact2;
-		}if(ii3 < -1){
-			results[((i-1)*3)+2]=-1.0;
-		} else {
-			results[((i-1)*3)+2]=contact3;
-		}
-
-	}
-	//cout << "End get all contacts" << endl;
-	cout << "get_all_contacts: " << omp_get_wtime() - st << " seconds" << endl;
-}	
-
-
-
+// Updated function for OpenACC
+// Was replaced by better optmized version
 void CTraj::get_contact(vector<int> pos, int* used, int used_size, vector<float> * result)
 {
 	int j;
@@ -4166,8 +3600,8 @@ CTraj::CTraj()
 
 CTraj::~CTraj()
 {
-	//cout << "Preparing to delete GPU copies of x, y, and z" << endl;
-#pragma acc exit data delete(x_arr, y_arr, z_arr)
+	#pragma acc exit data delete(x_arr, y_arr, z_arr)
+	#pragma acc exit data delete(this)
 };
 
 
