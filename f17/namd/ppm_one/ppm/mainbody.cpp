@@ -81,16 +81,39 @@ int * pos(int in, int *num_arr, int num_size, int &index_size)
 int process_static_new(int id,int cut,int order,int order2, double *out_arr, int *num_arr, int num_size, int ndihe, int nframe, double *dihe, int out_index)
 {
 	//cout << "process_static_new" << endl;
-	int p,i,j,k,t,base;
-	//vector<int> index;
-	int *index;
+	int p,i,j,k,t,base,stop;
+	int index[7];
 	int index_size;
 	double phi;
 	double cosphi[10];
 	double sinphi[10];
 
 
-	index=pos(id, num_arr, num_size, index_size);
+//	index=pos(id, num_arr, num_size, index_size);
+
+	if(id==1)
+		base=1;
+	else
+		base=num_arr[id-2]+1;
+	
+	stop=num_arr[id-1];
+
+	if(id<=0)
+		base=num_arr[num_size-1]+100;
+	if(id>num_size)
+		base=num_arr[num_size-1]+100;
+
+	index_size = stop-base+1;
+
+	for(i=base,j=0;i<=stop;i++,j++)
+	{
+		index[j]=i;//.push_back(i);
+		if(j>=7)
+			cout << "ERROR" << endl;
+		//cout<<"in is "<<in<<" "<<i<<endl;
+	}
+
+
 	if(index_size>=cut)
 		t=cut;
 	else
