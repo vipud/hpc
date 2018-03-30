@@ -9,12 +9,13 @@
 #include <time.h>
 #include <omp.h>
 
+
 using namespace std;
 
 
 #include "pdb.h"
 #include "supply.h"
-
+#include "debug.h"
 
 
 int CDssp::loaddata(string name)
@@ -1430,8 +1431,10 @@ int CPdb::loadpdb(string filename)
 				else
 				{
 					t=new CUnk;
+					#ifndef IGNORE_UNKNOWN
 					cout<<"Warning! unrecognized residue name "<<residue<<" for residue "<<index_old<<endl;
 					printblock(pdbblock.block);
+					#endif
 				}
 
 				n++;t->setresidue(n);
@@ -1618,8 +1621,10 @@ int CPdb::loadpdb_old(string filename)
 			}
 			else
 			{
+				#ifndef IGNORE_UNKNOWN
 				cout<<"Warning: same residue index but different residue name!   ";
 				cout<<line<<endl;
+				#endif
 			}
 		}
 		else if(chain != chain_old) //new chain, so that there is also new residue
@@ -1673,8 +1678,10 @@ int CPdb::loadpdb_old(string filename)
 		else
 		{
 			t=new CUnk;
+			#ifndef IGNORE_UNKNOWN
 			cout<<"Warning! unrecognized resiude name "<<residue<<" fore residue "<<index_old<<endl;
 			printblock(block);
+			#endif
 		}
 
 			if(t!=NULL)
@@ -1766,8 +1773,10 @@ int CPdb::loadpdb_old(string filename)
 		else
 		{
 			t=new CUnk;
+			#ifndef IGNORE_UNKNOWN
 			cout<<"Warning! unrecognized resiude name "<<residue<<" fore residue "<<index_old<<endl;
 			printblock(block);
+			#endif
 		}
 
 		if(t!=NULL)
@@ -2603,7 +2612,9 @@ void CPdb::proton(vector<struct proton> *sel, int flag)
 			}
 			if(bmiss==1)
 			{
+				#ifndef IGNORE_UNKNOWN
 				cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+				#endif
 				sel->erase(sel->begin()+i);
 				i--;
 			}
@@ -2631,7 +2642,9 @@ void CPdb::proton(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
+			#ifndef IGNORE_UNKNOWN
 			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#endif
 			sel->erase(sel->begin()+i);
 			i--;
 		}
@@ -2669,7 +2682,9 @@ void CPdb::proton_acc(vector<struct proton> * sel)
 		{
 			sel->push_back(tmp.at(i));
 		} else {
+			#ifndef IGNORE_UNKNOWN
 			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
 		}
 	}
 	cout << "pdb::proton_nofilter: " << omp_get_wtime()-st << " seconds" << endl;
@@ -2695,7 +2710,9 @@ void CPdb::allproton3(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
+			#ifndef IGNORE_UNKNOWN
 			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#endif
 			sel->erase(sel->begin()+i);
 			i--;
 		}
@@ -2731,7 +2748,9 @@ void CPdb::allproton3_acc(vector<struct proton> *sel)
 			sel->push_back(tmp.at(i));
 			
 		} else {
+			#ifndef IGNORE_UNKNOWN
 			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
 		}
 	}
 	cout << "pdb::allproton3_acc: " << omp_get_wtime()-st << " seconds" << endl;
@@ -2792,7 +2811,9 @@ void CPdb::allproton_acc(vector<struct proton> *sel)
 		{
 			sel->push_back(tmp.at(i));
 		} else {
+			#ifndef IGNORE_UNKNOWN
 			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
 		}
 	}
 	cout << "pdb::allproton: " << omp_get_wtime()-st << " seconds" << endl;
