@@ -1508,6 +1508,11 @@ num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 		double oneline_ha[110];
 		double out_arr[32];
 
+		int ca_index[12];
+		int ca_base1,ca_base2,ca_base3,ca_stop1,ca_stop2,ca_stop3,ca_index_size1,ca_index_size2,ca_index_size3;
+		int ca_p,ca_i,ca_j,ca_k,ca_t1,ca_t2,ca_t3;
+		double ca_cosphi[16],ca_sinphi[16];
+
 
 		if(index_arr[i].x1<0){
 			continue;
@@ -1582,7 +1587,146 @@ num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 			oneline_ha[j+40] = blosum[pos*20+j];
 		}
 
-		ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
+		//ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
+
+
+		if((id-1)==1) {
+			ca_base1=1;
+		} else if((id-1)<=0 || (id-1)>num_size) {
+			ca_base1=num_arr[num_size-1]+100;
+		} else {
+			ca_base1=num_arr[(id-1)-2]+1;
+		}
+		if(id==1) {
+			ca_base2=1;
+		} else if(id<=0 || id>num_size) {
+			ca_base2=num_arr[num_size-1]+100;
+		} else {
+			ca_base2=num_arr[id-2]+1;
+		}
+		if((id+1)==1) {
+			ca_base3=1;
+		} else if((id+1)<=0 || (id+1)>num_size) {
+			ca_base3=num_arr[num_size-1]+100;
+		} else {
+			ca_base3=num_arr[(id+1)-2]+1;
+		}
+	
+		ca_stop1=num_arr[(id-1)-1];
+		ca_stop2=num_arr[id-1];
+		ca_stop3=num_arr[(id+1)-1];
+
+		ca_index_size1 = ca_stop1-ca_base1+1;
+		ca_index_size2 = ca_stop2-ca_base2+1;
+		ca_index_size3 = ca_stop3-ca_base3+1;
+
+		#pragma acc loop seq
+		for(ca_i=ca_base1,ca_j=0;ca_i<=ca_stop1 && ca_j<4;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base2,ca_j=4;ca_i<=ca_stop2 && ca_j<8;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base3,ca_j=8;ca_i<=ca_stop3 && ca_j<12;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}		
+
+		//ca_t1 = min(ca_index_size1,4);
+		//ca_t2 = min(ca_index_size2,4);
+		//ca_t3 = min(ca_index_size3,4);
+		if(ca_index_size1 >= 4){
+			ca_t1 = 4;
+		} else {
+			ca_t1 = ca_index_size1;
+		}
+		if(ca_index_size2 >= 4){
+			ca_t2 = 4;
+		} else {
+			ca_t2 = ca_index_size2;
+		}
+		if(ca_index_size3 >= 4){
+			ca_t3 = 4;
+		} else {
+			ca_t3 = ca_index_size3;
+		}
+
+
+		#pragma acc loop seq
+		for(ca_i=0; ca_i<16; ca_i++){
+			ca_cosphi[ca_i]=0.0; ca_sinphi[ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t1;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[0+ca_i]=0.0;
+			ca_sinphi[0+ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			#pragma acc loop seq
+			for(ca_k=1;ca_k<=2;ca_k++){
+				ca_cosphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+				ca_sinphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t3;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[12+ca_i]=0.0;
+			ca_sinphi[12+ca_i]=0.0;
+		}
+
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<16;ca_i++){
+			out_arr[ca_i*2]=ca_cosphi[ca_i]/nframe;
+			out_arr[ca_i*2+1]=ca_sinphi[ca_i]/nframe;
+		}
+
 
 		#pragma acc loop vector independent
 		for(j=2;j<26;j++)
