@@ -108,9 +108,6 @@ int process_static_new(int id,int cut,int order,int order2, double *out_arr, int
 	for(i=base,j=0;i<=stop;i++,j++)
 	{
 		index[j]=i;//.push_back(i);
-		if(j>=7)
-			cout << "ERROR" << endl;
-		//cout<<"in is "<<in<<" "<<i<<endl;
 	}
 
 
