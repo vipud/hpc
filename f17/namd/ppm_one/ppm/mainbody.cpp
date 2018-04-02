@@ -1028,15 +1028,15 @@ void CMainbody::load(string bmrbname)
 	ring_index_size = ring_index.size();
 #pragma acc enter data copyin(ring_index_new[0:ring_index_size])
 	//////////////
-	pdb->ani(&anistropy);
+	pdb->ani_acc(&anistropy);
 	anistropy_new = anistropy.data();
 	anistropy_size = anistropy.size();
 #pragma acc enter data copyin(anistropy_new[0:anistropy_size])
 	//pdb->proton(&protons);
 	pdb->proton_acc(&protons);
-	pdb->allproton(&allprotons);
+	pdb->allproton_acc(&allprotons);
 	pdb->process_ambig(2);
-	pdb->allproton3(&allprotons3);
+	pdb->allproton3_acc(&allprotons3);
 	heavy=pdb->getheavy();
 	pdb->getbb(&bb);
 	pdb->bbnh(&bbnh);
