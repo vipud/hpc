@@ -129,6 +129,9 @@ public:
 		void name(int,char*);
 		void print_prediction();
 		void print_prediction(string);
+////////////////////////////////////////////////////////////
+		void print_debug(string);
+////////////////////////////////////////////////////////////
 		void attach_bbprediction(int,double*);
 		void attach_bbprediction(int, double, double, double, double, double, double);
 		void attach_protonprediction(int,string,double);

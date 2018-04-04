@@ -2300,9 +2300,11 @@ void CPdb::getbb(vector<bb_group> *t)
 
 		if(stop-begin<3)
 			cout<<"Chain "<<j<<" only has 1 or 2 residues! I don't know how to do."<<endl;
-	
+		//cout << j << ": before" << endl;
 		v[begin+0]->bb(t);
+		//cout << j << ": middle" << endl;
 		v[begin+1]->follow_bb(t);
+		//cout << j << ": after" << endl;
 
 		for(i=begin+1;i<stop-1;i++)
 		{
@@ -2993,6 +2995,31 @@ void CPdb::print_prediction()
 {
 	string test="bmrb_pre.dat";
 	print_prediction(test);
+}
+
+
+void CPdb::print_debug(string name){
+	int i,j;
+	FILE *fp=fopen(name.c_str(),"wt");
+	char toprint0[]="loop_\n    _Residue_seq_code\n     _Residue_label\n";
+	char toprint[]="      loop_\n      _Atom_shift_assign_ID\n      _Residue_seq_code\n      _Residue_label\n      _Atom_name\n      _Atom_type\n      _Chem_shift_value\n      _Chem_shift_value_error\n      _Chem_shift_ambiguity_code\n";
+
+
+	fprintf(fp,toprint0);
+	for(i=0;i<(int)v.size();i++)
+	{
+		fprintf(fp," %d %s",i+1,v.at(i)->ThreeLetterName);
+		if(i%3==0) fprintf(fp,"\n");
+	}
+	fprintf(fp,"\n      stop_\n");
+	
+	
+	fprintf(fp,toprint);
+	j=1;
+	for(i=0;i<(int)v.size();i++)
+		v.at(i)->print_prediction(&j,fp);
+	fprintf(fp,"      stop_\n");
+	fclose(fp);
 }
 
 void CPdb::print_prediction(string name)

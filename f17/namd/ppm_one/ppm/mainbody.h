@@ -153,6 +153,7 @@ public:
 	int set_range(int,int);
 
 	void clear(vector<struct bb_group> &bb);
+	vector<bb_group> clear_acc(vector<bb_group> bb);
 	void clear(vector<struct proton> &protons);
 	vector<proton> clear_filter(vector<proton> protons);
 

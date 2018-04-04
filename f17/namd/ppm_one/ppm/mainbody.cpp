@@ -7,6 +7,7 @@
 #include <math.h>
 #include <time.h>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 
 #include "ann.h"
@@ -1056,8 +1057,9 @@ void CMainbody::load(string bmrbname)
 	//process bb to remove all entry that has missing part !!
 	//bbnh willn't take effect if bb is not there for particular residue
 	clear(bb);
-	allprotons = clear_filter(allprotons);
-	allprotons3 = clear_filter(allprotons3);
+	//bb=clear_acc(bb);
+	allprotons=clear_filter(allprotons);
+	allprotons3=clear_filter(allprotons3);
 	allprotons3_new = allprotons3.data();
 	allprotons3_size = allprotons3.size();
 #pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
@@ -1097,8 +1099,14 @@ vector<proton> CMainbody::clear_filter(vector<proton> protons){
 	vector<proton> results;
 	results.reserve(protons.size());
     	for (auto& p : protons)
-		if((p.id>=1 || p.id<=pdb->getnres()) || (dihe_process.test_proton(p.id,p.type)==0))
+		if((p.id>=1 && p.id<=pdb->getnres()) && (dihe_process.test_proton(p.id,p.type)!=0))
             		results.push_back(p);
+	//for(int i = 0; i < protons.size(); i++){
+	//	if((protons.at(i).id>=1 && protons.at(i).id<=pdb->getnres()) || 
+	//	(dihe_process.test_proton(protons.at(i).id,protons.at(i).type)==0)) {
+        //    		results.push_back(p);
+	//	}
+	//}
 	return results;
 }
 
@@ -1126,6 +1134,54 @@ void CMainbody::clear(vector<struct proton> &protons)
 		}
 	}
 	cout << "mainbody::clear(proton): " << omp_get_wtime()-st << " seconds" << endl;
+}
+
+
+
+// New Function for OpenACC
+// Sequential, better than original
+vector<struct bb_group> CMainbody::clear_acc(vector<struct bb_group> bb)
+{
+	double st = omp_get_wtime();
+	int i;
+	int id;
+	char code,code_pre,code_fol;
+	vector<struct bb_group> results;
+	results.reserve(bb.size());
+
+	for (i=bb.size()-1; i>=0; i--){
+		id = bb.at(i).id;
+		if(id<=1 || id>=pdb->getnres())
+			continue;
+
+		code=pdb->code(id);
+		code_pre=pdb->code(id-1);
+		code_fol=pdb->code(id+1);
+
+		if(pdb->chain(id)!=pdb->chain(id-1) || pdb->chain(id)!=pdb->chain(id+1))
+			continue;
+
+		if(code_pre=='X' || code_pre=='B' || code_fol=='X' || code_fol=='B'|| code=='X' || code=='B');
+			continue;
+
+		if(dihe_process.test(id,4,4)==0) //==0 means missing dihedral angles in this calculation !!
+			continue;
+
+		if(bb.at(i).capos<0 ||  bb.at(i).copos<0 || bb.at(i).npos<0 )
+			continue;
+
+		if(bb.at(i).cbpos<0 && bb.at(i).code!='G')
+			continue;
+
+		if(bb.at(i).hpos<0 && bb.at(i).code!='P')
+			continue;
+
+		results.push_back(bb.at(i));
+
+	}
+	reverse(results.begin(), results.end());
+	cout << "mainbody::clear_acc(bb): " << omp_get_wtime()-st << " seconds" << endl;
+	return results;
 }
 
 
@@ -1353,6 +1409,8 @@ void CMainbody::predict_bb()
 // Updated function for OpenACC
 void CMainbody::predict_bb_static_ann()
 {
+
+	pdb->print_debug("Test1");
 	double st;
 	st = omp_get_wtime();
 
@@ -1906,7 +1964,9 @@ num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 
 #pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
 
+	pdb->print_debug("Test2");
 	cal_error();
+	pdb->print_debug("Test3");
 };
 
 
@@ -2637,6 +2697,8 @@ void CMainbody::predict_proton_static_new(void)
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
 
+	pdb->print_debug("Test4");
+
 	#pragma acc exit data copyout(ani_effect_arr[0:ani_effect_size],ring_effect_arr[0:ring_effect_size])
 
 	for(i=0;i<(int)allprotons.size();i++)
@@ -2685,7 +2747,9 @@ void CMainbody::predict_proton_static_new(void)
 		hs.at(1).push_back(pre);
 	}
 
+	pdb->print_debug("Test5");
 	compare("Side chain protons",hs);
+	pdb->print_debug("Test6");
 	cout << "predict_proton_static_new: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }
