@@ -7,6 +7,7 @@
 #include <math.h>
 #include <time.h>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 
 #include "ann.h"
@@ -81,16 +82,36 @@ int * pos(int in, int *num_arr, int num_size, int &index_size)
 int process_static_new(int id,int cut,int order,int order2, double *out_arr, int *num_arr, int num_size, int ndihe, int nframe, double *dihe, int out_index)
 {
 	//cout << "process_static_new" << endl;
-	int p,i,j,k,t,base;
-	//vector<int> index;
-	int *index;
+	int p,i,j,k,t,base,stop;
+	int index[7];
 	int index_size;
 	double phi;
 	double cosphi[10];
 	double sinphi[10];
 
 
-	index=pos(id, num_arr, num_size, index_size);
+//	index=pos(id, num_arr, num_size, index_size);
+
+	if(id==1)
+		base=1;
+	else
+		base=num_arr[id-2]+1;
+	
+	stop=num_arr[id-1];
+
+	if(id<=0)
+		base=num_arr[num_size-1]+100;
+	if(id>num_size)
+		base=num_arr[num_size-1]+100;
+
+	index_size = stop-base+1;
+
+	for(i=base,j=0;i<=stop;i++,j++)
+	{
+		index[j]=i;//.push_back(i);
+	}
+
+
 	if(index_size>=cut)
 		t=cut;
 	else
@@ -932,25 +953,17 @@ CMainbody::~CMainbody()
 	}
 	delete [] sep_table;
 
-cout << "Delete anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc exit data delete(anistropy_new)
-//system("pause");
-cout << "Delete allprotons3" << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
 #pragma acc exit data delete(allprotons3_new)
-//system("pause");
-cout << "Delete ring_index" << ring_index_new << endl;
 #pragma acc exit data delete(ring_index_new)
-//system("pause");
-cout << "Delete hbond " << hbond_arr << endl;
 #pragma acc exit data delete(hbond_arr)
-//system("pause");
 };
 
 
 
 int CMainbody::loadpdb(CPdb *p_pdb, CTraj * p_traj)
 {
-/*	pdb=p_pdb;
+	pdb=p_pdb;
 	traj=p_traj;
 
 	natom=pdb->getnatom();
@@ -958,14 +971,14 @@ int CMainbody::loadpdb(CPdb *p_pdb, CTraj * p_traj)
 	nconf=traj->getnframe();
 
 	return nconf;
-*/
+
 }
 
 
 
 int CMainbody::loadpdb(string name)
 {
-/*	pdb=new CPdb;
+	pdb=new CPdb;
 	traj=new CTraj;
 	bnew=1;
 
@@ -975,10 +988,9 @@ int CMainbody::loadpdb(string name)
 	traj->setnatom(natom);
 	nconf=traj->loadcoor(name);
 	return nconf;
-*/
 }
 
-// USED
+
 int CMainbody::loadpdb(string name,string name2)
 {
 	pdb=new CPdb;
@@ -1001,7 +1013,8 @@ int CMainbody::loadpdb(string name,string name2)
 
 
 
-
+// Updated function for OpenACC
+// Includes data directives and GPU function call
 void CMainbody::load(string bmrbname)
 {
 
@@ -1014,21 +1027,17 @@ void CMainbody::load(string bmrbname)
 	// getring ///
 	ring_index_new = ring_index.data();
 	ring_index_size = ring_index.size();
-cout << "copyin ring_index " << ring_index_new << " " << ring_index_new + ring_index_size << endl;
 #pragma acc enter data copyin(ring_index_new[0:ring_index_size])
-//system("pause");
 	//////////////
-	pdb->ani(&anistropy);
+	pdb->ani_acc(&anistropy);
 	anistropy_new = anistropy.data();
 	anistropy_size = anistropy.size();
-cout << "copyin anistropy " << anistropy_new << " " << anistropy_new + anistropy_size << endl;
 #pragma acc enter data copyin(anistropy_new[0:anistropy_size])
-//system("pause");
 	//pdb->proton(&protons);
-	pdb->proton_nofilter(&protons);
-	pdb->allproton(&allprotons);
+	pdb->proton_acc(&protons);
+	pdb->allproton_acc(&allprotons);
 	pdb->process_ambig(2);
-	pdb->allproton3(&allprotons3);
+	pdb->allproton3_acc(&allprotons3);
 	heavy=pdb->getheavy();
 	pdb->getbb(&bb);
 	pdb->bbnh(&bbnh);
@@ -1036,9 +1045,7 @@ cout << "copyin anistropy " << anistropy_new << " " << anistropy_new + anistropy
 	pdb->schbond(&hbond);  //This is new ! 
 	hbond_arr = hbond.data();
 	hbond_size = hbond.size();
-cout << "copyin hbond " << hbond_arr << " " << hbond_arr + hbond_size << endl;
 #pragma acc enter data copyin(hbond_arr[0:hbond_size])
-//system("pause");
 
 	
 
@@ -1050,13 +1057,12 @@ cout << "copyin hbond " << hbond_arr << " " << hbond_arr + hbond_size << endl;
 	//process bb to remove all entry that has missing part !!
 	//bbnh willn't take effect if bb is not there for particular residue
 	clear(bb);
-	allprotons = clear_filter(allprotons);
-	allprotons3 = clear_filter(allprotons3);
+	//bb=clear_acc(bb);
+	allprotons=clear_filter(allprotons);
+	allprotons3=clear_filter(allprotons3);
 	allprotons3_new = allprotons3.data();
 	allprotons3_size = allprotons3.size();
-cout << "copyin allprotons3 " << allprotons3_new << " " << allprotons3_new + allprotons3_size << endl;
 #pragma acc enter data copyin(allprotons3_new[0:allprotons3_size])
-//system("pause");
 
 	//seperate ring group to two, one for internal, one for surface, according to contact sum !
 	int i;
@@ -1084,13 +1090,23 @@ cout << "copyin allprotons3 " << allprotons3_new << " " << allprotons3_new + all
 	return;
 }
 
+
+// New function for OpenACC
+// Sequential, but optimized
+// Functionally different, but produces the same results
 vector<proton> CMainbody::clear_filter(vector<proton> protons){
 	double st = omp_get_wtime();
 	vector<proton> results;
 	results.reserve(protons.size());
     	for (auto& p : protons)
-		if((p.id>=1 || p.id<=pdb->getnres()) || (dihe_process.test_proton(p.id,p.type)==0))
+		if((p.id>=1 && p.id<=pdb->getnres()) && (dihe_process.test_proton(p.id,p.type)!=0))
             		results.push_back(p);
+	//for(int i = 0; i < protons.size(); i++){
+	//	if((protons.at(i).id>=1 && protons.at(i).id<=pdb->getnres()) || 
+	//	(dihe_process.test_proton(protons.at(i).id,protons.at(i).type)==0)) {
+        //    		results.push_back(p);
+	//	}
+	//}
 	return results;
 }
 
@@ -1118,6 +1134,54 @@ void CMainbody::clear(vector<struct proton> &protons)
 		}
 	}
 	cout << "mainbody::clear(proton): " << omp_get_wtime()-st << " seconds" << endl;
+}
+
+
+
+// New Function for OpenACC
+// Sequential, better than original
+vector<struct bb_group> CMainbody::clear_acc(vector<struct bb_group> bb)
+{
+	double st = omp_get_wtime();
+	int i;
+	int id;
+	char code,code_pre,code_fol;
+	vector<struct bb_group> results;
+	results.reserve(bb.size());
+
+	for (i=bb.size()-1; i>=0; i--){
+		id = bb.at(i).id;
+		if(id<=1 || id>=pdb->getnres())
+			continue;
+
+		code=pdb->code(id);
+		code_pre=pdb->code(id-1);
+		code_fol=pdb->code(id+1);
+
+		if(pdb->chain(id)!=pdb->chain(id-1) || pdb->chain(id)!=pdb->chain(id+1))
+			continue;
+
+		if(code_pre=='X' || code_pre=='B' || code_fol=='X' || code_fol=='B'|| code=='X' || code=='B');
+			continue;
+
+		if(dihe_process.test(id,4,4)==0) //==0 means missing dihedral angles in this calculation !!
+			continue;
+
+		if(bb.at(i).capos<0 ||  bb.at(i).copos<0 || bb.at(i).npos<0 )
+			continue;
+
+		if(bb.at(i).cbpos<0 && bb.at(i).code!='G')
+			continue;
+
+		if(bb.at(i).hpos<0 && bb.at(i).code!='P')
+			continue;
+
+		results.push_back(bb.at(i));
+
+	}
+	reverse(results.begin(), results.end());
+	cout << "mainbody::clear_acc(bb): " << omp_get_wtime()-st << " seconds" << endl;
+	return results;
 }
 
 
@@ -1222,7 +1286,7 @@ void CMainbody::predict_bb()
 	
 
 	traj->gethbond(&hbond,&hbond_effect);
-	//traj->getani(&anistropy,&bbnh,&ani_effect);
+	traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
@@ -1341,9 +1405,12 @@ void CMainbody::predict_bb()
 
 
 
+
+// Updated function for OpenACC
 void CMainbody::predict_bb_static_ann()
 {
-//	getchar();
+
+	pdb->print_debug("Test1");
 	double st;
 	st = omp_get_wtime();
 
@@ -1352,28 +1419,12 @@ void CMainbody::predict_bb_static_ann()
 	char code,code_pre,code_fol;
 	vector<double> out;
 	vector<double> in,in2;
-	//vector<struct double_five> ring_effect,ring_effect_ha;
-	vector<struct ehbond> hbond_effect;
-	//vector<struct double_four> ani_effect;//,ani_effect_ha;
-	//vector<struct double_four> ani_effect_ha;
+	vector<struct ehbond> hbond_effect(176);
 	vector<struct index_two> index;
 	vector<int> c1,c2;
 	vector<float> result;
 	double pre[6];
 	vector<double> eca,ecb,eco,eh,en;
-
-	//vector<double> oneline(101);
-	//vector<double> oneline_cb(101);
-	//vector<double> oneline_co(101);
-	//vector<double> oneline_h(110);
-	//vector<double> oneline_n(101);
-	//vector<double> oneline_ha(110);
-	//double *oneline = new double[101];
-	//double *oneline_cb = new double[101];
-	//double *oneline_co = new double[101];
-	//double *oneline_n = new double[101];
-	//double *oneline_h = new double[110];
-	//double *oneline_ha = new double[110];
 
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
@@ -1388,29 +1439,25 @@ void CMainbody::predict_bb_static_ann()
 	ann_ha.loadp(p_ann_ha);
 
 
-	//traj->gethbond(&hbond,&hbond_effect);
-	traj->gethbond(hbond_arr, hbond_size, &hbond_effect);
+	traj->gethbond_acc(hbond_arr, hbond_size, &hbond_effect);
 	ehbond *hbond_effect_arr = hbond_effect.data();
 	int hbond_effect_size = hbond_effect.size();
 
 	nh_group *bbnh_new = bbnh.data();
 	int bbnh_size = bbnh.size();
-	vector<struct double_four> ani_effect(bbnh_size);
-cout << "copyin bbnh " << bbnh_new << " " << bbnh_new + bbnh_size << endl;
 	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
-//system("pause");
-	traj->getani(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
+
+	vector<struct double_four> ani_effect(bbnh_size);
+	traj->getani_acc(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
-	//traj->getani(&anistropy,&bbnh,&ani_effect);
-	//traj->getring(&ring_index,&bbnh,&ring_effect);
+
 	vector<struct double_five> ring_effect(bbnh_size);
-	traj->getring(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
+	traj->getring_acc(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
 	double_five *ring_effect_arr = ring_effect.data();
 	int ring_effect_size = ring_effect.size();
-cout << "delete bbnh " << bbnh_new << endl;
+
 	#pragma acc exit data delete(bbnh_new) 
-//system("pause");
 
 	
 	//gather all ha protons to calculate ring and ani.
@@ -1449,24 +1496,22 @@ cout << "delete bbnh " << bbnh_new << endl;
 
 		ha_protons.push_back(ha);
 	}
+
 	proton * ha_protons_new = ha_protons.data();
 	int ha_protons_size = ha_protons.size();
-	vector<double_four> ani_effect_ha(ha_protons_size);
-cout << "copyin ha_protons_new " << ha_protons_new << " " << ha_protons_new + ha_protons_size << endl;
 #pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
-//system("pause");
-	traj->getani(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
+
+	vector<double_four> ani_effect_ha(ha_protons_size);
+	traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
 	double_four *ani_effect_ha_arr = ani_effect_ha.data();
 	int ani_effect_ha_size = ani_effect_ha.size();
-	//traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
+
 	vector<struct double_five> ring_effect_ha(ha_protons_size);
-	traj->getring(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, &ring_effect_ha);
+	traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, &ring_effect_ha);
 	double_five *ring_effect_ha_arr = ring_effect_ha.data();
 	int ring_effect_ha_size = ring_effect_ha.size();
-	//traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
-cout << "delete ha_protons_new " << ha_protons_new << endl;
+
 #pragma acc exit data delete(ha_protons_new)
-//system("pause");
 
 
 	index.resize(pdb->getnres());
@@ -1483,29 +1528,18 @@ cout << "delete ha_protons_new " << ha_protons_new << endl;
 	int c2_size = c2.size();
 	int results_size = (index.size()-2)*3;
 	float *results = new float[results_size];
-cout << "copyin results " << results << " " << results + results_size << endl;
 	#pragma acc enter data create(results[0:results_size])
-//system("pause");
 	traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
-	//double *results = new double[results_size];
-	//traj->get_all_contacts_double(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+
 	index_two *index_arr = index.data();
 	int index_size = index.size();
 
-	//vector<double> oneline_alt(101);
-
-	//ofstream myfile;
-	//myfile.open ("oneline.txt");
 	char *v_oln = pdb->getvoneletter();
-	//int v_size = pdb->getvsize();
 	int *v_pos = pdb->code_pos;
 	int pos;
 	int bi;
-	//for(i=0; i < v_size; i++){
-	//	cout << v_oln[i] << ":" << v_pos[i] << endl;
-	//}
+
 	int ndihe = dihe_process.ndihe;
 	int nframe = dihe_process.nframe;
 	double *dihe = dihe_process.dihe->data();
@@ -1517,18 +1551,10 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 	int v_size = pdb->v_size;
 	double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
 
-	//double *debug = new double[(101+101+101+101+110+110)*(index_size-2)];
-	//ofstream myfile;
-
-	//for(int q = 0; q < v_size; q++){
-	//	CAminoacid *amino = v[q];
-	//	amino->atoms_arr = amino->atoms.data();
-	//	amino->atoms_size = amino->atoms.size();
-	//}
 	
-	#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size],\
-	num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
-	{
+#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size],\
+num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
+{
 	#pragma acc loop independent gang private(code,code_pre,code_fol,pos,id,pre_ca,pre_cb,pre_co,pre_n,pre_h,pre_ha)
 	for(i=0+1;i<index_size-1;i++)
 	{
@@ -1540,172 +1566,264 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 		double oneline_ha[110];
 		double out_arr[32];
 
-		//int _buffer[20];
-		//cout<<i<<endl;
+		int ca_index[12];
+		int ca_base1,ca_base2,ca_base3,ca_stop1,ca_stop2,ca_stop3,ca_index_size1,ca_index_size2,ca_index_size3;
+		int ca_p,ca_i,ca_j,ca_k,ca_t1,ca_t2,ca_t3;
+		double ca_cosphi[16],ca_sinphi[16];
+
+
 		if(index_arr[i].x1<0){
-			//for(int q = 0; q < 101+101+101+101+110+110; q++){
-			//	debug[(i-1)*(101+101+101+101+110+110)+q]=-1.0;
-			//}
 			continue;
 		}
 		id=i+1;
-		//code=pdb->code(id);
 		if((id-1)<0 || (id-1) >v_size-1)
 			code='X';
 		else
 			code=v_oln[id-1];
 
-		//code_pre=pdb->code(id-1);
+
 		if((id-2)<0 || (id-2) >v_size-1)
 			code_pre='X';
 		else
 			code_pre=v_oln[id-2];
 
-		//code_fol=pdb->code(id+1);
+
 		if((id)<0 || (id) >v_size-1)
 			code_fol='X';
 		else
 			code_fol=v_oln[id];
 
-		//oneline.clear();
 
-//cout << "Bang1" << endl;
-		//sequence information
-		//blos62 matrix
-		//total 60 terms
-		//Sequence::code2same(code_pre,buffer)
 		if(code_pre=='X')
 			pos=7;
 		else
 			pos=v_pos[id-2];
-	//	cout << pos << endl;
 
-		//for(bi=0;bi<20;bi++)
-		//	_buffer[bi]=blosum[pos*20+bi];
+
 		#pragma acc loop vector independent
 		for(j=0;j<20;j++)
 		{
-			//oneline.push_back(buffer[j]);
-			//oneline[j] = _buffer[j];
-			//oneline_cb[j] = _buffer[j];
-			//oneline_co[j] = _buffer[j];
-			//oneline_n[j] = _buffer[j];
-			//oneline_h[j] = _buffer[j];
-			//oneline_ha[j] = _buffer[j];
-			oneline[j] = blosum[pos*20+j];//_buffer[j];
-			oneline_cb[j] = blosum[pos*20+j];//_buffer[j];
-			oneline_co[j] = blosum[pos*20+j];//_buffer[j];
-			oneline_n[j] = blosum[pos*20+j];//_buffer[j];
-			oneline_h[j] = blosum[pos*20+j];//_buffer[j];
-			oneline_ha[j] = blosum[pos*20+j];//_buffer[j];
+			oneline[j] = blosum[pos*20+j];
+			oneline_cb[j] = blosum[pos*20+j];
+			oneline_co[j] = blosum[pos*20+j];
+			oneline_n[j] = blosum[pos*20+j];
+			oneline_h[j] = blosum[pos*20+j];
+			oneline_ha[j] = blosum[pos*20+j];
 		}
 
-//cout << "Bang2" << endl;
-		//code=pdb->code(id);
-		//if((id-1)<0 || (id-1) >v_size-1)
-		//	code='X';
-		//else
-		//	code=v_oln[id-1];
-		//Sequence::code2same(code,buffer);
+
 		if(code=='X')
 			pos=7;
 		else
 			pos=v_pos[id-1];
-		//for(bi=0;bi<20;bi++)
-		//	_buffer[bi]=blosum[pos*20+bi];
+
 		#pragma acc loop vector independent
 		for(j=0;j<20;j++)
 		{
-			//oneline.push_back(buffer[j]);
-			oneline[j+20]=blosum[pos*20+j];//_buffer[j];
-			oneline_cb[j+20] = blosum[pos*20+j];//_buffer[j];
-			oneline_co[j+20] = blosum[pos*20+j];//_buffer[j];
-			oneline_n[j+20] =blosum[pos*20+j]; //_buffer[j];
-			oneline_h[j+20] = blosum[pos*20+j];//_buffer[j];
-			oneline_ha[j+20] = blosum[pos*20+j];//_buffer[j];
+			oneline[j+20]=blosum[pos*20+j];
+			oneline_cb[j+20] = blosum[pos*20+j];
+			oneline_co[j+20] = blosum[pos*20+j];
+			oneline_n[j+20] =blosum[pos*20+j];
+			oneline_h[j+20] = blosum[pos*20+j];
+			oneline_ha[j+20] = blosum[pos*20+j];
 		}
 
 
-//cout << "Bang3" << endl;
-		//Sequence::code2same(code_fol,buffer);
 		if(code_fol=='X')
 			pos=7;
 		else
 			pos=v_pos[id];
-		//for(bi=0;bi<20;bi++)
-		//	_buffer[bi]=blosum[pos*20+bi];
+
 		#pragma acc loop vector independent
 		for(j=0;j<20;j++)
 		{
-			//oneline.push_back(buffer[j]);
-			oneline[j+40]=blosum[pos*20+j];//_buffer[j];
-			oneline_cb[j+40] = blosum[pos*20+j];//_buffer[j];
-			oneline_co[j+40] = blosum[pos*20+j];//_buffer[j];
-			oneline_n[j+40] = blosum[pos*20+j];//_buffer[j];
-			oneline_h[j+40] = blosum[pos*20+j];//_buffer[j];
-			oneline_ha[j+40] = blosum[pos*20+j];//_buffer[j];
+			oneline[j+40]=blosum[pos*20+j];
+			oneline_cb[j+40] = blosum[pos*20+j];
+			oneline_co[j+40] = blosum[pos*20+j];
+			oneline_n[j+40] = blosum[pos*20+j];
+			oneline_h[j+40] = blosum[pos*20+j];
+			oneline_ha[j+40] = blosum[pos*20+j];
 		}
 
-//cout << "Bang4" << endl;
-		//dihedral angle contribution!
-		//total 28 terms
-		//dihe_process.ca_ann(id); 
-		// TODO THIS FUNCTINO IS RETURNING INCORRECT VALUES SOMETIMES. SOMETHING IS PROBABLY NOT INITIALIZED
-		ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
-		//cout << "Outside" << endl;
-		//out=dihe_process.output();
+		//ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
 
-		//for(int outi = 0; outi < out.size(); outi++){
-		//	if(out.at(outi) != out_arr[outi]){
-		//		cout << "ERROR!" << endl;
-		//		exit(-1);
-		//	}
-			//cout << outi << ": " << out.at(outi) << " : " << out_arr[outi] << endl;
-		//}
+
+		if((id-1)==1) {
+			ca_base1=1;
+		} else if((id-1)<=0 || (id-1)>num_size) {
+			ca_base1=num_arr[num_size-1]+100;
+		} else {
+			ca_base1=num_arr[(id-1)-2]+1;
+		}
+		if(id==1) {
+			ca_base2=1;
+		} else if(id<=0 || id>num_size) {
+			ca_base2=num_arr[num_size-1]+100;
+		} else {
+			ca_base2=num_arr[id-2]+1;
+		}
+		if((id+1)==1) {
+			ca_base3=1;
+		} else if((id+1)<=0 || (id+1)>num_size) {
+			ca_base3=num_arr[num_size-1]+100;
+		} else {
+			ca_base3=num_arr[(id+1)-2]+1;
+		}
+	
+		ca_stop1=num_arr[(id-1)-1];
+		ca_stop2=num_arr[id-1];
+		ca_stop3=num_arr[(id+1)-1];
+
+		ca_index_size1 = ca_stop1-ca_base1+1;
+		ca_index_size2 = ca_stop2-ca_base2+1;
+		ca_index_size3 = ca_stop3-ca_base3+1;
+
+		#pragma acc loop seq
+		for(ca_i=ca_base1,ca_j=0;ca_i<=ca_stop1 && ca_j<4;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base2,ca_j=4;ca_i<=ca_stop2 && ca_j<8;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base3,ca_j=8;ca_i<=ca_stop3 && ca_j<12;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}		
+
+		//ca_t1 = min(ca_index_size1,4);
+		//ca_t2 = min(ca_index_size2,4);
+		//ca_t3 = min(ca_index_size3,4);
+		if(ca_index_size1 >= 4){
+			ca_t1 = 4;
+		} else {
+			ca_t1 = ca_index_size1;
+		}
+		if(ca_index_size2 >= 4){
+			ca_t2 = 4;
+		} else {
+			ca_t2 = ca_index_size2;
+		}
+		if(ca_index_size3 >= 4){
+			ca_t3 = 4;
+		} else {
+			ca_t3 = ca_index_size3;
+		}
+
+
+		#pragma acc loop seq
+		for(ca_i=0; ca_i<16; ca_i++){
+			ca_cosphi[ca_i]=0.0; ca_sinphi[ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t1;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[0+ca_i]=0.0;
+			ca_sinphi[0+ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			#pragma acc loop seq
+			for(ca_k=1;ca_k<=2;ca_k++){
+				ca_cosphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+				ca_sinphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t3;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[12+ca_i]=0.0;
+			ca_sinphi[12+ca_i]=0.0;
+		}
+
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<16;ca_i++){
+			out_arr[ca_i*2]=ca_cosphi[ca_i]/nframe;
+			out_arr[ca_i*2+1]=ca_sinphi[ca_i]/nframe;
+		}
+
+
 		#pragma acc loop vector independent
 		for(j=2;j<26;j++)
 		{
-			//oneline.push_back(out.at(j));
-			oneline[j+60-2+1]=out_arr[j]; // sometimes incorrect in sequential
-			oneline_cb[j+60-2+1] = out_arr[j]; // sometimes incorrect in sequential
+			oneline[j+60-2+1]=out_arr[j];
+			oneline_cb[j+60-2+1] = out_arr[j];
 			oneline_co[j+60-2+1] = out_arr[j];
 			oneline_n[j+60-2+1] = out_arr[j];
 			oneline_h[j+60-2+1] = out_arr[j];
 			oneline_ha[j+60-2+1] = out_arr[j];
 		}
-		//cout << "Loop1" << endl;
-		//for(j=28;j<(int)out.size();j++)
+
 		#pragma acc loop seq
 		for(j=28;j<32;j++)
 		{
-			//oneline.push_back(out.at(j));
 			oneline[j+84-28+1]=out_arr[j];
 			oneline_cb[j+84-28+1] = out_arr[j];
 			oneline_co[j+84-28+1] = out_arr[j];
 			oneline_n[j+84-28+1] = out_arr[j];
 			oneline_h[j+84-28+1] = out_arr[j];
 			oneline_ha[j+84-28+1] = out_arr[j];
-		} // out seems to always be size 32
-		//cout << "Loop2" << endl;
+		}
 
-		// hbond_effect was already on GPU, might have already been removed. delay it being removed so you can use it here.
 		//hbond effect, 12 terms
-		//oneline.push_back(hbond_effect.at(id-2).c_length);
-		oneline[88+1]=hbond_effect_arr[id-2].c_length; // consistently incorrect
+		oneline[88+1]=hbond_effect_arr[id-2].c_length;
 		oneline_cb[88+1] = hbond_effect_arr[id-2].c_length;
 		oneline_co[88+1] =hbond_effect_arr[id-2].c_length;
 		oneline_n[88+1] = hbond_effect_arr[id-2].c_length;
 		oneline_h[88+1] = hbond_effect_arr[id-2].c_length;
 		oneline_ha[88+1] = hbond_effect_arr[id-2].c_length;
-		//oneline.push_back((hbond_effect.at(id-2).c_phi));
-		oneline[89+1]=hbond_effect_arr[id-2].c_phi; // consistently incorrect
+
+		oneline[89+1]=hbond_effect_arr[id-2].c_phi;
 		oneline_cb[89+1] = hbond_effect_arr[id-2].c_phi;
 		oneline_co[89+1] =hbond_effect_arr[id-2].c_phi;
 		oneline_n[89+1] = hbond_effect_arr[id-2].c_phi;
 		oneline_h[89+1] = hbond_effect_arr[id-2].c_phi;
 		oneline_ha[89+1] = hbond_effect_arr[id-2].c_phi;
-		//oneline.push_back((hbond_effect.at(id-2).c_psi));
-		oneline[90+1]=hbond_effect_arr[id-2].c_psi; // consistently incorrect
+
+		oneline[90+1]=hbond_effect_arr[id-2].c_psi;
 		oneline_cb[90+1] = hbond_effect_arr[id-2].c_psi;
 		oneline_co[90+1] =hbond_effect_arr[id-2].c_psi;
 		oneline_n[90+1] = hbond_effect_arr[id-2].c_psi;
@@ -1714,18 +1832,10 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 
 		
 
-
-		//oneline.push_back(hbond_effect.at(id-1).c_length);
-		//oneline.push_back(hbond_effect.at(id-1).n_length);
-		//oneline.push_back((hbond_effect.at(id-1).c_phi));
-		//oneline.push_back((hbond_effect.at(id-1).c_psi));
-		//oneline.push_back((hbond_effect.at(id-1).n_phi));
-		//oneline.push_back((hbond_effect.at(id-1).n_psi));
-
-		oneline[91+1]=hbond_effect_arr[id-1].c_length; // consistently incorrect
-		oneline[92+1]=hbond_effect_arr[id-1].n_length; // consistently correct
-		oneline[93+1]=hbond_effect_arr[id-1].c_phi; // consistently incorrect
-		oneline[94+1]=hbond_effect_arr[id-1].c_psi; //consistently incorrect
+		oneline[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline[94+1]=hbond_effect_arr[id-1].c_psi;
 		oneline[95+1]=hbond_effect_arr[id-1].n_phi;
 		oneline[96+1]=hbond_effect_arr[id-1].n_psi;
 
@@ -1733,8 +1843,8 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 		oneline_cb[92+1]=hbond_effect_arr[id-1].n_length;
 		oneline_cb[93+1]=hbond_effect_arr[id-1].c_phi;
 		oneline_cb[94+1]=hbond_effect_arr[id-1].c_psi;
-		oneline_cb[95+1]=hbond_effect_arr[id-1].n_phi; // produced an incorrect value
-		oneline_cb[96+1]=hbond_effect_arr[id-1].n_psi; // produced an incorrect value
+		oneline_cb[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_cb[96+1]=hbond_effect_arr[id-1].n_psi;
 
 		oneline_co[91+1]=hbond_effect_arr[id-1].c_length;
 		oneline_co[92+1]=hbond_effect_arr[id-1].n_length;
@@ -1764,9 +1874,6 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 		oneline_ha[95+1]=hbond_effect_arr[id-1].n_phi;
 		oneline_ha[96+1]=hbond_effect_arr[id-1].n_psi;
 
-		//oneline.push_back(hbond_effect.at(id).n_length);
-		//oneline.push_back((hbond_effect.at(id).n_phi));
-		//oneline.push_back((hbond_effect.at(id).n_psi));
 
 		oneline[97+1]=hbond_effect_arr[id].n_length;
 		oneline[98+1]=hbond_effect_arr[id].n_phi;
@@ -1774,7 +1881,7 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 
 		oneline_cb[97+1]=hbond_effect_arr[id].n_length;
 		oneline_cb[98+1]=hbond_effect_arr[id].n_phi;
-		oneline_cb[99+1]=hbond_effect_arr[id].n_psi; // produced an incorrect value
+		oneline_cb[99+1]=hbond_effect_arr[id].n_psi;
 
 		oneline_co[97+1]=hbond_effect_arr[id].n_length;
 		oneline_co[98+1]=hbond_effect_arr[id].n_phi;
@@ -1793,309 +1900,77 @@ cout << "copyin results " << results << " " << results + results_size << endl;
 		oneline_ha[99+1]=hbond_effect_arr[id].n_psi;
 
 
-		//contact sum , one term
-		//c1.clear();
-		//c1.push_back(bb.at(index_arr[i].x1-1).capos);
-		//c1.push_back(bb.at(index_arr[i].x1-1).cbpos);
-		//c1.push_back(bb.at(index_arr[i].x1-1).copos);
-		//c2=pdb->getselect(":1-%@allheavy");
-		//result.clear();
-		//traj->get_contact(c1,c2_arr,c2_size,&result);
-		//oneline_co=oneline_cb=oneline;
-
-		//oneline.insert(oneline.begin()+60,results[((i-1)*3)+0]);
 		oneline[60]=results[((i-1)*3)+0];
 		oneline_n[60]=results[((i-1)*3)+0];
 		oneline_h[60]=results[((i-1)*3)+0];
 		oneline_ha[60]=results[((i-1)*3)+0];
-		//oneline_cb.insert(oneline_cb.begin()+60,results[((i-1)*3)+1]);
 		oneline_cb[60]=results[((i-1)*3)+1];
-		//oneline_co.insert(oneline_co.begin()+60,results[((i-1)*3)+2]);
 		oneline_co[60]=results[((i-1)*3)+2];
-		//oneline_n=oneline;
-
-		/*myfile << out.size() << " | " << oneline.size() << " | ";
-		for(int iii = 0; iii < oneline.size(); iii++){
-			myfile << iii << ":" << oneline.at(iii) << " | ";
-		}
-		myfile << endl;
-		myfile << out.size() << " | " << oneline_alt.size() << " | ";
-		for(int iii = 0; iii < oneline_alt.size(); iii++){
-			myfile << iii << ":" << oneline_alt.at(iii) << " | ";
-		}
-		myfile << endl << endl;*/
-
-		//oneline = oneline_alt;
-		//double *x_ca, *x_cb, *x_co, *x_n, *x_h, *x_ha;
-
-		//cout << i << endl;
 
 		//hn
 		if(index_arr[i].x2>0)
 		{
-			//cout << "Bang!" << endl;
-			//oneline_h=oneline;
-			//for(j=0;j<5;j++)
-			//	oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[j]);
-			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[0]);
-			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[1]);
-			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[2]);
-			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[3]);
-			//oneline_h.push_back(ring_effect.at(index_arr[i].x2-1).x[4]);
 			oneline_h[101]=ring_effect_arr[index_arr[i].x2-1].x[0];
 			oneline_h[102]=ring_effect_arr[index_arr[i].x2-1].x[1];
 			oneline_h[103]=ring_effect_arr[index_arr[i].x2-1].x[2];
 			oneline_h[104]=ring_effect_arr[index_arr[i].x2-1].x[3];
 			oneline_h[105]=ring_effect_arr[index_arr[i].x2-1].x[4];
-			//for(j=0;j<4;j++)
-			//	oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[j]);
-			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[0]);
-			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[1]);
-			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[2]);
-			//oneline_h.push_back(ani_effect.at(index_arr[i].x2-1).x[3]);
+
 			oneline_h[106]=ani_effect_arr[index_arr[i].x2-1].x[0];
 			oneline_h[107]=ani_effect_arr[index_arr[i].x2-1].x[1];
 			oneline_h[108]=ani_effect_arr[index_arr[i].x2-1].x[2];
 			oneline_h[109]=ani_effect_arr[index_arr[i].x2-1].x[3];
-			//#pragma acc loop seq
-			//for(int q = 0; q < 110; q++){
-			//	debug[(i-1)*(101+101+101+101+110+110)+(101+101+101+101+110)+q]=oneline_h[q];
-			//}
-			//x_h = oneline_h.data();
-			//pre[3]=ann_h.predict_one(x_h, oneline_h.size());
-			//pre[3]=ann_h.predict_one(oneline_h,110);
-			pre_h=ann_h.predict_one(oneline_h,110);
-		}
-		else{
-			pre_h=-999.0;
-			//#pragma acc loop seq
-			//for(int q = 0; q < 110; q++){
-			//	debug[(i-1)*(101+101+101+101+110+110)+(101+101+101+101+110)+q]=-1.0;
-			//}
-			//pre[3]=-999.0;
-		}
 
-		//oneline_ha = oneline;
+			pre_h=ann_h.predict_one_acc(oneline_h,110);
+		} else {
+			pre_h=-999.0;
+		}
 
 		//ha
-		//for(j=0;j<5;j++)
-		//	oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[j]);
-		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[0]);
-		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[1]);
-		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[2]);
-		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[3]);
-		//oneline_ha.push_back(ring_effect_ha.at(index_arr[i].x1-1).x[4]);
-		//cout << "boom" << endl;
-		//cout << index_arr[i].x2-1 << endl;
 		oneline_ha[101]=ring_effect_ha_arr[index_arr[i].x1-1].x[0];
-		//cout << "bang" << endl;
 		oneline_ha[102]=ring_effect_ha_arr[index_arr[i].x1-1].x[1];
-		//cout << "bang" << endl;
 		oneline_ha[103]=ring_effect_ha_arr[index_arr[i].x1-1].x[2];
-		//cout << "bang" << endl;
 		oneline_ha[104]=ring_effect_ha_arr[index_arr[i].x1-1].x[3];
-		//cout << "bang" << endl;
 		oneline_ha[105]=ring_effect_ha_arr[index_arr[i].x1-1].x[4];
-		//cout << "bang" << endl;
-		//for(j=0;j<4;j++)
-			//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[j]);
-		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[0]);
-		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[1]);
-		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[2]);
-		//oneline_ha.push_back(ani_effect_ha.at(index_arr[i].x1-1).x[3]);
+
 		oneline_ha[106]=ani_effect_ha_arr[index_arr[i].x1-1].x[0];
 		oneline_ha[107]=ani_effect_ha_arr[index_arr[i].x1-1].x[1];
 		oneline_ha[108]=ani_effect_ha_arr[index_arr[i].x1-1].x[2];
 		oneline_ha[109]=ani_effect_ha_arr[index_arr[i].x1-1].x[3];
 
-		/*#pragma acc loop seq
-		for(int q = 0; q < 101; q++){
-			debug[(i-1)*(101+101+101+101+110+110)+q]=oneline[q];
-		}
-		#pragma acc loop seq
-		for(int q = 0; q < 101; q++){
-			debug[(i-1)*(101+101+101+101+110+110)+(101)+q]=oneline_cb[q];
-		}
-		#pragma acc loop seq
-		for(int q = 0; q < 101; q++){
-			debug[(i-1)*(101+101+101+101+110+110)+(101+101)+q]=oneline_co[q];
-		}
-		#pragma acc loop seq
-		for(int q = 0; q < 101; q++){
-			debug[(i-1)*(101+101+101+101+110+110)+(101+101+101)+q]=oneline_n[q];
-		}
-		#pragma acc loop seq
-		for(int q = 0; q < 110; q++){
-			debug[(i-1)*(101+101+101+101+110+110)+(101+101+101+101)+q]=oneline_ha[q];
-		}*/
+		pre_ha=ann_ha.predict_one_acc(oneline_ha,110);
+		pre_ca=ann_ca.predict_one_acc(oneline,101);
+		pre_cb=ann_cb.predict_one_acc(oneline_cb,101);
+		pre_co=ann_co.predict_one_acc(oneline_co,101);
+		pre_n=ann_n.predict_one_acc(oneline_n,101);
 
-		//x_ha = oneline_ha.data();
-		//x_ca = oneline.data();
-		//x_cb = oneline_cb.data();
-		//x_co = oneline_co.data();
-		//x_n = oneline_n.data();
-
-		
-		//pre[5] = ann_ha.predict_one(x_ha, oneline_ha.size());
-		//pre[0] = ann_ca.predict_one(x_ca, oneline.size());
-		//pre[1] = ann_cb.predict_one(x_cb, oneline_cb.size());
-		//pre[2] = ann_co.predict_one(x_co, oneline_co.size());
-		//pre[4] = ann_n.predict_one(x_n, oneline_n.size());
-		//cout << i << endl;
-		//pre[5] = ann_ha.predict_one(oneline_ha, 110);
-		pre_ha=ann_ha.predict_one(oneline_ha,110);
-		//cout << i << endl;
-		//pre[0] = ann_ca.predict_one(oneline, 101);
-		pre_ca=ann_ca.predict_one(oneline,101);
-		//cout << i << endl;
-		//pre[1] = ann_cb.predict_one(oneline_cb, 101);
-		pre_cb=ann_cb.predict_one(oneline_cb,101);
-		//cout << i << endl;
-		//pre[2] = ann_co.predict_one(oneline_co, 101);
-		pre_co=ann_co.predict_one(oneline_co,101);
-		//cout << i << endl;
-		//pre[4] = ann_n.predict_one(oneline_n, 101);
-		pre_n=ann_n.predict_one(oneline_n,101);
-		
-		//cout << i << endl;
-		
-		/*pre[5] = ann_ha.predict_one_first(x_ha, oneline_ha.size(), x_ca, oneline.size(), &ann_ca);
-		pre[0] = ann_ca.predict_one_next(x_ca, oneline.size(), x_cb, oneline_cb.size(), &ann_cb);
-		pre[1] = ann_cb.predict_one_next(x_cb, oneline_cb.size(), x_co, oneline_co.size(), &ann_co);
-		pre[2] = ann_co.predict_one_next(x_co, oneline_co.size(), x_n, oneline_n.size(), &ann_n);
-		pre[4] = ann_n.predict_one_last(x_n, oneline_n.size());*/
-		//cout << "Loop3" << endl;
-
-		/*double pre_ca=pre[0];
-		double pre_cb=pre[1];
-		double pre_c=pre[2];
-		double pre_h=pre[3];
-		double pre_n=pre[4];
-		double pre_ha=pre[5];
-		cout << "A" << endl;
-		if(v_oln[id-1] =='G')
-			pre_cb=999.0;
-		else if(v_oln[id-1] =='C')
-			pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
-		else if(v_oln[id-1] =='P')
-			pre_h=pre_n=999.0;
-		else if(v_oln[id-1] =='U')
-			pre_ca=pre_cb=pre_c=pre_h=pre_n=999.0;
-
-		cout << "B:" << id << endl;
-			// NAME WON'T WORK NICELY
-
-		for(int vai=0;vai<v[id-1]->atoms_size;vai++) {
-			if(v[id-1]->atoms_arr[vai].name=="CA")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_ca;
-			if(v[id-1]->atoms_arr[vai].name=="CB")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_cb;
-			if(v[id-1]->atoms_arr[vai].name=="C")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_c;
-			if(v[id-1]->atoms_arr[vai].name=="H")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_h;
-			if(v[id-1]->atoms_arr[vai].name=="N")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_n;
-			if(v[id-1]->atoms_arr[vai].name=="HA" || v[id-1]->atoms_arr[vai].name=="HA2" || v[id-1]->atoms_arr[vai].name=="HA3")
-				v[id-1]->atoms_arr[vai].cs_pre=pre_ha;
-
-			
-/*
-				for(int vai=0;vai<v[vi]->atoms_size;vai++) {
-					cout << "C:" << vai << endl;
-					if(v[vi]->atoms_arr[vai].name=="CA")
-						v[vi]->atoms_arr[vai].cs_pre=pre_ca;
-					if(v[vi]->atoms_arr[vai].name=="CB")
-						v[vi]->atoms_arr[vai].cs_pre=pre_cb;
-					if(v[vi]->atoms_arr[vai].name=="C")
-						v[vi]->atoms_arr[vai].cs_pre=pre_c;
-					if(v[vi]->atoms_arr[vai].name=="H")
-						v[vi]->atoms_arr[vai].cs_pre=pre_h;
-					if(v[vi]->atoms_arr[vai].name=="N")
-						v[vi]->atoms_arr[vai].cs_pre=pre_n;
-					if(v[vi]->atoms_arr[vai].name=="HA" || v[vi]->atoms_arr[i].name=="HA2" || v[vi]->atoms_arr[i].name=="HA3")
-						v[vi]->atoms_arr[vai].cs_pre=pre_ha;
-				}
-		}*/
-		/*predictions[((i-1)*6)+0]=pre[0];
-		predictions[((i-1)*6)+1]=pre[1];
-		predictions[((i-1)*6)+2]=pre[2];
-		predictions[((i-1)*6)+3]=pre[3];
-		predictions[((i-1)*6)+4]=pre[4];
-		predictions[((i-1)*6)+5]=pre[5];*/
 		predictions[((i-1)*6)+0]=pre_ca;
 		predictions[((i-1)*6)+1]=pre_cb;
 		predictions[((i-1)*6)+2]=pre_co;
 		predictions[((i-1)*6)+4]=pre_n;
 		predictions[((i-1)*6)+3]=pre_h;
 		predictions[((i-1)*6)+5]=pre_ha;
-		//pdb->attach_bbprediction(id,pre);
 	}
-	} // end parallel
+} // end parallel
 
 	for(i=1; i<index_size-1; i++){
 		if(index_arr[i].x1<0){
-			//cout << "Skip " << i << endl;
 			continue;
 		}
 		id = i+1;
-		pdb->attach_bbprediction(id,predictions+((i-1)*6));
 		pdb->attach_bbprediction(id,predictions[((i-1)*6)+0],predictions[((i-1)*6)+1],predictions[((i-1)*6)+2],
 			predictions[((i-1)*6)+4],predictions[((i-1)*6)+3],predictions[((i-1)*6)+5]);
 	}
 
-	/*ofstream myfile;
-	myfile.open("predic.txt");
-	for(i=0; i < (index_size-2); i++){
-		for(int q = 0; q < 101; q++){
-			myfile << i << ":oneline:" << q << ": " << debug[i*(101+101+101+101+110+110)+q] << endl;
-	#pragma acc enter data copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size], \
-	num_arr[0:num_size],v_pos[0:v_size])
-	#pragma acc enter data create(predictions[0:(index_size-2)*6])
-		}
-		myfile << endl;
-		for(int q = 0; q < 101; q++){
-			myfile << i << ":oneline_cb:" << q << ": " << debug[i*(101+101+101+101+110+110)+(101)+q] << endl;
-		}
-		myfile << endl;
-		for(int q = 0; q < 101; q++){
-			myfile << i << ":oneline_co:" << q << ": " << debug[i*(101+101+101+101+110+110)+(101+101)+q] << endl;
-		}
-		myfile << endl;
-		for(int q = 0; q < 101; q++){
-			myfile << i << ":oneline_n:" << q << ": " << debug[i*(101+101+101+101+110+110)+(101+101+101)+q] << endl;
-		}
-		myfile << endl;
-		for(int q = 0; q < 110; q++){
-			myfile << i << ":oneline_ha:" << q << ": " << debug[i*(101+101+101+101+110+110)+(101+101+101+101)+q] << endl;
-		}
-		myfile << endl;
-		for(int q = 0; q < 110; q++){
-			myfile << i << ":oneline_h:" << q << ": " << debug[i*(101+101+101+101+110+110)+(101+101+101+101+110)+q] << endl;
-		}
-		myfile << endl;
-	}
-	myfile.close();*/
-cout << "delete hbond_effect " << hbond_effect_arr << endl;
-cout << "delete results " << results << endl;
-cout << "delete ani_effect " << ani_effect_arr << endl;
-cout << "delete ani_effect_ha " << ani_effect_ha_arr << endl;
-cout << "delete ring_effect " << ring_effect_arr << endl;
-cout << "delete ring_effect_ha " << ring_effect_ha_arr << endl;
 #pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
-//system("pause");
-	//delete(results);
-	//delete(predictions);
+
+	pdb->print_debug("Test2");
 	cal_error();
-//	getchar();
-	//cout << "MAX=" << MAX << endl;
-	//cout << "predict_bb_static_ann: " << omp_get_wtime() - st << " seconds" << endl;
-	//for(int q = 0; q < 100000000; q++){
-	//	predict_proton_static_new();
-	//}
+	pdb->print_debug("Test3");
 };
 
-// NOT USED
+
+
 void CMainbody::predict_bb_static_new()
 {
 	int i,j,jj;
@@ -2119,7 +1994,7 @@ void CMainbody::predict_bb_static_new()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	//traj->getani(&anistropy,&bbnh,&ani_effect);
+	traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 
@@ -2161,9 +2036,6 @@ void CMainbody::predict_bb_static_new()
 
 		ha_protons.push_back(ha);
 	}
-//	traj->getani(&anistropy,&ha_protons,&ani_effect_ha);
-//	traj->getring(&ring_index,&ha_protons,&ring_effect_ha);
-
 
 
 
@@ -2332,7 +2204,7 @@ void CMainbody::predict_bb_static_new()
 		int c2_size = c2.size();
 
 		result.clear();
-		//traj->get_contact(c1,c2_arr, c2_size,&result);
+		traj->get_contact(c1,c2_arr, c2_size,&result);
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
 		result.push_back(result.at(0));
@@ -2483,7 +2355,7 @@ void CMainbody::predict_bb2()
 
 
 	traj->gethbond(&hbond,&hbond_effect);
-	//traj->getani(&anistropy,&bbnh,&ani_effect);
+	traj->getani(&anistropy,&bbnh,&ani_effect);
 	traj->getring(&ring_index,&bbnh,&ring_effect);
 
 	
@@ -2696,8 +2568,8 @@ void CMainbody::predict_proton()
 	vector<struct double_five> ring_effect;
 	vector<struct double_four> ani_effect;
 
-	//traj->getani(&anistropy,&protons,&ani_effect);
-//	traj->getring(&ring_index,&protons,&ring_effect);
+	traj->getani(&anistropy,&protons,&ani_effect);
+	traj->getring(&ring_index,&protons,&ring_effect);
 		
 
 
@@ -2801,8 +2673,6 @@ void CMainbody::predict_proton2()
 
 void CMainbody::predict_proton_static_new(void)
 {
-//	getchar();
-	cout << "predict_proton_static_new" << endl;
 	double st = omp_get_wtime();
 	int i,j;
 	int id;
@@ -2813,57 +2683,23 @@ void CMainbody::predict_proton_static_new(void)
 	double *c;
 	vector< vector<double> > hs;
 
-	//int as = allprotons3_size;
-
 	vector<struct double_five> ring_effect(allprotons3_size);
 	vector<struct double_four> ani_effect(allprotons3_size);
-	//double *vec_arr = new double[allprotons3_size*4];
-	//memset(vec_arr,0,allprotons3_size*4*sizeof(double));
-	//if(acc_is_present(vec_arr,1)){
-	//	cout << "data is present when it should not be" << endl;
-	//	#pragma acc exit data delete(vec_arr)
-	//} else {
-	//	cout << "data is not present" << endl;
-	//}
-	//for(int q = 0; q < allprotons3_size*4; q++){
-	//	if(vec_arr[q] != 0.0){
-	//		cout << vec_arr[q] << endl;
-	//		exit(-1);
-	//	}
-	//}
+
 	allprotons=allprotons3;
 	double_four* tmp = ani_effect.data();
-	if(acc_is_present(tmp,1)){
-		cout << "TMP IS PRESENT" << endl;
-		#pragma acc exit data delete(tmp)
-	} else {
-		cout << "TMP IS NOT PRESENT" << endl;
-	}
-	//allprotons=allprotons3;
-cout << "Before getani" << endl;
-	//traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,vec_arr);
-	traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
-cout << "After getani" << endl;
-	//traj->getring(&ring_index,&allprotons,&ring_effect);
-	traj->getring(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, &ring_effect);
-	//traj->getani(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
+
+	traj->getani_acc(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
+	traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, &ring_effect);
 	hs.resize(2);
 	double_five *ring_effect_arr = ring_effect.data();
 	int ring_effect_size = ring_effect.size();
 	double_four *ani_effect_arr = ani_effect.data();
 	int ani_effect_size = ani_effect.size();
 
-cout << "copyout ani_effect(proton_static_new) " << ani_effect_arr << endl;
-cout << "copyout ring_effect(proton_static_new) " << ring_effect_arr << endl;
+	pdb->print_debug("Test4");
+
 	#pragma acc exit data copyout(ani_effect_arr[0:ani_effect_size],ring_effect_arr[0:ring_effect_size])
-//system("pause");
-	//#pragma acc exit data copyout(vec_arr[0:allprotons3_size*4],ring_effect_arr[0:allprotons3_size])
-	//for(int q = 0; q < allprotons3_size; q++){
-	//	for(int qq = 0; qq < 4; qq++){
-	//		cout << vec_arr[qq] << " ";
-	//	}
-	//	cout << endl;
-	//}
 
 	for(i=0;i<(int)allprotons.size();i++)
 	{		
@@ -2910,10 +2746,10 @@ cout << "copyout ring_effect(proton_static_new) " << ring_effect_arr << endl;
 		hs.at(0).push_back(allprotons.at(i).exp);
 		hs.at(1).push_back(pre);
 	}
-	//double_four *ani_effect_arr = ani_effect.data();
-	//double_five *ring_effect_arr = ring_effect.data();
-	//#pragma acc exit data delete(ani_effect_arr, ring_effect_arr)
+
+	pdb->print_debug("Test5");
 	compare("Side chain protons",hs);
+	pdb->print_debug("Test6");
 	cout << "predict_proton_static_new: " << omp_get_wtime() - st << " seconds" << endl;
 	return;
 }

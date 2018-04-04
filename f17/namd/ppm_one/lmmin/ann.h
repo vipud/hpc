@@ -43,7 +43,6 @@ class CAnn
 private:
 	int n_neuron;
 	int n_dat;
-	//int n_dim;
 	int n_par;
 	int n_conf;
 
@@ -61,8 +60,9 @@ private:
 	void mapminmax(void);
 	void mapminmax_md(void);
 	void xapplyminmax(void);
-	#pragma acc routine vector
 	void xapplyminmax(double *xx);
+	#pragma acc routine vector
+	void xapplyminmax_acc(double *xx);
 	void xapplyminmax_md(void);
 	bool loadx(string name);
 	bool loadx_md(string name);
@@ -84,16 +84,14 @@ public:
 	int train_md(int,string,string,int,double);
 	vector<double> predict(int,string,string,vector<vector< double> >);
 	vector<double> predict_md(int,string,string,vector<vector< double> >);
-	#pragma acc routine vector
 	double predict_one(double *xx, int vec_size);
-	double predict_one_first(double *xx, int vec_size, double *next, int next_size, CAnn *next_cann);
-	double predict_one_next(double *xx, int vec_size, double *next, int next_size, CAnn *next_cann);
-	double predict_one_last(double *xx, int vec_size);
+	#pragma acc routine vector
+	double predict_one_acc(double *xx, int vec_size);
 	double predict_one_md(int,vector<double>);
 	double assess(string,string,string);
 	double assess_md(string,string,string);
 	void load(string filename);
-	void loadp(double *);
+	void loadp(double *); // Now with data directives
 	void save(string filename);
 	void close(void);
 	
@@ -101,8 +99,9 @@ public:
 	~CAnn();
 
 	//callback functions.
-	#pragma acc routine seq
 	static double myfunc_neuron(int ndim, int nneuron, double *x, const double *p, int offset);
+	#pragma acc routine seq
+	static double myfunc_neuron_acc(int ndim, int nneuron, double *x, const double *p, int offset);
 	static void   evaluation_neuron(const double *par, int n_dat, const void *pdata, double *fvect, int *user);
 
 	static double myfunc_mix(int nneuron, double *x, const double *p);

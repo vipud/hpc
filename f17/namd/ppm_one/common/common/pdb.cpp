@@ -9,12 +9,13 @@
 #include <time.h>
 #include <omp.h>
 
+
 using namespace std;
 
 
 #include "pdb.h"
 #include "supply.h"
-
+#include "debug.h"
 
 
 int CDssp::loaddata(string name)
@@ -1213,11 +1214,12 @@ void CPdb::setup(CAminoacid *t, CLigand *tt, int iligand, string residue , int i
 	return;
 }
 
-// Altered to use a "END" snapshot seperation instead of "ENDMDL"
+// Updated function for OpenACC
+// Some extra arrays are created to avoid having to load complex data structures onto GPU
 int CPdb::loadpdb(string filename)
 {
-	//cout << "LOADPDB" << endl;
 	double st = omp_get_wtime();
+
 	string line,part;
 	ifstream fin(filename.c_str());
 	pdbfilename=filename;
@@ -1429,8 +1431,10 @@ int CPdb::loadpdb(string filename)
 				else
 				{
 					t=new CUnk;
+					#ifndef IGNORE_UNKNOWN
 					cout<<"Warning! unrecognized residue name "<<residue<<" for residue "<<index_old<<endl;
 					printblock(pdbblock.block);
+					#endif
 				}
 
 				n++;t->setresidue(n);
@@ -1515,16 +1519,18 @@ int CPdb::loadpdb(string filename)
 	{
 		pdbseq.push_back(v.at(i)->OneLetterName);
 	}
-	v_oneletternames = new char[v.size()];
-	code_pos = new int[v.size()];
+
+////////// Begin updated code //////////////////////////////////////////
+	v_oneletternames = new char[v.size()]; // Remove from complex data structure for easier GPU use
+	code_pos = new int[v.size()]; // Remove from complex data structure for easier GPU use
 	for(i=0;i<v.size();i++){
 		v_oneletternames[i]=v.at(i)->OneLetterName;
 		code_pos[i]=Sequence::code2pos(v_oneletternames[i]);
 	}
-	v_arr = v.data();
+	v_arr = v.data(); // Grab point to underlying array which are better suited for GPU
 	v_size = v.size();
-	// TODO
-	// loap up the gpu with all aminoacids and atoms
+////////// End updated code ////////////////////////////////////////////
+
 	cout << "loadpdb: " << omp_get_wtime() - st << " seconds" << endl;
 	return (natom+natom2);
 
@@ -1532,8 +1538,7 @@ int CPdb::loadpdb(string filename)
 
 
 		
-// Altered to use "END" instead of "ENDMDL"
-// This function is marked old, maybe used for ppm instead of ppm_one
+// Altered to use "END" or "ENDMDL" to support some PDB files
 int CPdb::loadpdb_old(string filename)
 {
 	cout << "LOADPDB_OLD" << endl;
@@ -1616,8 +1621,10 @@ int CPdb::loadpdb_old(string filename)
 			}
 			else
 			{
+				#ifndef IGNORE_UNKNOWN
 				cout<<"Warning: same residue index but different residue name!   ";
 				cout<<line<<endl;
+				#endif
 			}
 		}
 		else if(chain != chain_old) //new chain, so that there is also new residue
@@ -1671,8 +1678,10 @@ int CPdb::loadpdb_old(string filename)
 		else
 		{
 			t=new CUnk;
+			#ifndef IGNORE_UNKNOWN
 			cout<<"Warning! unrecognized resiude name "<<residue<<" fore residue "<<index_old<<endl;
 			printblock(block);
+			#endif
 		}
 
 			if(t!=NULL)
@@ -1764,8 +1773,10 @@ int CPdb::loadpdb_old(string filename)
 		else
 		{
 			t=new CUnk;
+			#ifndef IGNORE_UNKNOWN
 			cout<<"Warning! unrecognized resiude name "<<residue<<" fore residue "<<index_old<<endl;
 			printblock(block);
+			#endif
 		}
 
 		if(t!=NULL)
@@ -2289,9 +2300,11 @@ void CPdb::getbb(vector<bb_group> *t)
 
 		if(stop-begin<3)
 			cout<<"Chain "<<j<<" only has 1 or 2 residues! I don't know how to do."<<endl;
-	
+		//cout << j << ": before" << endl;
 		v[begin+0]->bb(t);
+		//cout << j << ": middle" << endl;
 		v[begin+1]->follow_bb(t);
+		//cout << j << ": after" << endl;
 
 		for(i=begin+1;i<stop-1;i++)
 		{
@@ -2601,7 +2614,9 @@ void CPdb::proton(vector<struct proton> *sel, int flag)
 			}
 			if(bmiss==1)
 			{
-				//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+				#ifndef IGNORE_UNKNOWN
+				cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+				#endif
 				sel->erase(sel->begin()+i);
 				i--;
 			}
@@ -2629,7 +2644,9 @@ void CPdb::proton(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
-			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#ifndef IGNORE_UNKNOWN
+			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#endif
 			sel->erase(sel->begin()+i);
 			i--;
 		}
@@ -2637,7 +2654,11 @@ void CPdb::proton(vector<struct proton> *sel)
 	cout << "pdb::proton: " << omp_get_wtime()-st << " seconds" << endl;
 }
 
-void CPdb::proton_nofilter(vector<struct proton> * sel)
+
+// New function for OpenACC
+// Sequential function, but is a significant performance upgrade from original
+// Created new function as it functions very differently from original but produces same results
+void CPdb::proton_acc(vector<struct proton> * sel)
 {
 	double st = omp_get_wtime();
 	vector<struct proton> tmp;
@@ -2661,10 +2682,11 @@ void CPdb::proton_nofilter(vector<struct proton> * sel)
 		}
 		if(bmiss!=1)
 		{
-			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
-			//sel->erase(sel->begin()+i);
-			//i--;
 			sel->push_back(tmp.at(i));
+		} else {
+			#ifndef IGNORE_UNKNOWN
+			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
 		}
 	}
 	cout << "pdb::proton_nofilter: " << omp_get_wtime()-st << " seconds" << endl;
@@ -2690,13 +2712,52 @@ void CPdb::allproton3(vector<struct proton> *sel)
 		}
 		if(bmiss==1)
 		{
-			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#ifndef IGNORE_UNKNOWN
+			cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
+			#endif
 			sel->erase(sel->begin()+i);
 			i--;
 		}
 	}
 	cout << "pdb::allproton3: " << omp_get_wtime()-st << " seconds" << endl;
 }
+
+
+// New function for OpenACC
+// Sequential function, but is a significant performance upgrade from original
+// Created new function as it functions very differently from original but produces same results
+void CPdb::allproton3_acc(vector<struct proton> *sel)
+{
+	double st = omp_get_wtime();
+	int i,j;
+	vector<struct proton> tmp;
+	sel->clear();
+	for(i=0;i<(int)(int)v.size();i++)
+	{
+		v.at(i)->proton3(&tmp);
+	}
+	sel->reserve(tmp.size());
+	for(i=0;i<tmp.size();i++)
+	{
+		bool bmiss=0;
+		for(j=0;j<tmp.at(i).nh;j++)
+		{
+			if(tmp.at(i).hpos[j]<0)
+				bmiss=1;
+		}
+		if(bmiss!=1)
+		{
+			sel->push_back(tmp.at(i));
+			
+		} else {
+			#ifndef IGNORE_UNKNOWN
+			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
+		}
+	}
+	cout << "pdb::allproton3_acc: " << omp_get_wtime()-st << " seconds" << endl;
+}
+
 
 void CPdb::allproton(vector<struct proton> *sel)
 {
@@ -2720,6 +2781,41 @@ void CPdb::allproton(vector<struct proton> *sel)
 			//cerr<<"Residue "<<sel->at(i).id<<" "<<sel->at(i).code<<" contain missing protons "<<sel->at(i).name<<" , removed"<<endl;
 			sel->erase(sel->begin()+i);
 			i--;
+		}
+	}
+	cout << "pdb::allproton: " << omp_get_wtime()-st << " seconds" << endl;
+}
+
+
+// New function for OpenACC
+// Sequential function, but is a significant performance upgrade from original
+// Created new function as it functions very differently from original but produces same results
+void CPdb::allproton_acc(vector<struct proton> *sel)
+{
+	double st = omp_get_wtime();
+	int i,j;
+	vector<struct proton> tmp;
+	sel->clear();
+	for(i=0;i<(int)(int)v.size();i++)
+	{
+		v.at(i)->proton(&tmp);
+	}
+	sel->reserve(tmp.size());
+	for(i=0;i<tmp.size();i++)
+	{
+		bool bmiss=0;
+		for(j=0;j<tmp.at(i).nh;j++)
+		{
+			if(tmp.at(i).hpos[j]<0)
+				bmiss=1;
+		}
+		if(bmiss!=1)
+		{
+			sel->push_back(tmp.at(i));
+		} else {
+			#ifndef IGNORE_UNKNOWN
+			cerr<<"Residue "<<tmp.at(i).id<<" "<<tmp.at(i).code<<" contain missing protons "<<tmp.at(i).name<<" , removed"<<endl;
+			#endif
 		}
 	}
 	cout << "pdb::allproton: " << omp_get_wtime()-st << " seconds" << endl;
@@ -2756,6 +2852,45 @@ void CPdb::ani(vector<struct ani_group> *anistropy)
 			anistropy->erase(anistropy->begin()+i);
 	}
 	cout << "pdb::ani: " << omp_get_wtime()-st << " seconds" << endl;
+	return;
+}
+
+
+// New function for OpenACC
+// Sequential function, but is a significant performance upgrade from original
+// Created new function as it functions very differently from original but produces same results
+void CPdb::ani_acc(vector<struct ani_group> *anistropy)
+{
+	double st = omp_get_wtime();
+	int i,j;
+	vector<struct ani_group> tmp;
+	
+	int begin,stop;
+
+	for(j=0;j<chains.size();j++)
+	{
+		if(j==0)
+			begin=0;
+		else
+			begin=chains.at(j-1);
+		stop=chains.at(j);
+
+	
+		for(i=begin;i<stop-1;i++)
+		{
+			v[i]->bbani(&tmp);
+			v[i]->ani(&tmp);
+		}
+		if(stop>1) v[stop-1]->ani(&tmp);
+
+	}
+	anistropy->reserve(tmp.size());
+	for(i=0; i<tmp.size(); i++)
+	{
+		if(tmp.at(i).pos[0]>=0 && tmp.at(i).pos[1]>=0 && tmp.at(i).pos[2]>=0)
+			anistropy->push_back(tmp.at(i));
+	}
+	cout << "pdb::ani_acc: " << omp_get_wtime()-st << " seconds" << endl;
 	return;
 }
 
@@ -2837,6 +2972,9 @@ void CPdb::caoutput(string filename)
 	return;
 }
 
+
+// New function for OpenACC
+// Runs sequentially but fits better with the structure of the OpenACC code
 void CPdb::attach_bbprediction(int id,double ca, double cb, double co, double n, double h, double ha)
 {
 	v.at(id-1)->attach_bbprediction(ca, cb, co, n, h, ha);
@@ -2857,6 +2995,31 @@ void CPdb::print_prediction()
 {
 	string test="bmrb_pre.dat";
 	print_prediction(test);
+}
+
+
+void CPdb::print_debug(string name){
+	int i,j;
+	FILE *fp=fopen(name.c_str(),"wt");
+	char toprint0[]="loop_\n    _Residue_seq_code\n     _Residue_label\n";
+	char toprint[]="      loop_\n      _Atom_shift_assign_ID\n      _Residue_seq_code\n      _Residue_label\n      _Atom_name\n      _Atom_type\n      _Chem_shift_value\n      _Chem_shift_value_error\n      _Chem_shift_ambiguity_code\n";
+
+
+	fprintf(fp,toprint0);
+	for(i=0;i<(int)v.size();i++)
+	{
+		fprintf(fp," %d %s",i+1,v.at(i)->ThreeLetterName);
+		if(i%3==0) fprintf(fp,"\n");
+	}
+	fprintf(fp,"\n      stop_\n");
+	
+	
+	fprintf(fp,toprint);
+	j=1;
+	for(i=0;i<(int)v.size();i++)
+		v.at(i)->print_prediction(&j,fp);
+	fprintf(fp,"      stop_\n");
+	fclose(fp);
 }
 
 void CPdb::print_prediction(string name)

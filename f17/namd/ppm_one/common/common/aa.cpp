@@ -10,6 +10,7 @@ using namespace std;
 
 
 #include "aa.h"
+#include "debug.h"
 
 
 void CAminoacid::methyl_ambig(int flag)
@@ -283,16 +284,11 @@ struct noeatoms CAminoacid::query(string name)
 }
 
 
+// New function for OpenACC
+// Runs sequentially, but works better with how the OpenACC code is laid out
 void CAminoacid::attach_bbprediction(double pre_ca, double pre_cb, double pre_c, double pre_n, double pre_h, double pre_ha)
 {
 	int i;
-
-	//pre_ca=pre[0];
-	//pre_cb=pre[1];
-	//pre_c=pre[2];
-	//pre_h=pre[3];
-	//pre_n=pre[4];
-	//pre_ha=pre[5];
 
 	if(OneLetterName=='G')
 		pre_cb=999.0;
@@ -1251,8 +1247,11 @@ void CAminoacid::process(vector<string> block)
 					bmatch=1;
 				}
 			}
-			if(bmatch==0)  //cannot match atomname, print out error message.
+			if(bmatch==0){  //cannot match atomname, print out error message.
+				#ifndef IGNORE_UNKNOWN
 				cout<<"Unknown atom name "<<atomname.c_str()<<" in residue "<<residue<<" "<<ThreeLetterName<<endl;
+				#endif
+			}
 		}
 		else  //heavy atoms or HN atom. try to match name directly.
 		{
@@ -1265,8 +1264,11 @@ void CAminoacid::process(vector<string> block)
 					bmatch=1;
 				}
 			}
-		if(bmatch==0)  //cannot match atomname, print out error message.
+			if(bmatch==0) {  //cannot match atomname, print out error message.
+			#ifndef IGNORE_UNKNOWN
 			cout<<"Unknown atom name "<<atomname.c_str()<<" in residue "<<residue<<" "<<ThreeLetterName<<endl;
+			#endif
+			}
 		}
 	}
 	return;

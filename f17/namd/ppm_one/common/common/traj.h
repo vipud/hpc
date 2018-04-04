@@ -44,27 +44,31 @@ public:
 		void dis_matrix(vector<int> *,vector<double> *);
 		void getdihe(vector<dihe_group> *, vector<double> *);
 		void getangle(vector<struct dihe_group> *, vector<double> *);
+
 		void getring(vector<ring_group> *, vector<struct methyl_group> *, vector<double_five> *, enum methyl);
 		void getring(vector<struct ring_group> *, vector<struct proton> *, vector<struct double_five> *);
-		void getring(ring_group *, int, proton *, int, vector<struct double_five> *);
+		void getring_acc(ring_group *, int, proton *, int, vector<struct double_five> *); // OpenACC version
 		void getring(vector<ring_group> *, vector<struct proton>* , vector< vector<struct double_five> > *);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector<struct double_five> *ring_effect);
-		void getring(ring_group *, int, nh_group *, int, vector<struct double_five> *);
+		void getring_acc(ring_group *, int, nh_group *, int, vector<struct double_five> *); // OpenACC version
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector< vector<struct double_five>  > *ring_effect);
-		//void getani(vector<ani_group> *, vector<struct nh_group>* , vector<double_four> *);
-		void getani(ani_group *, int, nh_group *, int, vector<struct double_four> *);
+
+		void getani_acc(ani_group *, int, nh_group *, int, vector<struct double_four> *); // OpenACC version
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct methyl_group>* , vector<double_four> *, enum methyl);
-		void getani(ani_group *, int, proton *, int, vector<double_four> *);
-		void getani(ani_group *, int, proton *, int, double_four *);
-		void getani(ani_group *, int, proton *, int, double *);
+		void getani_acc(ani_group *, int, proton *, int, vector<double_four> *); // OpenACC version
+		void getani_acc(ani_group *, int, proton *, int, double_four *); // OpenACC version
 		void getani(vector<ani_group> *, vector<proton> *, vector<double_four> *);
 		void getani(vector<ani_group> *, vector<struct proton>* , vector< vector<double_four> > *);
+		void getani(vector<ani_group> *, vector<struct nh_group> *, vector<double_four> *);
+
 		void getring_bb(vector<ring_group> *, vector<struct bb_group> *, vector<double_five> *,enum bb_carbon);
+
 		void gethbond(vector<bbhbond_group> *bond,vector<ehbond> *effect);
-		void gethbond(bbhbond_group *bond,int,vector<ehbond> *effect);
+		void gethbond_acc(bbhbond_group *bond,int,vector<ehbond> *effect); // OpenACC version
 		void gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double cutoff);
 		void gethbond(vector<bbhbond_group> *bond,vector< vector<ehbond> > *effect);
+
 		void gethbond2(vector<bbhbond_group> *hbond,vector< vector<ehbond> > *effect);
 		void getschbond2(vector<struct proton> *protons, vector<struct bbhbond_group> *bb, vector< vector<ehbond> > *effect, vector< vector<eschbond> > *effect_sc);
 		void evulatenmrcons(vector<struct noeline> *,double);
