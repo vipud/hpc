@@ -53,6 +53,14 @@ int probe_length(Node* head) {
   return result;
 }
 
+void probe_destroy(Node* head) {
+  Node* current_node = head;
+  if (current_node->next != NULL) {
+    probe_destroy(current_node->next);
+  }
+  free(current_node);
+}
+
 int probe_get(Node* head, int index) {
   int i = 0;
   Node* current_node = head;
@@ -130,10 +138,10 @@ Node* list_build(int size) {
 
 int exp_two(int p) {
   int r = 1;
-  for (int i = 0; i < p; p++) r = r * 2;
+  for (int i = 0; i < p; i++) r = r * 2;
   return r;
 }
-
+//Change this to defined hash function to concrete value
 $abstract int h0(int s, int x);
 int hash0(Set* set, int x) {
   int r = h0(set->stage, x);
@@ -151,7 +159,7 @@ int hash1(Set* set, int x) {
 _Bool set_destroy(Set* set) {
   for (int i=0; i<2; i++) {
     for (int j = 0; j<set->size; j++) {
-      free(set->table[i][j]);
+      probe_destroy(set->table[i][j]);
     }
     free(set->table[i]);
     free(set->locks[i]);
@@ -210,12 +218,16 @@ _Bool set_contains(Set* set, int x) {
 // unsynchronized version of contains, call only from synchronized methods
 _Bool present(Set* set, int x) {
   Node* current_node = set->table[0][hash0(set, x)];
+  $assert(current_node != NULL);
   while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x) return true;
+    current_node = current_node->next;
   }
   current_node = set->table[1][hash1(set, x)];
+  $assert(current_node != NULL);
   while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x) return true;
+    current_node = current_node->next;
   }
   return false;
 }
@@ -303,28 +315,9 @@ _Bool set_add(Set* set, int x) {
 
 int test1() {
   Set* s = set_create();
-  /*
+
   set_add(s, 1);
-  set_add(s, 5);
-  set_add(s, 17);
-  set_add(s, 32);
-  set_add(s, 12);
-  set_add(s, 2);
-  set_add(s, 8);
-  set_add(s, 23);
-  set_add(s, 20);
-  set_add(s, 11);
-  set_remove(s, 1);
-  set_add(s, 11);
-  set_remove(s, 8);
-  set_remove(s, 9);
-  $assert(set_contains(s, 12));
-  $assert(!set_contains(s, 100));
-  $assert(set_contains(s, 5));
-  $assert(!set_contains(s, 7));
-  $assert(!set_contains(s, 1));
-  $assert(!set_contains(s, 8));
-  */
+  $assert(set_contains(s, 1));
   set_print(s);
   set_destroy(s);
 }

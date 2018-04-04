@@ -8,7 +8,7 @@ int LIMIT = 3;
 
 int INITIAL_STAGE = 1;
 int STAGE_BOUND = 2; 
-int VALUE_BOUND = 6;
+int VALUE_BOUND = 2;
 int hash_vals[2][VALUE_BOUND];
 
 struct _set {
@@ -24,7 +24,7 @@ int exp_two(int p) {
   for (int i = 0; i < p; i++) r = r * 2;
   return r;
 }
-
+/*
 void init_hash_functions() {
   for (int t = 0; t < 2; t++){ 
     for (int i = 0; i < VALUE_BOUND; i++){
@@ -32,7 +32,7 @@ void init_hash_functions() {
     }
   }
 }
-
+*/
 void print_hashes() {
   for (int t = 0; t < 2; t++){ 
     printf("hashes %d\n", t);
@@ -55,7 +55,7 @@ Set* set_create() {
   }
   return result;
 }
-
+/*
 int hash0(Set* set, int x) {
   if (hash_vals[0][x] == -1) {
     int s = exp_two(set->stage);
@@ -77,6 +77,21 @@ int hash1(Set* set, int x) {
     return hash_vals[1][x];
   }
   else return hash_vals[1][x]; 
+}
+*/
+
+$abstract int h0(int s, int x);
+int hash0(Set* set, int x) {
+  int r = h0(set->stage, x);
+  $assume(0 <= r && r < exp_two(set->stage));
+  return r;
+}
+
+$abstract int h1(int s, int x);
+int hash1(Set* set, int x) {
+  int r = h1(set->stage, x);
+  $assume(0 <= r && r < exp_two(set->stage));
+  return r;
 }
 
 _Bool set_destroy(Set* set) {
@@ -135,7 +150,7 @@ void resize(Set* set) {
   set->size = oldSize * 2;
   set->stage++;
   print_hashes();
-  init_hash_functions();
+  //init_hash_functions();
   for (int i=0; i<2; i++) {
     set->table[i] = malloc(set->size*sizeof(int));
     for (int j=0; j<set->size; j++) {
@@ -182,7 +197,7 @@ _Bool set_remove(Set* set, int x) {
 }
 
 int test1() {
-  init_hash_functions(); 
+  //init_hash_functions(); 
   Set* s = set_create();
   set_add(s, 0);
   //set_print(s);
