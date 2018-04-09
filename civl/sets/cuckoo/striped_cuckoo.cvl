@@ -62,10 +62,18 @@ Node* node_add(Node* head, int data) {
 
 Node* probe_write(Node* head, int data) {
   Node* current_node = head;
+  printf("Current_node = %s\n", current_node);
+  printf("Current_node->data = %s\n", current_node->data);
   while (current_node != NULL && current_node->data != -1) {
+    printf("Incrementing current_node!\n");
     current_node = current_node->next;
+    printf("Current_node = %s\n", current_node);
+    printf("Current_node->data = %s\n", current_node->data);
   }
-  if (current_node->data == -1) current_node->data = data; //This is broken
+  if (current_node->data == -1) {
+    current_node->data = data; //?
+    printf("Wrote current_node->data as %s\n", current_node->data);
+  }
   else printf("PROBE WRITE FAILED: No empty node found\n");
 }
 
@@ -225,15 +233,18 @@ _Bool set_destroy(Set* set) {
 $atomic_f void acquire(Set* set, int x) {
   int h0 = hash0(set, x);
   int h1 = hash1(set, x);
+  printf("Acquiring locks for x = %s...\n", x);
   $when(set->locks[0][h0] == false) set->locks[0][h0] = true;
   $when(set->locks[1][h1] == false) set->locks[1][h1] = true;
+  printf("Acquired locks for x = %s!\n", x);
 }
 
 $atomic_f void release(Set* set, int x) {
   int h0 = hash0(set, x);
   int h1 = hash1(set, x);
   set->locks[0][h0] = false;
-  set->locks[1][h1] = false; 
+  set->locks[1][h1] = false;
+  printf("Released locks for x = %s!\n", x);
 }
 
 void set_print(Set* set) {
@@ -244,17 +255,20 @@ void set_print(Set* set) {
         print_nodes(set->table[i][j]);
     }
   }
-}
 
 _Bool set_contains(Set* set, int x) {
+  printf("Entering set_contains function...\n");
   acquire(set, x);
   Node* current_node = set->table[0][hash0(set, x)];
+  printf("Current_node = %s\n", current_node);
+  printf("Current_node->data = %s\n", current_node->data);
   while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x)
     {
       release(set, x);
       return true;
     }
+    current_node = current_node->next;
   }
   current_node = set->table[1][hash1(set, x)];
   while (current_node->data != -1 && current_node->next != NULL) {
@@ -263,6 +277,7 @@ _Bool set_contains(Set* set, int x) {
       release(set, x);
       return true;
     }
+    current_node = current_node->next;
   }
   release(set, x);
   return false;
@@ -270,6 +285,7 @@ _Bool set_contains(Set* set, int x) {
 
 // unsynchronized version of contains, call only from synchronized methods
 _Bool present(Set* set, int x) {
+  printf("Entering present function...\n");
   Node* current_node = set->table[0][hash0(set, x)];
   $assert(current_node != NULL);
   while (current_node->data != -1 && current_node->next != NULL) {
@@ -287,6 +303,7 @@ _Bool present(Set* set, int x) {
 
 //UNTESTED
 _Bool relocate(Set* set, int i, int hi) {
+  printf("Entering relocate function...\n");
   int hj = 0;
   int j = 1 - i;
   for (int round = 0; round < LIMIT; round++) {
@@ -333,23 +350,33 @@ _Bool set_add(Set* set, int x) {
   int i = -1; //outer index of item to relocate
   int h = -1; //inner index of item to relocate
   _Bool must_resize = false;
-  if (x<0 || present(set, x)) return false;
+  if (x<0 || present(set, x)) {
+    release(set, x);
+    return false;
+  }
+  printf("Getting probe pointers...\n");
   Node* probe_0 = set->table[0][h0];
   Node* probe_1 = set->table[1][h1];
   if (probe_length(probe_0) < THRESHOLD) {
+    printf("Writing to probe 0 under threshold\n");
     probe_write(probe_0, x);
+    release(set, x);
     return true;
   }
   else if (probe_length(probe_1) < THRESHOLD) {
+    printf("Writing to probe 1 under threshold\n");
     probe_write(probe_1, x);
+    release(set, x);
     return true;
   }
   else if (probe_length(probe_0) < PROBE_SIZE) {
+    printf("Writing to probe 0 over threshold\n");
     probe_write(probe_0, x);
     i = 0;
     h = h0;
   }
   else if (probe_length(probe_1) < PROBE_SIZE) {
+    printf("Writing to probe 1 over threshold\n");
     probe_write(probe_1, x);
     i = 1;
     h = h1;
@@ -371,6 +398,14 @@ int test1() {
 
   set_add(s, 1);
   $assert(set_contains(s, 1));
+  set_add(s, 2);
+  $assert(set_contains(s, 2));
+  set_add(s, 3);
+  $assert(set_contains(s, 3));
+  set_add(s, 4);
+  $assert(set_contains(s, 4));
+  set_add(s, 5);
+  $assert(set_contains(s, 5));
   set_print(s);
   set_destroy(s);
 }
