@@ -9,6 +9,11 @@ int PROBE_SIZE = 4;
 int THRESHOLD = PROBE_SIZE / 2;
 int LIMIT = 8;
 
+int STATE_BOUND = 2;
+int VALUE_BOUND = 6;
+
+int hash_vals[2][VALUE_BOUND]; 
+
 typedef struct _node Node;
 
 struct _node
@@ -26,6 +31,27 @@ struct _set
 };
 
 typedef struct _set Set;
+
+void init_hash_functions() {
+  for (int t = 0; t < 2; t++){ 
+    for (int i = 0; i < VALUE_BOUND; i++){
+      hash_vals[t][i] = -1;
+    }
+  }
+}
+
+
+void print_hashes() {
+  for (int t = 0; t < 2; t++){ 
+    printf("hashes %d\n", t);
+    for (int i = 0; i < VALUE_BOUND; i++){
+      printf("%s ", hash_vals[t][i]);
+    }
+    printf("\n");
+  }
+}
+
+
 
 Node* node_add(Node* head, int data) {
   Node* new_node = (Node*) malloc(sizeof(Node));
@@ -142,12 +168,13 @@ int exp_two(int p) {
   return r;
 }
 //Change this to defined hash function to concrete value
+/* 
 $abstract int h0(int s, int x);
 int hash0(Set* set, int x) {
   int r = h0(set->stage, x);
   $assume(0 <= r && r < $pow(2, set->stage));
   return r;
-}
+} 
 
 $abstract int h1(int s, int x);
 int hash1(Set* set, int x) {
@@ -155,6 +182,32 @@ int hash1(Set* set, int x) {
   $assume(0 <= r && r < $pow(2, set->stage));
   return r;
 }
+*/
+
+int hash0(Set* set, int x) {
+  if (hash_vals[0][x] == -1) {
+    int s = exp_two(set->stage);
+    int choice = $choose_int(s);
+    //printf("choice: %s\n", choice);
+    hash_vals[0][x] = choice;
+    return hash_vals[0][x];
+  }
+  else return hash_vals[0][x];
+}
+
+
+int hash1(Set* set, int x) {
+  if (hash_vals[1][x] == -1) {
+    int s = exp_two(set->stage);
+    //printf("s val: %s\n", s);
+    int choice = $choose_int(s);
+    //printf("choice: %s\n", choice);
+    hash_vals[1][x] = choice;
+    return hash_vals[1][x];
+  }
+  else return hash_vals[1][x]; 
+}
+
 
 _Bool set_destroy(Set* set) {
   for (int i=0; i<2; i++) {
