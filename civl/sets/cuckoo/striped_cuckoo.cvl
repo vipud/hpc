@@ -109,27 +109,32 @@ int probe_get(Node* head, int index) {
   return -1;
 }
 
-//CHECK THIS METHOD!
-//Make test cases for probe methods
 _Bool probe_remove(Node* head, int data, int i, int hi, Set* set) {
-  Node* current_node = head;
-  _Bool clipped = false;
+  Node* current_node = set->table[i][hi];
+  Node* prev_node = NULL;
+  _Bool found = false;
   while (current_node != NULL && current_node->data != -1) {
-    if (clipped && current_node->next != NULL) {
-        current_node->next = (Node*) malloc(sizeof(Node));
-        current_node = current_node->next;
-        current_node->data = -1;
-    }
     if (current_node->data == data) {
-        Node* old_head = current_node;
-        current_node = old_head->next;
-        set->table[i][hi] = current_node;
-        free(old_head);
-        clipped = true;
+      Node* tmp = current_node;
+      if (prev_node == NULL) set->table[i][hi] = tmp->next;
+      else prev_node->next = tmp->next;
+      free(tmp);
+      found = true;
     }
-    else current_node = current_node->next;
+    else {
+      prev_node = current_node;
+      current_node = current_node->next;
+    }
   }
-  return false;
+  if (!found) return false;
+  current_node = set->table[i][hi];
+  while (current_node->next != NULL) {
+    current_node = current_node->next;
+  }
+  current_node->next = (Node*) malloc(sizeof(Node));
+  current_node = current_node->next;
+  current_node->data = -1;
+  return true;
 }
 
 void print_nodes(Node* head) {
@@ -219,7 +224,7 @@ int hash1(Set* set, int x) {
 
 _Bool set_destroy(Set* set) {
   for (int i=0; i<2; i++) {
-    for (int j = 0; j<set->size; j++) {
+    for (int j=0; j<set->size; j++) {
       probe_destroy(set->table[i][j]);
     }
     free(set->table[i]);
@@ -255,6 +260,7 @@ void set_print(Set* set) {
         print_nodes(set->table[i][j]);
     }
   }
+}
 
 _Bool set_contains(Set* set, int x) {
   printf("Entering set_contains function...\n");
@@ -301,7 +307,6 @@ _Bool present(Set* set, int x) {
   return false;
 }
 
-//UNTESTED
 _Bool relocate(Set* set, int i, int hi) {
   printf("Entering relocate function...\n");
   int hj = 0;
