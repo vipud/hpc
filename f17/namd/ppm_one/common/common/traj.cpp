@@ -545,7 +545,7 @@ int CTraj::appendcoor(string filename)
 	
 	while(getline(fin,line))
 	{
-		if(part=="ENDMDL")
+		if(part=="ENDMDL" || part=="END")
 		{
 			if(x.size()%natom!=0)
 				cout<<"In traj reading, suppose to read "<<natom<<" coors but actually read in "<<x.size()<<endl;
@@ -589,7 +589,7 @@ int CTraj::loadcoor(string filename)
 	
 	while(getline(fin,line))
 	{
-		if(part=="ENDMDL")
+		if(part=="ENDMDL" || part=="END")
 		{
 			//finished read first molecule 
 			bend=1;
