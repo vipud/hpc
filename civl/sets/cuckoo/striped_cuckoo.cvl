@@ -9,7 +9,7 @@ int PROBE_SIZE = 4;
 int THRESHOLD = PROBE_SIZE / 2;
 int LIMIT = 8;
 
-int STATE_BOUND = 2;
+int STAGE_BOUND = 2;
 int VALUE_BOUND = 6;
 
 int hash_vals[2][VALUE_BOUND]; 
@@ -232,8 +232,8 @@ _Bool set_destroy(Set* set) {
 }
 
 $atomic_f void acquire(Set* set, int x) {
-  int h0 = hash0(set, x);
-  int h1 = hash1(set, x);
+  int h0 = hash0(set, x) % INITIAL_SIZE;
+  int h1 = hash1(set, x) % INITIAL_SIZE;
   printf("Acquiring locks for x = %s...\n", x);
   $when(set->locks[0][h0] == false) set->locks[0][h0] = true;
   $when(set->locks[1][h1] == false) set->locks[1][h1] = true;
@@ -241,8 +241,8 @@ $atomic_f void acquire(Set* set, int x) {
 }
 
 $atomic_f void release(Set* set, int x) {
-  int h0 = hash0(set, x);
-  int h1 = hash1(set, x);
+  int h0 = hash0(set, x) % INITIAL_SIZE;
+  int h1 = hash1(set, x) % INITIAL_SIZE;
   set->locks[0][h0] = false;
   set->locks[1][h1] = false;
   printf("Released locks for x = %s!\n", x);
@@ -367,6 +367,59 @@ _Bool relocate(Set* set, int i, int hi) {
   return false;
 }
 
+_Bool rehash(Set* set, int x);
+
+void unsynchronized_resize(Set* set) {
+  printf("Entering unsyncronized resizing!!\n");
+  set_print(set);
+  int old_size = set->size;
+  Node** old_table[2];
+  for (int l = 0; l < 2; l++) {
+    old_table[l] = set->table[l];
+  }
+  set->size = set->size * 2;
+  if (set->stage == STAGE_BOUND) {
+    printf("ERROR: Stage bound reached!!\n");
+    return;
+  }
+  set->stage++;
+  init_hash_functions();
+  for (int i=0; i<2; i++) {
+    set->table[i] = NULL;
+    set->table[i] = malloc(set->size*sizeof(Node*));
+    for (int j=0; j<set->size; j++) {
+      set->table[i][j] = (Node*) malloc(sizeof(Node));
+      set->table[i][j]->data = -1;
+      set->table[i][j]->next = NULL;
+      Node* current_head = set->table[i][j];
+      for (int k=0; k<PROBE_SIZE-1; k++) {
+        current_head = node_add(current_head, -1);
+      }
+      current_head->next = NULL;
+    }
+  }
+  Node* current_node = NULL;
+  for (int j = 0; j < old_size; j++) {
+    current_node = old_table[0][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+    current_node = old_table[1][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+  }
+  for (int i=0; i<2; i++) {
+    for (int j=0; j<old_size; j++) {
+      probe_destroy(old_table[i][j]);
+    }
+    free(old_table[i]);
+  }
+  old_size = -1;
+}
+
 _Bool rehash(Set* set, int x) {
   int h0 = hash0(set, x);
   int h1 = hash1(set, x);
@@ -403,10 +456,11 @@ _Bool rehash(Set* set, int x) {
   else must_resize = true;
   release(set, x);
   if (must_resize) {
-    printf("ERROR: Could not rehash!\n");
+    unsynchronized_resize(set);
+    rehash(set, x);
   }
   else if (!relocate(set, i, h)) {
-    printf("ERROR: Could not relocate during rehash!\n");
+    unsynchronized_resize(set);
   }
   return true;
 }
@@ -421,15 +475,19 @@ void resize(Set* set) {
     return;
   }
   Node** old_table[2];
-  old_table = set->table;
+  for (int l = 0; l < 2; l++) {
+    old_table[l] = set->table[l];
+  }
   set->size = set->size * 2;
   set->stage++;
   init_hash_functions();
   for (int i=0; i<2; i++) {
+    set->table[i] = NULL;
     set->table[i] = malloc(set->size*sizeof(Node*));
     for (int j=0; j<set->size; j++) {
       set->table[i][j] = (Node*) malloc(sizeof(Node));
       set->table[i][j]->data = -1;
+      set->table[i][j]->next = NULL;
       Node* current_head = set->table[i][j];
       for (int k=0; k<PROBE_SIZE-1; k++) {
         current_head = node_add(current_head, -1);
@@ -450,7 +508,6 @@ void resize(Set* set) {
       current_node = current_node->next;
     }
   }
-  release_all(set);
 }
 
 _Bool set_add(Set* set, int x) {
