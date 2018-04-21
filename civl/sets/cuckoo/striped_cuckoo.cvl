@@ -9,7 +9,7 @@ int PROBE_SIZE = 4;
 int THRESHOLD = PROBE_SIZE / 2;
 int LIMIT = 8;
 
-int STATE_BOUND = 2;
+int STAGE_BOUND = 2;
 int VALUE_BOUND = 6;
 
 int hash_vals[2][VALUE_BOUND]; 
@@ -56,19 +56,20 @@ void print_hashes() {
 Node* node_add(Node* head, int data) {
   Node* new_node = (Node*) malloc(sizeof(Node));
   new_node->data = data;
+  new_node->next = NULL;
   head->next = new_node;
   return new_node;
 }
 
 Node* probe_write(Node* head, int data) {
   Node* current_node = head;
-  printf("Current_node = %s\n", current_node);
-  printf("Current_node->data = %s\n", current_node->data);
+  //printf("Current_node = %s\n", current_node);
+  //printf("Current_node->data = %s\n", current_node->data);
   while (current_node != NULL && current_node->data != -1) {
-    printf("Incrementing current_node!\n");
+    //printf("Incrementing current_node!\n");
     current_node = current_node->next;
-    printf("Current_node = %s\n", current_node);
-    printf("Current_node->data = %s\n", current_node->data);
+    //printf("Current_node = %s\n", current_node);
+    //printf("Current_node->data = %s\n", current_node->data);
   }
   if (current_node->data == -1) {
     current_node->data = data; //?
@@ -118,8 +119,8 @@ _Bool probe_remove(Node* head, int data, int i, int hi, Set* set) {
       Node* tmp = current_node;
       if (prev_node == NULL) set->table[i][hi] = tmp->next;
       else prev_node->next = tmp->next;
-      free(tmp);
       found = true;
+      break;
     }
     else {
       prev_node = current_node;
@@ -131,9 +132,8 @@ _Bool probe_remove(Node* head, int data, int i, int hi, Set* set) {
   while (current_node->next != NULL) {
     current_node = current_node->next;
   }
-  current_node->next = (Node*) malloc(sizeof(Node));
-  current_node = current_node->next;
-  current_node->data = -1;
+  node_add(current_node, -1);
+  //printf("probe_remove complete\n");
   return true;
 }
 
@@ -153,7 +153,7 @@ Set* set_create() {
   result->stage = INITIAL_STAGE;
   for (int i=0; i<2; i++) {
     result->locks[i] = malloc(result->size*sizeof(_Bool));
-    result->table[i] = malloc(result->size*sizeof(Node**));
+    result->table[i] = malloc(result->size*sizeof(Node*));
     for (int j=0; j<result->size; j++) {
       result->locks[i][j] = false;
       result->table[i][j] = (Node*) malloc(sizeof(Node));
@@ -201,20 +201,16 @@ int hash0(Set* set, int x) {
   if (hash_vals[0][x] == -1) {
     int s = exp_two(set->stage);
     int choice = $choose_int(s);
-    //printf("choice: %s\n", choice);
     hash_vals[0][x] = choice;
     return hash_vals[0][x];
   }
   else return hash_vals[0][x];
 }
 
-
 int hash1(Set* set, int x) {
   if (hash_vals[1][x] == -1) {
     int s = exp_two(set->stage);
-    //printf("s val: %s\n", s);
     int choice = $choose_int(s);
-    //printf("choice: %s\n", choice);
     hash_vals[1][x] = choice;
     return hash_vals[1][x];
   }
@@ -236,8 +232,8 @@ _Bool set_destroy(Set* set) {
 }
 
 $atomic_f void acquire(Set* set, int x) {
-  int h0 = hash0(set, x);
-  int h1 = hash1(set, x);
+  int h0 = hash0(set, x) % INITIAL_SIZE;
+  int h1 = hash1(set, x) % INITIAL_SIZE;
   printf("Acquiring locks for x = %s...\n", x);
   $when(set->locks[0][h0] == false) set->locks[0][h0] = true;
   $when(set->locks[1][h1] == false) set->locks[1][h1] = true;
@@ -245,11 +241,28 @@ $atomic_f void acquire(Set* set, int x) {
 }
 
 $atomic_f void release(Set* set, int x) {
-  int h0 = hash0(set, x);
-  int h1 = hash1(set, x);
+  int h0 = hash0(set, x) % INITIAL_SIZE;
+  int h1 = hash1(set, x) % INITIAL_SIZE;
   set->locks[0][h0] = false;
   set->locks[1][h1] = false;
   printf("Released locks for x = %s!\n", x);
+}
+
+$atomic_f void acquire_all(Set* set) {
+  printf("Acquiring all locks...\n");
+  for (int i = 0; i < INITIAL_SIZE; i++) {
+    $when(set->locks[0][i] == false) set->locks[0][i] = true;
+    $when(set->locks[1][i] == false) set->locks[1][i] = true;
+  }
+  printf("Acquired all locks!\n");
+}
+
+$atomic_f void release_all(Set* set) {
+  for (int i = 0; i < INITIAL_SIZE; i++) {
+    set->locks[0][i] = false;
+    set->locks[1][i] = false;
+  }
+  printf("Released all locks!\n");
 }
 
 void set_print(Set* set) {
@@ -266,8 +279,8 @@ _Bool set_contains(Set* set, int x) {
   printf("Entering set_contains function...\n");
   acquire(set, x);
   Node* current_node = set->table[0][hash0(set, x)];
-  printf("Current_node = %s\n", current_node);
-  printf("Current_node->data = %s\n", current_node->data);
+  //printf("Current_node = %s\n", current_node);
+  //printf("Current_node->data = %s\n", current_node->data);
   while (current_node->data != -1 && current_node->next != NULL) {
     if (current_node->data == x)
     {
@@ -291,7 +304,7 @@ _Bool set_contains(Set* set, int x) {
 
 // unsynchronized version of contains, call only from synchronized methods
 _Bool present(Set* set, int x) {
-  printf("Entering present function...\n");
+  //printf("Entering present function...\n");
   Node* current_node = set->table[0][hash0(set, x)];
   $assert(current_node != NULL);
   while (current_node->data != -1 && current_node->next != NULL) {
@@ -323,65 +336,119 @@ _Bool relocate(Set* set, int i, int hi) {
     if (probe_remove(i_probe, y, i, hi, set)) {
       if (probe_length(j_probe) < THRESHOLD) {
         probe_write(j_probe, y);
-        return true;
+	release(set, y);
+	return true;
       }
       else if (probe_length(j_probe) < PROBE_SIZE) {
-        probe_write(j_probe, y);
+	//printf("Inserting above Threshold in table %d...\n", i);
+	probe_write(j_probe, y);
         i = 1 - i;
         hi = hj;
         j = 1 - j;
+	release(set, y);
       }
       else {
         probe_write(i_probe, y);
+	release(set, y);
         return false;
       }
     }
     else if (probe_length(i_probe) >= THRESHOLD) {
+      release(set, y);
       continue;
     }
     else {
+      release(set, y);
       return true;
     }
-    release(set, y);
   }
+  printf("Limit exceeded!\n");
+  set_print(set);
   return false;
 }
 
-//UNTESTED
-_Bool set_add(Set* set, int x) {
-  acquire(set, x);
+_Bool rehash(Set* set, int x);
+
+void unsynchronized_resize(Set* set) {
+  printf("Entering unsyncronized resizing!!\n");
+  set_print(set);
+  int old_size = set->size;
+  Node** old_table[2];
+  for (int l = 0; l < 2; l++) {
+    old_table[l] = set->table[l];
+  }
+  set->size = set->size * 2;
+  if (set->stage == STAGE_BOUND) {
+    printf("ERROR: Stage bound reached!!\n");
+    return;
+  }
+  set->stage++;
+  init_hash_functions();
+  for (int i=0; i<2; i++) {
+    set->table[i] = NULL;
+    set->table[i] = malloc(set->size*sizeof(Node*));
+    for (int j=0; j<set->size; j++) {
+      set->table[i][j] = (Node*) malloc(sizeof(Node));
+      set->table[i][j]->data = -1;
+      set->table[i][j]->next = NULL;
+      Node* current_head = set->table[i][j];
+      for (int k=0; k<PROBE_SIZE-1; k++) {
+        current_head = node_add(current_head, -1);
+      }
+      current_head->next = NULL;
+    }
+  }
+  Node* current_node = NULL;
+  for (int j = 0; j < old_size; j++) {
+    current_node = old_table[0][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+    current_node = old_table[1][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+  }
+  for (int i=0; i<2; i++) {
+    for (int j=0; j<old_size; j++) {
+      probe_destroy(old_table[i][j]);
+    }
+    free(old_table[i]);
+  }
+  old_size = -1;
+}
+
+_Bool rehash(Set* set, int x) {
   int h0 = hash0(set, x);
   int h1 = hash1(set, x);
-  int i = -1; //outer index of item to relocate
-  int h = -1; //inner index of item to relocate
+  int i = -1; //outer index of item to add
+  int h = -1; //inner index of item to add
   _Bool must_resize = false;
   if (x<0 || present(set, x)) {
-    release(set, x);
     return false;
   }
-  printf("Getting probe pointers...\n");
   Node* probe_0 = set->table[0][h0];
   Node* probe_1 = set->table[1][h1];
   if (probe_length(probe_0) < THRESHOLD) {
-    printf("Writing to probe 0 under threshold\n");
+    //printf("Writing to probe 0 under threshold\n");
     probe_write(probe_0, x);
-    release(set, x);
     return true;
   }
   else if (probe_length(probe_1) < THRESHOLD) {
-    printf("Writing to probe 1 under threshold\n");
+    //printf("Writing to probe 1 under threshold\n");
     probe_write(probe_1, x);
-    release(set, x);
     return true;
   }
   else if (probe_length(probe_0) < PROBE_SIZE) {
-    printf("Writing to probe 0 over threshold\n");
+    //printf("Writing to probe 0 over threshold\n");
     probe_write(probe_0, x);
     i = 0;
     h = h0;
   }
   else if (probe_length(probe_1) < PROBE_SIZE) {
-    printf("Writing to probe 1 over threshold\n");
+    //printf("Writing to probe 1 over threshold\n");
     probe_write(probe_1, x);
     i = 1;
     h = h1;
@@ -389,11 +456,106 @@ _Bool set_add(Set* set, int x) {
   else must_resize = true;
   release(set, x);
   if (must_resize) {
-    //resize(set);
+    unsynchronized_resize(set);
+    rehash(set, x);
+  }
+  else if (!relocate(set, i, h)) {
+    unsynchronized_resize(set);
+  }
+  return true;
+}
+
+void resize(Set* set) {
+  printf("RESIZING!!\n");
+  set_print(set);
+  int old_size = set->size;
+  acquire_all(set);
+  if (set->size != old_size) {
+    release_all(set);
+    return;
+  }
+  Node** old_table[2];
+  for (int l = 0; l < 2; l++) {
+    old_table[l] = set->table[l];
+  }
+  set->size = set->size * 2;
+  set->stage++;
+  init_hash_functions();
+  for (int i=0; i<2; i++) {
+    set->table[i] = NULL;
+    set->table[i] = malloc(set->size*sizeof(Node*));
+    for (int j=0; j<set->size; j++) {
+      set->table[i][j] = (Node*) malloc(sizeof(Node));
+      set->table[i][j]->data = -1;
+      set->table[i][j]->next = NULL;
+      Node* current_head = set->table[i][j];
+      for (int k=0; k<PROBE_SIZE-1; k++) {
+        current_head = node_add(current_head, -1);
+      }
+      current_head->next = NULL;
+    }
+  }
+  Node* current_node = NULL;
+  for (int j = 0; j < old_size; j++) {
+    current_node = old_table[0][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+    current_node = old_table[1][j];
+    while (current_node != NULL && current_node->data != -1) {
+      rehash(set, current_node->data);
+      current_node = current_node->next;
+    }
+  }
+}
+
+_Bool set_add(Set* set, int x) {
+  acquire(set, x);
+  int h0 = hash0(set, x);
+  int h1 = hash1(set, x);
+  int i = -1; //outer index of item to add
+  int h = -1; //inner index of item to add
+  _Bool must_resize = false;
+  if (x<0 || present(set, x)) {
+    release(set, x);
+    return false;
+  }
+  //printf("Getting probe pointers...\n");
+  Node* probe_0 = set->table[0][h0];
+  Node* probe_1 = set->table[1][h1];
+  if (probe_length(probe_0) < THRESHOLD) {
+    //printf("Writing to probe 0 under threshold\n");
+    probe_write(probe_0, x);
+    release(set, x);
+    return true;
+  }
+  else if (probe_length(probe_1) < THRESHOLD) {
+    //printf("Writing to probe 1 under threshold\n");
+    probe_write(probe_1, x);
+    release(set, x);
+    return true;
+  }
+  else if (probe_length(probe_0) < PROBE_SIZE) {
+    //printf("Writing to probe 0 over threshold\n");
+    probe_write(probe_0, x);
+    i = 0;
+    h = h0;
+  }
+  else if (probe_length(probe_1) < PROBE_SIZE) {
+    // printf("Writing to probe 1 over threshold\n");
+    probe_write(probe_1, x);
+    i = 1;
+    h = h1;
+  }
+  else must_resize = true;
+  release(set, x);
+  if (must_resize) {
+    resize(set);
     set_add(set, x);
   }
   else if (!relocate(set, i, h)) {
-    //resize(set);
+    resize(set);
   }
   return true;
 }
@@ -409,6 +571,7 @@ int test1() {
   $assert(set_contains(s, 3));
   set_add(s, 4);
   $assert(set_contains(s, 4));
+  set_print(s);
   set_add(s, 5);
   $assert(set_contains(s, 5));
   set_print(s);
