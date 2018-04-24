@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include "../include/set.cvh"
 
-int INITIAL_STAGE = 1;
-int INITIAL_SIZE = 2;
-int PROBE_SIZE = 4;
+int INITIAL_STAGE = 0;
+int INITIAL_SIZE = 1;
+int PROBE_SIZE = 2;
 int THRESHOLD = PROBE_SIZE / 2;
-int LIMIT = 8;
+int LIMIT = 1;
 
 int STAGE_BOUND = 2;
-int VALUE_BOUND = 6;
+int VALUE_BOUND = 3;
 
 int hash_vals[2][VALUE_BOUND]; 
 
@@ -22,12 +22,20 @@ struct _node
   Node* next;
 };
 
+struct _lock
+{
+  $proc owner;
+  int count;
+};
+
+typedef struct _lock Lock;
+
 struct _set
 {
   int size;
   int stage;
   Node** table[2];
-  _Bool *locks[2];
+  Lock *locks[2];
 };
 
 typedef struct _set Set;
@@ -39,7 +47,6 @@ void init_hash_functions() {
     }
   }
 }
-
 
 void print_hashes() {
   for (int t = 0; t < 2; t++){ 
@@ -152,10 +159,11 @@ Set* set_create() {
   result->size = INITIAL_SIZE;
   result->stage = INITIAL_STAGE;
   for (int i=0; i<2; i++) {
-    result->locks[i] = malloc(result->size*sizeof(_Bool));
+    result->locks[i] = malloc(result->size*sizeof(Lock));
     result->table[i] = malloc(result->size*sizeof(Node*));
     for (int j=0; j<result->size; j++) {
-      result->locks[i][j] = false;
+      result->locks[i][j].owner = $proc_null;
+      result->locks[i][j].count = 0;
       result->table[i][j] = (Node*) malloc(sizeof(Node));
       result->table[i][j]->data = -1;
       Node* current_head = result->table[i][j];
@@ -231,38 +239,39 @@ _Bool set_destroy(Set* set) {
   return true;
 }
 
-$atomic_f void acquire(Set* set, int x) {
+
+void lock_acquire(Lock * l) {
+  $atomic {
+    if ($self != l->owner) {
+      $when(l->owner == $proc_null) l->owner = $self;
+    }
+    l->count++;
+  }
+}
+
+void lock_release(Lock * l) {
+  $atomic {
+    $assert($self == l->owner);
+    l->count--;
+    if (l->count == 0) l->owner = $proc_null;
+  }
+}
+
+void acquire(Set* set, int x) {
   int h0 = hash0(set, x) % INITIAL_SIZE;
   int h1 = hash1(set, x) % INITIAL_SIZE;
   printf("Acquiring locks for x = %s...\n", x);
-  $when(set->locks[0][h0] == false) set->locks[0][h0] = true;
-  $when(set->locks[1][h1] == false) set->locks[1][h1] = true;
+  lock_acquire(&(set->locks[0][h0]));
+  lock_acquire(&(set->locks[1][h1]));
   printf("Acquired locks for x = %s!\n", x);
 }
 
-$atomic_f void release(Set* set, int x) {
+void release(Set* set, int x) {
   int h0 = hash0(set, x) % INITIAL_SIZE;
   int h1 = hash1(set, x) % INITIAL_SIZE;
-  set->locks[0][h0] = false;
-  set->locks[1][h1] = false;
+  lock_release(&(set->locks[0][h0]));
+  lock_release(&(set->locks[1][h1]));
   printf("Released locks for x = %s!\n", x);
-}
-
-$atomic_f void acquire_all(Set* set) {
-  printf("Acquiring all locks...\n");
-  for (int i = 0; i < INITIAL_SIZE; i++) {
-    $when(set->locks[0][i] == false) set->locks[0][i] = true;
-    $when(set->locks[1][i] == false) set->locks[1][i] = true;
-  }
-  printf("Acquired all locks!\n");
-}
-
-$atomic_f void release_all(Set* set) {
-  for (int i = 0; i < INITIAL_SIZE; i++) {
-    set->locks[0][i] = false;
-    set->locks[1][i] = false;
-  }
-  printf("Released all locks!\n");
 }
 
 void set_print(Set* set) {
@@ -367,111 +376,25 @@ _Bool relocate(Set* set, int i, int hi) {
   return false;
 }
 
-_Bool rehash(Set* set, int x);
-
-void unsynchronized_resize(Set* set) {
-  printf("Entering unsyncronized resizing!!\n");
-  set_print(set);
-  int old_size = set->size;
-  Node** old_table[2];
-  for (int l = 0; l < 2; l++) {
-    old_table[l] = set->table[l];
-  }
-  set->size = set->size * 2;
-  if (set->stage == STAGE_BOUND) {
-    printf("ERROR: Stage bound reached!!\n");
-    return;
-  }
-  set->stage++;
-  init_hash_functions();
-  for (int i=0; i<2; i++) {
-    set->table[i] = NULL;
-    set->table[i] = malloc(set->size*sizeof(Node*));
-    for (int j=0; j<set->size; j++) {
-      set->table[i][j] = (Node*) malloc(sizeof(Node));
-      set->table[i][j]->data = -1;
-      set->table[i][j]->next = NULL;
-      Node* current_head = set->table[i][j];
-      for (int k=0; k<PROBE_SIZE-1; k++) {
-        current_head = node_add(current_head, -1);
-      }
-      current_head->next = NULL;
-    }
-  }
-  Node* current_node = NULL;
-  for (int j = 0; j < old_size; j++) {
-    current_node = old_table[0][j];
-    while (current_node != NULL && current_node->data != -1) {
-      rehash(set, current_node->data);
-      current_node = current_node->next;
-    }
-    current_node = old_table[1][j];
-    while (current_node != NULL && current_node->data != -1) {
-      rehash(set, current_node->data);
-      current_node = current_node->next;
-    }
-  }
-  for (int i=0; i<2; i++) {
-    for (int j=0; j<old_size; j++) {
-      probe_destroy(old_table[i][j]);
-    }
-    free(old_table[i]);
-  }
-  old_size = -1;
-}
-
-_Bool rehash(Set* set, int x) {
-  int h0 = hash0(set, x);
-  int h1 = hash1(set, x);
-  int i = -1; //outer index of item to add
-  int h = -1; //inner index of item to add
-  _Bool must_resize = false;
-  if (x<0 || present(set, x)) {
-    return false;
-  }
-  Node* probe_0 = set->table[0][h0];
-  Node* probe_1 = set->table[1][h1];
-  if (probe_length(probe_0) < THRESHOLD) {
-    //printf("Writing to probe 0 under threshold\n");
-    probe_write(probe_0, x);
-    return true;
-  }
-  else if (probe_length(probe_1) < THRESHOLD) {
-    //printf("Writing to probe 1 under threshold\n");
-    probe_write(probe_1, x);
-    return true;
-  }
-  else if (probe_length(probe_0) < PROBE_SIZE) {
-    //printf("Writing to probe 0 over threshold\n");
-    probe_write(probe_0, x);
-    i = 0;
-    h = h0;
-  }
-  else if (probe_length(probe_1) < PROBE_SIZE) {
-    //printf("Writing to probe 1 over threshold\n");
-    probe_write(probe_1, x);
-    i = 1;
-    h = h1;
-  }
-  else must_resize = true;
-  release(set, x);
-  if (must_resize) {
-    unsynchronized_resize(set);
-    rehash(set, x);
-  }
-  else if (!relocate(set, i, h)) {
-    unsynchronized_resize(set);
-  }
-  return true;
-}
+_Bool set_add(Set* set, int x);
 
 void resize(Set* set) {
   printf("RESIZING!!\n");
   set_print(set);
   int old_size = set->size;
-  acquire_all(set);
+  if (set->stage == STAGE_BOUND) return;
+  printf("Acquiring all locks...\n");
+  for (int i = 0; i < INITIAL_SIZE; i++) {
+    lock_acquire(&(set->locks[0][i]));
+    lock_acquire(&(set->locks[1][i]));
+  }
+  printf("Acquired all locks!\n");
   if (set->size != old_size) {
-    release_all(set);
+    for (int i = 0; i < INITIAL_SIZE; i++) {
+      lock_release(&(set->locks[0][i]));
+      lock_release(&(set->locks[1][i]));
+    }
+    printf("Released all locks!\n");
     return;
   }
   Node** old_table[2];
@@ -499,15 +422,26 @@ void resize(Set* set) {
   for (int j = 0; j < old_size; j++) {
     current_node = old_table[0][j];
     while (current_node != NULL && current_node->data != -1) {
-      rehash(set, current_node->data);
+      set_add(set, current_node->data);
       current_node = current_node->next;
     }
     current_node = old_table[1][j];
     while (current_node != NULL && current_node->data != -1) {
-      rehash(set, current_node->data);
+      set_add(set, current_node->data);
       current_node = current_node->next;
     }
   }
+  for (int i=0; i < 2; i++) {
+    for (int j=0; j < old_size; j++) {
+      probe_destroy(old_table[i][j]);
+    }
+    free(old_table[i]);
+  }
+  for (int i = 0; i < INITIAL_SIZE; i++) {
+    lock_release(&(set->locks[0][i]));
+    lock_release(&(set->locks[1][i]));
+  }
+  printf("Released all locks!\n");
 }
 
 _Bool set_add(Set* set, int x) {
@@ -563,17 +497,12 @@ _Bool set_add(Set* set, int x) {
 int test1() {
   Set* s = set_create();
 
+  set_add(s, 0);
+  $assert(set_contains(s, 0));
   set_add(s, 1);
   $assert(set_contains(s, 1));
   set_add(s, 2);
   $assert(set_contains(s, 2));
-  set_add(s, 3);
-  $assert(set_contains(s, 3));
-  set_add(s, 4);
-  $assert(set_contains(s, 4));
-  set_print(s);
-  set_add(s, 5);
-  $assert(set_contains(s, 5));
   set_print(s);
   set_destroy(s);
 }
