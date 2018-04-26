@@ -1,3 +1,9 @@
+/* Concurrent cuckoo hashset using lock striping and phasing
+ * Wenhao Wu, Eric Kurtz, and Josh Davis
+ * April-26-2018
+ * VIP-HPC University of Delaware
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,7 +16,7 @@ int THRESHOLD = PROBE_SIZE / 2;
 int LIMIT = 1;
 
 int STAGE_BOUND = 1;
-int VALUE_BOUND = 3;
+int VALUE_BOUND = 4;
 
 int hash_vals[2][VALUE_BOUND]; 
 
@@ -496,6 +502,23 @@ _Bool set_add(Set* set, int x) {
   return true;
 }
 
+_Bool set_remove(Set* set, int x) {
+  acquire(set, x);
+  int h0 = hash0(set, x) % set->size;
+  Node* table0 = set->table[0][h0];
+  int h1 = hash1(set, x) % set->size;
+  Node* table1 = set->table[1][h1];
+  if (!probe_remove(table0, x, 0, h0, set)) {
+    if (!probe_remove(table1, x, 1, h1, set)) {
+      printf("ERROR: Given x not in set!\n");
+      release(set, x);
+      return false;
+    }
+  }
+  release(set, x);
+  return true;
+}
+
 int test1() {
   Set* s = set_create();
 
@@ -514,10 +537,19 @@ int test_par() {
 
   $parfor (int val : 0 .. VALUE_BOUND-1)
     set_add(s, val);
-  
+  //set_print(s);
+  $assert(set_contains(s, 0));
+  $assert(set_contains(s, 1));
+  $assert(set_contains(s, 2));
+  $parfor (int val : 0 .. VALUE_BOUND-1)
+    set_remove(s, val);
+  set_print(s);
+  $assert(!set_contains(s, 0));
+  $assert(!set_contains(s, 1));
+  $assert(!set_contains(s, 2));
   set_destroy(s);
 }
 
 int main() {
-  test1();
+  test_par();
 }

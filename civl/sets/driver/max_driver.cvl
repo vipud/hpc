@@ -1,4 +1,4 @@
-/* Minimum implementation of set driver for CIVL
+/* Implementation of set driver for CIVL
  * Dec-5-2017
  * Wenhao Wu
  * VSL Lab; Dept. CIS; UDel
@@ -114,7 +114,7 @@ void init() {
     
     nsteps[tid] = num_steps_local;
     for (int step = 0; step < num_steps_local; step++) {
-      ops[tid][step] = $choose_int(2) == 1;
+      ops[tid][step] = ADD;
       vals[tid][step] = $choose_int(num_vals);
       num_steps++;
     }
