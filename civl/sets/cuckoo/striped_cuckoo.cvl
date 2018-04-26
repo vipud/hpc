@@ -9,7 +9,7 @@ int PROBE_SIZE = 2;
 int THRESHOLD = PROBE_SIZE / 2;
 int LIMIT = 1;
 
-int STAGE_BOUND = 2;
+int STAGE_BOUND = 1;
 int VALUE_BOUND = 3;
 
 int hash_vals[2][VALUE_BOUND]; 
@@ -126,6 +126,8 @@ _Bool probe_remove(Node* head, int data, int i, int hi, Set* set) {
       Node* tmp = current_node;
       if (prev_node == NULL) set->table[i][hi] = tmp->next;
       else prev_node->next = tmp->next;
+      tmp->next = NULL;
+      free(tmp);
       found = true;
       break;
     }
@@ -290,7 +292,7 @@ _Bool set_contains(Set* set, int x) {
   Node* current_node = set->table[0][hash0(set, x)];
   //printf("Current_node = %s\n", current_node);
   //printf("Current_node->data = %s\n", current_node->data);
-  while (current_node->data != -1 && current_node->next != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (current_node->data == x)
     {
       release(set, x);
@@ -299,7 +301,7 @@ _Bool set_contains(Set* set, int x) {
     current_node = current_node->next;
   }
   current_node = set->table[1][hash1(set, x)];
-  while (current_node->data != -1 && current_node->next != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (current_node->data == x)
     {
       release(set, x);
@@ -316,13 +318,13 @@ _Bool present(Set* set, int x) {
   //printf("Entering present function...\n");
   Node* current_node = set->table[0][hash0(set, x)];
   $assert(current_node != NULL);
-  while (current_node->data != -1 && current_node->next != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (current_node->data == x) return true;
     current_node = current_node->next;
   }
   current_node = set->table[1][hash1(set, x)];
   $assert(current_node != NULL);
-  while (current_node->data != -1 && current_node->next != NULL) {
+  while (current_node != NULL && current_node->data != -1) {
     if (current_node->data == x) return true;
     current_node = current_node->next;
   }
@@ -504,6 +506,15 @@ int test1() {
   set_add(s, 2);
   $assert(set_contains(s, 2));
   set_print(s);
+  set_destroy(s);
+}
+
+int test_par() {
+  Set* s = set_create();
+
+  $parfor (int val : 0 .. VALUE_BOUND-1)
+    set_add(s, val);
+  
   set_destroy(s);
 }
 
