@@ -537,19 +537,26 @@ int test_par() {
 
   $parfor (int val : 0 .. VALUE_BOUND-1)
     set_add(s, val);
-  //set_print(s);
+
+  set_print(s);
+
   $assert(set_contains(s, 0));
   $assert(set_contains(s, 1));
   $assert(set_contains(s, 2));
+
   $parfor (int val : 0 .. VALUE_BOUND-1)
     set_remove(s, val);
+
   set_print(s);
+
   $assert(!set_contains(s, 0));
   $assert(!set_contains(s, 1));
   $assert(!set_contains(s, 2));
+
   set_destroy(s);
 }
-
+/*
 int main() {
   test_par();
 }
+*/
