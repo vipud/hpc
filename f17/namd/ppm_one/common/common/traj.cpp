@@ -3377,7 +3377,8 @@ void CTraj::get_all_contacts(bb_group *bb, int bb_size, index_two *index, int in
 	//int y_arr_size_this = y_size;
 	//int z_arr_size_this = z_size;
 	//#pragma acc enter data copyin(results[0:results_size])
-#pragma acc data create(c1[0:c1_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size])
+#pragma acc data create(c1[0:c1_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size] \
+	bb[0:bb_size], index[0:index_size])
 {
 
 
