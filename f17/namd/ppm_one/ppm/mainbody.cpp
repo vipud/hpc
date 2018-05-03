@@ -1044,15 +1044,6 @@ void CMainbody::load(string bmrbname)
 	pdb->bbnh(&bbnh);
 	pdb->bbhbond(&hbond);
 	pdb->schbond(&hbond);  //This is new ! 
-	bb_arr = bb.data();
-	bb_size = bb.size();
-	bbnh_arr = bbnh.data();
-	bbnh_size = bbnh.size();
-	hbond_arr = hbond.data();
-	hbond_size = hbond.size();
-#pragma acc enter data copyin(bb_arr[0:bb_size])
-#pragma acc enter data copyin(bbnh_arr[0:bbnh_size])
-#pragma acc enter data copyin(hbond_arr[0:hbond_size])
 
 	
 
@@ -1093,6 +1084,16 @@ void CMainbody::load(string bmrbname)
 		else
 			ring_index_external.push_back(ring_index.at(i));
 	}
+
+	bb_arr = bb.data();
+	bb_size = bb.size();
+	bbnh_arr = bbnh.data();
+	bbnh_size = bbnh.size();
+	hbond_arr = hbond.data();
+	hbond_size = hbond.size();
+#pragma acc enter data copyin(bb_arr[0:bb_size])
+#pragma acc enter data copyin(bbnh_arr[0:bbnh_size])
+#pragma acc enter data copyin(hbond_arr[0:hbond_size])
 
 	return;
 }
@@ -1561,21 +1562,43 @@ void CMainbody::predict_bb_static_ann()
 #pragma acc exit data delete(ha_protons_new)
 
 
-	index.resize(pdb->getnres());
-	for(i=0;i<(int)index.size();i++)
-		index.at(i).x1=index.at(i).x2=-1;
-	for(i=0;i<(int)bb.size();i++)
-		index.at(bb.at(i).id-1).x1=i+1;
-	for(i=0;i<(int)bbnh.size();i++)
-		index.at(bbnh.at(i).id-1).x2=i+1;
+	//index.resize(pdb->getnres());
+	//index_two *index_arr = index.data();
+	int index_size = pdb->getnres();
+	index_two *index_arr = new index_two[index_size];
+	#pragma acc enter data create(index_arr[0:index_size])
+#pragma acc kernels present(index_arr[0:index_size])
+{
+	#pragma acc loop independent gang vector
+	for(i=0;i<index_size;i++) {
+		index_arr[i].x1 = -1;
+		index_arr[i].x2 = -1;
+	}
+	#pragma acc loop independent gang vector
+	for(i=0;i<bb_size;i++)
+		index_arr[bb_arr[i].id-1].x1=i+1;
+	#pragma acc loop independent gang vector
+	for(i=0;i<bbnh_size;i++)
+		index_arr[bbnh_arr[i].id-1].x2=i+1;
+} // end parallel
 
-	
+	/*cout << bb.size() << " " << bb_size << endl;
+
+	for(i=0;i<index_size;i++) {
+		index_arr[i].x1 = -1;
+		index_arr[i].x2 = -1;
+	}
+	for(i=0;i<bb_size;i++)
+		index_arr[bb_arr[i].id-1].x1=i+1;
+	for(i=0;i<bbnh_size;i++)
+		index_arr[bbnh_arr[i].id-1].x2=i+1;*/
+
 	c2=pdb->getselect(":1-%@allheavy");	
 	int* c2_arr = c2.data();
 	int c2_size = c2.size();
-	index_two *index_arr = index.data();
-	int index_size = index.size();
-	int results_size = (index.size()-2)*3;
+	//index_two *index_arr = index.data();
+	//int index_size = index.size();
+	int results_size = (index_size-2)*3;
 	//bb_group *bb_arr = bb.data();
 	//int bb_size = bb.size();
 	float *results = new float[results_size];
@@ -1583,7 +1606,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
 	traj->get_all_contacts(bb_arr,bb_size,index_arr,index_size,c2_arr,c2_size,results,results_size);
 
-
+	#pragma acc exit data delete(index_arr)
 	char *v_oln = pdb->getvoneletter();
 	int *v_pos = pdb->code_pos;
 	int pos;
