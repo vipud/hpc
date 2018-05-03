@@ -857,13 +857,13 @@ void CTraj::gethbond_acc(bbhbond_group *hbond, int _hbond_size, ehbond *effect_a
 				u[0]=x_arr[h+base]-x_arr[o+base];
 				u[1]=y_arr[h+base]-y_arr[o+base];
 				u[2]=z_arr[h+base]-z_arr[o+base];
-				d=veclength(u);
+				d=my_veclength(u);
 				x2=x_arr[n+base];y2=y_arr[n+base];z2=z_arr[n+base];
 				x3=x_arr[h+base];y3=y_arr[h+base];z3=z_arr[h+base];
 				x4=x_arr[o+base];y4=y_arr[o+base];z4=z_arr[o+base];
 				x5=x_arr[c+base];y5=y_arr[c+base];z5=z_arr[c+base];
-				phi=coor_to_angle(x2,y2,z2,x3,y3,z3,x4,y4,z4);
-				psi=coor_to_angle(x3,y3,z3,x4,y4,z4,x5,y5,z5);
+				phi=my_coor_to_angle(x2,y2,z2,x3,y3,z3,x4,y4,z4);
+				psi=my_coor_to_angle(x3,y3,z3,x4,y4,z4,x5,y5,z5);
 				if(d<3 && phi>0.5 && psi>0.5)
 				{
 					d=1/(d-1);
@@ -3377,8 +3377,8 @@ void CTraj::get_all_contacts(bb_group *bb, int bb_size, index_two *index, int in
 	//int y_arr_size_this = y_size;
 	//int z_arr_size_this = z_size;
 	//#pragma acc enter data copyin(results[0:results_size])
-#pragma acc data create(c1[0:c1_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size] \
-	bb[0:bb_size], index[0:index_size])
+#pragma acc data create(c1[0:c1_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size], \
+	bb[0:bb_size], index[0:index_size], this)
 {
 
 

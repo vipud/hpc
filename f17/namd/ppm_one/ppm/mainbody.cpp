@@ -1415,7 +1415,8 @@ void CMainbody::predict_bb()
 void CMainbody::ha_protons_acc(proton *ha_protons_new)
 {
 	int i;
-	#pragma acc parallel loop present(ha_protons_new[0:bb_size], bb_arr[0:bb_size])
+	//#pragma acc parallel loop present(ha_protons_new[0:bb_size], bb_arr[0:bb_size])
+	// Cannot do GPU stuff because of the strings
 	for(i=0;i<bb_size;i++)
 	{
 		
@@ -1532,16 +1533,17 @@ void CMainbody::predict_bb_static_ann()
 	int results_size = (index_size-2)*3;
 	float *results = new float[results_size];
 	double *predictions = new double[(index_size-2)*6];
+	ha_protons_acc(ha_protons_new);
 
 #pragma acc data create(ha_protons_new[0:bb_size], hbond_effect_arr[0:hbond_effect_size], \
 ani_effect_arr[0:bbnh_size], ring_effect_arr[0:bbnh_size], ani_effect_ha_arr[0:bb_size],  \
 ring_effect_ha_arr[0:bb_size], index_arr[0:index_size], results[0:results_size])          \
 copyout(predictions[0:(index_size-2)*6])                                                  \
-copyin(blosum[0:400], v_oln[0:v_size], dihe[0:dihe_size], num_arr[0:num_size], v_pos[0:v_size]) \
-present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size], hbond[0:hbond_size], anistropy_new[0:anistropy_size])
+copyin(ha_protons_new[0:bb_size], blosum[0:400], v_oln[0:v_size], dihe[0:dihe_size],      \
+num_arr[0:num_size], v_pos[0:v_size]) present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size],   \
+hbond[0:hbond_size], anistropy_new[0:anistropy_size])
 {
 
-	ha_protons_acc(ha_protons_new);
 	index_acc(index_arr, index_size);
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
 	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,bbnh_size);
