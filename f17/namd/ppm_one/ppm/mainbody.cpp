@@ -1451,6 +1451,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->gethbond_acc(hbond_arr, hbond_size, &hbond_effect);
 	int hbond_effect_size = traj->nres;
 	ehbond *hbond_effect_arr = new ehbond[hbond_effect_size];
+	#pragma acc enter data create(hbond_effect_arr[0:hbond_effect_size])
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
 
 	//nh_group *bbnh_arr = bbnh.data();
@@ -1463,6 +1464,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getani_acc(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
 	int ani_effect_size = bbnh_size;
 	double_four *ani_effect_arr = new double_four[ani_effect_size];
+	#pragma acc enter data create(ani_effect_arr[0:ani_effect_size])
 	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,ani_effect_size);
 
 	//vector<struct double_five> ring_effect(bbnh_size);
@@ -1471,6 +1473,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getring_acc(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
 	int ring_effect_size = bbnh_size;
 	double_five *ring_effect_arr = new double_five[ring_effect_size];
+	#pragma acc enter data create(ring_effect_arr[0:ring_effect_size])
 	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, ring_effect_size);
 
 
@@ -1549,6 +1552,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,&ani_effect_ha);
 	int ani_effect_ha_size = ha_protons_size;
 	double_four *ani_effect_ha_arr = new double_four[ani_effect_ha_size];
+	#pragma acc enter data create(ani_effect_ha_arr[0:ani_effect_ha_size])
 	traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,ha_protons_size,ani_effect_ha_arr,ani_effect_ha_size);
 
 	//vector<struct double_five> ring_effect_ha(ha_protons_size);
@@ -1557,6 +1561,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, &ring_effect_ha);
 	int ring_effect_ha_size = ha_protons_size;
 	double_five *ring_effect_ha_arr = new double_five[ring_effect_ha_size];
+	#pragma acc enter data create(ring_effect_ha_arr[0:ring_effect_ha_size])
 	traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, ha_protons_size, ring_effect_ha_arr, ring_effect_ha_size);
 
 #pragma acc exit data delete(ha_protons_new)
@@ -1603,6 +1608,7 @@ void CMainbody::predict_bb_static_ann()
 	//int bb_size = bb.size();
 	float *results = new float[results_size];
 	#pragma acc enter data create(results[0:results_size])
+	#pragma acc enter data copyin(c2_arr[0:c2_size])
 	//traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);
 	traj->get_all_contacts(bb_arr,bb_size,index_arr,index_size,c2_arr,c2_size,results,results_size);
 
@@ -1624,7 +1630,7 @@ void CMainbody::predict_bb_static_ann()
 	double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
 
 	
-#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],index_arr[0:index_size],dihe[0:dihe_size],\
+#pragma acc parallel default(present) copyin(blosum[0:400],v_oln[0:v_size],dihe[0:dihe_size],\
 num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 {
 	#pragma acc loop independent gang private(code,code_pre,code_fol,pos,id,pre_ca,pre_cb,pre_co,pre_n,pre_h,pre_ha)
@@ -2035,6 +2041,14 @@ num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 	}
 
 #pragma acc exit data delete(hbond_effect_arr,results,ani_effect_arr,ani_effect_ha_arr,ring_effect_arr,ring_effect_ha_arr)
+	delete(predictions);
+	delete(hbond_effect_arr);
+	delete(results);
+	delete(ani_effect_arr);
+	delete(ani_effect_ha_arr);
+	delete(ring_effect_arr);
+	delete(ring_effect_ha_arr);
+	delete(index_arr);
 
 	//pdb->print_debug("Test2");
 	cal_error();
@@ -2770,6 +2784,8 @@ void CMainbody::predict_proton_static_new(void)
 	int ani_effect_size = allprotons3_size;
 	double_four *ani_effect_arr = new double_four[ani_effect_size];
 
+	#pragma acc enter data create(ani_effect_arr[0:ani_effect_size], ring_effect_arr[0:ring_effect_size])
+
 	//traj->getani_acc(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
 	traj->getani_acc(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,ani_effect_arr,ani_effect_size);
 	//traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, &ring_effect);
@@ -2827,6 +2843,9 @@ void CMainbody::predict_proton_static_new(void)
 		hs.at(0).push_back(allprotons.at(i).exp);
 		hs.at(1).push_back(pre);
 	}
+
+	delete(ani_effect_arr);
+	delete(ring_effect_arr);
 
 	//pdb->print_debug("Test5");
 	compare("Side chain protons",hs);

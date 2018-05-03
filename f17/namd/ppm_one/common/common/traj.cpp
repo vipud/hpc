@@ -823,7 +823,7 @@ void CTraj::gethbond_acc(bbhbond_group *hbond, int _hbond_size, ehbond *effect_a
 	//int y_size = y_size;
 	//int z_size = z_size;
 
-	#pragma acc enter data copyin(effect_arr[0:effect_size])
+	//#pragma acc enter data copyin(effect_arr[0:effect_size])
 
 #pragma acc parallel present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
 {
@@ -1462,7 +1462,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, nh_group *select, int
 	int base;
 
 	//double_five *ring_effect_arr = ring_effect->data();
-	#pragma acc enter data copyin(ring_effect_arr[0:select_size])
+	//#pragma acc enter data copyin(ring_effect_arr[0:select_size])
 
 	/*double *x_arr = x_arr;
 	double *y_arr = y_arr;
@@ -1714,7 +1714,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, proton *select, int s
 	int y_size = y_size;
 	int z_size = z_size;*/
 
-	#pragma acc enter data copyin(ring_effect_arr[0:ring_effect_size])
+	//#pragma acc enter data copyin(ring_effect_arr[0:ring_effect_size])
 
 	for(i=0;i<nframe;i++)
 	{
@@ -2286,7 +2286,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 	double e;
 
 	//double_four *ani_effect_arr = ani_effect->data();
-	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
+	//#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	/*double *x_arr = x_arr;
 	double *y_arr = y_arr;
@@ -2389,7 +2389,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 	double e;
 
 	//double_four *ani_effect_arr = ani_effect->data();
-	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
+	//#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	/*double *x_arr = x_arr;
 	double *y_arr = y_arr;
@@ -2653,7 +2653,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int s
 	double e;
 
 	//double_four *ani_effect_arr = ani_effect->data();
-	#pragma acc enter data copyin(ani_effect_arr[0:select_size])
+	//#pragma acc enter data copyin(ani_effect_arr[0:select_size])
 
 	//double *x_arr = x_arr;
 	//double *y_arr = y_arr;
@@ -3376,8 +3376,8 @@ void CTraj::get_all_contacts(bb_group *bb, int bb_size, index_two *index, int in
 	//int x_arr_size_this = x_size;
 	//int y_arr_size_this = y_size;
 	//int z_arr_size_this = z_size;
-	#pragma acc enter data copyin(results[0:results_size])
-#pragma acc data create(c1[0:c1_size]) copyin(bb_arr[0:bb_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size])
+	//#pragma acc enter data copyin(results[0:results_size])
+#pragma acc data create(c1[0:c1_size]) present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],c2[0:c2_size],results[0:results_size])
 {
 
 
