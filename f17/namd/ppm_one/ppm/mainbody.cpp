@@ -1044,8 +1044,14 @@ void CMainbody::load(string bmrbname)
 	pdb->bbnh(&bbnh);
 	pdb->bbhbond(&hbond);
 	pdb->schbond(&hbond);  //This is new ! 
+	bb_arr = bb.data();
+	bb_size = bb.size();
+	bbnh_arr = bbnh.data();
+	bbnh_size = bbnh.size();
 	hbond_arr = hbond.data();
 	hbond_size = hbond.size();
+#pragma acc enter data copyin(bb_arr[0:bb_size])
+#pragma acc enter data copyin(bbnh_arr[0:bbnh_size])
 #pragma acc enter data copyin(hbond_arr[0:hbond_size])
 
 	
@@ -1446,9 +1452,9 @@ void CMainbody::predict_bb_static_ann()
 	ehbond *hbond_effect_arr = new ehbond[hbond_effect_size];
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
 
-	nh_group *bbnh_new = bbnh.data();
-	int bbnh_size = bbnh.size();
-	#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
+	//nh_group *bbnh_arr = bbnh.data();
+	//int bbnh_size = bbnh.size();
+	//#pragma acc enter data copyin(bbnh_new[0:bbnh_size])
 
 	//vector<struct double_four> ani_effect(bbnh_size);
 	//double_four *ani_effect_arr = ani_effect.data();
@@ -1456,7 +1462,7 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getani_acc(anistropy_new,anistropy_size,bbnh_new,bbnh_size,&ani_effect);
 	int ani_effect_size = bbnh_size;
 	double_four *ani_effect_arr = new double_four[ani_effect_size];
-	traj->getani_acc(anistropy_new,anistropy_size,bbnh_new,bbnh_size,ani_effect_arr,ani_effect_size);
+	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,ani_effect_size);
 
 	//vector<struct double_five> ring_effect(bbnh_size);
 	//double_five *ring_effect_arr = ring_effect.data();
@@ -1464,21 +1470,25 @@ void CMainbody::predict_bb_static_ann()
 	//traj->getring_acc(ring_index_new, ring_index_size, bbnh_new, bbnh_size, &ring_effect);
 	int ring_effect_size = bbnh_size;
 	double_five *ring_effect_arr = new double_five[ring_effect_size];
-	traj->getring_acc(ring_index_new, ring_index_size, bbnh_new, bbnh_size, ring_effect_arr, ring_effect_size);
+	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, ring_effect_size);
 
 
-	#pragma acc exit data delete(bbnh_new) 
+	//#pragma acc exit data delete(bbnh_new) 
 
 	
 	//gather all ha protons to calculate ring and ani.
-	vector<struct proton> ha_protons;
-	struct proton ha;
-	for(i=0;i<(int)bb.size();i++)
+	//vector<struct proton> ha_protons;
+	//struct proton ha;
+	int ha_protons_size = bb_size;
+	proton * ha_protons_new = new proton[ha_protons_size];
+#pragma acc enter data create(ha_protons_new[0:ha_protons_size])
+	#pragma acc parallel loop present(ha_protons_new[0:bb_size])
+	for(i=0;i<bb_size;i++)
 	{
 		
-		if(bb.at(i).code=='G')
+		if(bb_arr[i].code=='G')
 		{
-			ha.nh=2;
+			/*ha.nh=2;
 			ha.hpos[0]=bb.at(i).hapos;
 			ha.hpos[1]=bb.at(i).hapos2;
 			ha.exp=(bb.at(i).exp_ha+bb.at(i).exp_ha2)/2.0;
@@ -1488,28 +1498,49 @@ void CMainbody::predict_bb_static_ann()
 			ha.name="HB2";
 			ha.name2="HB3";
 			ha.cname="CA";
-			ha.cname2="CA";
+			ha.cname2="CA";*/
+			ha_protons_new[i].nh=2;
+			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
+			ha_protons_new[i].hpos[1]=bb_arr[i].hapos2;
+			ha_protons_new[i].exp=(bb_arr[i].exp_ha+bb_arr[i].exp_ha2)/2.0;
+			ha_protons_new[i].exp1=bb_arr[i].exp_ha;
+			ha_protons_new[i].exp2=bb_arr[i].exp_ha2;
+			ha_protons_new[i].type=90;
+			ha_protons_new[i].name="HB2";
+			ha_protons_new[i].name2="HB3";
+			ha_protons_new[i].cname="CA";
+			ha_protons_new[i].cname2="CA";
 		}
 		else
 		{
-			ha.nh=1;
-			ha.hpos[0]=bb.at(i).hapos;
-			ha.exp=bb.at(i).exp_ha;
+			/*ha.nh=1;
+			ha.hpos[0]=bb_arr[i].hapos;
+			ha.exp=bb_arr[i].exp_ha;
 			ha.type=91;
 			ha.name="HA";
-			ha.cname="CA";
+			ha.cname="CA";*/
+			ha_protons_new[i].nh=1;
+			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
+			ha_protons_new[i].exp=bb_arr[i].exp_ha;
+			ha_protons_new[i].type=91;
+			ha_protons_new[i].name="HA";
+			ha_protons_new[i].cname="CA";
 		}
-		ha.cpos=bb.at(i).capos;
-		ha.exp_c=bb.at(i).exp_ca;
-		ha.id=bb.at(i).id;
-		ha.code=bb.at(i).code;
+		ha_protons_new[i].cpos=bb_arr[i].capos;
+		ha_protons_new[i].exp_c=bb_arr[i].exp_ca;
+		ha_protons_new[i].id=bb_arr[i].id;
+		ha_protons_new[i].code=bb_arr[i].code;
+		/*ha.cpos=bb_arr[i].capos;
+		ha.exp_c=bb_arr[i].exp_ca;
+		ha.id=bb_arr[i].id;
+		ha.code=bb_arr[i].code;
 
-		ha_protons.push_back(ha);
+		ha_protons.push_back(ha);*/
 	}
 
-	proton * ha_protons_new = ha_protons.data();
-	int ha_protons_size = ha_protons.size();
-#pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
+	//proton * ha_protons_new = ha_protons.data();
+	//int ha_protons_size = ha_protons.size();
+//#pragma acc enter data copyin(ha_protons_new[0:ha_protons_size])
 
 	//vector<double_four> ani_effect_ha(ha_protons_size);
 	//double_four *ani_effect_ha_arr = ani_effect_ha.data();
@@ -1545,8 +1576,8 @@ void CMainbody::predict_bb_static_ann()
 	index_two *index_arr = index.data();
 	int index_size = index.size();
 	int results_size = (index.size()-2)*3;
-	bb_group *bb_arr = bb.data();
-	int bb_size = bb.size();
+	//bb_group *bb_arr = bb.data();
+	//int bb_size = bb.size();
 	float *results = new float[results_size];
 	#pragma acc enter data create(results[0:results_size])
 	//traj->get_all_contacts(&bb, &index, index.size(),c2_arr,c2_size,results,results_size);

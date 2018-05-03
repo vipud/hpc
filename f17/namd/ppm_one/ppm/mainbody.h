@@ -97,7 +97,11 @@ protected:
 	vector<double> dihe;
 	vector<double> angle;
 	vector<struct bb_group> bb;
+	bb_group *bb_arr;
+	int bb_size;
 	vector<struct nh_group> bbnh;
+	nh_group *bbnh_arr;
+	int bbnh_size;
 	vector<struct bbhbond_group> hbond;
 	bbhbond_group *hbond_arr;
 	int hbond_size;
