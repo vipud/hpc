@@ -12,12 +12,12 @@ class CTraj
 private:
 
 protected:
-		int nres;
-		int natom,nframe;
 		double noedistance(vector<int> *, vector<int> *);
 		double noedistance_frame(vector<int> *att1, vector<int> *att2,int n);
 
 public:
+		int nres;
+		int natom,nframe;
 		vector<double> x;
 		vector<double> y;
 		vector<double> z;
@@ -47,17 +47,21 @@ public:
 
 		void getring(vector<ring_group> *, vector<struct methyl_group> *, vector<double_five> *, enum methyl);
 		void getring(vector<struct ring_group> *, vector<struct proton> *, vector<struct double_five> *);
-		void getring_acc(ring_group *, int, proton *, int, vector<struct double_five> *); // OpenACC version
+		//void getring_acc(ring_group *, int, proton *, int, vector<struct double_five> *); // OpenACC version
+		void getring_acc(ring_group *, int, proton *, int, double_five *, int); // OpenACC version
 		void getring(vector<ring_group> *, vector<struct proton>* , vector< vector<struct double_five> > *);
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector<struct double_five> *ring_effect);
-		void getring_acc(ring_group *, int, nh_group *, int, vector<struct double_five> *); // OpenACC version
+		//void getring_acc(ring_group *, int, nh_group *, int, vector<struct double_five> *); // OpenACC version
+		void getring_acc(ring_group *, int, nh_group *, int, double_five *, int); // OpenACC version
 		void getring(vector<ring_group> *, vector<struct nh_group>* , vector< vector<struct double_five>  > *ring_effect);
 
-		void getani_acc(ani_group *, int, nh_group *, int, vector<struct double_four> *); // OpenACC version
+		//void getani_acc(ani_group *, int, nh_group *, int, vector<struct double_four> *); // OpenACC version
+		void getani_acc(ani_group *, int, nh_group *, int, double_four *, int); // OpenACC version
 		void getani(vector<ani_group> *, vector<struct nh_group>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct methyl_group>* , vector<double_four> *, enum methyl);
-		void getani_acc(ani_group *, int, proton *, int, vector<double_four> *); // OpenACC version
-		void getani_acc(ani_group *, int, proton *, int, double_four *); // OpenACC version
+		//void getani_acc(ani_group *, int, proton *, int, vector<double_four> *); // OpenACC version
+		void getani_acc(ani_group *, int, proton *, int, double_four *, int); // OpenACC version
+		void getani_acc(ani_group *, int, proton *, int, double_four *); // UNUSED
 		void getani(vector<ani_group> *, vector<proton> *, vector<double_four> *);
 		void getani(vector<ani_group> *, vector<struct proton>* , vector< vector<double_four> > *);
 		void getani(vector<ani_group> *, vector<struct nh_group> *, vector<double_four> *);
@@ -65,7 +69,8 @@ public:
 		void getring_bb(vector<ring_group> *, vector<struct bb_group> *, vector<double_five> *,enum bb_carbon);
 
 		void gethbond(vector<bbhbond_group> *bond,vector<ehbond> *effect);
-		void gethbond_acc(bbhbond_group *bond,int,vector<ehbond> *effect); // OpenACC version
+		//void gethbond_acc(bbhbond_group *bond,int,vector<ehbond> *effect); // OpenACC version
+		void gethbond_acc(bbhbond_group *bond,int,ehbond *, int); // OpenACC version
 		void gethbond(vector<bbhbond_group> *hbond,vector<ehbond> *effect, double cutoff);
 		void gethbond(vector<bbhbond_group> *bond,vector< vector<ehbond> > *effect);
 
@@ -79,7 +84,8 @@ public:
 
 		void get_contact(vector<int> pos, int* used, int used_size, vector<float> * result);
 		void get_contact(float rc,float shift, vector<int> pos, vector<int> used, vector<float> * result);
-		void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size);
+		//void get_all_contacts(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, float *results, int results_size);
+		void get_all_contacts(bb_group *, int , index_two *, int, int *, int, float *, int);
 		void get_all_contacts_double(vector<struct bb_group> *bb, vector<struct index_two> *index, int index_size, int *c2, int c2_size, double *results, int results_size);
 
 		void getcoor(int,int,double *,double *,double *);
