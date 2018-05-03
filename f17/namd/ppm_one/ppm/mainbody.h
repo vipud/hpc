@@ -114,6 +114,9 @@ protected:
 
 	double hill(double contact, double v1, double v2);
 
+	void ha_protons_acc(struct proton *);
+	void index_acc(struct index_two *, int);
+
 
 public:
 

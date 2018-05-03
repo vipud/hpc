@@ -1411,6 +1411,66 @@ void CMainbody::predict_bb()
 
 
 
+// New Function for OpenACC
+void CMainbody::ha_protons_acc(proton *ha_protons_new)
+{
+	int i;
+	#pragma acc parallel loop present(ha_protons_new[0:bb_size], bb_arr[0:bb_size])
+	for(i=0;i<bb_size;i++)
+	{
+		
+		if(bb_arr[i].code=='G')
+		{
+			ha_protons_new[i].nh=2;
+			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
+			ha_protons_new[i].hpos[1]=bb_arr[i].hapos2;
+			ha_protons_new[i].exp=(bb_arr[i].exp_ha+bb_arr[i].exp_ha2)/2.0;
+			ha_protons_new[i].exp1=bb_arr[i].exp_ha;
+			ha_protons_new[i].exp2=bb_arr[i].exp_ha2;
+			ha_protons_new[i].type=90;
+			ha_protons_new[i].name="HB2";
+			ha_protons_new[i].name2="HB3";
+			ha_protons_new[i].cname="CA";
+			ha_protons_new[i].cname2="CA";
+		}
+		else
+		{
+			ha_protons_new[i].nh=1;
+			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
+			ha_protons_new[i].exp=bb_arr[i].exp_ha;
+			ha_protons_new[i].type=91;
+			ha_protons_new[i].name="HA";
+			ha_protons_new[i].cname="CA";
+		}
+		ha_protons_new[i].cpos=bb_arr[i].capos;
+		ha_protons_new[i].exp_c=bb_arr[i].exp_ca;
+		ha_protons_new[i].id=bb_arr[i].id;
+		ha_protons_new[i].code=bb_arr[i].code;
+	}
+
+}
+
+
+// New Function for OpenACC
+void CMainbody::index_acc(index_two *index_arr, int index_size)
+{
+	int i;
+	#pragma acc kernels present(index_arr[0:index_size],bb_arr[0:bb_size],bbnh_arr[0:bbnh_size])
+	{
+		#pragma acc loop independent gang vector
+		for(i=0;i<index_size;i++) {
+			index_arr[i].x1 = -1;
+			index_arr[i].x2 = -1;
+		}
+		#pragma acc loop independent gang vector
+		for(i=0;i<bb_size;i++)
+			index_arr[bb_arr[i].id-1].x1=i+1;
+		#pragma acc loop independent gang vector
+		for(i=0;i<bbnh_size;i++)
+			index_arr[bbnh_arr[i].id-1].x2=i+1;
+	}
+}
+
 
 
 
@@ -1418,7 +1478,6 @@ void CMainbody::predict_bb()
 void CMainbody::predict_bb_static_ann()
 {
 
-	//pdb->print_debug("Test1");
 	double st;
 	st = omp_get_wtime();
 
@@ -1436,6 +1495,19 @@ void CMainbody::predict_bb_static_ann()
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
 
+	char *v_oln = pdb->getvoneletter();
+	int *v_pos = pdb->code_pos;
+	int pos;
+	int bi;
+	int ndihe = dihe_process.ndihe;
+	int nframe = dihe_process.nframe;
+	double *dihe = dihe_process.dihe->data();
+	int dihe_size = dihe_process.dihe->size();
+	int *num_arr = dihe_process.num.data();
+	int num_size = dihe_process.num.size();
+	CAminoacid **v = pdb->v_arr;
+	int v_size = pdb->v_size;
+	double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
 
 	//ann_ca.load("ann_ca.dat");
 	ann_ca.loadp(p_ann_ca);
@@ -1445,6 +1517,462 @@ void CMainbody::predict_bb_static_ann()
 	ann_h.loadp(p_ann_h);
 	ann_ha.loadp(p_ann_ha);
 
+	proton * ha_protons_new = new proton[bb_size];
+	int hbond_effect_size = traj->nres;
+	ehbond *hbond_effect_arr = new ehbond[hbond_effect_size];
+	double_four *ani_effect_arr = new double_four[bbnh_size];
+	double_five *ring_effect_arr = new double_five[bbnh_size];
+	double_four *ani_effect_ha_arr = new double_four[bb_size];
+	double_five *ring_effect_ha_arr = new double_five[bb_size];
+	int index_size = pdb->getnres();
+	index_two *index_arr = new index_two[index_size];
+	c2=pdb->getselect(":1-%@allheavy");	
+	int* c2_arr = c2.data();
+	int c2_size = c2.size();
+	int results_size = (index_size-2)*3;
+	float *results = new float[results_size];
+	double *predictions = new double[(index_size-2)*6];
+
+#pragma acc data create(ha_protons_new[0:bb_size], hbond_effect_arr[0:hbond_effect_size], \
+ani_effect_arr[0:bbnh_size], ring_effect_arr[0:bbnh_size], ani_effect_ha_arr[0:bb_size],  \
+ring_effect_ha_arr[0:bb_size], index_arr[0:index_size], results[0:results_size])          \
+copyout(predictions[0:(index_size-2)*6])                                                  \
+copyin(blosum[0:400], v_oln[0:v_size], dihe[0:dihe_size], num_arr[0:num_size], v_pos[0:v_size]) \
+present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size], hbond[0:hbond_size], anistropy_new[0:anistropy_size])
+{
+
+	ha_protons_acc(ha_protons_new);
+	index_acc(index_arr, index_size);
+	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
+	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,bbnh_size);
+	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, bbnh_size);
+	traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,bb_size,ani_effect_ha_arr,bb_size);
+	traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, bb_size, ring_effect_ha_arr, bb_size);
+	traj->get_all_contacts(bb_arr,bb_size,index_arr,index_size,c2_arr,c2_size,results,results_size);
+
+#pragma acc parallel
+{
+	#pragma acc loop independent gang private(code,code_pre,code_fol,pos,id,pre_ca,pre_cb,pre_co,pre_n,pre_h,pre_ha)
+	for(i=0+1;i<index_size-1;i++)
+	{
+		double oneline[101];
+		double oneline_cb[101];
+		double oneline_co[101];
+		double oneline_n[101];
+		double oneline_h[110];
+		double oneline_ha[110];
+		double out_arr[32];
+
+		int ca_index[12];
+		int ca_base1,ca_base2,ca_base3,ca_stop1,ca_stop2,ca_stop3,ca_index_size1,ca_index_size2,ca_index_size3;
+		int ca_p,ca_i,ca_j,ca_k,ca_t1,ca_t2,ca_t3;
+		double ca_cosphi[16],ca_sinphi[16];
+
+
+		if(index_arr[i].x1<0){
+			continue;
+		}
+		id=i+1;
+		if((id-1)<0 || (id-1) >v_size-1)
+			code='X';
+		else
+			code=v_oln[id-1];
+
+
+		if((id-2)<0 || (id-2) >v_size-1)
+			code_pre='X';
+		else
+			code_pre=v_oln[id-2];
+
+
+		if((id)<0 || (id) >v_size-1)
+			code_fol='X';
+		else
+			code_fol=v_oln[id];
+
+
+		if(code_pre=='X')
+			pos=7;
+		else
+			pos=v_pos[id-2];
+
+
+		#pragma acc loop vector independent
+		for(j=0;j<20;j++)
+		{
+			oneline[j] = blosum[pos*20+j];
+			oneline_cb[j] = blosum[pos*20+j];
+			oneline_co[j] = blosum[pos*20+j];
+			oneline_n[j] = blosum[pos*20+j];
+			oneline_h[j] = blosum[pos*20+j];
+			oneline_ha[j] = blosum[pos*20+j];
+		}
+
+
+		if(code=='X')
+			pos=7;
+		else
+			pos=v_pos[id-1];
+
+		#pragma acc loop vector independent
+		for(j=0;j<20;j++)
+		{
+			oneline[j+20]=blosum[pos*20+j];
+			oneline_cb[j+20] = blosum[pos*20+j];
+			oneline_co[j+20] = blosum[pos*20+j];
+			oneline_n[j+20] =blosum[pos*20+j];
+			oneline_h[j+20] = blosum[pos*20+j];
+			oneline_ha[j+20] = blosum[pos*20+j];
+		}
+
+
+		if(code_fol=='X')
+			pos=7;
+		else
+			pos=v_pos[id];
+
+		#pragma acc loop vector independent
+		for(j=0;j<20;j++)
+		{
+			oneline[j+40]=blosum[pos*20+j];
+			oneline_cb[j+40] = blosum[pos*20+j];
+			oneline_co[j+40] = blosum[pos*20+j];
+			oneline_n[j+40] = blosum[pos*20+j];
+			oneline_h[j+40] = blosum[pos*20+j];
+			oneline_ha[j+40] = blosum[pos*20+j];
+		}
+
+		//ca_ann(id, out_arr, ndihe, nframe, dihe, num_arr, num_size);
+
+
+		if((id-1)==1) {
+			ca_base1=1;
+		} else if((id-1)<=0 || (id-1)>num_size) {
+			ca_base1=num_arr[num_size-1]+100;
+		} else {
+			ca_base1=num_arr[(id-1)-2]+1;
+		}
+		if(id==1) {
+			ca_base2=1;
+		} else if(id<=0 || id>num_size) {
+
+			ca_base2=num_arr[num_size-1]+100;
+		} else {
+			ca_base2=num_arr[id-2]+1;
+		}
+		if((id+1)==1) {
+			ca_base3=1;
+		} else if((id+1)<=0 || (id+1)>num_size) {
+			ca_base3=num_arr[num_size-1]+100;
+		} else {
+			ca_base3=num_arr[(id+1)-2]+1;
+		}
+	
+		ca_stop1=num_arr[(id-1)-1];
+		ca_stop2=num_arr[id-1];
+		ca_stop3=num_arr[(id+1)-1];
+
+		ca_index_size1 = ca_stop1-ca_base1+1;
+		ca_index_size2 = ca_stop2-ca_base2+1;
+		ca_index_size3 = ca_stop3-ca_base3+1;
+
+		#pragma acc loop seq
+		for(ca_i=ca_base1,ca_j=0;ca_i<=ca_stop1 && ca_j<4;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base2,ca_j=4;ca_i<=ca_stop2 && ca_j<8;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}
+		#pragma acc loop seq
+		for(ca_i=ca_base3,ca_j=8;ca_i<=ca_stop3 && ca_j<12;ca_i++,ca_j++)
+		{
+			ca_index[ca_j]=ca_i;
+		}		
+
+		//ca_t1 = min(ca_index_size1,4);
+		//ca_t2 = min(ca_index_size2,4);
+		//ca_t3 = min(ca_index_size3,4);
+		if(ca_index_size1 >= 4){
+			ca_t1 = 4;
+		} else {
+			ca_t1 = ca_index_size1;
+		}
+		if(ca_index_size2 >= 4){
+			ca_t2 = 4;
+		} else {
+			ca_t2 = ca_index_size2;
+		}
+		if(ca_index_size3 >= 4){
+			ca_t3 = 4;
+		} else {
+			ca_t3 = ca_index_size3;
+		}
+
+
+		#pragma acc loop seq
+		for(ca_i=0; ca_i<16; ca_i++){
+			ca_cosphi[ca_i]=0.0; ca_sinphi[ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t1;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[0+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+				ca_sinphi[0+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[0+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[0+ca_i]=0.0;
+			ca_sinphi[0+ca_i]=0.0;
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t2;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				#pragma acc loop seq
+				for(ca_k=1;ca_k<=2;ca_k++){
+					ca_cosphi[4+(ca_i*2)+(ca_k-1)]+=cos(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+					ca_sinphi[4+(ca_i*2)+(ca_k-1)]+=sin(dihe[(ca_j*ndihe)+ca_index[4+ca_i]-1]*ca_k);
+				}
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			#pragma acc loop seq
+			for(ca_k=1;ca_k<=2;ca_k++){
+				ca_cosphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+				ca_sinphi[4+(ca_i*2)+(ca_k-1)]=0.0;
+			}
+		}
+		#pragma acc loop seq
+		for(ca_i=2;ca_i<ca_t3;ca_i++){
+			#pragma acc loop seq
+			for(ca_j=0;ca_j<nframe;ca_j++){
+				ca_cosphi[12+ca_i]+=cos(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+				ca_sinphi[12+ca_i]+=sin(dihe[(ca_j*ndihe)+ca_index[8+ca_i]-1]);
+			}
+		}
+		#pragma acc loop seq
+		for(;ca_i<4;ca_i++){
+			ca_cosphi[12+ca_i]=0.0;
+			ca_sinphi[12+ca_i]=0.0;
+		}
+
+		#pragma acc loop seq
+		for(ca_i=0;ca_i<16;ca_i++){
+			out_arr[ca_i*2]=ca_cosphi[ca_i]/nframe;
+			out_arr[ca_i*2+1]=ca_sinphi[ca_i]/nframe;
+		}
+
+
+		#pragma acc loop vector independent
+		for(j=2;j<26;j++)
+		{
+			oneline[j+60-2+1]=out_arr[j];
+			oneline_cb[j+60-2+1] = out_arr[j];
+			oneline_co[j+60-2+1] = out_arr[j];
+			oneline_n[j+60-2+1] = out_arr[j];
+			oneline_h[j+60-2+1] = out_arr[j];
+			oneline_ha[j+60-2+1] = out_arr[j];
+		}
+
+		#pragma acc loop seq
+		for(j=28;j<32;j++)
+		{
+			oneline[j+84-28+1]=out_arr[j];
+			oneline_cb[j+84-28+1] = out_arr[j];
+			oneline_co[j+84-28+1] = out_arr[j];
+			oneline_n[j+84-28+1] = out_arr[j];
+			oneline_h[j+84-28+1] = out_arr[j];
+			oneline_ha[j+84-28+1] = out_arr[j];
+		}
+
+		//hbond effect, 12 terms
+		oneline[88+1]=hbond_effect_arr[id-2].c_length;
+		oneline_cb[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_co[88+1] =hbond_effect_arr[id-2].c_length;
+		oneline_n[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_h[88+1] = hbond_effect_arr[id-2].c_length;
+		oneline_ha[88+1] = hbond_effect_arr[id-2].c_length;
+
+		oneline[89+1]=hbond_effect_arr[id-2].c_phi;
+		oneline_cb[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_co[89+1] =hbond_effect_arr[id-2].c_phi;
+		oneline_n[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_h[89+1] = hbond_effect_arr[id-2].c_phi;
+		oneline_ha[89+1] = hbond_effect_arr[id-2].c_phi;
+
+		oneline[90+1]=hbond_effect_arr[id-2].c_psi;
+		oneline_cb[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_co[90+1] =hbond_effect_arr[id-2].c_psi;
+		oneline_n[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_h[90+1] = hbond_effect_arr[id-2].c_psi;
+		oneline_ha[90+1] =hbond_effect_arr[id-2].c_psi;
+
+		
+
+		oneline[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_cb[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_cb[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_cb[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_cb[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_cb[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_cb[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_co[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_co[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_co[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_co[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_co[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_co[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_n[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_n[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_n[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_n[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_n[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_n[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_h[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_h[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_h[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_h[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_h[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_h[96+1]=hbond_effect_arr[id-1].n_psi;
+
+		oneline_ha[91+1]=hbond_effect_arr[id-1].c_length;
+		oneline_ha[92+1]=hbond_effect_arr[id-1].n_length;
+		oneline_ha[93+1]=hbond_effect_arr[id-1].c_phi;
+		oneline_ha[94+1]=hbond_effect_arr[id-1].c_psi;
+		oneline_ha[95+1]=hbond_effect_arr[id-1].n_phi;
+		oneline_ha[96+1]=hbond_effect_arr[id-1].n_psi;
+
+
+		oneline[97+1]=hbond_effect_arr[id].n_length;
+		oneline[98+1]=hbond_effect_arr[id].n_phi;
+		oneline[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_cb[97+1]=hbond_effect_arr[id].n_length;
+		oneline_cb[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_cb[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_co[97+1]=hbond_effect_arr[id].n_length;
+		oneline_co[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_co[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_n[97+1]=hbond_effect_arr[id].n_length;
+		oneline_n[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_n[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_h[97+1]=hbond_effect_arr[id].n_length;
+		oneline_h[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_h[99+1]=hbond_effect_arr[id].n_psi;
+
+		oneline_ha[97+1]=hbond_effect_arr[id].n_length;
+		oneline_ha[98+1]=hbond_effect_arr[id].n_phi;
+		oneline_ha[99+1]=hbond_effect_arr[id].n_psi;
+
+
+		oneline[60]=results[((i-1)*3)+0];
+		oneline_n[60]=results[((i-1)*3)+0];
+		oneline_h[60]=results[((i-1)*3)+0];
+		oneline_ha[60]=results[((i-1)*3)+0];
+		oneline_cb[60]=results[((i-1)*3)+1];
+		oneline_co[60]=results[((i-1)*3)+2];
+
+		//hn
+		if(index_arr[i].x2>0)
+		{
+			oneline_h[101]=ring_effect_arr[index_arr[i].x2-1].x[0];
+			oneline_h[102]=ring_effect_arr[index_arr[i].x2-1].x[1];
+			oneline_h[103]=ring_effect_arr[index_arr[i].x2-1].x[2];
+			oneline_h[104]=ring_effect_arr[index_arr[i].x2-1].x[3];
+			oneline_h[105]=ring_effect_arr[index_arr[i].x2-1].x[4];
+
+			oneline_h[106]=ani_effect_arr[index_arr[i].x2-1].x[0];
+			oneline_h[107]=ani_effect_arr[index_arr[i].x2-1].x[1];
+			oneline_h[108]=ani_effect_arr[index_arr[i].x2-1].x[2];
+			oneline_h[109]=ani_effect_arr[index_arr[i].x2-1].x[3];
+
+			pre_h=ann_h.predict_one_acc(oneline_h,110);
+		} else {
+			pre_h=-999.0;
+		}
+
+		//ha
+		oneline_ha[101]=ring_effect_ha_arr[index_arr[i].x1-1].x[0];
+		oneline_ha[102]=ring_effect_ha_arr[index_arr[i].x1-1].x[1];
+		oneline_ha[103]=ring_effect_ha_arr[index_arr[i].x1-1].x[2];
+		oneline_ha[104]=ring_effect_ha_arr[index_arr[i].x1-1].x[3];
+		oneline_ha[105]=ring_effect_ha_arr[index_arr[i].x1-1].x[4];
+
+		oneline_ha[106]=ani_effect_ha_arr[index_arr[i].x1-1].x[0];
+		oneline_ha[107]=ani_effect_ha_arr[index_arr[i].x1-1].x[1];
+		oneline_ha[108]=ani_effect_ha_arr[index_arr[i].x1-1].x[2];
+		oneline_ha[109]=ani_effect_ha_arr[index_arr[i].x1-1].x[3];
+
+		pre_ha=ann_ha.predict_one_acc(oneline_ha,110);
+		pre_ca=ann_ca.predict_one_acc(oneline,101);
+		pre_cb=ann_cb.predict_one_acc(oneline_cb,101);
+		pre_co=ann_co.predict_one_acc(oneline_co,101);
+		pre_n=ann_n.predict_one_acc(oneline_n,101);
+
+		predictions[((i-1)*6)+0]=pre_ca;
+		predictions[((i-1)*6)+1]=pre_cb;
+		predictions[((i-1)*6)+2]=pre_co;
+		predictions[((i-1)*6)+4]=pre_n;
+		predictions[((i-1)*6)+3]=pre_h;
+		predictions[((i-1)*6)+5]=pre_ha;
+	}
+} // end parallel
+} // END DATA
+	for(i=1; i<index_size-1; i++){
+		if(index_arr[i].x1<0){
+			continue;
+		}
+		id = i+1;
+		pdb->attach_bbprediction(id,predictions[((i-1)*6)+0],predictions[((i-1)*6)+1],predictions[((i-1)*6)+2],
+			predictions[((i-1)*6)+4],predictions[((i-1)*6)+3],predictions[((i-1)*6)+5]);
+	}
+
+	delete(predictions);
+	delete(hbond_effect_arr);
+	delete(results);
+	delete(ani_effect_arr);
+	delete(ani_effect_ha_arr);
+	delete(ring_effect_arr);
+	delete(ring_effect_ha_arr);
+	delete(index_arr);
+
+	cal_error();
+
+////////////////////////////////////////////////////////////////////////////////
+/*
 	//vector<struct ehbond> hbond_effect(traj->nres);
 	//ehbond *hbond_effect_arr = hbond_effect.data();
 	//int hbond_effect_size = hbond_effect.size();
@@ -1492,7 +2020,7 @@ void CMainbody::predict_bb_static_ann()
 		
 		if(bb_arr[i].code=='G')
 		{
-			/*ha.nh=2;
+			ha.nh=2;
 			ha.hpos[0]=bb.at(i).hapos;
 			ha.hpos[1]=bb.at(i).hapos2;
 			ha.exp=(bb.at(i).exp_ha+bb.at(i).exp_ha2)/2.0;
@@ -1502,7 +2030,7 @@ void CMainbody::predict_bb_static_ann()
 			ha.name="HB2";
 			ha.name2="HB3";
 			ha.cname="CA";
-			ha.cname2="CA";*/
+			ha.cname2="CA";
 			ha_protons_new[i].nh=2;
 			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
 			ha_protons_new[i].hpos[1]=bb_arr[i].hapos2;
@@ -1517,12 +2045,12 @@ void CMainbody::predict_bb_static_ann()
 		}
 		else
 		{
-			/*ha.nh=1;
+			ha.nh=1;
 			ha.hpos[0]=bb_arr[i].hapos;
 			ha.exp=bb_arr[i].exp_ha;
 			ha.type=91;
 			ha.name="HA";
-			ha.cname="CA";*/
+			ha.cname="CA";
 			ha_protons_new[i].nh=1;
 			ha_protons_new[i].hpos[0]=bb_arr[i].hapos;
 			ha_protons_new[i].exp=bb_arr[i].exp_ha;
@@ -1539,7 +2067,7 @@ void CMainbody::predict_bb_static_ann()
 		ha.id=bb_arr[i].id;
 		ha.code=bb_arr[i].code;
 
-		ha_protons.push_back(ha);*/
+		ha_protons.push_back(ha);
 	}
 
 	//proton * ha_protons_new = ha_protons.data();
@@ -1596,7 +2124,7 @@ void CMainbody::predict_bb_static_ann()
 	for(i=0;i<bb_size;i++)
 		index_arr[bb_arr[i].id-1].x1=i+1;
 	for(i=0;i<bbnh_size;i++)
-		index_arr[bbnh_arr[i].id-1].x2=i+1;*/
+		index_arr[bbnh_arr[i].id-1].x2=i+1;
 
 	c2=pdb->getselect(":1-%@allheavy");	
 	int* c2_arr = c2.data();
@@ -2052,7 +2580,7 @@ num_arr[0:num_size],v_pos[0:v_size]) copyout(predictions[0:(index_size-2)*6])
 
 	//pdb->print_debug("Test2");
 	cal_error();
-	//pdb->print_debug("Test3");
+	//pdb->print_debug("Test3");*/
 };
 
 
@@ -2769,32 +3297,20 @@ void CMainbody::predict_proton_static_new(void)
 	double *c;
 	vector< vector<double> > hs;
 
-	//vector<struct double_five> ring_effect(allprotons3_size);
-	//vector<struct double_four> ani_effect(allprotons3_size);
-
 	allprotons=allprotons3;
 
-	//double_five *ring_effect_arr = ring_effect.data();
-	//int ring_effect_size = ring_effect.size();
-	//double_four *ani_effect_arr = ani_effect.data();
-	//int ani_effect_size = ani_effect.size();
+	double_five *ring_effect_arr = new double_five[allprotons3_size];
+	double_four *ani_effect_arr = new double_four[allprotons3_size];
 
-	int ring_effect_size = allprotons3_size;
-	double_five *ring_effect_arr = new double_five[ring_effect_size];
-	int ani_effect_size = allprotons3_size;
-	double_four *ani_effect_arr = new double_four[ani_effect_size];
+#pragma acc data copyout(ani_effect_arr[0:allprotons3_size], ring_effect_arr[0:allprotons3_size])
+{
 
-	#pragma acc enter data create(ani_effect_arr[0:ani_effect_size], ring_effect_arr[0:ring_effect_size])
+	traj->getani_acc(anistropy_new, anistropy_size, allprotons3_new, allprotons3_size, ani_effect_arr, allprotons3_size);
+	traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, ring_effect_arr, allprotons3_size);
 
-	//traj->getani_acc(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,&ani_effect);
-	traj->getani_acc(anistropy_new,anistropy_size,allprotons3_new,allprotons3_size,ani_effect_arr,ani_effect_size);
-	//traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, &ring_effect);
-	traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, ring_effect_arr, ring_effect_size);
+} // end data region
+
 	hs.resize(2);
-
-	//pdb->print_debug("Test4");
-
-	#pragma acc exit data copyout(ani_effect_arr[0:ani_effect_size],ring_effect_arr[0:ring_effect_size])
 
 	for(i=0;i<(int)allprotons.size();i++)
 	{		
