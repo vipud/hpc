@@ -186,13 +186,14 @@ struct bbhbond_group
 
 struct ehbond
 {
-	double n_length;
-	double n_phi;
-	double n_psi;
+	double n_length=0;
+	double n_phi=0;
+	double n_psi=0;
 
-	double c_length;
-	double c_phi;
-	double c_psi;
+	double c_length=0;
+	double c_phi=0;
+	double c_psi=0;
+
 };
 
 struct eschbond
