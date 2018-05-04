@@ -1414,6 +1414,7 @@ void CMainbody::predict_bb()
 // New Function for OpenACC
 void CMainbody::ha_protons_acc(proton *ha_protons_new)
 {
+	cout << "ha_protons" << endl;
 	int i;
 	//#pragma acc parallel loop present(ha_protons_new[0:bb_size], bb_arr[0:bb_size])
 	// Cannot do GPU stuff because of the strings
@@ -1455,21 +1456,16 @@ void CMainbody::ha_protons_acc(proton *ha_protons_new)
 // New Function for OpenACC
 void CMainbody::index_acc(index_two *index_arr, int index_size)
 {
+	cout << "index_acc" << endl;
 	int i;
-	#pragma acc kernels present(index_arr[0:index_size],bb_arr[0:bb_size],bbnh_arr[0:bbnh_size])
-	{
-		#pragma acc loop independent gang vector
-		for(i=0;i<index_size;i++) {
-			index_arr[i].x1 = -1;
-			index_arr[i].x2 = -1;
-		}
-		#pragma acc loop independent gang vector
-		for(i=0;i<bb_size;i++)
-			index_arr[bb_arr[i].id-1].x1=i+1;
-		#pragma acc loop independent gang vector
-		for(i=0;i<bbnh_size;i++)
-			index_arr[bbnh_arr[i].id-1].x2=i+1;
+	for(i=0;i<index_size;i++) {
+		index_arr[i].x1 = -1;
+		index_arr[i].x2 = -1;
 	}
+	for(i=0;i<bb_size;i++)
+		index_arr[bb_arr[i].id-1].x1=i+1;
+	for(i=0;i<bbnh_size;i++)
+		index_arr[bbnh_arr[i].id-1].x2=i+1;
 }
 
 
@@ -1496,6 +1492,8 @@ void CMainbody::predict_bb_static_ann()
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
 
+	cout << "Bing" << endl;
+
 	char *v_oln = pdb->getvoneletter();
 	int *v_pos = pdb->code_pos;
 	int pos;
@@ -1509,6 +1507,8 @@ void CMainbody::predict_bb_static_ann()
 	CAminoacid **v = pdb->v_arr;
 	int v_size = pdb->v_size;
 	double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
+
+	cout << "Bang" << endl;
 
 	//ann_ca.load("ann_ca.dat");
 	ann_ca.loadp(p_ann_ca);
@@ -1534,23 +1534,31 @@ void CMainbody::predict_bb_static_ann()
 	float *results = new float[results_size];
 	double *predictions = new double[(index_size-2)*6];
 	ha_protons_acc(ha_protons_new);
+	index_acc(index_arr, index_size);
+	cout << "Boop" << endl;
 
-#pragma acc data create(ha_protons_new[0:bb_size], hbond_effect_arr[0:hbond_effect_size], \
+#pragma acc data create(hbond_effect_arr[0:hbond_effect_size], \
 ani_effect_arr[0:bbnh_size], ring_effect_arr[0:bbnh_size], ani_effect_ha_arr[0:bb_size],  \
-ring_effect_ha_arr[0:bb_size], index_arr[0:index_size], results[0:results_size])          \
+ring_effect_ha_arr[0:bb_size], results[0:results_size])          \
 copyout(predictions[0:(index_size-2)*6])                                                  \
-copyin(ha_protons_new[0:bb_size], blosum[0:400], v_oln[0:v_size], dihe[0:dihe_size],      \
+copyin(ha_protons_new[0:bb_size], index_arr[0:index_size], c2_arr[0:c2_size], blosum[0:400], v_oln[0:v_size], dihe[0:dihe_size],      \
 num_arr[0:num_size], v_pos[0:v_size]) present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size],   \
-hbond[0:hbond_size], anistropy_new[0:anistropy_size])
+hbond_arr[0:hbond_size], anistropy_new[0:anistropy_size])
 {
 
-	index_acc(index_arr, index_size);
+	cout << "1" << endl;
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
+	cout << "2" << endl;
 	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,bbnh_size);
+	cout << "3" << endl;
 	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, bbnh_size);
+	cout << "4" << endl;
 	traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,bb_size,ani_effect_ha_arr,bb_size);
+	cout << "5" << endl;
 	traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, bb_size, ring_effect_ha_arr, bb_size);
+	cout << "6" << endl;
 	traj->get_all_contacts(bb_arr,bb_size,index_arr,index_size,c2_arr,c2_size,results,results_size);
+	cout << "7" << endl;
 
 #pragma acc parallel
 {
@@ -3301,16 +3309,49 @@ void CMainbody::predict_proton_static_new(void)
 
 	allprotons=allprotons3;
 
+	//#pragma acc update self(allprotons3_new[0:allprotons3_size])
+
+	/*FILE *fp=fopen("allprotons3.txt","wt");
+	for(int q = 0; q < allprotons3_size; q++){
+		for(int qq = 0; qq < 6; qq++)
+			fprintf(fp, "%0.3f, ", allprotons3_new[q].hpos[6]);
+		fprintf(fp,"%0.3f\n", allprotons3_new[q].exp);
+	}
+	fclose(fp);*/
+
 	double_five *ring_effect_arr = new double_five[allprotons3_size];
 	double_four *ani_effect_arr = new double_four[allprotons3_size];
 
-#pragma acc data copyout(ani_effect_arr[0:allprotons3_size], ring_effect_arr[0:allprotons3_size])
+#pragma acc data copy(ani_effect_arr[0:allprotons3_size], ring_effect_arr[0:allprotons3_size])
 {
-
+	/*#pragma acc update self(ani_effect_arr[0:allprotons3_size], ring_effect_arr[0:allprotons3_size])
+	FILE *fp=fopen("txt.txt","wt");
+	for(int q = 0; q < allprotons3_size; q++){
+		fprintf(fp, "(");
+		for(int qq = 0; qq < 4; qq++)
+			fprintf(fp, "%0.3f, ", ani_effect_arr[q].x[qq]);
+		fprintf(fp, ") (");
+		for(int qq = 0; qq < 5; qq++)
+			fprintf(fp, "%0.3f, ", ring_effect_arr[q].x[qq]);
+		fprintf(fp, ")\n");
+	}
+	fclose(fp);*/
 	traj->getani_acc(anistropy_new, anistropy_size, allprotons3_new, allprotons3_size, ani_effect_arr, allprotons3_size);
 	traj->getring_acc(ring_index_new, ring_index_size, allprotons3_new, allprotons3_size, ring_effect_arr, allprotons3_size);
 
 } // end data region
+
+	/*FILE *fp=fopen("allprotons3.txt","wt");
+	for(int q = 0; q < allprotons3_size; q++){
+		fprintf(fp, "(");
+		for(int qq = 0; qq < 4; qq++)
+			fprintf(fp, "%0.3f, ", ani_effect_arr[q].x[qq]);
+		fprintf(fp, ") (");
+		for(int qq = 0; qq < 5; qq++)
+			fprintf(fp, "%0.3f, ", ring_effect_arr[q].x[qq]);
+		fprintf(fp, ")\n");
+	}
+	fclose(fp);*/
 
 	hs.resize(2);
 
