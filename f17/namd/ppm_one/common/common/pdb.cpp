@@ -1380,7 +1380,7 @@ int CPdb::loadpdb(string filename)
 			}
 		}
 
-		for(i=stop-2;i>=0;i--)
+		for(i=stop-2;i>=start;i--)
 		{
 			pdbblock=blocks.at(i);
 			if(pdbblock.iligand==0 && blocks.at(i+1).iligand==1)
