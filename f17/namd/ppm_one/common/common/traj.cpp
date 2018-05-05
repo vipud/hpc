@@ -2283,6 +2283,8 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct methyl_group>*
 // New function for OpenACC
 void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int select_size, double_four *ani_effect_arr)
 {
+	if(index_size <= 0 || select_size <= 0)
+		return;
 	double st = omp_get_wtime();
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
@@ -2388,6 +2390,8 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 //void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int select_size, vector<struct double_four> *ani_effect)
 void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int select_size, double_four *ani_effect_arr, int ani_effect_size)
 {
+	if(index_size <= 0 || select_size <= 0)
+		return;
 	double st = omp_get_wtime();
 	int i,j,ii,jj,k;
 	int i1,i2,i3;
@@ -2653,6 +2657,8 @@ void CTraj::getani(vector<struct ani_group> *index, vector<struct proton>* selec
 //void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int select_size, vector<struct double_four> *ani_effect)
 void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int select_size, double_four *ani_effect_arr, int ani_effect_size)
 {
+	if(index_size <= 0 || select_size <= 0)
+		return;
 	double st = omp_get_wtime();
 	int i,j,ii,jj;
 	int i1,i2,i3;
