@@ -1545,20 +1545,12 @@ copyin(ha_protons_new[0:bb_size], index_arr[0:index_size], c2_arr[0:c2_size], bl
 num_arr[0:num_size], v_pos[0:v_size]) present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size],   \
 hbond_arr[0:hbond_size], anistropy_new[0:anistropy_size])
 {
-
-	cout << "1" << endl;
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
-	cout << "2" << endl;
 	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,bbnh_size);
-	cout << "3" << endl;
 	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, bbnh_size);
-	cout << "4" << endl;
 	traj->getani_acc(anistropy_new,anistropy_size,ha_protons_new,bb_size,ani_effect_ha_arr,bb_size);
-	cout << "5" << endl;
 	traj->getring_acc(ring_index_new, ring_index_size, ha_protons_new, bb_size, ring_effect_ha_arr, bb_size);
-	cout << "6" << endl;
 	traj->get_all_contacts(bb_arr,bb_size,index_arr,index_size,c2_arr,c2_size,results,results_size);
-	cout << "7" << endl;
 
 #pragma acc parallel
 {
