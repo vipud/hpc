@@ -825,8 +825,7 @@ void CTraj::gethbond_acc(bbhbond_group *hbond, int _hbond_size, ehbond *effect_a
 
 	//#pragma acc enter data copyin(effect_arr[0:effect_size])
 
-//#pragma acc parallel present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
-#pragma acc parallel default(present)
+#pragma acc parallel present(x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],effect_arr[0:effect_size],hbond[0:_hbond_size])
 {
 #pragma acc loop gang independent
 	for(i=0;i<_hbond_size;i++)
@@ -895,8 +894,7 @@ void CTraj::gethbond_acc(bbhbond_group *hbond, int _hbond_size, ehbond *effect_a
 		}
 	}
 } // end parallel region
-//#pragma acc parallel loop present(effect_arr[0:effect_size])
-#pragma acc parallel loop default(present)
+#pragma acc parallel loop present(effect_arr[0:effect_size])
 	for(i=0;i<effect_size;i++)
 	{
 		effect_arr[i].n_length/=nframe;
@@ -1476,10 +1474,9 @@ void CTraj::getring_acc(ring_group *index, int index_size, nh_group *select, int
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;  
-		//#pragma acc parallel loop independent gang present(index[0:index_size],select[0:select_size], \
+		#pragma acc parallel loop independent gang present(index[0:index_size],select[0:select_size], \
 		x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ring_effect_arr[0:select_size]) \
 		private(i,j,ii,jj,m)
-		#pragma acc parallel loop independent gang default(present) private(i,j,ii,jj,m)
 		for(j=0;j<index_size;j++)
 		{
 			int t_p[6];
@@ -1567,8 +1564,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, nh_group *select, int
 		}
 	}
 
-	//#pragma acc parallel loop independent present(ring_effect_arr[0:select_size])
-	#pragma acc parallel loop independent default(present)
+	#pragma acc parallel loop independent present(ring_effect_arr[0:select_size])
 	for(ii=0;ii<select_size;ii++)
 	{
 		#pragma acc loop seq
@@ -1723,10 +1719,9 @@ void CTraj::getring_acc(ring_group *index, int index_size, proton *select, int s
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;  
-		//#pragma acc parallel loop independent gang present(index[0:index_size],select[0:select_size], \
+		#pragma acc parallel loop independent gang present(index[0:index_size],select[0:select_size], \
 		x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ring_effect_arr[0:ring_effect_size]) \
 		private(i,j,ii,jj,m,k,e)
-		#pragma acc parallel loop independent gang default(present) private(i,j,ii,jj,m,k,e)
 		for(j=0;j<index_size;j++)
 		{
 
@@ -1831,8 +1826,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, proton *select, int s
 		}
 	}
 
-	//#pragma acc parallel loop independent present(ring_effect_arr[0:ring_effect_size])
-	#pragma acc parallel loop independent default(present)
+	#pragma acc parallel loop independent present(ring_effect_arr[0:ring_effect_size])
 	for(ii=0;ii<select_size;ii++)
 	{
 		#pragma acc loop seq
@@ -2307,8 +2301,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 	{
 		base=i*natom;
 //#pragma acc parallel present(index[0:index_size], select[0:select_size], x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size], ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj,k)
-//#pragma acc parallel present(index[0:index_size],select[0:select_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ani_effect_arr[0:select_size])
-#pragma acc parallel default(present)
+#pragma acc parallel present(index[0:index_size],select[0:select_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ani_effect_arr[0:select_size])
 {
 #pragma acc loop independent gang private(i1,i2,i3,e,cosa,length,jj,k)
 		for(j=0;j<index_size;j++)
@@ -2367,8 +2360,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 		}
 } // end parallel region
 	} // end nframe loop
-	//#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
-	#pragma acc parallel loop independent default(present)
+	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
 	for(j=0; j<select_size; j++)
 	{
 		ani_effect_arr[j].x[0] /= nframe;
@@ -2413,8 +2405,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-//#pragma acc parallel present(index[0:index_size], select[0:select_size], x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size], ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj,k)
-#pragma acc parallel default(present)
+#pragma acc parallel present(index[0:index_size], select[0:select_size], x_arr[0:x_size], y_arr[0:y_size], z_arr[0:z_size], ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj,k)
 {
 #pragma acc loop independent gang private(i1,i2,i3,e,cosa,length,jj,k)
 		for(j=0;j<index_size;j++)
@@ -2473,8 +2464,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, proton *select, int sel
 		}
 } // end parallel region
 	} // end nframe loop
-	//#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
-	#pragma acc parallel loop independent default(present)
+	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
 	for(j=0; j<select_size; j++)
 	{
 		ani_effect_arr[j].x[0] /= nframe;
@@ -2680,8 +2670,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int s
 	for(i=0;i<nframe;i++)
 	{
 		base=i*natom;
-//#pragma acc parallel present(index[0:index_size],select[0:select_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj)
-#pragma acc parallel default(present) private(i1,i2,i3,e,cosa,length,jj)
+#pragma acc parallel present(index[0:index_size],select[0:select_size],x_arr[0:x_size],y_arr[0:y_size],z_arr[0:z_size],ani_effect_arr[0:select_size]) private(i1,i2,i3,e,cosa,length,jj)
 {
 		#pragma acc loop independent gang
 		for(j=0;j<index_size;j++)
@@ -2734,8 +2723,7 @@ void CTraj::getani_acc(ani_group *index, int index_size, nh_group *select, int s
 } // end parallel region
 	} // end frame loop
 
-	//#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
-	#pragma acc parallel loop independent default(present)
+	#pragma acc parallel loop independent present(ani_effect_arr[0:select_size])
 	for(j=0; j<select_size; j++)
 	{
 
