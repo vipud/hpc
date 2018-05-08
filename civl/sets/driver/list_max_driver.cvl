@@ -1,0 +1,205 @@
+/* Implementation of list driver for CIVL
+ * Dec-5-2017
+ * Wenhao Wu
+ * VSL Lab; Dept. CIS; UDel
+ */
+
+// Dependencies
+#include "../include/list.cvh"
+#include "perm_util.c"
+#include <stdio.h>	// Printing outputs
+#include <string.h>	// Output content.
+#include <stdbool.h>
+
+// Defs
+#define ADD true
+#define ACTUAL -1
+#define RESULT -2
+
+//CIVL Inputs
+$input int VAL_B = 1;	// Vals are in [0, VAL_B]
+$input int THD_B = 2;   // Maximum number of threads
+$input int STP_B = 2;	// Maximum number of total steps
+$input int nthreads;	// Actual number of threads
+$assume(1 <= nthreads && nthreads <= THD_B);
+
+//Global Vars
+int num_vals;
+int num_steps;
+int num_perms;
+int nsteps[nthreads];
+_Bool ops[nthreads][STP_B];
+int vals[nthreads][STP_B];
+
+void print_steps() {
+  for (int tid = 0; tid < nthreads; tid++) {
+    printf("Thread %d steps: ", tid);
+    int m = nsteps[tid];
+    for (int i = 0; i < m; i++) {
+      if (i > 0) printf(", ");
+      if (ops[tid][i] == ADD) printf("ADD");
+      else printf("DEL");
+      printf(" %d", vals[tid][i]);
+    }
+    printf("\n");
+  }
+}
+
+void printInitInfo() {
+  printf("[Init]\t Num of threads: %d\n", nthreads);
+  printf("[Init]\t Num of steps: %d\n", num_steps);
+  print_steps();
+}
+
+void printList(_Bool* s) {
+  _Bool first = true;
+  printf("\t{");
+  for (int v = 0; v < num_vals; v++) {
+    if (s[v]) {
+      if (first) first = false;
+      else printf(", ");
+      printf("%d", v);
+    }
+  }
+  printf("}");
+}
+
+void printOpInfo(int type, int tid, _Bool op, int val, _Bool* results) {
+  if (type == RESULT) {
+    printf("[RESULT]");
+  } else if (type == ACTUAL) {
+    printf("[ACTUAL]");
+  } else {
+    printf("[PERMS%d]", type);
+  }
+  printf("\tThread[%d] performs ", tid);
+  printf((op==ADD?"<ADD>":"<DEL>"));
+  printf(" value: %d", val);
+  printList(results);
+  printf("\n");
+}
+
+void printOpInfo_list(int type, int tid, _Bool op, int val, List* list) {
+  _Bool temp_results[num_vals];
+
+  for (int val = 0; val < num_vals; val++)
+    temp_results[val] = list_contains(list, val);
+  printOpInfo(type, tid, op, val, temp_results);
+}
+
+void printEquivSeqInfo(int* perms, _Bool* results) {
+  int step_counters[nthreads];
+
+  for (int tid = 0; tid < nthreads; tid++)
+    step_counters[tid] = 0;
+
+  printf("Equivalent sequential execution: \n");
+  for (int step = 0; step < num_steps; step++) {
+    int tid = perms[step];
+    int step_local = step_counters[tid];
+    _Bool op = ops[tid][step_local];
+    int val = vals[tid][step_local];
+
+    printOpInfo(RESULT, tid, op, val, results);
+    step_counters[tid]++;
+  }
+}
+
+void init() {
+  num_vals = VAL_B + 1;
+  num_steps = 0;
+  
+  for (int tid = 0; tid < nthreads; tid++) {
+    int num_steps_local = $choose_int(STP_B+1-num_steps);
+    
+    nsteps[tid] = num_steps_local;
+    for (int step = 0; step < num_steps_local; step++) {
+      ops[tid][step] = ADD;
+      vals[tid][step] = $choose_int(num_vals);
+      num_steps++;
+    }
+  }
+  num_perms = calc_num_perms(nthreads, nsteps);
+}
+
+void thread(int tid, List* list) {
+  int num_steps_local = nsteps[tid];
+  
+  for (int step = 0; step < num_steps_local; step++) {
+    _Bool op = ops[tid][step];
+    int val = vals[tid][step];
+
+    if (op == ADD) 
+      list_add(list, val);
+    else
+      list_remove(list, val);
+    //printOpInfo_list(ACTUAL, tid, op, val, list);
+  }
+}
+
+void permseq(int pid, int* perm, _Bool* oracle_results) {
+  int step_counters[nthreads];
+
+  for (int tid = 0; tid < nthreads; tid++)
+    step_counters[tid] = 0;
+
+  for (int step_seq = 0; step_seq < num_steps; step_seq++) {
+    int tid = perm[step_seq];
+    int step = step_counters[tid];
+    _Bool op = ops[tid][step];
+    int val = vals[tid][step];
+
+    if (op == ADD)
+      oracle_results[val] = true;
+    else 
+      oracle_results[val] = false;
+    step_counters[tid]++;
+    //printOpInfo(pid, tid, op, val, oracle_results);
+  }
+}
+
+_Bool isEqual(_Bool* actual, _Bool* oracle) {
+  for (int val = 0; val < num_vals; val++)
+    if (actual[val] != oracle[val])
+      return false;
+  return true;
+}
+
+int main() {
+  init(); 
+  printInitInfo();
+
+  int pid = 0;
+  int** perms = compute_perms(nthreads, nsteps);
+  _Bool actual_results[num_vals];
+  _Bool oracle_results[num_vals];
+  List* actual_list = list_create();
+ 
+  $parfor (int tid : 0 .. nthreads-1) {
+    thread(tid, actual_list);
+  }
+
+  for (int val = 0; val < num_vals; val++)
+    actual_results[val] = list_contains(actual_list, val);
+  
+  for (pid = 0; pid < num_perms; pid++) {
+    for (int val = 0; val < num_vals; val++)
+      oracle_results[val] = false;
+    permseq(pid, perms[pid], oracle_results);
+    if (isEqual(actual_results, oracle_results) == true) {
+      printEquivSeqInfo(perms[pid], oracle_results);
+      break;
+    }
+  }
+  if (num_steps > 0 && pid >= num_perms) {
+    printf("Results of concurrent execution:");
+    printList(actual_results);
+    printf("\nNo matching sequentialized execution found!\n");
+    $assert(false);
+  }
+  list_destroy(actual_list);
+  for (int i = 0; i < num_perms; i++)
+    free(perms[i]);
+  free(perms);
+}
+
