@@ -34,6 +34,11 @@ coarse_list_2 : coarselist/coarse_list.cvl driver/list_max_driver.cvl \
 		$(CIVL) verify -inputVAL_B=3 -inputTHD_B=2 -inputSTP_B=2 \
                 driver/list_max_driver.cvl coarselist/coarse_list.cvl
 
+fine_list_2 : finelist/fine_list.cvl driver/list_max_driver.cvl \
+		driver/perm_util.c include/set.cvh
+		$(CIVL) verify -inputVAL_B=3 -inputTHD_B=2 -inputSTP_B=2 \
+                driver/list_max_driver.cvl finelist/fine_list.cvl
+
 naive_6v : naive/naive_set.cvl driver/max_driver.cvl driver/perm_util.c \
           include/set.cvh
 	$(CIVL) verify -inputVAL_B=6 -inputTHD_B=2 -inputSTP_B=2 \

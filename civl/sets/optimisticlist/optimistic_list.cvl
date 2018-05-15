@@ -100,106 +100,129 @@ void list_print(List* list) {
   printf("\n");
 }
 
-_Bool list_contains(List* list, int item) {
-  Node* curr;
-  Node* pred;
-  int key = hash(item);
-  lock_acquire(list->head->lock);
-  pred = list->head;
-  curr = pred->next;
-  lock_acquire(curr->lock);
-  while (curr->key < key) {
-    lock_release(pred->lock);
-    pred = curr;
-    curr = curr->next;
-    lock_acquire(curr->lock);
+_Bool validate(List* list, Node* pred, Node* curr) {
+  Node* entry = list->head;
+  while (entry->key <= pred->key) {
+    if (entry == pred) {
+      return (pred->next == curr);
+    }
+    entry = entry->next;
   }
-  _Bool result = (curr->key == key);
-  lock_release(curr->lock);
-  lock_release(pred->lock);
-  return result;
+  return false;
+}
+
+_Bool list_contains(List* list, int item) {
+  int key = hash(item);
+  while (true) {
+    Node* pred = list->head;
+    Node* curr = pred->next;
+    while (curr->key < key) {
+      pred = curr;
+      curr = curr->next;
+    }
+    lock_acquire(pred->lock);
+    lock_acquire(curr->lock);
+    if (validate(list, pred, curr)) {
+      _Bool result = (curr->key == key);
+      lock_release(pred->lock);
+      lock_release(curr->lock);
+      return result;
+    }
+    lock_release(pred->lock);
+    lock_release(curr->lock);
+  }
 }
 
 _Bool list_add(List* list, int item) {
-  Node* pred;
-  Node* curr;
   int key = hash(item);
-  pred = list->head;
-  lock_acquire(pred->lock);
-  curr = pred->next;
-  lock_acquire(curr->lock);
-  while (curr->key < key) {
-    lock_release(pred->lock);
-    pred = curr;
-    curr = curr->next;
+  while (true) {
+    Node* pred = list->head;
+    Node* curr = pred->next;
+    while (curr->key < key) {
+      pred = curr;
+      curr = curr->next;
+    }
+    lock_acquire(pred->lock);
     lock_acquire(curr->lock);
-  }
-  if (curr->key == key) {
-    lock_release(curr->lock);
+    if (validate(list, pred, curr)) {
+      if (curr->key == key) {
+	lock_release(pred->lock);
+	lock_release(curr->lock);
+	return false;
+      } else {
+	printf("List state before adding:\n");
+	list_print(list);
+	Node* new_node = (Node*) malloc(sizeof(Node));
+	new_node->next = curr;
+	new_node->lock = (Lock*) malloc(sizeof(Lock));
+	new_node->lock->count = 0;
+	new_node->lock->owner = $proc_null;
+	pred->next = new_node;
+	list->size++;
+	new_node->key = key;
+	new_node->item = item;
+	printf("List state after adding:\n");
+	list_print(list);
+	lock_release(pred->lock);
+	lock_release(curr->lock);
+	return true;
+      }
+    }
     lock_release(pred->lock);
-    return false;
-  } else {
-    Node* new_node = (Node*) malloc(sizeof(Node));
-    new_node->next = curr;
-    new_node->lock = (Lock*) malloc(sizeof(Lock));
-    new_node->lock->count = 0;
-    new_node->lock->owner = $proc_null;
-    pred->next = new_node;
-    list->size++;
-    new_node->key = key;
-    new_node->item = item;
     lock_release(curr->lock);
-    lock_release(pred->lock);
-    return true;
   }
 }
 
 _Bool list_remove(List* list, int item) {
-  Node* pred;
-  Node* curr;
   int key = hash(item);
-  lock_acquire(list->head->lock);
-  pred = list->head;
-  curr = pred->next;
-  lock_acquire(curr->lock);
-  while (curr->key < key) {
-    lock_release(pred->lock);
-    pred = curr;
-    curr = curr->next;
+  while (true) {
+    Node* pred = list->head;
+    Node* curr = pred->next;
+    while (curr->key < key) {
+      pred = curr;
+      curr = curr->next;
+    }
+    lock_acquire(pred->lock);
     lock_acquire(curr->lock);
-  }
-  if (curr->key == key) {
-    pred->next = curr->next;
-    curr->next = NULL;
-    curr->key = -1;
-    curr->item = -1;
-    free(curr->lock);
-    free(curr);
+    if (validate(list, pred, curr)) {
+      if (curr->key == key) {
+	pred->next = curr->next;
+	curr->next = NULL;
+	curr->key = -1;
+	curr->item = -1;
+	free(curr->lock);
+	free(curr);
+	lock_release(pred->lock);
+	return true;
+      } else {
+	lock_release(pred->lock);
+	lock_release(curr->lock);
+	return false;
+      }
+    }
     lock_release(pred->lock);
-    return true;
-  } else {
     lock_release(curr->lock);
-    lock_release(pred->lock);
-    return false;
   }
 }
 
-/*
+
 void main() {
   List* list = list_create();
-  $parfor(int i : 0 .. 2) {
+  
+  $parfor(int i : 0 .. 1) {
     list_add(list, i);
   }
-  $for(int j : 0 .. 2) {
+  $for(int j : 0 .. 1) {
     $assert(list_contains(list, j));
   }
+  /*
   $parfor(int i : 0 .. 2) {
     list_remove(list, i);
   }
   $for(int j : 0 .. 2) {
     $assert(!list_contains(list, j));
   }
-  list_print(list);
+  */
+  //list_print(list);
   list_destroy(list);
 }
-*/

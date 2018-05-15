@@ -1,0 +1,791 @@
+CIVL v1.15.1 of 2018-04-10 -- http://vsl.cis.udel.edu/civl
+
+Initial state:
+
+State (id=4)
+| Path condition
+| | true
+| Dynamic scopes
+| | dyscope d0 (parent=NULL, static=1)
+| | | variables
+| | | | _civl_root = NULL
+| Process states
+| | process 0
+| | | call stack
+| | | | Frame[function=main, location=0, optimistic_list.cvl:209.0-228.0 "void main() {\n   ... }", dyscope=d0]
+
+Executed by p0 from State (id=4)
+  0->1: _civl_root=UNDEFINED at optimistic_list.cvl:209.0-228.0 "void main() {\n   ... }"
+--> State (id=7)
+
+Step 1: Executed by p0 from State (id=7)
+  1->69: list=list_create() at optimistic_list.cvl:210.2-27 "List* list = list_create()"
+--> State (id=10)
+
+Step 2: Executed by p0 from State (id=10)
+  69->70: result=(struct _list*)$malloc(UNDEFINED, SIZEOF(228)) [result:=&<d0>heap.malloc0[0][0]] at optimistic_list.cvl:40.2-44 "List* result = (List ... )"
+--> State (id=16)
+
+Step 3: Executed by p0 from State (id=16)
+  70->71: (*(&<d0>heap.malloc0[0][0])).size=0 at optimistic_list.cvl:41.2-17 "result->size = 0"
+--> State (id=20)
+
+Step 4: Executed by p0 from State (id=20)
+  71->72: (*(&<d0>heap.malloc0[0][0])).head=(struct _node*)$malloc(UNDEFINED, SIZEOF(226)) [(*(&<d0>heap.malloc0[0][0])).head:=&<d0>heap.malloc1[0][0]] at optimistic_list.cvl:42.2-44 "result->head = (Node* ... )"
+--> State (id=26)
+
+Step 5: Executed by p0 from State (id=26)
+  72->73: (*(&<d0>heap.malloc1[0][0])).lock=(struct _lock*)$malloc(UNDEFINED, SIZEOF(224)) [(*(&<d0>heap.malloc1[0][0])).lock:=&<d0>heap.malloc2[0][0]] at optimistic_list.cvl:43.2-50 "result->head->lock = ( ... )"
+--> State (id=33)
+
+Step 6: Executed by p0 from State (id=33)
+  73->74: (*(&<d0>heap.malloc2[0][0])).owner=$proc_null at optimistic_list.cvl:44.2-39 "result->head->lock->owner = ... $proc_null"
+--> State (id=37)
+
+Step 7: Executed by p0 from State (id=37)
+  74->75: (*(&<d0>heap.malloc2[0][0])).count=0 at optimistic_list.cvl:45.2-30 "result->head->lock->count = ... 0"
+--> State (id=40)
+
+Step 8: Executed by p0 from State (id=40)
+  75->76: (*(&<d0>heap.malloc1[0][0])).next=(struct _node*)$malloc(UNDEFINED, SIZEOF(226)) [(*(&<d0>heap.malloc1[0][0])).next:=&<d0>heap.malloc3[0][0]] at optimistic_list.cvl:46.2-50 "result->head->next = ( ... )"
+--> State (id=46)
+
+Step 9: Executed by p0 from State (id=46)
+  76->77: (*(&<d0>heap.malloc1[0][0])).item=-1 at optimistic_list.cvl:47.2-24 "result->head->item = -1"
+--> State (id=50)
+
+Step 10: Executed by p0 from State (id=50)
+  77->78: (*(&<d0>heap.malloc3[0][0])).item=-1 at optimistic_list.cvl:48.2-30 "result->head->next->item = ... 1"
+--> State (id=53)
+
+Step 11: Executed by p0 from State (id=53)
+  78->79: (*(&<d0>heap.malloc1[0][0])).key=-32767 at optimistic_list.cvl:49.2-limits.h:49.21 "result->head->key = -32767"
+--> State (id=56)
+
+Step 12: Executed by p0 from State (id=56)
+  79->80: (*(&<d0>heap.malloc3[0][0])).key=32767 at optimistic_list.cvl:50.2-limits.h:52.21 "result->head->next->key = ... 32767"
+--> State (id=59)
+
+Step 13: Executed by p0 from State (id=59)
+  80->81: (*(&<d0>heap.malloc3[0][0])).next=((struct _node)*)0 [(*(&<d0>heap.malloc3[0][0])).next:=(void*)0] at optimistic_list.cvl:51.2-civlc.cvh:15.22 "result->head->next->next = ... )"
+--> State (id=62)
+
+Step 14: Executed by p0 from State (id=62)
+  81->82: (*(&<d0>heap.malloc3[0][0])).lock=(struct _lock*)$malloc(UNDEFINED, SIZEOF(224)) [(*(&<d0>heap.malloc3[0][0])).lock:=&<d0>heap.malloc4[0][0]] at optimistic_list.cvl:52.2-56 "result->head->next->lock = ... )"
+--> State (id=68)
+
+Step 15: Executed by p0 from State (id=68)
+  82->83: (*(&<d0>heap.malloc4[0][0])).owner=$proc_null at optimistic_list.cvl:53.2-45 "result->head->next->lock->owner ... $proc_null"
+--> State (id=72)
+
+Step 16: Executed by p0 from State (id=72)
+  83->84: (*(&<d0>heap.malloc4[0][0])).count=0 at optimistic_list.cvl:54.2-36 "result->head->next->lock->count ... 0"
+--> State (id=75)
+
+Step 17: Executed by p0 from State (id=75)
+  84->RET: list_create(...) return &<d0>heap.malloc0[0][0] [list:=&<d0>heap.malloc0[0][0]] at optimistic_list.cvl:55.2-15 "return result;"
+--> State (id=79)
+
+Step 18: Executed by p0 from State (id=79)
+  2->3: $elaborate_domain(($domain(1))(0..1#1)) [$assume(true)] at optimistic_list.cvl:212.18-23 "0 .. 1"
+  3->4: $parfor(i0: ($domain(1))(0..1#1)) $spawn _par_proc0(i0) at optimistic_list.cvl:212.2-8 "$parfor"
+  4->5: _civl_ir1=0 at optimistic_list.cvl:214.2 "}"
+--> State (id=93)
+
+Step 19: Executed by p0 from State (id=93)
+  5->6: LOOP_BODY_ENTER (guard: 0<2) at optimistic_list.cvl:214.2 "}"
+--> State (id=95)
+
+Step 20: Executed by p1 from State (id=95)
+  120->17: list_add(&<d0>heap.malloc0[0][0], 0) at optimistic_list.cvl:213.4-20 "list_add(list, i)"
+  17->107: key=hash(0) at optimistic_list.cvl:137.2-21 "int key = hash(item)"
+  107->RET: hash(...) return 0 [key:=0] at optimistic_list.cvl:76.2-10 "return i;"
+--> State (id=103)
+
+Step 21: Executed by p1 from State (id=103)
+  18->19: LOOP_BODY_ENTER (guard: 1!=0) at stdbool.h:5.13 "1" expanded from optimistic_list.cvl:138.9-12 "true"
+--> State (id=105)
+
+Step 22: Executed by p2 from State (id=105)
+  120->17: list_add(&<d0>heap.malloc0[0][0], 1) at optimistic_list.cvl:213.4-20 "list_add(list, i)"
+  17->107: key=hash(1) at optimistic_list.cvl:137.2-21 "int key = hash(item)"
+  107->RET: hash(...) return 1 [key:=1] at optimistic_list.cvl:76.2-10 "return i;"
+--> State (id=113)
+
+Step 23: Executed by p2 from State (id=113)
+  18->19: LOOP_BODY_ENTER (guard: 1!=0) at stdbool.h:5.13 "1" expanded from optimistic_list.cvl:138.9-12 "true"
+--> State (id=115)
+
+Step 24: Executed by p1 from State (id=115)
+  19->20: pred=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:139.4-26 "Node* pred = list->head"
+--> State (id=118)
+
+Step 25: Executed by p1 from State (id=118)
+  20->21: curr=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:140.4-26 "Node* curr = pred->next"
+--> State (id=121)
+
+Step 26: Executed by p1 from State (id=121)
+  21->24: LOOP_BODY_EXIT (guard: !(32767<0)) at optimistic_list.cvl:141.11-25 "curr->key < key"
+--> State (id=123)
+
+Step 27: Executed by p1 from State (id=123)
+  24->94: lock_acquire(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:145.4-27 "lock_acquire(pred->lock)"
+--> State (id=126)
+
+Step 28: Executed by p1 from State (id=126)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p1, p1.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=133)
+
+Step 29: Executed by p1 from State (id=133)
+  96->97: (*(&<d0>heap.malloc2[0][0])).owner=$self [(*(&<d0>heap.malloc2[0][0])).owner:=p1] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc2[0][0])).count=0+1 [(*(&<d0>heap.malloc2[0][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p1.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=145)
+
+Step 30: Executed by p1 from State (id=145)
+  25->94: lock_acquire(&<d0>heap.malloc4[0][0]) at optimistic_list.cvl:146.4-27 "lock_acquire(curr->lock)"
+--> State (id=148)
+
+Step 31: Executed by p1 from State (id=148)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p1, p1.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=155)
+
+Step 32: Executed by p1 from State (id=155)
+  96->97: (*(&<d0>heap.malloc4[0][0])).owner=$self [(*(&<d0>heap.malloc4[0][0])).owner:=p1] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc4[0][0])).count=0+1 [(*(&<d0>heap.malloc4[0][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p1.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=167)
+
+Step 33: Executed by p1 from State (id=167)
+  26->114: $sef$1=validate(&<d0>heap.malloc0[0][0], &<d0>heap.malloc1[0][0], &<d0>heap.malloc3[0][0]) at optimistic_list.cvl:147.8-33 "validate(list, pred, curr)"
+--> State (id=170)
+
+Step 34: Executed by p1 from State (id=170)
+  114->115: entry=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:104.2-25 "Node* entry = list->head"
+--> State (id=173)
+
+Step 35: Executed by p1 from State (id=173)
+  115->116: LOOP_BODY_ENTER (guard: -32767<=-32767) at optimistic_list.cvl:105.9-31 "entry->key <= pred->key"
+--> State (id=175)
+
+Step 36: Executed by p1 from State (id=175)
+  116->117: TRUE_BRANCH_IF (guard: &<d0>heap.malloc1[0][0]==&<d0>heap.malloc1[0][0]) at optimistic_list.cvl:106.23 "{"
+--> State (id=177)
+
+Step 37: Executed by p1 from State (id=177)
+  117->118: validate(...) return &<d0>heap.malloc3[0][0]==&<d0>heap.malloc3[0][0] [$sef$1:=true] at optimistic_list.cvl:107.6-33 "return (pred->next ==  ... ;"
+  27->28: TRUE_BRANCH_IF (guard: true) at optimistic_list.cvl:147.36 "{"
+--> State (id=182)
+
+Step 38: Executed by p1 from State (id=182)
+  28->32: FALSE_BRANCH_IF (guard: !(32767==0)) at optimistic_list.cvl:169.6 "}"
+--> State (id=184)
+
+Step 39: List state before adding:
+Executed by p1 from State (id=184)
+  32->33: printf("List state before adding:\n ") at optimistic_list.cvl:153.1-37 "printf("List state before adding:\n")"
+--> State (id=186)
+
+Step 40: Executed by p1 from State (id=186)
+  33->88: list_print(&<d0>heap.malloc0[0][0]) at optimistic_list.cvl:154.1-16 "list_print(list)"
+--> State (id=189)
+
+Step 41: Executed by p1 from State (id=189)
+  88->89: curr=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:95.2-24 "Node* curr = list->head"
+--> State (id=192)
+
+Step 42: Executed by p1 from State (id=192)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc1[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=194)
+
+Step 43: (-32767,-1) Executed by p1 from State (id=194)
+  90->91: printf("(%d,%d)  ", -32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=196)
+
+Step 44: Executed by p1 from State (id=196)
+  91->89: curr=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=199)
+
+Step 45: Executed by p1 from State (id=199)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc3[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=201)
+
+Step 46: (32767,-1) Executed by p1 from State (id=201)
+  90->91: printf("(%d,%d)  ", 32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=203)
+
+Step 47: Executed by p1 from State (id=203)
+  91->89: curr=(void*)0 at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=206)
+
+Step 48: Executed by p1 from State (id=206)
+  89->92: LOOP_BODY_EXIT (guard: !((void*)0!=((struct _node)*)0)) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=208)
+
+Step 49: 
+Executed by p1 from State (id=208)
+  92->93: printf("\n ") at optimistic_list.cvl:100.2-13 "printf("\n")"
+  93->RET: list_print(...) return at optimistic_list.cvl:101.0 "}"
+--> State (id=212)
+
+Step 50: Executed by p1 from State (id=212)
+  34->35: new_node=(struct _node*)$malloc(UNDEFINED, SIZEOF(226)) [new_node:=&<d0>heap.malloc5[0][0]] at optimistic_list.cvl:155.1-45 "Node* new_node = (Node ... )"
+--> State (id=218)
+
+Step 51: Executed by p1 from State (id=218)
+  35->36: (*(&<d0>heap.malloc5[0][0])).next=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:156.1-21 "new_node->next = curr"
+--> State (id=222)
+
+Step 52: Executed by p1 from State (id=222)
+  36->37: (*(&<d0>heap.malloc5[0][0])).lock=(struct _lock*)$malloc(UNDEFINED, SIZEOF(224)) [(*(&<d0>heap.malloc5[0][0])).lock:=&<d0>heap.malloc6[0][0]] at optimistic_list.cvl:157.1-45 "new_node->lock = (Lock* ... )"
+--> State (id=228)
+
+Step 53: Executed by p1 from State (id=228)
+  37->38: (*(&<d0>heap.malloc6[0][0])).count=0 at optimistic_list.cvl:158.1-25 "new_node->lock->count = 0"
+--> State (id=232)
+
+Step 54: Executed by p1 from State (id=232)
+  38->39: (*(&<d0>heap.malloc6[0][0])).owner=$proc_null at optimistic_list.cvl:159.1-34 "new_node->lock->owner = $proc_null"
+--> State (id=235)
+
+Step 55: Executed by p1 from State (id=235)
+  39->40: (*(&<d0>heap.malloc1[0][0])).next=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:160.1-21 "pred->next = new_node"
+--> State (id=238)
+
+Step 56: Executed by p2 from State (id=238)
+  19->20: pred=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:139.4-26 "Node* pred = list->head"
+--> State (id=241)
+
+Step 57: Executed by p2 from State (id=241)
+  20->21: curr=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:140.4-26 "Node* curr = pred->next"
+--> State (id=244)
+
+Step 58: Executed by p1 from State (id=244)
+  40->41: (*(&<d0>heap.malloc0[0][0])).size=0+1 [(*(&<d0>heap.malloc0[0][0])).size:=1] at optimistic_list.cvl:161.1-10 "list->size"
+--> State (id=247)
+
+Step 59: Executed by p2 from State (id=247)
+  21->24: LOOP_BODY_EXIT (guard: !(Hp1s0f5o0[0].1<1)) at optimistic_list.cvl:141.11-25 "curr->key < key"
+--> State (id=250)
+
+Step 60: Executed by p1 from State (id=250)
+  41->42: (*(&<d0>heap.malloc5[0][0])).key=0 at optimistic_list.cvl:162.1-19 "new_node->key = key"
+--> State (id=253)
+
+Step 61: Executed by p1 from State (id=253)
+  42->43: (*(&<d0>heap.malloc5[0][0])).item=0 at optimistic_list.cvl:163.1-21 "new_node->item = item"
+--> State (id=256)
+
+Step 62: List state after adding:
+Executed by p1 from State (id=256)
+  43->44: printf("List state after adding:\n ") at optimistic_list.cvl:164.1-36 "printf("List state after adding:\n")"
+--> State (id=258)
+
+Step 63: Executed by p1 from State (id=258)
+  44->88: list_print(&<d0>heap.malloc0[0][0]) at optimistic_list.cvl:165.1-16 "list_print(list)"
+--> State (id=261)
+
+Step 64: Executed by p1 from State (id=261)
+  88->89: curr=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:95.2-24 "Node* curr = list->head"
+--> State (id=264)
+
+Step 65: Executed by p1 from State (id=264)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc1[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=266)
+
+Step 66: (-32767,-1) Executed by p1 from State (id=266)
+  90->91: printf("(%d,%d)  ", -32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=268)
+
+Step 67: Executed by p1 from State (id=268)
+  91->89: curr=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=271)
+
+Step 68: Executed by p1 from State (id=271)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc5[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=273)
+
+Step 69: (0,0) Executed by p1 from State (id=273)
+  90->91: printf("(%d,%d)  ", 0, 0) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=275)
+
+Step 70: Executed by p1 from State (id=275)
+  91->89: curr=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=278)
+
+Step 71: Executed by p1 from State (id=278)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc3[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=280)
+
+Step 72: (32767,-1) Executed by p1 from State (id=280)
+  90->91: printf("(%d,%d)  ", 32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=282)
+
+Step 73: Executed by p1 from State (id=282)
+  91->89: curr=(void*)0 at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=285)
+
+Step 74: Executed by p1 from State (id=285)
+  89->92: LOOP_BODY_EXIT (guard: !((void*)0!=((struct _node)*)0)) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=287)
+
+Step 75: 
+Executed by p1 from State (id=287)
+  92->93: printf("\n ") at optimistic_list.cvl:100.2-13 "printf("\n")"
+  93->RET: list_print(...) return at optimistic_list.cvl:101.0 "}"
+--> State (id=291)
+
+Step 76: Executed by p1 from State (id=291)
+  45->100: lock_release(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:166.1-24 "lock_release(pred->lock)"
+--> State (id=294)
+
+Step 77: Executed by p1 from State (id=294)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p1, p1.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p1) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc2[0][0])).count=1-1 [(*(&<d0>heap.malloc2[0][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc2[0][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p1.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+--> State (id=311)
+
+Step 78: Executed by p1 from State (id=311)
+  46->100: lock_release(&<d0>heap.malloc4[0][0]) at optimistic_list.cvl:167.1-24 "lock_release(curr->lock)"
+--> State (id=314)
+
+Step 79: Executed by p1 from State (id=314)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p1, p1.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p1) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc4[0][0])).count=1-1 [(*(&<d0>heap.malloc4[0][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc4[0][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p1.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+  47->48: list_add(...) return true at optimistic_list.cvl:168.1-12 "return 1;"
+  121->RET: _par_proc0(...) return at optimistic_list.cvl:214.2 "}"
+--> State (id=334)
+
+Step 80: Executed by p0 from State (id=334)
+  6->7: $wait(p1) at optimistic_list.cvl:214.2 "}"
+  7->5: _civl_ir1=0+1 [_civl_ir1:=1] at optimistic_list.cvl:214.2 "}"
+--> State (id=339)
+
+Step 81: Executed by p0 from State (id=339)
+  5->6: LOOP_BODY_ENTER (guard: 1<2) at optimistic_list.cvl:214.2 "}"
+--> State (id=341)
+
+Step 82: Executed by p2 from State (id=341)
+  24->94: lock_acquire(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:145.4-27 "lock_acquire(pred->lock)"
+--> State (id=344)
+
+Step 83: Executed by p2 from State (id=344)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p2, p2.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=351)
+
+Step 84: Executed by p2 from State (id=351)
+  96->97: (*(&<d0>heap.malloc2[0][0])).owner=$self [(*(&<d0>heap.malloc2[0][0])).owner:=p2] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc2[0][0])).count=0+1 [(*(&<d0>heap.malloc2[0][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p2.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=363)
+
+Step 85: Executed by p2 from State (id=363)
+  25->94: lock_acquire(&<d0>heap.malloc6[0][0]) at optimistic_list.cvl:146.4-27 "lock_acquire(curr->lock)"
+--> State (id=366)
+
+Step 86: Executed by p2 from State (id=366)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p2, p2.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=373)
+
+Step 87: Executed by p2 from State (id=373)
+  96->97: (*(&<d0>heap.malloc6[0][0])).owner=$self [(*(&<d0>heap.malloc6[0][0])).owner:=p2] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc6[0][0])).count=0+1 [(*(&<d0>heap.malloc6[0][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p2.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=385)
+
+Step 88: Executed by p2 from State (id=385)
+  26->114: $sef$1=validate(&<d0>heap.malloc0[0][0], &<d0>heap.malloc1[0][0], &<d0>heap.malloc5[0][0]) at optimistic_list.cvl:147.8-33 "validate(list, pred, curr)"
+--> State (id=388)
+
+Step 89: Executed by p2 from State (id=388)
+  114->115: entry=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:104.2-25 "Node* entry = list->head"
+--> State (id=391)
+
+Step 90: Executed by p2 from State (id=391)
+  115->116: LOOP_BODY_ENTER (guard: -32767<=-32767) at optimistic_list.cvl:105.9-31 "entry->key <= pred->key"
+--> State (id=393)
+
+Step 91: Executed by p2 from State (id=393)
+  116->117: TRUE_BRANCH_IF (guard: &<d0>heap.malloc1[0][0]==&<d0>heap.malloc1[0][0]) at optimistic_list.cvl:106.23 "{"
+--> State (id=395)
+
+Step 92: Executed by p2 from State (id=395)
+  117->118: validate(...) return &<d0>heap.malloc5[0][0]==&<d0>heap.malloc5[0][0] [$sef$1:=true] at optimistic_list.cvl:107.6-33 "return (pred->next ==  ... ;"
+  27->28: TRUE_BRANCH_IF (guard: true) at optimistic_list.cvl:147.36 "{"
+--> State (id=400)
+
+Step 93: Executed by p2 from State (id=400)
+  28->32: FALSE_BRANCH_IF (guard: !(0==1)) at optimistic_list.cvl:169.6 "}"
+--> State (id=402)
+
+Step 94: List state before adding:
+Executed by p2 from State (id=402)
+  32->33: printf("List state before adding:\n ") at optimistic_list.cvl:153.1-37 "printf("List state before adding:\n")"
+--> State (id=404)
+
+Step 95: Executed by p2 from State (id=404)
+  33->88: list_print(&<d0>heap.malloc0[0][0]) at optimistic_list.cvl:154.1-16 "list_print(list)"
+--> State (id=407)
+
+Step 96: Executed by p2 from State (id=407)
+  88->89: curr=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:95.2-24 "Node* curr = list->head"
+--> State (id=410)
+
+Step 97: Executed by p2 from State (id=410)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc1[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=412)
+
+Step 98: (-32767,-1) Executed by p2 from State (id=412)
+  90->91: printf("(%d,%d)  ", -32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=414)
+
+Step 99: Executed by p2 from State (id=414)
+  91->89: curr=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=417)
+
+Step 100: Executed by p2 from State (id=417)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc5[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=419)
+
+Step 101: (0,0) Executed by p2 from State (id=419)
+  90->91: printf("(%d,%d)  ", 0, 0) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=421)
+
+Step 102: Executed by p2 from State (id=421)
+  91->89: curr=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=424)
+
+Step 103: Executed by p2 from State (id=424)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc3[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=426)
+
+Step 104: (32767,-1) Executed by p2 from State (id=426)
+  90->91: printf("(%d,%d)  ", 32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=428)
+
+Step 105: Executed by p2 from State (id=428)
+  91->89: curr=(void*)0 at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=431)
+
+Step 106: Executed by p2 from State (id=431)
+  89->92: LOOP_BODY_EXIT (guard: !((void*)0!=((struct _node)*)0)) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=433)
+
+Step 107: 
+Executed by p2 from State (id=433)
+  92->93: printf("\n ") at optimistic_list.cvl:100.2-13 "printf("\n")"
+  93->RET: list_print(...) return at optimistic_list.cvl:101.0 "}"
+--> State (id=437)
+
+Step 108: Executed by p2 from State (id=437)
+  34->35: new_node=(struct _node*)$malloc(UNDEFINED, SIZEOF(226)) [new_node:=&<d0>heap.malloc5[1][0]] at optimistic_list.cvl:155.1-45 "Node* new_node = (Node ... )"
+--> State (id=443)
+
+Step 109: Executed by p2 from State (id=443)
+  35->36: (*(&<d0>heap.malloc5[1][0])).next=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:156.1-21 "new_node->next = curr"
+--> State (id=447)
+
+Step 110: Executed by p2 from State (id=447)
+  36->37: (*(&<d0>heap.malloc5[1][0])).lock=(struct _lock*)$malloc(UNDEFINED, SIZEOF(224)) [(*(&<d0>heap.malloc5[1][0])).lock:=&<d0>heap.malloc6[1][0]] at optimistic_list.cvl:157.1-45 "new_node->lock = (Lock* ... )"
+--> State (id=453)
+
+Step 111: Executed by p2 from State (id=453)
+  37->38: (*(&<d0>heap.malloc6[1][0])).count=0 at optimistic_list.cvl:158.1-25 "new_node->lock->count = 0"
+--> State (id=457)
+
+Step 112: Executed by p2 from State (id=457)
+  38->39: (*(&<d0>heap.malloc6[1][0])).owner=$proc_null at optimistic_list.cvl:159.1-34 "new_node->lock->owner = $proc_null"
+--> State (id=460)
+
+Step 113: Executed by p2 from State (id=460)
+  39->40: (*(&<d0>heap.malloc1[0][0])).next=&<d0>heap.malloc5[1][0] at optimistic_list.cvl:160.1-21 "pred->next = new_node"
+--> State (id=463)
+
+Step 114: Executed by p2 from State (id=463)
+  40->41: (*(&<d0>heap.malloc0[0][0])).size=1+1 [(*(&<d0>heap.malloc0[0][0])).size:=2] at optimistic_list.cvl:161.1-10 "list->size"
+--> State (id=466)
+
+Step 115: Executed by p2 from State (id=466)
+  41->42: (*(&<d0>heap.malloc5[1][0])).key=1 at optimistic_list.cvl:162.1-19 "new_node->key = key"
+--> State (id=469)
+
+Step 116: Executed by p2 from State (id=469)
+  42->43: (*(&<d0>heap.malloc5[1][0])).item=1 at optimistic_list.cvl:163.1-21 "new_node->item = item"
+--> State (id=472)
+
+Step 117: List state after adding:
+Executed by p2 from State (id=472)
+  43->44: printf("List state after adding:\n ") at optimistic_list.cvl:164.1-36 "printf("List state after adding:\n")"
+--> State (id=474)
+
+Step 118: Executed by p2 from State (id=474)
+  44->88: list_print(&<d0>heap.malloc0[0][0]) at optimistic_list.cvl:165.1-16 "list_print(list)"
+--> State (id=477)
+
+Step 119: Executed by p2 from State (id=477)
+  88->89: curr=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:95.2-24 "Node* curr = list->head"
+--> State (id=480)
+
+Step 120: Executed by p2 from State (id=480)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc1[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=482)
+
+Step 121: (-32767,-1) Executed by p2 from State (id=482)
+  90->91: printf("(%d,%d)  ", -32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=484)
+
+Step 122: Executed by p2 from State (id=484)
+  91->89: curr=&<d0>heap.malloc5[1][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=487)
+
+Step 123: Executed by p2 from State (id=487)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc5[1][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=489)
+
+Step 124: (1,1) Executed by p2 from State (id=489)
+  90->91: printf("(%d,%d)  ", 1, 1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=491)
+
+Step 125: Executed by p2 from State (id=491)
+  91->89: curr=&<d0>heap.malloc5[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=494)
+
+Step 126: Executed by p2 from State (id=494)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc5[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=496)
+
+Step 127: (0,0) Executed by p2 from State (id=496)
+  90->91: printf("(%d,%d)  ", 0, 0) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=498)
+
+Step 128: Executed by p2 from State (id=498)
+  91->89: curr=&<d0>heap.malloc3[0][0] at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=501)
+
+Step 129: Executed by p2 from State (id=501)
+  89->90: LOOP_BODY_ENTER (guard: &<d0>heap.malloc3[0][0]!=((struct _node)*)0) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=503)
+
+Step 130: (32767,-1) Executed by p2 from State (id=503)
+  90->91: printf("(%d,%d)  ", 32767, -1) at optimistic_list.cvl:97.4-44 "printf("(%d,%d) ", curr->key, ... )"
+--> State (id=505)
+
+Step 131: Executed by p2 from State (id=505)
+  91->89: curr=(void*)0 at optimistic_list.cvl:98.4-20 "curr = curr->next"
+--> State (id=508)
+
+Step 132: Executed by p2 from State (id=508)
+  89->92: LOOP_BODY_EXIT (guard: !((void*)0!=((struct _node)*)0)) at optimistic_list.cvl:96.9-civlc.cvh:15.22 "curr != ((void*) ... )"
+--> State (id=510)
+
+Step 133: 
+Executed by p2 from State (id=510)
+  92->93: printf("\n ") at optimistic_list.cvl:100.2-13 "printf("\n")"
+  93->RET: list_print(...) return at optimistic_list.cvl:101.0 "}"
+--> State (id=514)
+
+Step 134: Executed by p2 from State (id=514)
+  45->100: lock_release(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:166.1-24 "lock_release(pred->lock)"
+--> State (id=517)
+
+Step 135: Executed by p2 from State (id=517)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p2, p2.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p2) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc2[0][0])).count=1-1 [(*(&<d0>heap.malloc2[0][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc2[0][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p2.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+--> State (id=534)
+
+Step 136: Executed by p2 from State (id=534)
+  46->100: lock_release(&<d0>heap.malloc6[0][0]) at optimistic_list.cvl:167.1-24 "lock_release(curr->lock)"
+--> State (id=537)
+
+Step 137: Executed by p2 from State (id=537)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p2, p2.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p2) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc6[0][0])).count=1-1 [(*(&<d0>heap.malloc6[0][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc6[0][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p2.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+  47->48: list_add(...) return true at optimistic_list.cvl:168.1-12 "return 1;"
+  121->RET: _par_proc0(...) return at optimistic_list.cvl:214.2 "}"
+--> State (id=557)
+
+Step 138: Executed by p0 from State (id=557)
+  6->7: $wait(p2) at optimistic_list.cvl:214.2 "}"
+  7->5: _civl_ir1=1+1 [_civl_ir1:=2] at optimistic_list.cvl:214.2 "}"
+--> State (id=562)
+
+Step 139: Executed by p0 from State (id=562)
+  5->8: LOOP_BODY_EXIT (guard: !(2<2)) at optimistic_list.cvl:214.2 "}"
+--> State (id=564)
+
+Step 140: Executed by p0 from State (id=564)
+  8->9: $elaborate_domain(($domain(1))(0..1#1)) [$assume(true)] at optimistic_list.cvl:215.15-20 "0 .. 1"
+--> State (id=566)
+
+Step 141: Executed by p0 from State (id=566)
+  9->10: LOOP_BODY_ENTER (guard: ($domain(1))(0..1#1) has next for (NULL)) at optimistic_list.cvl:215.15-20 "0 .. 1"
+  10->11: NEXT of (NULL) in ($domain(1))(0..1#1) [j:=0] at optimistic_list.cvl:215.2-5 "$for"
+--> State (id=570)
+
+Step 142: Executed by p0 from State (id=570)
+  11->51: $sef$3=list_contains(&<d0>heap.malloc0[0][0], 0) at optimistic_list.cvl:216.12-33 "list_contains(list, j)"
+  51->107: key=hash(0) at optimistic_list.cvl:115.2-21 "int key = hash(item)"
+  107->RET: hash(...) return 0 [key:=0] at optimistic_list.cvl:76.2-10 "return i;"
+--> State (id=578)
+
+Step 143: Executed by p0 from State (id=578)
+  52->53: LOOP_BODY_ENTER (guard: 1!=0) at stdbool.h:5.13 "1" expanded from optimistic_list.cvl:116.9-12 "true"
+--> State (id=580)
+
+Step 144: Executed by p0 from State (id=580)
+  53->54: pred=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:117.4-26 "Node* pred = list->head"
+--> State (id=583)
+
+Step 145: Executed by p0 from State (id=583)
+  54->55: curr=&<d0>heap.malloc5[1][0] at optimistic_list.cvl:118.4-26 "Node* curr = pred->next"
+--> State (id=586)
+
+Step 146: Executed by p0 from State (id=586)
+  55->58: LOOP_BODY_EXIT (guard: !(1<0)) at optimistic_list.cvl:119.11-25 "curr->key < key"
+--> State (id=588)
+
+Step 147: Executed by p0 from State (id=588)
+  58->94: lock_acquire(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:123.4-27 "lock_acquire(pred->lock)"
+--> State (id=591)
+
+Step 148: Executed by p0 from State (id=591)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p0, p0.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=598)
+
+Step 149: Executed by p0 from State (id=598)
+  96->97: (*(&<d0>heap.malloc2[0][0])).owner=$self [(*(&<d0>heap.malloc2[0][0])).owner:=p0] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc2[0][0])).count=0+1 [(*(&<d0>heap.malloc2[0][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p0.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=610)
+
+Step 150: Executed by p0 from State (id=610)
+  59->94: lock_acquire(&<d0>heap.malloc6[1][0]) at optimistic_list.cvl:124.4-27 "lock_acquire(curr->lock)"
+--> State (id=613)
+
+Step 151: Executed by p0 from State (id=613)
+  94->95: ENTER_ATOMIC [_atomic_lock_var:=p0, p0.atomicCount:=1] at optimistic_list.cvl:59.2-8 "$atomic"
+  95->96: TRUE_BRANCH_IF (guard: $self!=$proc_null) at optimistic_list.cvl:60.27 "{"
+--> State (id=620)
+
+Step 152: Executed by p0 from State (id=620)
+  96->97: (*(&<d0>heap.malloc6[1][0])).owner=$self [(*(&<d0>heap.malloc6[1][0])).owner:=p0] at optimistic_list.cvl:61.36-51 "l->owner = $self"
+  97->98: (*(&<d0>heap.malloc6[1][0])).count=0+1 [(*(&<d0>heap.malloc6[1][0])).count:=1] at optimistic_list.cvl:63.4-11 "l->count"
+  98->99: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p0.atomicCount:=0] at optimistic_list.cvl:64.2 "}"
+  99->RET: lock_acquire(...) return at optimistic_list.cvl:65.0 "}"
+--> State (id=632)
+
+Step 153: Executed by p0 from State (id=632)
+  60->114: $sef$0=validate(&<d0>heap.malloc0[0][0], &<d0>heap.malloc1[0][0], &<d0>heap.malloc5[1][0]) at optimistic_list.cvl:125.8-33 "validate(list, pred, curr)"
+--> State (id=635)
+
+Step 154: Executed by p0 from State (id=635)
+  114->115: entry=&<d0>heap.malloc1[0][0] at optimistic_list.cvl:104.2-25 "Node* entry = list->head"
+--> State (id=638)
+
+Step 155: Executed by p0 from State (id=638)
+  115->116: LOOP_BODY_ENTER (guard: -32767<=-32767) at optimistic_list.cvl:105.9-31 "entry->key <= pred->key"
+--> State (id=640)
+
+Step 156: Executed by p0 from State (id=640)
+  116->117: TRUE_BRANCH_IF (guard: &<d0>heap.malloc1[0][0]==&<d0>heap.malloc1[0][0]) at optimistic_list.cvl:106.23 "{"
+--> State (id=642)
+
+Step 157: Executed by p0 from State (id=642)
+  117->118: validate(...) return &<d0>heap.malloc5[1][0]==&<d0>heap.malloc5[1][0] [$sef$0:=true] at optimistic_list.cvl:107.6-33 "return (pred->next ==  ... ;"
+  61->62: TRUE_BRANCH_IF (guard: true) at optimistic_list.cvl:125.36 "{"
+--> State (id=647)
+
+Step 158: Executed by p0 from State (id=647)
+  62->63: result=1==0 [result:=false] at optimistic_list.cvl:126.6-38 "_Bool result = (curr-> ... )"
+--> State (id=650)
+
+Step 159: Executed by p0 from State (id=650)
+  63->100: lock_release(&<d0>heap.malloc2[0][0]) at optimistic_list.cvl:127.6-29 "lock_release(pred->lock)"
+--> State (id=653)
+
+Step 160: Executed by p0 from State (id=653)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p0, p0.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p0) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc2[0][0])).count=1-1 [(*(&<d0>heap.malloc2[0][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc2[0][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p0.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+--> State (id=670)
+
+Step 161: Executed by p0 from State (id=670)
+  64->100: lock_release(&<d0>heap.malloc6[1][0]) at optimistic_list.cvl:128.6-29 "lock_release(curr->lock)"
+--> State (id=673)
+
+Step 162: Error 0:
+CIVL execution violation in p0 (kind: ASSERTION_VIOLATION, certainty: PROVEABLE)
+at optimistic_list.cvl:216.4-34
+    $assert(list_contains(list, j));
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Assertion: $sef$3
+ -> false
+
+Context:
+  0<=(SIZEOF(224)-1)
+  0<=(SIZEOF(226)-1)
+  0<=(SIZEOF(228)-1)
+  0<=((Hp1s0f5o0[0].1)-1)
+Call stacks:
+process 0:
+  main at optimistic_list.cvl:216.4-10 "$assert"
+
+Executed by p0 from State (id=673)
+  100->101: ENTER_ATOMIC [_atomic_lock_var:=p0, p0.atomicCount:=1] at optimistic_list.cvl:68.2-8 "$atomic"
+  101->102: $assert($self==p0) at optimistic_list.cvl:69.4-29 "$assert($self == l->owner)"
+  102->103: (*(&<d0>heap.malloc6[1][0])).count=1-1 [(*(&<d0>heap.malloc6[1][0])).count:=0] at optimistic_list.cvl:70.4-11 "l->count"
+  103->104: TRUE_BRANCH_IF (guard: 0==0) at optimistic_list.cvl:71.23 "l"
+  104->105: (*(&<d0>heap.malloc6[1][0])).owner=$proc_null at optimistic_list.cvl:71.23-43 "l->owner = $proc_null"
+  105->106: LEAVE_ATOMIC [_atomic_lock_var:=$proc_null, p0.atomicCount:=0] at optimistic_list.cvl:72.2 "}"
+  106->RET: lock_release(...) return at optimistic_list.cvl:73.0 "}"
+  65->66: list_contains(...) return false [$sef$3:=false] at optimistic_list.cvl:129.6-19 "return result;"
+--> State (id=694)
+
+Step 163: Trace ends after 163 trace steps.
+Violation(s) found.
+
+=== Command ===
+civl replay -showTransitions optimistic_list.cvl 
+
+=== Stats ===
+   time (s)            : 10.87
+   memory (bytes)      : 227540992
+   max process count   : 3
+   states              : 247
+   valid calls         : 651
+   provers             : cvc4, z3, cvc3
+   prover calls        : 9
+
