@@ -1,0 +1,185 @@
+/* Concurrent coarse grained list using one lock
+ * Wenhao Wu, Eric Kurtz, and Josh Davis
+ * May-1-2018
+ * VIP-HPC University of Delaware
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+#include "../include/list.cvh"
+
+typedef struct _node Node;
+
+struct _node
+{
+  int item;
+  int key;
+  Node* next;
+};
+
+struct _lock
+{
+  $proc owner;
+  int count;
+};
+
+typedef struct _lock Lock;
+
+struct _list
+{
+  int size;
+  Node* head;
+  Lock*  lock;
+};
+
+typedef struct _list List;
+
+List* list_create() {
+  List* result = (List*) malloc(sizeof(List));
+  result->size = 0;
+  result->head = (Node*) malloc(sizeof(Node));
+  result->lock = (Lock*) malloc(sizeof(Lock));
+  result->lock->owner = $proc_null;
+  result->lock->count = 0;
+  result->head->next = (Node*) malloc(sizeof(Node));
+  result->head->item = -1;
+  result->head->next->item = -1;
+  result->head->key = INT_MIN;
+  result->head->next->key = INT_MAX;
+  result->head->next->next = NULL;
+  return result;
+}
+
+void lock_acquire(Lock* l) {
+  $atomic {
+    if ($self != l->owner) {
+      $when(l->owner == $proc_null) l->owner = $self;
+    }
+    l->count++;
+  }
+}
+
+void lock_release(Lock * l) {
+  $atomic {
+    $assert($self == l->owner);
+    l->count--;
+    if (l->count == 0) l->owner = $proc_null;
+  }
+}
+
+int hash(int i) {
+  return i;
+}
+
+void node_destroy(Node* head) {
+  Node* current_node = head;
+  if (current_node->next != NULL) {
+    node_destroy(current_node->next);
+  }
+  free(current_node);
+}
+
+_Bool list_destroy(List* list) {
+  node_destroy(list->head);
+  free(list->lock);
+  free(list);
+  return true;
+}
+
+void list_print(List* list) {
+  Node* curr = list->head;
+  while (curr != NULL) {
+    printf("(%d,%d) ", curr->key, curr->item);
+    curr = curr->next;
+  }
+  printf("\n");
+}
+
+_Bool list_contains(List* list, int item) {
+  Node* curr;
+  int key = hash(item);
+  lock_acquire(list->lock);
+  curr = list->head;
+  while (curr->key < key) {
+    curr = curr->next;
+  }
+  if (curr->key == key) {
+    lock_release(list->lock);
+    return true;
+  } else {
+    lock_release(list->lock);
+    return false;
+  }
+}
+
+_Bool list_add(List* list, int item) {
+  Node* pred;
+  Node* curr;
+  int key = hash(item);
+  lock_acquire(list->lock);
+  pred = list->head;
+  curr = pred->next;
+  while (curr->key < key) {
+    pred = curr;
+    curr = pred->next;
+  }
+  if (curr->key == key) {
+    lock_release(list->lock);
+    return false;
+  } else {
+    Node* node = (Node*) malloc(sizeof(Node));
+    node->next = curr;
+    pred->next = node;
+    list->size++;
+    node->key = key;
+    node->item = item;
+    lock_release(list->lock);
+    return true;
+  }
+}
+
+_Bool list_remove(List* list, int item) {
+  Node* pred;
+  Node* curr;
+  int key = hash(item);
+  lock_acquire(list->lock);
+  pred = list->head;
+  curr = pred->next;
+  while (curr->key < key) {
+    pred = curr;
+    curr = pred->next;
+  }
+  if (curr->key == key) {
+    pred->next = curr->next;
+    curr->next = NULL;
+    curr->key = -1;
+    curr->item = -1;
+    free(curr);
+    lock_release(list->lock);
+    return true;
+  } else {
+    lock_release(list->lock);
+    return false;
+  }
+}
+/*
+void main() {
+  List* list = list_create();
+  $parfor(int i : 0 .. 2) {
+    list_add(list, i);
+  }
+  $for(int j : 0 .. 2) {
+    $assert(list_contains(list, j));
+  }
+  $parfor(int i : 0 .. 2) {
+    list_remove(list, i);
+  }
+  $for(int j : 0 .. 2) {
+    $assert(!list_contains(list, j));
+  }
+  list_print(list);
+  list_destroy(list);
+}
+*/
