@@ -17,6 +17,7 @@ struct _node
   int item;
   int key;
   Node* next;
+  Lock* lock;
 };
 
 struct _lock
@@ -31,7 +32,6 @@ struct _list
 {
   int size;
   Node* head;
-  Lock*  lock;
 };
 
 typedef struct _list List;
@@ -40,15 +40,18 @@ List* list_create() {
   List* result = (List*) malloc(sizeof(List));
   result->size = 0;
   result->head = (Node*) malloc(sizeof(Node));
-  result->lock = (Lock*) malloc(sizeof(Lock));
-  result->lock->owner = $proc_null;
-  result->lock->count = 0;
+  result->head->lock = (Lock*) malloc(sizeof(Lock));
+  result->head->lock->owner = $proc_null;
+  result->head->lock->count = 0;
   result->head->next = (Node*) malloc(sizeof(Node));
   result->head->item = -1;
   result->head->next->item = -1;
   result->head->key = INT_MIN;
   result->head->next->key = INT_MAX;
   result->head->next->next = NULL;
+  result->head->next->lock = (Lock*) malloc(sizeof(Lock));
+  result->head->next->lock->owner = $proc_null;
+  result->head->next->lock->count = 0;
   return result;
 }
 
