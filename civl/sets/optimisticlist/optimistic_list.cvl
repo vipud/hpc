@@ -10,48 +10,66 @@
 #include <limits.h>
 #include "../include/list.cvh"
 
-struct _lock
+typedef struct _lock
 {
   $proc owner;
   int count;
-};
+} Lock;
 
-typedef struct _lock Lock;
 
-typedef struct _node Node;
+Lock * lock_create(){
+  Lock * result = malloc(sizeof(Lock));
+  result->owner = $proc_null;
+  result->count = 0;
+  return result; 
+}
 
-struct _node
+void lock_destroy(Lock * lock){
+  free(lock);
+}
+
+typedef struct _node
 {
   int item;
   int key;
-  Node* next;
+  struct _node* next;
   Lock* lock;
-};
+} Node;
 
-struct _list
+int hash(int i) {
+  return i;
+}
+
+Node * node_create(int item){
+  Node * result = malloc(sizeof(Node));
+  result->lock = lock_create();
+  result->key = hash(item);
+  result->item = item;
+  result->next = NULL;
+  return result; 
+}
+
+void node_destroy(Node* node) {
+  if (node->next != NULL) {
+    node_destroy(node->next);
+  }
+  lock_destroy(node->lock);
+  free(node);
+}
+
+
+typedef struct _list
 {
   int size;
   Node* head;
-};
+} List;
 
-typedef struct _list List;
 
 List* list_create() {
   List* result = (List*) malloc(sizeof(List));
   result->size = 0;
-  result->head = (Node*) malloc(sizeof(Node));
-  result->head->lock = (Lock*) malloc(sizeof(Lock));
-  result->head->lock->owner = $proc_null;
-  result->head->lock->count = 0;
-  result->head->next = (Node*) malloc(sizeof(Node));
-  result->head->item = -1;
-  result->head->next->item = -1;
-  result->head->key = INT_MIN;
-  result->head->next->key = INT_MAX;
-  result->head->next->next = NULL;
-  result->head->next->lock = (Lock*) malloc(sizeof(Lock));
-  result->head->next->lock->owner = $proc_null;
-  result->head->next->lock->count = 0;
+  result->head = node_create(INT_MIN);
+  result->head->next = node_create(INT_MAX); 
   return result;
 }
 
@@ -70,19 +88,6 @@ void lock_release(Lock * l) {
     l->count--;
     if (l->count == 0) l->owner = $proc_null;
   }
-}
-
-int hash(int i) {
-  return i;
-}
-
-void node_destroy(Node* head) {
-  Node* current_node = head;
-  if (current_node->next != NULL) {
-    node_destroy(current_node->next);
-  }
-  free(current_node->lock);
-  free(current_node);
 }
 
 _Bool list_destroy(List* list) {
@@ -151,16 +156,11 @@ _Bool list_add(List* list, int item) {
 	return false;
       } else {
 	printf("List state before adding:\n");
-	list_print(list);
-	Node* new_node = (Node*) malloc(sizeof(Node));
-	new_node->next = curr;
-	new_node->lock = (Lock*) malloc(sizeof(Lock));
-	new_node->lock->count = 0;
-	new_node->lock->owner = $proc_null;
+	list_print(list);    
+	Node* new_node = node_create(item);
+	new_node->next = pred->next; 
 	pred->next = new_node;
 	list->size++;
-	new_node->key = key;
-	new_node->item = item;
 	printf("List state after adding:\n");
 	list_print(list);
 	lock_release(pred->lock);
@@ -178,6 +178,7 @@ _Bool list_remove(List* list, int item) {
   while (true) {
     Node* pred = list->head;
     Node* curr = pred->next;
+    printf("************* curr = %p\n", curr); 
     while (curr->key < key) {
       pred = curr;
       curr = curr->next;
@@ -188,10 +189,8 @@ _Bool list_remove(List* list, int item) {
       if (curr->key == key) {
 	pred->next = curr->next;
 	curr->next = NULL;
-	curr->key = -1;
-	curr->item = -1;
-	free(curr->lock);
-	free(curr);
+	node_destroy(curr);
+	list->size--; 
 	lock_release(pred->lock);
 	return true;
       } else {
@@ -215,14 +214,14 @@ void main() {
   $for(int j : 0 .. 1) {
     $assert(list_contains(list, j));
   }
-  /*
-  $parfor(int i : 0 .. 2) {
+  
+  $parfor(int i : 0 .. 1) {
     list_remove(list, i);
   }
-  $for(int j : 0 .. 2) {
+  $for(int j : 0 .. 1) {
     $assert(!list_contains(list, j));
   }
-  */
-  //list_print(list);
+  
+  list_print(list);
   list_destroy(list);
 }
