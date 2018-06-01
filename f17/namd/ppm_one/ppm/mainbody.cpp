@@ -1094,6 +1094,7 @@ void CMainbody::load(string bmrbname)
 #pragma acc enter data copyin(bb_arr[0:bb_size])
 #pragma acc enter data copyin(bbnh_arr[0:bbnh_size])
 #pragma acc enter data copyin(hbond_arr[0:hbond_size])
+#pragma acc enter data copyin(this)
 
 	return;
 }
