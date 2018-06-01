@@ -1536,7 +1536,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, nh_group *select, int
 			}*/
 
 			sum_p[0] = (u_p[0][0] + u_p[1][0] + u_p[2][0] + u_p[3][0] + u_p[4][0] + u_p[5][0]) / m;
-			sum_p[1] = (u_p[0][1] + u_p[1][0] + u_p[2][1] + u_p[3][1] + u_p[4][1] + u_p[5][1]) / m;
+			sum_p[1] = (u_p[0][1] + u_p[1][1] + u_p[2][1] + u_p[3][1] + u_p[4][1] + u_p[5][1]) / m;
 			sum_p[2] = (u_p[0][2] + u_p[1][2] + u_p[2][2] + u_p[3][2] + u_p[4][2] + u_p[5][2]) / m;
 
            		/*#pragma acc loop seq
@@ -1821,7 +1821,7 @@ void CTraj::getring_acc(ring_group *index, int index_size, proton *select, int s
 			}*/
 
 			sum_p[0] = (u_p[0][0] + u_p[1][0] + u_p[2][0] + u_p[3][0] + u_p[4][0] + u_p[5][0]) / m;
-			sum_p[1] = (u_p[0][1] + u_p[1][0] + u_p[2][1] + u_p[3][1] + u_p[4][1] + u_p[5][1]) / m;
+			sum_p[1] = (u_p[0][1] + u_p[1][1] + u_p[2][1] + u_p[3][1] + u_p[4][1] + u_p[5][1]) / m;
 			sum_p[2] = (u_p[0][2] + u_p[1][2] + u_p[2][2] + u_p[3][2] + u_p[4][2] + u_p[5][2]) / m;
 
            		/*#pragma acc loop seq
