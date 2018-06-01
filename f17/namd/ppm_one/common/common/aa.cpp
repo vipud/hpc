@@ -4614,6 +4614,7 @@ void CMiss::dihe(vector<dihe_group> * dihe_index)
 
 void CMiss::process(vector<string> block)
 {
+	original_residue = 0;
 	return;
 }
 
@@ -4624,6 +4625,7 @@ CMiss::CMiss()
 	resname="Missing";OneLetterName='X';strcpy(ThreeLetterName,"MIS");
 	atoms.clear();
 	order_parameters.clear();
+	original_residue = 0;
 
 	for(int i=0;i<6;i++)
 	{
@@ -4659,6 +4661,8 @@ void CUnk::process(vector<string> block)
 	string part;
 	vector<string> subblock;
 	struct Atom atom;
+
+	original_residue = 0;
 
 	for(i=0;i<(int)block.size();i++)
 	{
