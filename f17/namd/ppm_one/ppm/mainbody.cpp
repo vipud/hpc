@@ -1492,7 +1492,6 @@ void CMainbody::predict_bb_static_ann()
 
 	class CAnn ann_ca,ann_cb,ann_co,ann_n,ann_h,ann_ha;
 
-	cout << "Bing" << endl;
 
 	char *v_oln = pdb->getvoneletter();
 	int *v_pos = pdb->code_pos;
@@ -1508,7 +1507,6 @@ void CMainbody::predict_bb_static_ann()
 	int v_size = pdb->v_size;
 	double pre_ca, pre_cb, pre_co, pre_n, pre_h, pre_ha;
 
-	cout << "Bang" << endl;
 
 	//ann_ca.load("ann_ca.dat");
 	ann_ca.loadp(p_ann_ca);
@@ -1545,6 +1543,42 @@ copyin(ha_protons_new[0:bb_size], index_arr[0:index_size], c2_arr[0:c2_size], bl
 num_arr[0:num_size], v_pos[0:v_size]) present(bb_arr[0:bb_size], bbnh_arr[0:bbnh_size],   \
 hbond_arr[0:hbond_size], anistropy_new[0:anistropy_size])
 {
+	#pragma acc parallel loop
+	for( i=0; i<hbond_effect_size; i++ ) {
+		hbond_effect_arr[i].n_length = 0;
+		hbond_effect_arr[i].c_length = 0;
+		hbond_effect_arr[i].n_phi = 0;
+		hbond_effect_arr[i].c_phi = 0;
+		hbond_effect_arr[i].n_psi = 0;
+		hbond_effect_arr[i].c_psi = 0;
+	}
+
+	#pragma acc parallel loop
+	for( i = 0; i < bbnh_size; i++ ) {
+		ani_effect_arr[i].x[0] = 0;
+		ani_effect_arr[i].x[1] = 0;
+		ani_effect_arr[i].x[2] = 0;
+		ani_effect_arr[i].x[3] = 0;
+		ring_effect_arr[i].x[0] = 0;
+		ring_effect_arr[i].x[1] = 0;
+		ring_effect_arr[i].x[2] = 0;
+		ring_effect_arr[i].x[3] = 0;
+		ring_effect_arr[i].x[4] = 0;
+	}
+
+	#pragma acc parallel loop
+	for( i = 0; i < bb_size; i++ ) {
+		ani_effect_ha_arr[i].x[0] = 0;
+		ani_effect_ha_arr[i].x[1] = 0;
+		ani_effect_ha_arr[i].x[2] = 0;
+		ani_effect_ha_arr[i].x[3] = 0;
+		ring_effect_ha_arr[i].x[0] = 0;
+		ring_effect_ha_arr[i].x[1] = 0;
+		ring_effect_ha_arr[i].x[2] = 0;
+		ring_effect_ha_arr[i].x[3] = 0;
+		ring_effect_ha_arr[i].x[4] = 0;
+	}
+
 	traj->gethbond_acc(hbond_arr, hbond_size, hbond_effect_arr, hbond_effect_size);
 	traj->getani_acc(anistropy_new,anistropy_size,bbnh_arr,bbnh_size,ani_effect_arr,bbnh_size);
 	traj->getring_acc(ring_index_new, ring_index_size, bbnh_arr, bbnh_size, ring_effect_arr, bbnh_size);
