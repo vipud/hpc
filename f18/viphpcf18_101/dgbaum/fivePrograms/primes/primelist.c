@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <math.h>
 int main(){
   int x;
   printf("Enter an integer, x, we will print the first x primes.\n");
@@ -16,6 +16,11 @@ int main(){
   int counter = 3;
   for(int i = 1; i < x; i++){
     for(int j = 0; j < i; j++){
+      if(a[j] > sqrt(counter)){
+	a[i] = counter;
+	counter+=2;
+	break;
+      }
       if(counter%a[j] == 0){
 	counter+=2;
 	j = 0;
