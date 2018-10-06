@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
-
   int nthreads, tid;
 
   /*get a team of threads and give them their own copies of variables*/

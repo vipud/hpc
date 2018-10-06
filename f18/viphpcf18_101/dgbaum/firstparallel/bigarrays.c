@@ -8,12 +8,6 @@
 int main(){
   int size = 10000; //this is the largest I can make the arrays...
                   //otherwise I get segmentation fault (core dump)
-
-  int **arr = (int **)malloc(size * sizeof(int *));
-  for(int i = 0; i < size; i++)
-    arr[i] = (int *)malloc(size * sizeof(int));
-  
-  
   int **array1 = (int **)malloc(size * sizeof(int *));
   for(int i = 0; i < size; i++)
     array1[i] = (int *)malloc(size * sizeof(int));
