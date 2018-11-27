@@ -14,7 +14,7 @@ OBJS = ep.o \
 
 
 ${PROGRAM}: config ${OBJS}
-	${CLINK} ${CLINKFLAGS} -o ${PROGRAM} ${OBJS} ${C_LIB}
+	${CLINK} ${CLINKFLAGS} -pg -o ${PROGRAM} ${OBJS} ${C_LIB}
 
 .c.o:
 	${CCOMPILE} $<
