@@ -67,8 +67,9 @@
 
 static double x[2*NK];
 static double qq[NQ];
-//#pragma omp threadprivate(x,qq) //1a
+#pragma omp threadprivate(x,qq)
 static double q[NQ]; 
+
 
 int main(int argc, char *argv[])
 {
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
   if (size[j] == '.') j--;
   size[j+1] = '\0';
   printf("\n\n NAS Parallel Benchmarks (NPB3.3-OMP-C) - EP Benchmark\n");
-  printf("\n Number of random numbers generated my dudee: %15s\n", size);
+  printf("\n Number of random numbers generated: %15s\n", size);
   printf("\n Number of available threads:          %13d\n", omp_get_max_threads());
 
   verified = false;
@@ -126,17 +127,15 @@ int main(int argc, char *argv[])
 
   vranlc(0, &dum[0], dum[1], &dum[2]);
   dum[0] = randlc(&dum[1], dum[2]);
-
-   #pragma omp parallel default(shared) private(i) //2a
+  #pragma omp parallel default(shared) private(i)
   {
-    for(i=0;i<2*NK;i++){
-      x[i]=-1.0e99;
+    for (i = 0; i < 2 * NK; i++) {
+      x[i] = -1.0e99;
     }
   }
-  
   Mops = log(sqrt(fabs(MAX(1.0, 1.0))));   
 
-#pragma omp parallel //3a
+  #pragma omp parallel
   {
     timer_clear(0);
     if (timers_enabled) timer_clear(1);
@@ -175,8 +174,8 @@ int main(int argc, char *argv[])
 
   k_offset = -1;
 
-   #pragma omp parallel default(shared) private(k,kk,t1,t2,t3,t4,i,ik,x1,x2,l) //
-   {
+  #pragma omp parallel default(shared) private(k,kk,t1,t2,t3,t4,i,ik,x1,x2,l)
+  {
     for (i = 0; i < NQ; i++) {
       qq[i] = 0.0;
     }
@@ -302,6 +301,7 @@ int main(int argc, char *argv[])
     tt = timer_read(2);
     printf("Random numbers: %9.3lf (%6.2lf)\n", tt, tt*100.0/tm);
   }
-  printf("Test BABY");
+
   return 0;
 }
+
