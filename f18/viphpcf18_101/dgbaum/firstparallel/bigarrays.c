@@ -5,8 +5,11 @@
 #include <omp.h>
 #include <stdbool.h>
 
+
+void functionOne();
 int main(){
-  int size = 10000; //this is the largest I can make the arrays...
+  functionOne();
+  int size = 1000; //this is the largest I can make the arrays...
                   //otherwise I get segmentation fault (core dump)
   int **array1 = (int **)malloc(size * sizeof(int *));
   for(int i = 0; i < size; i++)
@@ -88,4 +91,8 @@ int main(){
     printf("Our parallel code does something wrong and doesn't work properly.\n");
   }
   return 0;
+}
+void functionOne(){
+  main();
+  return;
 }
