@@ -1,0 +1,78 @@
+// Matrix addition
+Last login: Tue Nov 27 11:47:06 on ttys000
+wifi-roaming-128-4-106-69:~ ryan_emenheiser$ ssh ryane@yoda.crpl.cis.udel.edu
+ryane@yoda.crpl.cis.udel.edu's password: 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.10.0-28-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+45 packages can be updated.
+0 updates are security updates.
+
+New release '18.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+*** System restart required ***
+Last login: Tue Nov 27 11:47:51 2018 from 128.4.106.69
+ryane@yoda:~$ ls
+examples.desktop  remenheiser  test  vip
+ryane@yoda:~$ cd remenheiser
+ryane@yoda:~/remenheiser$ ls
+gmon.out  #ompHello.c#  ompHello.c  ompHello.c~  test  test2  test3
+ryane@yoda:~/remenheiser$ pgcc -pg -o ompTest ompHello.c
+
+LICENSE ERROR: Your COMMUNITY license for v18.10 does not work with PGI ver 18.4
+               Using license /opt/pgi/license.dat
+
+ryane@yoda:~/remenheiser$ gcc -pg -o ompTest ompHello.c
+/tmp/ccHsi6Hj.o: In function `main':
+  ompHello.c:(.text+0x15): undefined reference to `omp_get_thread_num'
+ompHello.c:(.text+0x37): undefined reference to `omp_get_num_threads'
+	 collect2: error: ld returned 1 exit status
+	 ryane@yoda:~/remenheiser$ ls
+	 gmon.out  #ompHello.c#  ompHello.c  ompHello.c~  test  test2  test3
+	 ryane@yoda:~/remenheiser$ emacs ompHello.c
+	 ryane@yoda:~/remenheiser$ cd ..
+	 ryane@yoda:~$ ls
+	 examples.desktop  remenheiser  test  vip
+	 ryane@yoda:~$ cd test
+	 ryane@yoda:~/test$ ls
+	 Makefile~  test  test.c
+	 ryane@yoda:~/test$ emacs test.c
+	 ryane@yoda:~/test$ gcc -pg -o test2 test.c
+	 ryane@yoda:~/test$ gprof test2
+	 gmon.out: No such file or directory
+	 ryane@yoda:~/test$ ls
+	 Makefile~  test  test2  test.c
+	 ryane@yoda:~/test$ gprof test2 gmon.out
+	 gmon.out: No such file or directory
+	 ryane@yoda:~/test$ ls
+	 Makefile~  test  test2  test.c
+	 ryane@yoda:~/test$ cd ..
+	 ryane@yoda:~$ ls
+	 examples.desktop  remenheiser  test  vip
+	 ryane@yoda:~$ cd vip/hpc/f18/viphpcf18_101
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101$ ls
+	 dgbaum  jcwise  mattbenv  remenheiser  test  test.c
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101$ cd remenheiser
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser$ ls
+	 prog1  prog2  program1.c  program2.c  SNU_NPB-1.0.3  snu.tar.gz
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser$ cd SNU_NPB-1.0.3
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3$ ls
+	 NPB3.3-OCL  NPB3.3-OCL-MD  NPB3.3-OMP-C  NPB3.3-SER-C
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3$ cd NPB3.3-OMP-C
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C$ ls
+	 bin  BT  CG  common  config  DC  EP  FT  IS  LU  Makefile  MG  SP  sys  UA
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C$ cd EP
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C/EP$ ls
+	 ep.c  ep.o  Makefile  npbparams.h  README
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C/EP$ emacs Makefile
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C/EP$ ls
+	 ep.c  ep.o  Makefile  npbparams.h  README
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C/EP$ cd ..
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C$ ls
+	 bin  BT  CG  common  config  DC  EP  FT  IS  LU  Makefile  MG  SP  sys  UA
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C$ cd bin
+	 ryane@yoda:~/vip/hpc/f18/viphpcf18_101/remenheiser/SNU_NPB-1.0.3/NPB3.3-OMP-C/bin$ ls
