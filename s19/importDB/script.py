@@ -6,7 +6,8 @@ from pymongo import MongoClient
 client = MongoClient('mongodb+srv://user1:1234@cluster0-qr76p.mongodb.net/test?retryWrites=true')
 db = client['hpc']
 
-path = "/Users/max/Downloads/output/"
+#path = "/Users/max/Downloads/output/"
+path = "/hpc/s19/webscraper/csvscraper/FileFolder/raw-csvs-openacc1.2/output"
 
 collection = db.test
 
