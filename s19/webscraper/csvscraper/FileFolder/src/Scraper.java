@@ -2,6 +2,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class Scraper {
 	/*
@@ -10,14 +11,17 @@ public class Scraper {
 	 * but if it works, it works, and I dont think the .csv files are 
 	 * that big, and this won't take that long to run on all of them
 	 */
-	static final String[] keywords = {"SPECaccel_acc_base",
+	static final String[] keywords = {"\"Hardware Model:\"",
+									  "SPECaccel_acc_base",
 									  "\"CPU Name\"",
 									  "\"CPU(s) enabled\"",
 									  "\"Accel Model Name\"",
 									  "Memory",
 									  "\"Operating System\""};
+	static String currentTest = "undefined";
 	
 	public static void main(String[] args) throws IOException{
+		System.out.println("The JAR works.");
 		/*String s = "blasdhkasdfh\nSPECaccel_acc_base,1.740416,,,,\n"
 				+ "etckjasdhfksdaf,,,dshfas,jasdfkj,\n\n,ashfasdhf,\n"
 				+ " \"Accel Model Name\",\"Tesla K20\" ";
@@ -25,8 +29,19 @@ public class Scraper {
 		System.out.println(getNext(s,"\"Accel Model Name\""));
 		stringToCSV("does,this,work?");*/
 		
-		String test = csvToString("src/accel-20140303-00010.csv");
+		/*
+		currentTest="accel-20140228-00005.csv";
+		String test = csvToString("src/accel-20140228-00005.csv");
 		System.out.println(buildString(test));
+		stringToCSV(buildString(test));
+		System.out.println("Done");
+		*/
+		
+		for(String s : args){
+			System.out.println("Folding " + s);
+			currentTest=s;
+			stringToCSV(buildString(csvToString(s)));
+		}
 	}
 	/*
 	 * Given a .csv file, return it as a big string.
@@ -42,7 +57,7 @@ public class Scraper {
 		for(int i = 0; i < keywords.length;i++){
 			output+=getNext(wholeFile,keywords[i])+(i==keywords.length-1 ? "" : ",");
 		}
-		
+		output=output.replaceAll("\n", "");
 		return output;
 	}
 	/*
@@ -50,12 +65,26 @@ public class Scraper {
 	 * boom done.
 	 */
 	public static void stringToCSV(String s) throws IOException{
+		System.out.println("We have read the file and folded it into the following string?.");
+		s=s.replaceAll("\\R", "");
+		System.out.println(s);
+		System.out.println("RAHH");
 		String[] arr = s.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-		String appender = "";
+		System.out.println("");
+		System.out.println(Arrays.toString(arr));
+		
+		String appender = currentTest;
+		
+		s+=",\"" + currentTest.substring(currentTest.indexOf("accel-")+6, currentTest.lastIndexOf(".csv")) + "\"";
+		System.out.println("final s:\n" + s + "\nrahhrhashdf");
+
+/*
 		if(arr.length >2){
 			appender+=arr[1];
 		}
-		FileWriter writer = new FileWriter(appender + "-output.csv");
+		appender = appender.replaceAll("\"", "");
+		*/
+		FileWriter writer = new FileWriter("scraped-"+appender);
 		writer.append(s);
 		writer.close();
 	}
@@ -70,9 +99,12 @@ public class Scraper {
 		int x = s1.indexOf(s2) + s2.length();
 		if(x==s2.length()-1)
 			return null;
-		String[] arr = s1.substring(x).split(",");
-//		System.out.println(Arrays.toString(arr));
-		return arr[1];
+		
+		String[] arr = s1.substring(x).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1)[1].split("\n");
+		System.out.println("looking for " + s2 + " and we get the following split");
+		System.out.println(Arrays.toString(arr));
+		System.out.println("first element is " + arr[0]);
+		return arr[0];
 	}
 
 }
