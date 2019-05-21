@@ -1,0 +1,337 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,112,2480.428455,441.149632,0,S,96,2038.006666,460.2144,0,S,"ref iteration #1"
+400.perlbench,112,2480.55492,441.12712,1,S,96,2032.254237,461.517024,0,S,"ref iteration #2"
+400.perlbench,112,2480.717256,441.098224,0,S,96,2035.98313,460.67184,1,S,"ref iteration #3"
+401.bzip2,112,4115.40095,262.623312,0,S,127,4405.731462,278.171783,0,S,"ref iteration #1"
+401.bzip2,112,4114.834418,262.659376,1,S,127,4404.07879,278.276177,1,S,"ref iteration #2"
+401.bzip2,112,4113.505428,262.744272,0,S,127,4403.995136,278.281384,0,S,"ref iteration #3"
+403.gcc,112,3136.46991,287.45696,1,S,96,2550.035991,303.054528,0,S,"ref iteration #1"
+403.gcc,112,3150.808995,286.148688,0,S,96,2549.368739,303.133824,1,S,"ref iteration #2"
+403.gcc,112,3134.905733,287.60032,0,S,96,2544.391164,303.726912,0,S,"ref iteration #3"
+429.mcf,112,3142.472372,325.043376,0,S,64,1328.071822,439.494272,0,S,"ref iteration #1"
+429.mcf,112,3138.129503,325.49328,0,S,64,1308.577442,446.0416,0,S,"ref iteration #2"
+429.mcf,112,3139.778755,325.322256,1,S,64,1310.734958,445.307392,1,S,"ref iteration #3"
+445.gobmk,112,2325.833973,505.14352,1,S,112,2241.889795,524.057856,0,S,"ref iteration #1"
+445.gobmk,112,2324.191733,505.500464,0,S,112,2242.994279,523.799808,1,S,"ref iteration #2"
+445.gobmk,112,2327.034612,504.882896,0,S,112,2243.266651,523.736192,0,S,"ref iteration #3"
+456.hmmer,112,4064.032635,257.123888,0,S,80,1968.039846,379.26064,1,S,"ref iteration #1"
+456.hmmer,112,4067.761911,256.88824,0,S,80,1965.576507,379.73592,0,S,"ref iteration #2"
+456.hmmer,112,4064.148287,257.116608,1,S,80,1968.203105,379.22912,0,S,"ref iteration #3"
+458.sjeng,112,3075.269357,440.67688,0,S,112,3049.636643,444.380832,0,S,"ref iteration #1"
+458.sjeng,112,3066.718473,441.905632,1,S,112,3045.666611,444.960096,1,S,"ref iteration #2"
+458.sjeng,112,3066.466648,441.94192,0,S,112,3045.37615,445.002544,0,S,"ref iteration #3"
+462.libquantum,112,722.872827,3210.30192,1,S,80,501.572366,3304.80728,0,S,"ref iteration #1"
+462.libquantum,112,722.869909,3210.3148,0,S,80,502.267356,3300.2344,0,S,"ref iteration #2"
+462.libquantum,112,722.873927,3210.296992,0,S,80,501.879965,3302.78176,1,S,"ref iteration #3"
+464.h264ref,112,4628.663953,535.480624,0,S,112,4479.549012,553.305648,1,S,"ref iteration #1"
+464.h264ref,112,4628.640216,535.483424,1,S,112,4477.011818,553.619248,0,S,"ref iteration #2"
+464.h264ref,112,4628.181774,535.5364,0,S,112,4479.77797,553.277424,0,S,"ref iteration #3"
+471.omnetpp,112,2051.313812,341.244736,1,S,127,2117.552123,374.843167,0,S,"ref iteration #1"
+471.omnetpp,112,2049.970542,341.468288,0,S,127,2133.287006,372.078377,0,S,"ref iteration #2"
+471.omnetpp,112,2061.202397,339.607632,0,S,127,2122.257892,374.012079,1,S,"ref iteration #3"
+473.astar,112,2643.173612,297.460576,1,S,192,3926.973339,343.226112,0,S,"ref iteration #1"
+473.astar,112,2642.105491,297.580864,0,S,192,3926.011497,343.310208,1,S,"ref iteration #2"
+473.astar,112,2643.66414,297.40536,0,S,192,3913.633774,344.395968,0,S,"ref iteration #3"
+483.xalancbmk,112,1568.362339,492.743328,0,S,112,1478.395333,522.728976,1,S,"ref iteration #1"
+483.xalancbmk,112,1569.161539,492.492336,0,S,112,1478.538332,522.678352,0,S,"ref iteration #2"
+483.xalancbmk,112,1569.143528,492.497936,1,S,112,1477.676377,522.983216,0,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,112,2480.55492,441.12712,1,S,96,2035.98313,460.67184,1,S,"SelectedIteration (base #2; peak #3)"
+401.bzip2,112,4114.834418,262.659376,1,S,127,4404.07879,278.276177,1,S,"SelectedIteration (base #2; peak #2)"
+403.gcc,112,3136.46991,287.45696,1,S,96,2549.368739,303.133824,1,S,"SelectedIteration (base #1; peak #2)"
+429.mcf,112,3139.778755,325.322256,1,S,64,1310.734958,445.307392,1,S,"SelectedIteration (base #3; peak #3)"
+445.gobmk,112,2325.833973,505.14352,1,S,112,2242.994279,523.799808,1,S,"SelectedIteration (base #1; peak #2)"
+456.hmmer,112,4064.148287,257.116608,1,S,80,1968.039846,379.26064,1,S,"SelectedIteration (base #3; peak #1)"
+458.sjeng,112,3066.718473,441.905632,1,S,112,3045.666611,444.960096,1,S,"SelectedIteration (base #2; peak #2)"
+462.libquantum,112,722.872827,3210.30192,1,S,80,501.879965,3302.78176,1,S,"SelectedIteration (base #1; peak #3)"
+464.h264ref,112,4628.640216,535.483424,1,S,112,4479.549012,553.305648,1,S,"SelectedIteration (base #2; peak #1)"
+471.omnetpp,112,2051.313812,341.244736,1,S,127,2122.257892,374.012079,1,S,"SelectedIteration (base #1; peak #3)"
+473.astar,112,2643.173612,297.460576,1,S,192,3926.011497,343.310208,1,S,"SelectedIteration (base #1; peak #2)"
+483.xalancbmk,112,1569.143528,492.497936,1,S,112,1478.395333,522.728976,1,S,"SelectedIteration (base #3; peak #1)"
+
+SPECint_rate_base2006,440.547207,,440.547207
+SPECint_rate2006,489.147689,,,,,,,489.147689
+
+"Run number:",344
+
+"Hardware Vendor:","Oracle Corporation"
+"Hardware Model:","SPARC T5-1B"
+"Date tested:",Sep-2013
+"CPU2006 License:",6
+"Test sponsor:","Oracle Corporation"
+"Tested by:","Oracle Corporation"
+"Hardware avail:",Mar-2013
+"Software avail:",Nov-2013
+
+
+HARDWARE
+
+"CPU Name","SPARC T5"
+"CPU Characteristics"," "
+"CPU MHz",3600
+FPU,Integrated
+"CPU(s) enabled","16 cores, 1 chip, 16 cores/chip, 8 threads/core"
+"CPU(s) orderable","1 chip"
+"Primary Cache","16 KB I + 16 KB D on chip per core"
+"Secondary Cache","128 KB I+D on chip per core"
+"L3 Cache","8 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"256 GB (16 x 16 GB), 4-way interleaved"
+"Disk Subsystem","166 GB on 2x 300 GB 10K RPM SAS"
+,"disks (mirrored)"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Oracle Solaris 11.1 with SRU 10.5"
+Compiler,"C/C++: Version 12.3 of Oracle Solaris Studio"
+,"10/13 Patch Set"
+"Auto Parallel",No
+"File System","zfs with gzip compression"
+"System State",Default
+"Base Pointers",32-bit
+"Peak Pointers",32-bit
+"Other Software",None
+
+"Submit Notes"
+
+" Processes were bound to cores using ""submit"" and ""pbind"".  The config"
+" file option 'submit' was used in order to accomplish this."
+
+"Operating System Notes"
+
+
+" ulimit -s 131072 was used to limit the space"
+" consumed by the stack"
+
+" /etc/system parameters"
+"    autoup=600"
+"       Causes pages older than the listed number of seconds to"
+"       be written by fsflush."
+"    tune_t_fsflushr=10"
+"       Controls how many seconds elapse between runs of the"
+"       page flush daemon, fsflush."
+"    tsb_rss_factor=128"
+"        Suggests that the the size of the TSB (Translation"
+"        Storage Buffer) may be increased if it is more than"
+"        25% (128/512) full.  Doing so may reduce TSB traps,"
+"        at the cost of additional kernel memory."
+"    zfs:zfs_arc_min =  1073741824"
+"    zfs:zfs_arc_max =  4294967296"
+"        Limits the consumption of memory by the zfs file system"
+"        cache to the range 1 GB to 4 GB."
+
+"  pkg update disabled with  svcadm disable pkg/update"
+"  218 GB of swap was configured"
+
+"Platform Notes"
+
+" Sysinfo program /cpu2006/config/sysinfo.rev6818"
+" $Rev: 6818 $ $Date:: 2012-07-17 #$ 5569a0425e2ad530534e4c79a46e4d28"
+" running on bur408-179.us.oracle.com Mon Sep  9 18:49:39 2013"
+
+" This section contains SUT (System Under Test) info as seen by"
+" some common utilities.  To remove or add to this section, see:"
+"   http://www.spec.org/cpu2006/Docs/config.html#sysinfo"
+
+" From /usr/sbin/psrinfo"
+"    SPARC-T5 (chipid 0, clock 3600 MHz)"
+"    1 chips"
+"    128 threads"
+"    3600 MHz"
+
+" From kstat:       16 cores"
+
+" From prtconf: 261120 Megabytes"
+
+" /etc/release:"
+"      Oracle Solaris 11.1 SPARC"
+" uname -a:"
+"    SunOS bur408-179.us.oracle.com 5.11 11.1 sun4v sparc sun4v"
+
+" disk: df -h  $SPEC"
+" Filesystem             Size   Used  Available Capacity  Mounted on"
+" rpool/cpu2006          166G   4.1G       140G     3%    /cpu2006"
+
+" (End of data from sysinfo program)"
+
+"Base Compiler Invocation"
+400.perlbench," cc"," cc"
+401.bzip2," cc"," cc"
+403.gcc," cc"," cc"
+429.mcf," cc"," cc"
+445.gobmk," cc"," cc"
+456.hmmer," cc"," cc"
+458.sjeng," cc"," cc"
+462.libquantum," cc"," cc"
+464.h264ref," cc"," cc"
+471.omnetpp," CC"," CC"
+473.astar," CC"," CC"
+483.xalancbmk," CC"," CC"
+
+"Base Portability Flags"
+400.perlbench," -DSPEC_CPU_SOLARIS_SPARC"
+401.bzip2
+403.gcc," -DSPEC_CPU_SOLARIS"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum," -DSPEC_CPU_SOLARIS"
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_SOLARIS"
+
+"Base Optimization Flags"
+400.perlbench," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+401.bzip2," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+403.gcc," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+429.mcf," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+445.gobmk," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+456.hmmer," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+458.sjeng," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+462.libquantum," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+464.h264ref," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=std"," -M map.64K.align"," -lfast"
+471.omnetpp," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=compatible"," -library=stlport4"," -M map.256M.align"," -lfast"
+473.astar," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=compatible"," -library=stlport4"," -M map.256M.align"," -lfast"
+483.xalancbmk," -g"," -g"," -fast"," -xipo=2"," -xpagesize=256M"," -xprefetch=no%auto"," -xalias_level=compatible"," -library=stlport4"," -M map.256M.align"," -lfast"
+
+"Base Other Flags"
+400.perlbench," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+401.bzip2," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+403.gcc," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+429.mcf," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+445.gobmk," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+456.hmmer," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+458.sjeng," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+462.libquantum," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+464.h264ref," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+471.omnetpp," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+473.astar," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+483.xalancbmk," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," cc"," cc"
+401.bzip2," cc"," cc"
+403.gcc," cc"," cc"
+429.mcf," cc"," cc"
+445.gobmk," cc"," cc"
+456.hmmer," cc"," cc"
+458.sjeng," cc"," cc"
+462.libquantum," cc"," cc"
+464.h264ref," cc"," cc"
+471.omnetpp," CC"," CC"
+473.astar," CC"," CC"
+483.xalancbmk," CC"," CC"
+
+"Peak Portability Flags"
+400.perlbench," -DSPEC_CPU_SOLARIS_SPARC"
+401.bzip2
+403.gcc," -DSPEC_CPU_SOLARIS"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum," -DSPEC_CPU_SOLARIS"
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_SOLARIS"
+
+"Peak Optimization Flags"
+400.perlbench," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xipo=2"," -xalias_level=std"," -xrestrict"," -xprefetch=no%auto"," -Wc,-Qiselect-funcalign=64"," -lfast"
+401.bzip2," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.4M.align"," -xalias_level=strong"," -xprefetch=no%auto"
+403.gcc," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=4M"," -M map.4M.align"," -xalias_level=std"," -xprefetch_level=2"
+429.mcf," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xipo=2"," -xprefetch=no%auto"," -Wc,-Qiselect-funcalign=64"," -W2,-Asac"
+445.gobmk," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xalias_level=std"," -xrestrict"," -xprefetch=no%auto"," -Wc,-Qiselect-funcalign=64"
+456.hmmer," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xipo=2"," -Wc,-xthroughput"," -W2,-xthroughput=yes"," -Wc,-Qpeep-Ex:minmax_use_cmov=2"," -Wc,-Qms_pipe+ulmscc=1"
+458.sjeng," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xipo=2"," -xprefetch=no%auto"," -Wc,-xthroughput"," -W2,-xthroughput=yes"
+462.libquantum," -g"," -g"," -fast"," -xpagesize=256M"," -M map.256M.align"," -xipo=2"," -xalias_level=std"," -xprefetch_level=2"," -Wc,-Qlu-en=1-t=4"," -Wc,-Qiselect-funcalign=64"," -fma=fused"," -lbsdmalloc"
+464.h264ref," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -M map.64K.align"," -xprefetch=no%auto"," -xalias_level=strong"," -xipo=2"," -Wc,-Qiselect-funcalign=64"
+471.omnetpp," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -xalias_level=compatible"," -M map.256M.align"," -xipo=2"," -library=stdcxx4"," -Wc,-Qiselect-funcalign=64"," -lfast"
+473.astar," -g"," -g"," -fast"," -xpagesize=256M"," -xalias_level=compatible"," -M map.64K.align"," -xipo=2"," -Wc,-xthroughput"," -W2,-xthroughput=yes"," -library=stdcxx4"," -Wc,-Qiselect-funcalign=64"," -lfast"
+483.xalancbmk," -g"," -g"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -fast"," -xpagesize=256M"," -xalias_level=compatible"," -M map.64K.align"," -fma=fused"," -Wc,-Qiselect-funcalign=64"," -xipo=2"," -staticlib=%all"," -library=stlport4"," -library=stlport4"," -lfast"
+
+"Peak Other Flags"
+400.perlbench," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+401.bzip2," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+403.gcc," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+429.mcf," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+445.gobmk," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+456.hmmer," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+458.sjeng," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+462.libquantum," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+464.h264ref," -xjobs=32"," -V"," -#"," -xjobs=32"," -V"," -#"
+471.omnetpp," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+473.astar," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+483.xalancbmk," -xjobs=32"," -verbose=diags,version"," -xjobs=32"," -verbose=diags,version"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.2.  Report","generated on ","Thu Jul 24 17:16:44 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on "," 9 October 2013."

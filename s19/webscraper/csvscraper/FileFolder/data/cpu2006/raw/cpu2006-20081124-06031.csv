@@ -1,0 +1,292 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,8,902.3,86.4,1,S,8,583.1,134.4,0,S,"ref iteration #1"
+400.perlbench,8,905.3,86.4,0,S,8,574.5,136,0,S,"ref iteration #2"
+400.perlbench,8,887.6,88,0,S,8,577.8,135.2,1,S,"ref iteration #3"
+401.bzip2,8,982.9,78.4,0,S,8,983.8,78.4,0,S,"ref iteration #1"
+401.bzip2,8,964.6,80,0,S,8,967.6,80,1,S,"ref iteration #2"
+401.bzip2,8,966.5,80,1,S,8,965.2,80,0,S,"ref iteration #3"
+403.gcc,8,1869.7,34.4,1,S,8,1849.5,35.2,0,S,"ref iteration #1"
+403.gcc,8,1869.7,34.4,0,S,8,1828.1,35.2,0,S,"ref iteration #2"
+403.gcc,8,1866.4,34.4,0,S,8,1832.5,35.2,1,S,"ref iteration #3"
+429.mcf,8,881.1,83.2,0,S,8,885.4,82.4,1,S,"ref iteration #1"
+429.mcf,8,883,82.4,1,S,8,881.7,82.4,0,S,"ref iteration #2"
+429.mcf,8,883.7,82.4,0,S,8,885.5,82.4,0,S,"ref iteration #3"
+445.gobmk,8,788.7,106.4,0,S,8,742.3,112.8,1,S,"ref iteration #1"
+445.gobmk,8,789.4,106.4,0,S,8,741.6,112.8,0,S,"ref iteration #2"
+445.gobmk,8,789.3,106.4,1,S,8,743.5,112.8,0,S,"ref iteration #3"
+456.hmmer,8,709.2,105.6,0,S,8,691.2,108,0,S,"ref iteration #1"
+456.hmmer,8,709,105.6,0,S,8,690.7,108,0,S,"ref iteration #2"
+456.hmmer,8,709.1,105.6,1,S,8,690.8,108,1,S,"ref iteration #3"
+458.sjeng,8,915.1,105.6,0,S,8,865.6,112,0,S,"ref iteration #1"
+458.sjeng,8,914.9,105.6,0,S,8,865.8,112,0,S,"ref iteration #2"
+458.sjeng,8,915,105.6,1,S,8,865.6,112,1,S,"ref iteration #3"
+462.libquantum,8,1177.5,140.8,0,S,1,142.9,145,0,S,"ref iteration #1"
+462.libquantum,8,1177.8,140.8,0,S,1,142.8,145.1,0,S,"ref iteration #2"
+462.libquantum,8,1177.6,140.8,1,S,1,142.8,145.1,1,S,"ref iteration #3"
+464.h264ref,8,990,179.2,0,S,8,949.8,186.4,0,S,"ref iteration #1"
+464.h264ref,8,988.2,179.2,1,S,8,947.1,187.2,0,S,"ref iteration #2"
+464.h264ref,8,988,179.2,0,S,8,947.2,187.2,1,S,"ref iteration #3"
+471.omnetpp,8,1190.8,41.6,0,S,8,1162,43.2,0,S,"ref iteration #1"
+471.omnetpp,8,1190.9,41.6,1,S,8,1163,43.2,0,S,"ref iteration #2"
+471.omnetpp,8,1191.8,41.6,0,S,8,1162.7,43.2,1,S,"ref iteration #3"
+473.astar,8,973.4,57.6,0,S,8,885.6,63.2,0,S,"ref iteration #1"
+473.astar,8,969.8,57.6,0,S,8,884.2,63.2,1,S,"ref iteration #2"
+473.astar,8,971.8,57.6,1,S,8,883.9,63.2,0,S,"ref iteration #3"
+483.xalancbmk,8,637.6,86.4,1,S,8,637.6,86.4,1,S,"ref iteration #1"
+483.xalancbmk,8,637.1,86.4,0,S,8,637.1,86.4,0,S,"ref iteration #2"
+483.xalancbmk,8,638.9,86.4,0,S,8,638.9,86.4,0,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,8,902.3,86.4,1,S,8,577.8,135.2,1,S,"SelectedIteration (base #1; peak #3)"
+401.bzip2,8,966.5,80,1,S,8,967.6,80,1,S,"SelectedIteration (base #3; peak #2)"
+403.gcc,8,1869.7,34.4,1,S,8,1832.5,35.2,1,S,"SelectedIteration (base #1; peak #3)"
+429.mcf,8,883,82.4,1,S,8,885.4,82.4,1,S,"SelectedIteration (base #2; peak #1)"
+445.gobmk,8,789.3,106.4,1,S,8,742.3,112.8,1,S,"SelectedIteration (base #3; peak #1)"
+456.hmmer,8,709.1,105.6,1,S,8,690.8,108,1,S,"SelectedIteration (base #3; peak #3)"
+458.sjeng,8,915,105.6,1,S,8,865.6,112,1,S,"SelectedIteration (base #3; peak #3)"
+462.libquantum,8,1177.6,140.8,1,S,1,142.8,145.1,1,S,"SelectedIteration (base #3; peak #3)"
+464.h264ref,8,988.2,179.2,1,S,8,947.2,187.2,1,S,"SelectedIteration (base #2; peak #3)"
+471.omnetpp,8,1190.9,41.6,1,S,8,1162.7,43.2,1,S,"SelectedIteration (base #2; peak #3)"
+473.astar,8,971.8,57.6,1,S,8,884.2,63.2,1,S,"SelectedIteration (base #3; peak #2)"
+483.xalancbmk,8,637.6,86.4,1,S,8,637.6,86.4,1,S,"SelectedIteration (base #1; peak #1)"
+
+SPECint_rate_base2006,83.9,,83.9
+SPECint_rate2006,89.8,,,,,,,89.8
+
+"Run number:",002
+
+"Hardware Vendor:","ACTION S.A."
+"Hardware Model:","ACTINA SOLAR 202 X2 (Intel Xeon E5405, 2.0 GHz)"
+"Date tested:",Nov-2008
+"CPU2006 License:",9008
+"Test sponsor:","ACTION S.A."
+"Tested by:","ACTION S.A."
+"Hardware avail:",Sep-2008
+"Software avail:",Nov-2008
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon E5405"
+"CPU Characteristics","1333 MHz System Bus"
+"CPU MHz",2000
+FPU,Integrated
+"CPU(s) enabled","8 cores, 2 chips, 4 cores/chip"
+"CPU(s) orderable","1,2 chips"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","12 MB I+D on chip per chip, 6 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"16 GB (8x2 GB PC2-5300, CL 5-5-5, ECC)"
+"Disk Subsystem","RAID 10 (6x300 GB SAS, 15K RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Windows 2003 Server Enterprise Edition (32-bit)"
+,"Service Pack 2"
+Compiler,"Intel C++ Compiler Professional 11.0 for IA32"
+,"Build 20080930 Package ID: w_cproc_p_11.0.054"
+,"Microsoft Visual Studio 2008 (for libraries)"
+"Auto Parallel",Yes
+"File System",NTFS
+"System State",Default
+"Base Pointers",32-bit
+"Peak Pointers",32-bit
+"Other Software",None
+,"SmartHeap Library Version 8.1 from"
+,http://www.microquill.com/
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+
+"General Notes"
+
+" Product description located as of 10/2008:"
+" http://www.actina.pl"
+" Binaries were built on Windows Vista Ultimate (32-bit)"
+" OMP_NUM_THREADS set to number of logical processors as seen by the OS"
+" KMP_AFFINITY set to physical,0"
+" submit disabled for 462.libquantum peak"
+" Start command was used to bind processes to CPUs"
+
+"Base Compiler Invocation"
+400.perlbench," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+401.bzip2," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+403.gcc," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+429.mcf," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+445.gobmk," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+456.hmmer," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+458.sjeng," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+462.libquantum," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+464.h264ref," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+471.omnetpp," icl -Qvc9"," icl -Qvc9"
+473.astar," icl -Qvc9"," icl -Qvc9"
+483.xalancbmk," icl -Qvc9"," icl -Qvc9"
+
+"Base Portability Flags"
+400.perlbench
+401.bzip2
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref," -DSPEC_CPU_NO_INTTYPES"," -DWIN32"
+471.omnetpp
+473.astar
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Base Optimization Flags"
+400.perlbench," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+401.bzip2," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+403.gcc," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+429.mcf," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+445.gobmk," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+456.hmmer," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+458.sjeng," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+462.libquantum," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+464.h264ref," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+471.omnetpp," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+473.astar," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+483.xalancbmk," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+
+"Base Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+401.bzip2," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+403.gcc," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+429.mcf," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+445.gobmk," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+456.hmmer," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+458.sjeng," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+462.libquantum," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+464.h264ref," icl -Qvc9"," -Qc99"," icl -Qvc9"," -Qc99"
+471.omnetpp," icl -Qvc9"," icl -Qvc9"
+473.astar," icl -Qvc9"," icl -Qvc9"
+483.xalancbmk," icl -Qvc9"," icl -Qvc9"
+
+"Peak Portability Flags"
+400.perlbench
+401.bzip2
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref," -DSPEC_CPU_NO_INTTYPES"," -DWIN32"
+471.omnetpp
+473.astar
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Peak Optimization Flags"
+400.perlbench," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qansi-alias"," -Qopt-prefetch"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+401.bzip2," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qansi-alias"," /F512000000"
+403.gcc," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+429.mcf," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+445.gobmk," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qipo"," -O2"," -Qprec-div-"," -Qansi-alias"," /F512000000"
+456.hmmer," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qunroll2"," -Qansi-alias"," /F512000000"
+458.sjeng," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qunroll4"," /F512000000"
+462.libquantum," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qparallel"," -Qpar-runtime-control"," -Qvec-guard-write"," /F512000000"
+464.h264ref," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qunroll2"," -Qansi-alias"," /F512000000"
+471.omnetpp," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qansi-alias"," -Qopt-ra-region-strategy=block"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+473.astar," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -QxSSSE3"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qansi-alias"," -Qopt-ra-region-strategy=routine"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+483.xalancbmk," -QxSSSE3"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlw32m.lib","            -link /FORCE:MULTIPLE"
+
+"Peak Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.1.  Report","generated on ","Tue Jul 22 21:08:40 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on "," 9 December 2008."

@@ -1,0 +1,384 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+410.bwaves,12,1012.230405,161.109564,0,S,12,992.337232,164.339292,0,S,"ref iteration #1"
+410.bwaves,12,1012.572141,161.055192,1,S,12,992.7224,164.275536,1,S,"ref iteration #2"
+410.bwaves,12,1012.603122,161.05026,0,S,12,994.348485,164.006892,0,S,"ref iteration #3"
+416.gamess,12,1518.331702,154.748796,0,S,12,1397.642421,168.111672,1,S,"ref iteration #1"
+416.gamess,12,1522.949452,154.279584,0,S,12,1401.050938,167.702688,0,S,"ref iteration #2"
+416.gamess,12,1522.345117,154.34082,1,S,12,1393.649687,168.593304,0,S,"ref iteration #3"
+433.milc,12,813.760309,135.371556,0,S,12,701.406495,157.055856,0,S,"ref iteration #1"
+433.milc,12,813.475494,135.418956,0,S,12,701.239833,157.093188,1,S,"ref iteration #2"
+433.milc,12,813.739923,135.374952,1,S,12,701.040396,157.137876,0,S,"ref iteration #3"
+434.zeusmp,12,578.557169,188.745396,0,S,12,558.177879,195.636564,1,S,"ref iteration #1"
+434.zeusmp,12,573.845087,190.295256,0,S,12,566.618094,192.7224,0,S,"ref iteration #2"
+434.zeusmp,12,574.650491,190.028556,1,S,12,558.013478,195.6942,0,S,"ref iteration #3"
+435.gromacs,12,455.078815,188.27508,1,S,12,366.260552,233.931828,0,S,"ref iteration #1"
+435.gromacs,12,454.455754,188.5332,0,S,12,368.15863,232.725768,1,S,"ref iteration #2"
+435.gromacs,12,455.639932,188.043216,0,S,12,368.982869,232.205904,0,S,"ref iteration #3"
+436.cactusADM,12,633.430465,226.386336,0,S,12,558.384672,256.812204,0,S,"ref iteration #1"
+436.cactusADM,12,635.692001,225.580944,1,S,12,561.793471,255.253944,0,S,"ref iteration #2"
+436.cactusADM,12,636.373477,225.339372,0,S,12,559.894551,256.11966,1,S,"ref iteration #3"
+437.leslie3d,12,1014.226212,111.217788,0,S,12,822.20609,137.191884,0,S,"ref iteration #1"
+437.leslie3d,12,1015.13609,111.118104,0,S,12,820.589493,137.46216,0,S,"ref iteration #2"
+437.leslie3d,12,1014.27816,111.2121,1,S,12,820.871995,137.414844,1,S,"ref iteration #3"
+444.namd,12,626.878141,153.52266,1,S,12,532.855155,180.611928,1,S,"ref iteration #1"
+444.namd,12,632.107066,152.252688,0,S,12,534.411996,180.085776,0,S,"ref iteration #2"
+444.namd,12,621.341188,154.890744,0,S,12,531.536607,181.059972,0,S,"ref iteration #3"
+447.dealII,12,406.921533,337.362336,0,S,12,367.536745,373.51368,0,S,"ref iteration #1"
+447.dealII,12,404.772223,339.153708,1,S,12,371.366536,369.66174,1,S,"ref iteration #2"
+447.dealII,12,400.902536,342.427368,0,S,12,383.115364,358.325484,0,S,"ref iteration #3"
+450.soplex,12,786.774374,127.202928,0,S,12,716.985974,139.584324,1,S,"ref iteration #1"
+450.soplex,12,760.004261,131.683476,1,S,12,733.256858,136.486956,0,S,"ref iteration #2"
+450.soplex,12,758.533973,131.938716,0,S,12,700.051948,142.960824,0,S,"ref iteration #3"
+453.povray,12,307.946942,207.308436,0,S,12,269.398319,236.97252,0,S,"ref iteration #1"
+453.povray,12,308.159796,207.165252,1,S,12,270.0643,236.388144,1,S,"ref iteration #2"
+453.povray,12,308.395233,207.007092,0,S,12,270.167214,236.298108,0,S,"ref iteration #3"
+454.calculix,12,333.586088,296.774964,0,S,12,318.086241,311.236344,0,S,"ref iteration #1"
+454.calculix,12,329.480097,300.473388,0,S,12,318.00407,311.316768,1,S,"ref iteration #2"
+454.calculix,12,329.859795,300.127512,1,S,12,317.732794,311.582568,0,S,"ref iteration #3"
+459.GemsFDTD,12,1223.929611,104.025588,0,S,12,1089.436003,116.867808,0,S,"ref iteration #1"
+459.GemsFDTD,12,1230.791876,103.445592,0,S,12,1092.512643,116.538696,0,S,"ref iteration #2"
+459.GemsFDTD,12,1226.370657,103.818528,1,S,12,1090.457702,116.758308,1,S,"ref iteration #3"
+465.tonto,12,656.622467,179.82936,0,S,12,590.268955,200.044404,0,S,"ref iteration #1"
+465.tonto,12,648.849549,181.983636,1,S,12,590.683121,199.904136,1,S,"ref iteration #2"
+465.tonto,12,646.418375,182.66808,0,S,12,592.006528,199.457256,0,S,"ref iteration #3"
+470.lbm,12,769.443911,214.284624,0,S,12,768.860637,214.447188,1,S,"ref iteration #1"
+470.lbm,12,772.295484,213.493416,0,S,12,768.342739,214.591728,0,S,"ref iteration #2"
+470.lbm,12,770.403994,214.017588,1,S,12,772.871525,213.334296,0,S,"ref iteration #3"
+481.wrf,12,702.244805,190.873608,0,S,12,699.016808,191.755044,0,S,"ref iteration #1"
+481.wrf,12,703.679983,190.484316,0,S,12,699.404242,191.64882,1,S,"ref iteration #2"
+481.wrf,12,702.769294,190.731156,1,S,12,699.724436,191.561124,0,S,"ref iteration #3"
+482.sphinx3,12,1391.225591,168.110772,0,S,12,1094.002601,213.783768,0,S,"ref iteration #1"
+482.sphinx3,12,1389.508859,168.318468,1,S,12,1082.064999,216.142284,0,S,"ref iteration #2"
+482.sphinx3,12,1382.413809,169.182336,0,S,12,1091.612211,214.251912,1,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+410.bwaves,12,1012.572141,161.055192,1,S,12,992.7224,164.275536,1,S,"SelectedIteration (base #2; peak #2)"
+416.gamess,12,1522.345117,154.34082,1,S,12,1397.642421,168.111672,1,S,"SelectedIteration (base #3; peak #1)"
+433.milc,12,813.739923,135.374952,1,S,12,701.239833,157.093188,1,S,"SelectedIteration (base #3; peak #2)"
+434.zeusmp,12,574.650491,190.028556,1,S,12,558.177879,195.636564,1,S,"SelectedIteration (base #3; peak #1)"
+435.gromacs,12,455.078815,188.27508,1,S,12,368.15863,232.725768,1,S,"SelectedIteration (base #1; peak #2)"
+436.cactusADM,12,635.692001,225.580944,1,S,12,559.894551,256.11966,1,S,"SelectedIteration (base #2; peak #3)"
+437.leslie3d,12,1014.27816,111.2121,1,S,12,820.871995,137.414844,1,S,"SelectedIteration (base #3; peak #3)"
+444.namd,12,626.878141,153.52266,1,S,12,532.855155,180.611928,1,S,"SelectedIteration (base #1; peak #1)"
+447.dealII,12,404.772223,339.153708,1,S,12,371.366536,369.66174,1,S,"SelectedIteration (base #2; peak #2)"
+450.soplex,12,760.004261,131.683476,1,S,12,716.985974,139.584324,1,S,"SelectedIteration (base #2; peak #1)"
+453.povray,12,308.159796,207.165252,1,S,12,270.0643,236.388144,1,S,"SelectedIteration (base #2; peak #2)"
+454.calculix,12,329.859795,300.127512,1,S,12,318.00407,311.316768,1,S,"SelectedIteration (base #3; peak #2)"
+459.GemsFDTD,12,1226.370657,103.818528,1,S,12,1090.457702,116.758308,1,S,"SelectedIteration (base #3; peak #3)"
+465.tonto,12,648.849549,181.983636,1,S,12,590.683121,199.904136,1,S,"SelectedIteration (base #2; peak #2)"
+470.lbm,12,770.403994,214.017588,1,S,12,768.860637,214.447188,1,S,"SelectedIteration (base #3; peak #1)"
+481.wrf,12,702.769294,190.731156,1,S,12,699.404242,191.64882,1,S,"SelectedIteration (base #3; peak #2)"
+482.sphinx3,12,1389.508859,168.318468,1,S,12,1091.612211,214.251912,1,S,"SelectedIteration (base #2; peak #3)"
+
+SPECfp_rate_base2006,177.181039,,177.181039
+SPECfp_rate2006,196.606818,,,,,,,196.606818
+
+"Run number:",001
+
+"Hardware Vendor:",Tyan
+"Hardware Model:","Tyan YR190-B8228, AMD Opteron 4332 HE"
+"Date tested:",Oct-2012
+"CPU2006 License:",49
+"Test sponsor:","Advanced Micro Devices"
+"Tested by:","Advanced Micro Devices"
+"Hardware avail:",Dec-2012
+"Software avail:",Aug-2012
+
+
+HARDWARE
+
+"CPU Name","AMD Opteron 4332 HE"
+"CPU Characteristics","AMD Turbo CORE technology up to 3.70 GHz"
+"CPU MHz",3000
+FPU,Integrated
+"CPU(s) enabled","12 cores, 2 chips, 6 cores/chip"
+"CPU(s) orderable","1,2 chips"
+"Primary Cache","192 KB I on chip per chip,"
+,"64 KB I shared / 2 cores;"
+,"16 KB D on chip per core"
+"Secondary Cache","6 MB I+D on chip per chip, 2 MB shared / 2 cores"
+"L3 Cache","8 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"32 GB (4 x 8 GB 2Rx4 PC3-12800R-11, ECC)"
+"Disk Subsystem","1 x 128 GB SSD"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Red Hat Enterprise Linux Server release 6.3,"
+,"Kernel 2.6.32-279.el6.x86_64"
+Compiler,"C/C++/Fortran: Version 4.5.2 of x86 Open64"
+,"Compiler Suite (from AMD)"
+"Auto Parallel",No
+"File System",ext3
+"System State","Run level 3 (Full multiuser with network)"
+"Base Pointers",64-bit
+"Peak Pointers",32/64-bit
+"Other Software",None
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+"'numactl' was used to bind copies to the cores."
+"See the configuration file for details."
+
+"Operating System Notes"
+
+"'ulimit -s unlimited' was used to set environment stack size"
+"'ulimit -l 2097152'  was used to set environment locked pages in memory limit"
+
+"Set transparent_hugepage=never as a boot parameter in /boot/grub/menu.lst"
+
+"Set vm/nr_hugepages=5760 in /etc/sysctl.conf"
+"mount -t hugetlbfs nodev /mnt/hugepages"
+
+"General Notes"
+
+"Environment variables set by runspec before the start of the run:"
+"HUGETLB_LIMIT = ""480"""
+"LD_LIBRARY_PATH = ""/root/work/cpu2006v1.2/amd1206-rate-libs-revA/32:/root/work/cpu2006v1.2/amd1206-rate-libs-revA/64"""
+
+"The x86 Open64 Compiler Suite is only available from (and supported by) AMD at"
+http://developer.amd.com/cpu/open64
+
+"Binaries were compiled on a system with 2x AMD Opteron 6386SE chips + 128GB Memory using RHEL 6.3"
+
+"Base Compiler Invocation"
+410.bwaves," openf95"," openf95"
+416.gamess," openf95"," openf95"
+433.milc," opencc"," opencc"
+434.zeusmp," openf95"," openf95"
+435.gromacs," opencc"," openf95"," openf95"
+436.cactusADM," opencc"," openf95"," openf95"
+437.leslie3d," openf95"," openf95"
+444.namd," openCC"," openCC"
+447.dealII," openCC"," openCC"
+450.soplex," openCC"," openCC"
+453.povray," openCC"," openCC"
+454.calculix," opencc"," openf95"," openf95"
+459.GemsFDTD," openf95"," openf95"
+465.tonto," openf95"," openf95"
+470.lbm," opencc"," opencc"
+481.wrf," opencc"," openf95"," openf95"
+482.sphinx3," opencc"," opencc"
+
+"Base Portability Flags"
+410.bwaves," -DSPEC_CPU_LP64"
+416.gamess," -DSPEC_CPU_LP64"
+433.milc," -DSPEC_CPU_LP64"
+434.zeusmp," -DSPEC_CPU_LP64"
+435.gromacs," -DSPEC_CPU_LP64"
+436.cactusADM," -DSPEC_CPU_LP64"," -fno-second-underscore"
+437.leslie3d," -DSPEC_CPU_LP64"
+444.namd," -DSPEC_CPU_LP64"
+447.dealII," -DSPEC_CPU_LP64"
+450.soplex," -DSPEC_CPU_LP64"
+453.povray," -DSPEC_CPU_LP64"
+454.calculix," -DSPEC_CPU_LP64"
+459.GemsFDTD," -DSPEC_CPU_LP64"
+465.tonto," -DSPEC_CPU_LP64"
+470.lbm," -DSPEC_CPU_LP64"
+481.wrf," -DSPEC_CPU_LINUX"," -DSPEC_CPU_CASE_FLAG"," -DSPEC_CPU_LP64"," -fno-second-underscore"
+482.sphinx3," -DSPEC_CPU_LP64"
+
+"Base Optimization Flags"
+410.bwaves," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+416.gamess," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+433.milc," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"
+434.zeusmp," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+435.gromacs," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+436.cactusADM," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+437.leslie3d," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+444.namd," -Ofast"," -static"," -CG:load_exe=0"," -OPT:malloc_alg=1"," -INLINE:aggressive=on"," -HP:bd=2m:heap=2m"," -D__OPEN64_FAST_SET"," -march=bdver1"
+447.dealII," -Ofast"," -static"," -CG:load_exe=0"," -OPT:malloc_alg=1"," -INLINE:aggressive=on"," -HP:bd=2m:heap=2m"," -D__OPEN64_FAST_SET"," -march=bdver1"
+450.soplex," -Ofast"," -static"," -CG:load_exe=0"," -OPT:malloc_alg=1"," -INLINE:aggressive=on"," -HP:bd=2m:heap=2m"," -D__OPEN64_FAST_SET"," -march=bdver1"
+453.povray," -Ofast"," -static"," -CG:load_exe=0"," -OPT:malloc_alg=1"," -INLINE:aggressive=on"," -HP:bd=2m:heap=2m"," -D__OPEN64_FAST_SET"," -march=bdver1"
+454.calculix," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+459.GemsFDTD," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+465.tonto," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+470.lbm," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"
+481.wrf," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LNO:simd_peel_align=on"," -OPT:rsqrt=2"," -OPT:unroll_size=256"," -HP:bd=2m:heap=2m"," -mso"," -march=bdver1"
+482.sphinx3," -Ofast"," -OPT:malloc_alg=1"," -HP:bd=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -mso"," -march=bdver1"
+
+"Base Other Flags"
+410.bwaves," No flags used"
+416.gamess," No flags used"
+433.milc," No flags used"
+434.zeusmp," No flags used"
+435.gromacs," No flags used"
+436.cactusADM," No flags used"
+437.leslie3d," No flags used"
+444.namd," No flags used"
+447.dealII," No flags used"
+450.soplex," No flags used"
+453.povray," No flags used"
+454.calculix," No flags used"
+459.GemsFDTD," No flags used"
+465.tonto," No flags used"
+470.lbm," No flags used"
+481.wrf," No flags used"
+482.sphinx3," No flags used"
+
+"Base Forbidden Flags"
+410.bwaves
+416.gamess
+433.milc
+434.zeusmp
+435.gromacs
+436.cactusADM
+437.leslie3d
+444.namd
+447.dealII
+450.soplex
+453.povray
+454.calculix
+459.GemsFDTD
+465.tonto
+470.lbm
+481.wrf
+482.sphinx3
+
+"Base Unknown Flags"
+410.bwaves
+416.gamess
+433.milc
+434.zeusmp
+435.gromacs
+436.cactusADM
+437.leslie3d
+444.namd
+447.dealII
+450.soplex
+453.povray
+454.calculix
+459.GemsFDTD
+465.tonto
+470.lbm
+481.wrf
+482.sphinx3
+
+"Peak Compiler Invocation"
+410.bwaves," openf95"," openf95"
+416.gamess," openf95"," openf95"
+433.milc," opencc"," opencc"
+434.zeusmp," openf95"," openf95"
+435.gromacs," opencc"," openf95"," openf95"
+436.cactusADM," opencc"," openf95"," openf95"
+437.leslie3d," openf95"," openf95"
+444.namd," openCC"," openCC"
+447.dealII," openCC"," openCC"
+450.soplex," openCC"," openCC"
+453.povray," openCC"," openCC"
+454.calculix," opencc"," openf95"," openf95"
+459.GemsFDTD," openf95"," openf95"
+465.tonto," openf95"," openf95"
+470.lbm," opencc"," opencc"
+481.wrf," opencc"," openf95"," openf95"
+482.sphinx3," opencc"," opencc"
+
+"Peak Portability Flags"
+410.bwaves," -DSPEC_CPU_LP64"
+416.gamess," -DSPEC_CPU_LP64"
+433.milc," -DSPEC_CPU_LP64"
+434.zeusmp," -DSPEC_CPU_LP64"
+435.gromacs," -DSPEC_CPU_LP64"
+436.cactusADM," -DSPEC_CPU_LP64"," -fno-second-underscore"
+437.leslie3d," -DSPEC_CPU_LP64"
+444.namd," -DSPEC_CPU_LP64"
+447.dealII
+450.soplex
+453.povray," -DSPEC_CPU_LP64"
+454.calculix," -DSPEC_CPU_LP64"
+459.GemsFDTD," -DSPEC_CPU_LP64"
+465.tonto," -DSPEC_CPU_LP64"
+470.lbm," -DSPEC_CPU_LP64"
+481.wrf," -DSPEC_CPU_LINUX"," -DSPEC_CPU_CASE_FLAG"," -DSPEC_CPU_LP64"," -fno-second-underscore"
+482.sphinx3
+
+"Peak Optimization Flags"
+410.bwaves," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -OPT:Ofast"," -OPT:treeheight=on"," -LNO:blocking=off"," -LNO:ignore_feedback=off"," -LNO:fu=4"," -LNO:loop_model_simd=on"," -LNO:simd_rm_unity_remainder=on"," -WOPT:aggstr=0"," -HP:bdt=2m:heap=2m"," -CG:cmp_peep=on"," -march=bdver1"
+416.gamess," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -LNO:fu=6"," -LNO:blocking=0"," -LNO:simd=2"," -OPT:ro=3"," -OPT:recip=on"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"," -WOPT:sib=on"," -march=bdver1"
+433.milc," -Ofast"," -CG:movnti=1"," -CG:locs_best=on"," -HP:bdt=2m:heap=2m"," -IPA:plimit=7000"," -IPA:callee_limit=1200"," -OPT:struct_array_copy=2"," -OPT:alias=field_sensitive"," -mso"," -march=bdver1"
+434.zeusmp," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -LNO:blocking=off"," -LNO:interchange=off"," -IPA:plimit=1500"," -HP:bdt=2m:heap=2m"," -march=bdver1"
+435.gromacs," -Ofast"," -OPT:rsqrt=2"," -HP:bdt=2m:heap=2m"," -CG:local_sched_alg=2"," -CG:load_exe=3"," -GRA:unspill=on"," -march=bdver1"," -Ofast"," -OPT:rsqrt=2"," -HP:bdt=2m:heap=2m"," -LNO:simd=3"," -CG:local_sched_alg=2"," -CG:load_exe=3"," -GRA:unspill=on"," -march=bdver1"
+436.cactusADM," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -LNO:blocking=off"," -LNO:prefetch=2"," -LNO:pf2=0"," -LNO:prefetch_ahead=4"," -HP"," -CG:locs_shallow_depth=1"," -CG:load_exe=0"," -CG:dsched=on"," -WOPT:sib=on"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LNO:prefetch=2"," -LNO:pf2=0"," -LNO:prefetch_ahead=4"," -HP"," -CG:locs_shallow_depth=1"," -CG:load_exe=0"," -CG:dsched=on"," -WOPT:sib=on"," -march=bdver1"
+437.leslie3d," -Ofast"," -CG:pre_minreg_level=2"," -LNO:simd=0"," -LNO:fusion=2"," -HP:bdt=2m:heap=2m"," -mso"," -march=bdver1"
+444.namd," -Ofast"," -IPA:plimit=3000"," -LNO:ignore_feedback=off"," -CG:local_sched_alg=0"," -CG:load_exe=0"," -OPT:unroll_size=256"," -fno-exceptions"," -HP:bdt=2m:heap=2m"," -LNO:if_select_conv=1"," -OPT:alias=disjoint"," -LNO:psimd_iso_unroll=ON"," -march=bdver1"
+447.dealII," -Ofast"," -D__OPEN64_FAST_SET"," -static"," -INLINE:aggressive=on"," -LNO:opt=1"," -LNO:simd=2"," -fno-emit-exceptions"," -m32"," -OPT:unroll_times_max=8"," -OPT:unroll_size=256"," -OPT:unroll_level=2"," -HP:bdt=2m:heap=2m"," -GRA:unspill=on"," -CG:cmp_peep=on"," -CG:movext_icmp=off"," -TENV:frame_pointer=off"," -march=bdver1"
+450.soplex," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -O3"," -LNO:ignore_feedback=off"," -INLINE:aggressive=on"," -OPT:RO=1"," -OPT:IEEE_arith=3"," -OPT:IEEE_NaN_Inf=off"," -OPT:fold_unsigned_relops=on"," -fno-exceptions"," -CG:p2align=0"," -m32"," -mno-fma4"," -HP:bdt=2m:heap=2m"," -WOPT:sib=on"," -march=bdver1"
+453.povray," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -CG:pre_local_sched=off"," -CG:p2align=0"," -CG:p2align_split=on"," -CG:dsched=on"," -INLINE:aggressive=on"," -HP:bd=2m:heap=2m"," -OPT:transform=2"," -OPT:alias=disjoint"," -WOPT:aggcm=0"," -march=bdver2"
+454.calculix," -Ofast"," -OPT:unroll_size=256"," -OPT:alias=disjoint"," -GRA:optimize_boundary=on"," -CG:dsched=on"," -HP:bdt=2m:heap=2m"," -march=bdver1"," -Ofast"," -OPT:unroll_size=256"," -OPT:alias=disjoint"," -GRA:optimize_boundary=on"," -CG:dsched=on"," -HP:bdt=2m:heap=2m"," -march=bdver1"
+459.GemsFDTD," -Ofast"," -IPA:plimit=1500"," -OPT:unroll_size=1024"," -OPT:unroll_times_max=16"," -LNO:fission=2"," -CG:local_sched_alg=2"," -HP"," -march=bdver1"
+465.tonto," -Ofast"," -OPT:alias=no_f90_pointer_alias"," -LNO:blocking=off"," -CG:load_exe=1"," -CG:local_sched_alg=3"," -IPA:plimit=525"," -HP:bdt=2m:heap=2m"," -march=bdver1"
+470.lbm," -Ofast"," -CG:cmp_peep=on"," -OPT:keep_ext=on"," -HP:bdt=2m:heap=2m"," -IPA:plimit=8000"," -IPA:small_pu=100"," -march=bdver1"," -mso"
+481.wrf," -Ofast"," -LNO:blocking=off"," -LANG:copyinout=off"," -IPA:callee_limit=5000"," -GRA:prioritize_by_density=on"," -HP"," -WOPT:sib=on"," -march=bdver1"," -Ofast"," -LNO:blocking=off"," -LANG:copyinout=off"," -IPA:callee_limit=5000"," -GRA:prioritize_by_density=on"," -HP"," -WOPT:sib=on"," -march=bdver1"
+482.sphinx3," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -m32"," -IPA:plimit=1000"," -OPT:malloc_alg=2"," -CG:cmp_peep=on"," -CG:p2align=0"," -CG:load_exe=1"," -CG:dsched=on"," -INLINE:aggressive=on"," -LNO:prefetch=2"," -LNO:prefetch_ahead=4"," -mso"," -march=bdver2"
+
+"Peak Other Flags"
+410.bwaves," No flags used"
+416.gamess," No flags used"
+433.milc," No flags used"
+434.zeusmp," No flags used"
+435.gromacs," No flags used"
+436.cactusADM," No flags used"
+437.leslie3d," No flags used"
+444.namd," No flags used"
+447.dealII," No flags used"
+450.soplex," No flags used"
+453.povray," No flags used"
+454.calculix," No flags used"
+459.GemsFDTD," No flags used"
+465.tonto," No flags used"
+470.lbm," No flags used"
+481.wrf," No flags used"
+482.sphinx3," No flags used"
+
+"Peak Forbidden Flags"
+410.bwaves
+416.gamess
+433.milc
+434.zeusmp
+435.gromacs
+436.cactusADM
+437.leslie3d
+444.namd
+447.dealII
+450.soplex
+453.povray
+454.calculix
+459.GemsFDTD
+465.tonto
+470.lbm
+481.wrf
+482.sphinx3
+
+"Peak Unknown Flags"
+410.bwaves
+416.gamess
+433.milc
+434.zeusmp
+435.gromacs
+436.cactusADM
+437.leslie3d
+444.namd
+447.dealII
+450.soplex
+453.povray
+454.calculix
+459.GemsFDTD
+465.tonto
+470.lbm
+481.wrf
+482.sphinx3
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.2.  Report","generated on ","Thu Jul 24 13:24:09 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on "," 4 December 2012."

@@ -1,0 +1,349 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,320.75501,30.459384,1,S,9770,259.218215,37.690253,0,S,"ref iteration #1"
+400.perlbench,9770,320.820625,30.453154,0,S,9770,258.555259,37.786893,0,S,"ref iteration #2"
+400.perlbench,9770,320.656615,30.468731,0,S,9770,258.976054,37.725496,1,S,"ref iteration #3"
+401.bzip2,9650,422.910519,22.818066,0,S,9650,414.626175,23.273977,1,S,"ref iteration #1"
+401.bzip2,9650,422.510845,22.83965,0,S,9650,414.562168,23.27757,0,S,"ref iteration #2"
+401.bzip2,9650,422.538661,22.838147,1,S,9650,414.748896,23.26709,0,S,"ref iteration #3"
+403.gcc,8050,239.30175,33.639537,0,S,8050,235.952434,34.117046,0,S,"ref iteration #1"
+403.gcc,8050,238.881023,33.698784,0,S,8050,236.554826,34.030166,0,S,"ref iteration #2"
+403.gcc,8050,239.281687,33.642357,1,S,8050,236.384866,34.054634,1,S,"ref iteration #3"
+429.mcf,9120,137.659041,66.250643,0,S,9120,137.659041,66.250643,0,S,"ref iteration #1"
+429.mcf,9120,136.825254,66.654362,0,S,9120,136.825254,66.654362,0,S,"ref iteration #2"
+429.mcf,9120,137.544194,66.305961,1,S,9120,137.544194,66.305961,1,S,"ref iteration #3"
+445.gobmk,10490,436.632921,24.024757,0,S,10490,393.352727,26.668177,0,S,"ref iteration #1"
+445.gobmk,10490,437.237668,23.991529,1,S,10490,393.460574,26.660867,1,S,"ref iteration #2"
+445.gobmk,10490,437.631709,23.969927,0,S,10490,393.553438,26.654576,0,S,"ref iteration #3"
+456.hmmer,9330,162.172737,57.531248,0,S,9330,161.419473,57.799718,0,S,"ref iteration #1"
+456.hmmer,9330,162.287192,57.490674,1,S,9330,159.829905,58.374558,0,S,"ref iteration #2"
+456.hmmer,9330,162.882827,57.28044,0,S,9330,160.066027,58.288446,1,S,"ref iteration #3"
+458.sjeng,12100,424.432358,28.508665,1,S,12100,424.432358,28.508665,1,S,"ref iteration #1"
+458.sjeng,12100,424.432405,28.508662,0,S,12100,424.432405,28.508662,0,S,"ref iteration #2"
+458.sjeng,12100,424.431943,28.508693,0,S,12100,424.431943,28.508693,0,S,"ref iteration #3"
+462.libquantum,20720,5.896314,3514.059801,0,S,20720,5.695261,3638.112459,1,S,"ref iteration #1"
+462.libquantum,20720,5.89456,3515.105453,0,S,20720,5.695246,3638.122041,0,S,"ref iteration #2"
+462.libquantum,20720,5.895444,3514.578376,1,S,20720,5.696103,3637.574672,0,S,"ref iteration #3"
+464.h264ref,22130,496.553504,44.567201,0,S,22130,394.239355,56.133412,0,S,"ref iteration #1"
+464.h264ref,22130,496.953741,44.531308,1,S,22130,394.55217,56.088907,1,S,"ref iteration #2"
+464.h264ref,22130,497.553492,44.47763,0,S,22130,397.681657,55.647525,0,S,"ref iteration #3"
+471.omnetpp,6250,189.442264,32.991582,0,S,6250,140.634059,44.441582,0,S,"ref iteration #1"
+471.omnetpp,6250,190.3403,32.835926,1,S,6250,140.052584,44.626096,1,S,"ref iteration #2"
+471.omnetpp,6250,202.51138,30.862463,0,S,6250,136.519891,45.780875,0,S,"ref iteration #3"
+473.astar,7020,222.867426,31.498547,0,S,7020,222.867426,31.498547,0,S,"ref iteration #1"
+473.astar,7020,225.03596,31.195014,0,S,7020,225.03596,31.195014,0,S,"ref iteration #2"
+473.astar,7020,224.271433,31.301356,1,S,7020,224.271433,31.301356,1,S,"ref iteration #3"
+483.xalancbmk,6900,132.016549,52.266175,0,S,6900,126.401292,54.58805,1,S,"ref iteration #1"
+483.xalancbmk,6900,131.644535,52.413873,0,S,6900,126.455236,54.564763,0,S,"ref iteration #2"
+483.xalancbmk,6900,131.996551,52.274093,1,S,6900,126.187325,54.680611,0,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,320.75501,30.459384,1,S,9770,258.976054,37.725496,1,S,"SelectedIteration (base #1; peak #3)"
+401.bzip2,9650,422.538661,22.838147,1,S,9650,414.626175,23.273977,1,S,"SelectedIteration (base #3; peak #1)"
+403.gcc,8050,239.281687,33.642357,1,S,8050,236.384866,34.054634,1,S,"SelectedIteration (base #3; peak #3)"
+429.mcf,9120,137.544194,66.305961,1,S,9120,137.544194,66.305961,1,S,"SelectedIteration (base #3; peak #3)"
+445.gobmk,10490,437.237668,23.991529,1,S,10490,393.460574,26.660867,1,S,"SelectedIteration (base #2; peak #2)"
+456.hmmer,9330,162.287192,57.490674,1,S,9330,160.066027,58.288446,1,S,"SelectedIteration (base #2; peak #3)"
+458.sjeng,12100,424.432358,28.508665,1,S,12100,424.432358,28.508665,1,S,"SelectedIteration (base #1; peak #1)"
+462.libquantum,20720,5.895444,3514.578376,1,S,20720,5.695261,3638.112459,1,S,"SelectedIteration (base #3; peak #1)"
+464.h264ref,22130,496.953741,44.531308,1,S,22130,394.55217,56.088907,1,S,"SelectedIteration (base #2; peak #2)"
+471.omnetpp,6250,190.3403,32.835926,1,S,6250,140.052584,44.626096,1,S,"SelectedIteration (base #2; peak #2)"
+473.astar,7020,224.271433,31.301356,1,S,7020,224.271433,31.301356,1,S,"SelectedIteration (base #3; peak #3)"
+483.xalancbmk,6900,131.996551,52.274093,1,S,6900,126.401292,54.58805,1,S,"SelectedIteration (base #3; peak #1)"
+
+SPECint_base2006,53.192357,,53.192357
+SPECint2006,57.717285,,,,,,,57.717285
+
+"Run number:",032
+
+"Hardware Vendor:",Huawei
+"Hardware Model:","Huawei CH121 (Intel Xeon E5-2670 v2)"
+"Date tested:",Jul-2014
+"CPU2006 License:",3175
+"Test sponsor:",Huawei
+"Tested by:",Huawei
+"Hardware avail:",Sep-2013
+"Software avail:",Nov-2013
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon E5-2670 v2"
+"CPU Characteristics","Intel Turbo Boost Technology up to 3.30 GHz"
+"CPU MHz",2500
+FPU,Integrated
+"CPU(s) enabled","20 cores, 2 chips, 10 cores/chip"
+"CPU(s) orderable","1,2 chip"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","256 KB I+D on chip per core"
+"L3 Cache","25 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"256 GB (16 x 16 GB 2Rx4 PC3-14900R-13, ECC)"
+"Disk Subsystem","1 x 300 GB SAS, 10000 RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Red Hat Enterprise Linux Server release 6.5"
+,(Santiago)
+,2.6.32-431.el6.x86_64
+Compiler,"C/C++: Version 12.1.0.225 of Intel C++ Studio XE"
+,"for Linux"
+"Auto Parallel",Yes
+"File System",ext4
+"System State","Run level 3 (multi-user)"
+"Base Pointers",32/64-bit
+"Peak Pointers",32/64-bit
+"Other Software","Microquill SmartHeap V9.01"
+
+"Operating System Notes"
+
+" Stack size set to unlimited using ""ulimit -s unlimited"""
+
+"Platform Notes"
+
+" BIOS configuration:"
+" Set Power Efficiency Mode to Custom"
+" Baseboard Management Controller used to adjust the fan speed to 100%"
+" Sysinfo program /spec/config/sysinfo.rev6800"
+" $Rev: 6800 $ $Date:: 2011-10-11 #$ 6f2ebdff5032aaa42e583f96b07f99d3"
+" running on localhost Fri Jul 11 16:52:29 2014"
+
+" This section contains SUT (System Under Test) info as seen by"
+" some common utilities.  To remove or add to this section, see:"
+"   http://www.spec.org/cpu2006/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz"
+"       2 ""physical id""s (chips)"
+"       20 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent.  The"
+"    following excerpts from /proc/cpuinfo might not be reliable.  Use with"
+"    caution.)"
+"       cpu cores : 10"
+"       siblings  : 10"
+"       physical 0: cores 0 1 2 3 4 8 9 10 11 12"
+"       physical 1: cores 0 1 2 3 4 8 9 10 11 12"
+"    cache size : 25600 KB"
+
+" From /proc/meminfo"
+"    MemTotal:       264478184 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" /usr/bin/lsb_release -d"
+"    Red Hat Enterprise Linux Server release 6.5 (Santiago)"
+
+" From /etc/*release* /etc/*version*"
+"    redhat-release: Red Hat Enterprise Linux Server release 6.5 (Santiago)"
+"    system-release: Red Hat Enterprise Linux Server release 6.5 (Santiago)"
+"    system-release-cpe: cpe:/o:redhat:enterprise_linux:6server:ga:server"
+
+" uname -a:"
+"    Linux localhost 2.6.32-431.el6.x86_64 #1 SMP Sun Nov 10 22:19:54 EST 2013"
+"    x86_64 x86_64 x86_64 GNU/Linux"
+
+" run-level 3 Jul 11 16:47"
+
+" SPEC is set to: /spec"
+"    Filesystem     Type  Size  Used Avail Use% Mounted on"
+"    /dev/sda2      ext4  272G   32G  227G  13% /"
+
+" Additional information from dmidecode:"
+"   Memory:"
+"    2x Micron 36JSF2G72PZ-1G9E1 16 GB 1867 MHz 2 rank"
+"    2x Samsung M393B2G70DB0-CMA 16 GB 1867 MHz 2 rank"
+"    12x Samsung M393B2G70QH0-CMA 16 GB 1867 MHz 2 rank"
+
+" (End of data from sysinfo program)"
+
+"General Notes"
+
+"Environment variables set by runspec before the start of the run:"
+"KMP_AFFINITY = ""granularity=fine,compact,0,1"""
+"LD_LIBRARY_PATH = ""/spec/libs/32:/spec/libs/64"""
+"OMP_NUM_THREADS = ""20"""
+
+" Binaries compiled on a system with 2 x Xeon X5645 CPU + 16GB memory"
+" using RHEL 6.1"
+" Transparent Huge Pages enabled with:"
+" echo always > /sys/kernel/mm/redhat_transparent_hugepage/enabled"
+
+"Base Compiler Invocation"
+400.perlbench," icc  -m64"," icc  -m64"
+401.bzip2," icc  -m64"," icc  -m64"
+403.gcc," icc  -m64"," icc  -m64"
+429.mcf," icc  -m64"," icc  -m64"
+445.gobmk," icc  -m64"," icc  -m64"
+456.hmmer," icc  -m64"," icc  -m64"
+458.sjeng," icc  -m64"," icc  -m64"
+462.libquantum," icc  -m64"," icc  -m64"
+464.h264ref," icc  -m64"," icc  -m64"
+471.omnetpp," icpc -m64"," icpc -m64"
+473.astar," icpc -m64"," icpc -m64"
+483.xalancbmk," icpc -m64"," icpc -m64"
+
+"Base Portability Flags"
+400.perlbench," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX_X64"
+401.bzip2," -DSPEC_CPU_LP64"
+403.gcc," -DSPEC_CPU_LP64"
+429.mcf," -DSPEC_CPU_LP64"
+445.gobmk," -DSPEC_CPU_LP64"
+456.hmmer," -DSPEC_CPU_LP64"
+458.sjeng," -DSPEC_CPU_LP64"
+462.libquantum," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX"
+464.h264ref," -DSPEC_CPU_LP64"
+471.omnetpp," -DSPEC_CPU_LP64"
+473.astar," -DSPEC_CPU_LP64"
+483.xalancbmk," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX"
+
+"Base Optimization Flags"
+400.perlbench," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+401.bzip2," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+403.gcc," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+429.mcf," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+445.gobmk," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+456.hmmer," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+458.sjeng," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+462.libquantum," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+464.h264ref," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+471.omnetpp," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -opt-prefetch"," -auto-p32"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap64"
+473.astar," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -opt-prefetch"," -auto-p32"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap64"
+483.xalancbmk," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -opt-prefetch"," -auto-p32"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap64"
+
+"Base Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," icc -m32"," icc -m32"
+401.bzip2," icc  -m64"," icc  -m64"
+403.gcc," icc  -m64"," icc  -m64"
+429.mcf," icc  -m64"," icc  -m64"
+445.gobmk," icc -m32"," icc -m32"
+456.hmmer," icc  -m64"," icc  -m64"
+458.sjeng," icc  -m64"," icc  -m64"
+462.libquantum," icc  -m64"," icc  -m64"
+464.h264ref," icc -m32"," icc -m32"
+471.omnetpp," icpc -m32"," icpc -m32"
+473.astar," icpc -m64"," icpc -m64"
+483.xalancbmk," icpc -m32"," icpc -m32"
+
+"Peak Portability Flags"
+400.perlbench," -DSPEC_CPU_LINUX_IA32"
+401.bzip2," -DSPEC_CPU_LP64"
+403.gcc," -DSPEC_CPU_LP64"
+429.mcf," -DSPEC_CPU_LP64"
+445.gobmk
+456.hmmer," -DSPEC_CPU_LP64"
+458.sjeng," -DSPEC_CPU_LP64"
+462.libquantum," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX"
+464.h264ref
+471.omnetpp
+473.astar," -DSPEC_CPU_LP64"
+483.xalancbmk," -DSPEC_CPU_LINUX"
+
+"Peak Optimization Flags"
+400.perlbench," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -opt-prefetch"," -ansi-alias"
+401.bzip2," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -auto-ilp32"," -opt-prefetch"," -no-prec-div"," -ansi-alias"
+403.gcc," -xAVX"," -ipo"," -O3"," -no-prec-div"," -inline-calloc"," -opt-malloc-options=3"," -auto-ilp32"
+429.mcf," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+445.gobmk," -xSSE4.2"," -prof-gen"," -prof-use"," -xSSE4.2"," -prof-gen"," -prof-use"," -ansi-alias"
+456.hmmer," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -unroll2"," -auto-ilp32"," -ansi-alias"
+458.sjeng," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+462.libquantum," -xAVX"," -ipo"," -O3"," -no-prec-div"," -parallel"," -opt-prefetch"," -auto-p32"
+464.h264ref," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -unroll2"," -ansi-alias"
+471.omnetpp," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -xSSE4.2"," -prof-gen"," -ipo"," -O3"," -no-prec-div"," -prof-use"," -opt-ra-region-strategy=block            "," -ansi-alias"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap"
+473.astar," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -opt-prefetch"," -auto-p32"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap64"
+483.xalancbmk," -xSSE4.2"," -ipo"," -O3"," -no-prec-div"," -opt-prefetch"," -ansi-alias"," -Wl,-z,muldefs"," -L/smartheap -lsmartheap"
+
+"Peak Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.2.  Report","generated on ","Tue Sep  2 13:40:00 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on "," 2 September 2014."
