@@ -1,0 +1,557 @@
+valid,1
+
+"SPEC CPU2017 Integer Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,16,790.235501,32.233424,0,S,16,769.741991,33.0916,0,S,"refrate(ref) iteration #1"
+500.perlbench_r,16,793.813581,32.088144,0,S,16,763.786705,33.349632,1,S,"refrate(ref) iteration #2"
+500.perlbench_r,16,793.735403,32.091296,1,S,16,760.071445,33.51264,0,S,"refrate(ref) iteration #3"
+502.gcc_r,16,461.018822,49.143328,0,S,16,426.898198,53.0712,1,S,"refrate(ref) iteration #1"
+502.gcc_r,16,459.588474,49.296272,0,S,16,426.751684,53.089424,0,S,"refrate(ref) iteration #2"
+502.gcc_r,16,461.018135,49.143408,1,S,16,427.449189,53.002784,0,S,"refrate(ref) iteration #3"
+505.mcf_r,16,419.258225,61.670816,1,S,16,421.116863,61.39864,0,S,"refrate(ref) iteration #1"
+505.mcf_r,16,421.130548,61.39664,0,S,16,422.950253,61.13248,0,S,"refrate(ref) iteration #2"
+505.mcf_r,16,418.448053,61.790224,0,S,16,422.166632,61.245952,1,S,"refrate(ref) iteration #3"
+520.omnetpp_r,16,695.532184,30.1812,0,S,16,651.050629,32.243264,0,S,"refrate(ref) iteration #1"
+520.omnetpp_r,16,704.666405,29.789984,0,S,16,644.019226,32.595296,0,S,"refrate(ref) iteration #2"
+520.omnetpp_r,16,704.335337,29.803984,1,S,16,650.583188,32.266432,1,S,"refrate(ref) iteration #3"
+523.xalancbmk_r,16,358.36446,47.147536,1,S,16,315.452756,53.561104,0,S,"refrate(ref) iteration #1"
+523.xalancbmk_r,16,360.795083,46.829904,0,S,16,317.275226,53.253456,1,S,"refrate(ref) iteration #2"
+523.xalancbmk_r,16,356.995326,47.328352,0,S,16,318.302583,53.081568,0,S,"refrate(ref) iteration #3"
+525.x264_r,16,287.918976,97.305152,1,S,16,283.931466,98.671696,1,S,"refrate(ref) iteration #1"
+525.x264_r,16,288.658526,97.055856,0,S,16,283.714663,98.747104,0,S,"refrate(ref) iteration #2"
+525.x264_r,16,287.637072,97.400512,0,S,16,284.294714,98.545632,0,S,"refrate(ref) iteration #3"
+531.deepsjeng_r,16,434.577409,42.19272,0,S,16,434.087612,42.24032,0,S,"refrate(ref) iteration #1"
+531.deepsjeng_r,16,434.238783,42.225616,0,S,16,448.575515,40.876064,0,S,"refrate(ref) iteration #2"
+531.deepsjeng_r,16,434.343786,42.215408,1,S,16,440.424762,41.632544,1,S,"refrate(ref) iteration #3"
+541.leela_r,16,727.916195,36.399792,1,S,16,730.372041,36.277408,0,S,"refrate(ref) iteration #1"
+541.leela_r,16,728.235602,36.383824,0,S,16,725.853605,36.503232,1,S,"refrate(ref) iteration #2"
+541.leela_r,16,727.785432,36.406336,0,S,16,725.215013,36.535376,0,S,"refrate(ref) iteration #3"
+548.exchange2_r,16,399.147276,105.023888,0,S,16,398.962499,105.072528,0,S,"refrate(ref) iteration #1"
+548.exchange2_r,16,405.761318,103.311968,0,S,16,399.016803,105.05824,0,S,"refrate(ref) iteration #2"
+548.exchange2_r,16,399.919488,104.821104,1,S,16,398.970746,105.070368,1,S,"refrate(ref) iteration #3"
+557.xz_r,16,553.9361,31.194928,1,S,16,553.637728,31.211744,0,S,"refrate(ref) iteration #1"
+557.xz_r,16,555.648525,31.0988,0,S,16,557.860103,30.975504,1,S,"refrate(ref) iteration #2"
+557.xz_r,16,553.080442,31.2432,0,S,16,559.392935,30.890624,0,S,"refrate(ref) iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,16,793.735403,32.091296,1,S,16,763.786705,33.349632,1,S,"SelectedIteration (base #3; peak #2)"
+502.gcc_r,16,461.018135,49.143408,1,S,16,426.898198,53.0712,1,S,"SelectedIteration (base #3; peak #1)"
+505.mcf_r,16,419.258225,61.670816,1,S,16,422.166632,61.245952,1,S,"SelectedIteration (base #1; peak #3)"
+520.omnetpp_r,16,704.335337,29.803984,1,S,16,650.583188,32.266432,1,S,"SelectedIteration (base #3; peak #3)"
+523.xalancbmk_r,16,358.36446,47.147536,1,S,16,317.275226,53.253456,1,S,"SelectedIteration (base #1; peak #2)"
+525.x264_r,16,287.918976,97.305152,1,S,16,283.931466,98.671696,1,S,"SelectedIteration (base #1; peak #1)"
+531.deepsjeng_r,16,434.343786,42.215408,1,S,16,440.424762,41.632544,1,S,"SelectedIteration (base #3; peak #3)"
+541.leela_r,16,727.916195,36.399792,1,S,16,725.853605,36.503232,1,S,"SelectedIteration (base #1; peak #2)"
+548.exchange2_r,16,399.919488,104.821104,1,S,16,398.970746,105.070368,1,S,"SelectedIteration (base #3; peak #3)"
+557.xz_r,16,553.9361,31.194928,1,S,16,557.860103,30.975504,1,S,"SelectedIteration (base #1; peak #2)"
+
+SPECrate2017_int_base,48.138261,,48.138261
+SPECrate2017_int_peak,49.643016,,,,,,,49.643016
+
+"Run number:",001.0
+"runcpu command:","/home/cpu2017-1.0.5/bin/harness/runcpu --configfile amd1812na_rate_revA1.cfg --tune all --nopower --runmode rate --tune base:peak --size test:train:refrate intrate"
+"output root:","not used"
+
+"Hardware Vendor:","Dell Inc."
+"Hardware Model:","Dell PowerEdge R7415 (AMD EPYC 7261, 2.20GHz)"
+"Date tested:",Mar-2019
+"CPU2017 License:",55
+"Test sponsor:","Dell Inc."
+"Tested by:","Dell Inc."
+"Hardware avail:",Apr-2019
+"Software avail:",Feb-2019
+
+
+HARDWARE
+
+"CPU Name","AMD EPYC 7261"
+"  Max MHz.",2900
+"  Nominal",2500
+Enabled,"8 cores, 1 chip, 2 threads/core"
+Orderable,"1 chip"
+"Cache L1","64 KB I + 32 KB D on chip per core"
+"  L2","512 KB I+D on chip per core"
+"  L3","64 MB I+D on chip per chip"
+"  Other",None
+Memory,"512 GB (8 x 64 GB 4Rx4 PC4-2667V-L)"
+Storage,"1 x 1.92 TB SATA SSD"
+Other,None
+
+SOFTWARE
+
+OS,"Ubuntu 18.04.2 LTS"
+,"kernel 4.15-45-generic"
+Compiler,"C/C++: Version 1.3.0 of AOCC"
+,"Fortran: Version 4.8.2 of GCC"
+Parallel,No
+Firmware,"Version 1.8.4 released Feb-2019"
+"File System",ext4
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers",32/64-bit
+Other,"jemalloc: jemalloc memory allocator library"
+,V5.1.0;
+
+"Compiler Notes"
+
+"The AMD64 AOCC Compiler Suite is available at"
+http://developer.amd.com/amd-aocc/
+
+"The AOCC Gold Linker plugin was installed and used for the link stage."
+
+"The AOCC Fortran Plugin version 1.3.0 was used to leverage AOCC optimizers"
+"with gfortran. It is available here:"
+http://developer.amd.com/amd-aocc/
+
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+"'numactl' was used to bind copies to the cores."
+"See the configuration file for details."
+
+"Operating System Notes"
+
+"'ulimit -s unlimited' was used to set environment stack size"
+"'ulimit -l 2097152' was used to set environment locked pages in memory limit"
+
+"runspec command invoked through numactl i.e.:"
+"numactl --interleave=all runspec <etc>"
+
+"Set dirty_ratio=8 to limit dirty cache to 8% of memory"
+"Set swappiness=1 to swap only if necessary"
+"Set zone_reclaim_mode=1 to free local node memory and avoid remote memory"
+"sync then drop_caches=3 to reset caches before invoking runcpu"
+
+"dirty_ratio, swappiness, zone_reclaim_mode and drop_caches were"
+"all set using privileged echo (e.g. echo 1 > /proc/sys/vm/swappiness)."
+
+"Transparent huge pages were enabled for this run (OS default)"
+
+"General Notes"
+
+"Environment variables set by runcpu before the start of the run:"
+"LD_LIBRARY_PATH = ""/home/cpu2017-1.0.5/amd1812na_rate_revA_lib/64;/home/cpu2017-1.0.5/amd1812na_rate_revA_lib/32:"""
+
+"Binaries were compiled on a system with 2 x AMD EPYC 7601 CPU + 512GB Memory using RHEL 7.6"
+
+"NA: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+"jemalloc: configured and built with GCC v4.8.5"
+"in RHEL v7.2 under default conditions."
+"jemalloc: sources available from jemalloc.net or"
+https://github.com/jemalloc/jemalloc/releases
+"jemalloc uses environment variable MALLOC_CONF"
+"with values narenas and lg_chunk:"
+"narenas: sets the maximum number of arenas to use"
+"for automatic multiplexing"
+"of threads and arenas."
+"lg_chunk: set the virtual memory chunk size (log"
+"base 2). For example,"
+"lg_chunk:21 sets the default chunk size to 2^21 ="
+2MiB.
+
+"Platform Notes"
+
+" BIOS settings:"
+" Virtualization Technology disabled"
+" System Profile set to Custom"
+" CPU Power Management set to Maximum Performance"
+" Memory Frequency set to Maximum Performance"
+" Turbo Boost enabled"
+" C States set to Autonomous"
+" Memory Patrol Scrub disabled"
+" Memory Refresh Rate set to 1x"
+" PCI ASPM L1 Link Power Management disabled"
+" Determinism Slider set to Power Determinism"
+" Sysinfo program /home/cpu2017-1.0.5/bin/sysinfo"
+" Rev: r5974 of 2018-05-19 9bcde8f2999c33d61f64985e45859ea9"
+" running on pe7415 Tue Mar 26 20:12:53 2019"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : AMD EPYC 7261 8-Core Processor"
+"       1  ""physical id""s (chips)"
+"       16 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent. The following"
+"    excerpts from /proc/cpuinfo might not be reliable.  Use with caution.)"
+"       cpu cores : 8"
+"       siblings  : 16"
+"       physical 0: cores 0 8 12 16 20 24 28"
+
+" From lscpu:"
+"      Architecture:        x86_64"
+"      CPU op-mode(s):      32-bit, 64-bit"
+"      Byte Order:          Little Endian"
+"      CPU(s):              16"
+"      On-line CPU(s) list: 0-15"
+"      Thread(s) per core:  2"
+"      Core(s) per socket:  8"
+"      Socket(s):           1"
+"      NUMA node(s):        4"
+"      Vendor ID:           AuthenticAMD"
+"      CPU family:          23"
+"      Model:               1"
+"      Model name:          AMD EPYC 7261 8-Core Processor"
+"      Stepping:            2"
+"      CPU MHz:             2871.541"
+"      BogoMIPS:            4990.49"
+"      Virtualization:      AMD-V"
+"      L1d cache:           32K"
+"      L1i cache:           64K"
+"      L2 cache:            512K"
+"      L3 cache:            8192K"
+"      NUMA node0 CPU(s):   0,4,8,12"
+"      NUMA node1 CPU(s):   1,5,9,13"
+"      NUMA node2 CPU(s):   2,6,10,14"
+"      NUMA node3 CPU(s):   3,7,11,15"
+"      Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov"
+"      pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm"
+"      constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid amd_dcm aperfmperf pni"
+"      pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c"
+"      rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch"
+"      osvw skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb"
+"      hw_pstate sme ssbd ibpb vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap"
+"      clflushopt sha_ni xsaveopt xsavec xgetbv1 xsaves clzero irperf xsaveerptr arat npt"
+"      lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter"
+"      pfthreshold avic v_vmsave_vmload vgif overflow_recov succor smca"
+
+" /proc/cpuinfo cache data"
+"    cache size : 512 KB"
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+"   available: 4 nodes (0-3)"
+"   node 0 cpus: 0 4 8 12"
+"   node 0 size: 128635 MB"
+"   node 0 free: 128462 MB"
+"   node 1 cpus: 1 5 9 13"
+"   node 1 size: 129017 MB"
+"   node 1 free: 128873 MB"
+"   node 2 cpus: 2 6 10 14"
+"   node 2 size: 129017 MB"
+"   node 2 free: 128866 MB"
+"   node 3 cpus: 3 7 11 15"
+"   node 3 size: 128994 MB"
+"   node 3 free: 128856 MB"
+"   node distances:"
+"   node   0   1   2   3"
+"     0:  10  16  16  16"
+"     1:  16  10  16  16"
+"     2:  16  16  10  16"
+"     3:  16  16  16  10"
+
+" From /proc/meminfo"
+"    MemTotal:       528041808 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" /usr/bin/lsb_release -d"
+"    Ubuntu 18.04.2 LTS"
+
+" From /etc/*release* /etc/*version*"
+"    debian_version: buster/sid"
+"    os-release:"
+"       NAME=""Ubuntu"""
+"       VERSION=""18.04.2 LTS (Bionic Beaver)"""
+"       ID=ubuntu"
+"       ID_LIKE=debian"
+"       PRETTY_NAME=""Ubuntu 18.04.2 LTS"""
+"       VERSION_ID=""18.04"""
+"       HOME_URL=""https://www.ubuntu.com/"""
+"       SUPPORT_URL=""https://help.ubuntu.com/"""
+
+" uname -a:"
+"    Linux pe7415 4.15.0-45-generic #48-Ubuntu SMP Tue Jan 29 16:28:13 UTC 2019 x86_64"
+"    x86_64 x86_64 GNU/Linux"
+
+" Kernel self-reported vulnerability status:"
+
+" CVE-2017-5754 (Meltdown):          Not affected"
+" CVE-2017-5753 (Spectre variant 1): Mitigation: __user pointer sanitization"
+" CVE-2017-5715 (Spectre variant 2): Mitigation: Full AMD retpoline, IBPB"
+
+" run-level 3 Mar 26 20:10"
+
+" SPEC is set to: /home/cpu2017-1.0.5"
+"    Filesystem     Type  Size  Used Avail Use% Mounted on"
+"    /dev/sda2      ext4  1.8T   18G  1.7T   2% /"
+
+" Additional information from dmidecode follows.  WARNING: Use caution when you interpret"
+" this section. The 'dmidecode' program reads system data which is ""intended to allow"
+" hardware to be accurately determined"", but the intent may not be met, as there are"
+" frequent changes to hardware, firmware, and the ""DMTF SMBIOS"" standard."
+"   BIOS Dell Inc. 1.8.4 02/22/2019"
+"   Memory:"
+"    8x 80CE863280CE M386A8K40BM2-CTD 64 GB 4 rank 2666"
+"    8x Not Specified Not Specified"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CC  502.gcc_r(peak)
+"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: i386-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+" CXXC 523.xalancbmk_r(peak)
+"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: i386-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  500.perlbench_r(base) 502.gcc_r(base) 505.mcf_r(base, peak)"
+"      525.x264_r(base) 557.xz_r(base, peak)"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: x86_64-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+" CXXC 520.omnetpp_r(base, peak) 523.xalancbmk_r(base) 531.deepsjeng_r(base,"
+"      peak) 541.leela_r(base)"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: x86_64-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   500.perlbench_r(peak) 525.x264_r(peak)
+"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: x86_64-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+"CXXC 541.leela_r(peak)
+"
+------------------------------------------------------------------------------
+"AOCC.LLVM.1.3.0.B34.2018_10_22 clang version 7.0.0 (CLANG: Jenkins"
+"  AOCC_1_3_0_Release-Build#34) (based on LLVM AOCC.LLVM.1.3.0.B34.2018_10_22)"
+"Target: x86_64-unknown-linux-gnu"
+"Thread model: posix"
+"InstalledDir: /root/work/compilers/aocc1.3.0/AOCC-1.3.0-Compiler/bin"
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  548.exchange2_r(base, peak)
+"
+------------------------------------------------------------------------------
+"GNU Fortran (GCC) 4.8.2"
+"Copyright (C) 2013 Free Software Foundation, Inc."
+"GNU Fortran comes with NO WARRANTY, to the extent permitted by law."
+"You may redistribute copies of GNU Fortran"
+"under the terms of the GNU General Public License."
+"For more information about these matters, see the file named COPYING"
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Compiler Invocation"
+500.perlbench_r," clang"," clang"
+502.gcc_r," clang"," clang"
+505.mcf_r," clang"," clang"
+520.omnetpp_r," clang++"," clang++"
+523.xalancbmk_r," clang++"," clang++"
+525.x264_r," clang"," clang"
+531.deepsjeng_r," clang++"," clang++"
+541.leela_r," clang++"," clang++"
+548.exchange2_r," clang"," gfortran"
+557.xz_r," clang"," clang"
+
+"Base Portability Flags"
+500.perlbench_r," -DSPEC_LINUX_X64"," -DSPEC_LP64"
+502.gcc_r," -DSPEC_LP64"
+505.mcf_r," -DSPEC_LP64"
+520.omnetpp_r," -DSPEC_LP64"
+523.xalancbmk_r," -DSPEC_LINUX"," -DSPEC_LP64"
+525.x264_r," -DSPEC_LP64"
+531.deepsjeng_r," -DSPEC_LP64"
+541.leela_r," -DSPEC_LP64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -DSPEC_LP64"
+
+"Base Optimization Flags"
+500.perlbench_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -ffast-math"," -march=znver1"," -mno-avx2"," -fstruct-layout=3"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -flv-function-specialization"," -mllvm  -enable-gvn-hoist"," -mllvm -function-specialize"," -z muldefs"," -lamdlibm"," -lpthread"," -ldl"," -ljemalloc"
+502.gcc_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -ffast-math"," -march=znver1"," -mno-avx2"," -fstruct-layout=3"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -flv-function-specialization"," -mllvm  -enable-gvn-hoist"," -mllvm -function-specialize"," -z muldefs"," -lamdlibm"," -lpthread"," -ldl"," -ljemalloc"
+505.mcf_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -ffast-math"," -march=znver1"," -mno-avx2"," -fstruct-layout=3"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -flv-function-specialization"," -mllvm  -enable-gvn-hoist"," -mllvm -function-specialize"," -z muldefs"," -lamdlibm"," -lpthread"," -ldl"," -ljemalloc"
+520.omnetpp_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -march=znver1"," -mllvm -unroll-threshold=100"," -finline-aggressive"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -mllvm -enable-vectorize-compares=false"," -z muldefs"," -lpthread"," -ldl"," -ljemalloc"
+523.xalancbmk_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -march=znver1"," -mllvm -unroll-threshold=100"," -finline-aggressive"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -mllvm -enable-vectorize-compares=false"," -z muldefs"," -lpthread"," -ldl"," -ljemalloc"
+525.x264_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -ffast-math"," -march=znver1"," -mno-avx2"," -fstruct-layout=3"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -flv-function-specialization"," -mllvm  -enable-gvn-hoist"," -mllvm -function-specialize"," -z muldefs"," -lamdlibm"," -lpthread"," -ldl"," -ljemalloc"
+531.deepsjeng_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -march=znver1"," -mllvm -unroll-threshold=100"," -finline-aggressive"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -mllvm -enable-vectorize-compares=false"," -z muldefs"," -lpthread"," -ldl"," -ljemalloc"
+541.leela_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -march=znver1"," -mllvm -unroll-threshold=100"," -finline-aggressive"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -mllvm -enable-vectorize-compares=false"," -z muldefs"," -lpthread"," -ldl"," -ljemalloc"
+548.exchange2_r," -Wl,-mllvm -Wl,-inline-recursion=4"," -Wl,-mllvm -Wl,-lsr-in-nested-loop"," -Wl,-mllvm -Wl,-enable-iv-split"," -Wl,-mllvm -Wl,-merge-constant"," -Wl,-mllvm -Wl,-unroll-aggressive"," -Wl,-mllvm -Wl,-unroll-threshold=150"," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -O3"," -mavx"," -madx"," -funroll-loops"," -ffast-math"," -frepack-arrays"," -z muldefs"," -O3"," -flto"," -madx"," -fplugin=dragonegg.so"," -specs=integrated-as.specs"," -fplugin-arg-dragonegg-llvm-option=-disable-indvar-simplify"," -fplugin-arg-dragonegg-llvm-option=-unroll-aggressive"," -fplugin-arg-dragonegg-llvm-option=-unroll-threshold:150"," -lpthread"," -ldl"," -ljemalloc"," -lgfortran"," -lamdlibm"
+557.xz_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -flto"," -ffast-math"," -march=znver1"," -mno-avx2"," -fstruct-layout=3"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -flv-function-specialization"," -mllvm  -enable-gvn-hoist"," -mllvm -function-specialize"," -z muldefs"," -lpthread"," -ldl"," -ljemalloc"
+
+"Base Other Flags"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Base Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Peak Compiler Invocation"
+500.perlbench_r," clang"," clang"
+502.gcc_r," clang"," clang"
+505.mcf_r," clang"," clang"
+520.omnetpp_r," clang++"," clang++"
+523.xalancbmk_r," clang++"," clang++"
+525.x264_r," clang"," clang"
+531.deepsjeng_r," clang++"," clang++"
+541.leela_r," clang++"," clang++"
+548.exchange2_r," clang"," gfortran"
+557.xz_r," clang"," clang"
+
+"Peak Portability Flags"
+500.perlbench_r," -DSPEC_LINUX_X64"," -DSPEC_LP64"
+502.gcc_r," -D_FILE_OFFSET_BITS=64"
+505.mcf_r," -DSPEC_LP64"
+520.omnetpp_r," -DSPEC_LP64"
+523.xalancbmk_r," -DSPEC_LINUX"," -D_FILE_OFFSET_BITS=64"
+525.x264_r," -DSPEC_LP64"
+531.deepsjeng_r," -DSPEC_LP64"
+541.leela_r," -DSPEC_LP64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -DSPEC_LP64"
+
+"Peak Optimization Flags"
+500.perlbench_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -fprofile-instr-generate"," -fprofile-instr-use"," -fprofile-instr-generate"," -fprofile-instr-use"," -Ofast"," -flto"," -march=znver1"," -fstruct-layout=3"," -mllvm -vectorize-memory-aggressively"," -mno-avx2"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -ljemalloc"
+502.gcc_r," -m32"," -m32"," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -fstruct-layout=3"," -mllvm -vectorize-memory-aggressively"," -mno-avx2"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -fgnu89-inline"," -lpthread"," -ldl"," -L/root/work/lib/jemalloc510/lib32"," -ljemalloc"
+505.mcf_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -fstruct-layout=3"," -mllvm -vectorize-memory-aggressively"," -mno-avx2"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -ljemalloc"
+520.omnetpp_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -finline-aggressive"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -ljemalloc"
+523.xalancbmk_r," -m32"," -m32"," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -finline-aggressive"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -L/root/work/lib/jemalloc510/lib32"," -ljemalloc"
+525.x264_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -fprofile-instr-generate"," -fprofile-instr-use"," -fprofile-instr-generate"," -fprofile-instr-use"," -Ofast"," -flto"," -march=znver1"," -mno-avx2"," -fstruct-layout=5"," -mllvm -vectorize-memory-aggressively"," -mllvm -unroll-threshold=50"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -mllvm -enable-gvn-hoist"," -flv-function-specialization"," -lamdlibm"," -lamdlibm"," -ljemalloc"," -lpthread"," -ldl"
+531.deepsjeng_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -finline-aggressive"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -ljemalloc"
+541.leela_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -fprofile-instr-generate"," -fprofile-instr-use"," -fprofile-instr-generate"," -fprofile-instr-use"," -Ofast"," -flto"," -march=znver1"," -mllvm -unroll-count=8"," -mllvm -unroll-threshold=100"," -lpthread"," -ldl"," -ljemalloc"
+548.exchange2_r," -Wl,-mllvm -Wl,-inline-recursion=4"," -Wl,-mllvm -Wl,-lsr-in-nested-loop"," -Wl,-mllvm -Wl,-enable-iv-split"," -Wl,-mllvm -Wl,-merge-constant"," -Wl,-mllvm -Wl,-unroll-aggressive"," -Wl,-mllvm -Wl,-unroll-threshold=150"," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -O3"," -O3"," -mavx"," -madx"," -funroll-loops"," -ffast-math"," -frepack-arrays"," -O3"," -flto"," -madx"," -fplugin=dragonegg.so"," -specs=integrated-as.specs"," -fplugin-arg-dragonegg-llvm-option=-disable-indvar-simplify"," -fplugin-arg-dragonegg-llvm-option=-unroll-aggressive"," -fplugin-arg-dragonegg-llvm-option=-unroll-threshold:150"," -lpthread"," -ldl"," -ljemalloc"," -lgfortran"," -lamdlibm"
+557.xz_r," -flto"," -Wl,-mllvm -Wl,-function-specialize"," -Wl,-mllvm -Wl,-enable-vectorize-compares"," -Ofast"," -flto"," -march=znver1"," -fstruct-layout=3"," -mllvm -vectorize-memory-aggressively"," -mno-avx2"," -mllvm -unroll-threshold=100"," -fremap-arrays"," -mllvm -inline-threshold=1000"," -lpthread"," -ldl"," -ljemalloc"
+
+"Peak Other Flags"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Peak Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2019 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.5.
+"Result run on","2019-03-26 16:12:53-0400."
+"Report generated on","2019-04-16 17:17:43","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2019-04-16.

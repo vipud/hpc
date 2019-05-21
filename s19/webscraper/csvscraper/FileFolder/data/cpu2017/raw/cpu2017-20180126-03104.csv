@@ -1,0 +1,620 @@
+valid,1
+
+"SPEC CPU2017 Floating Point Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+503.bwaves_r,128,1835.14735,699.444608,1,S,,,,,,"refrate(ref) iteration #1"
+503.bwaves_r,128,1824.492579,703.529344,0,S,,,,,,"refrate(ref) iteration #2"
+507.cactuBSSN_r,128,1751.83696,92.50176,1,S,,,,,,"refrate(ref) iteration #1"
+507.cactuBSSN_r,128,1749.692478,92.615168,0,S,,,,,,"refrate(ref) iteration #2"
+508.namd_r,128,722.858664,168.220928,1,S,,,,,,"refrate(ref) iteration #1"
+508.namd_r,128,722.744837,168.247424,0,S,,,,,,"refrate(ref) iteration #2"
+510.parest_r,128,1857.885202,180.230784,1,S,,,,,,"refrate(ref) iteration #1"
+510.parest_r,128,1856.09728,180.404352,0,S,,,,,,"refrate(ref) iteration #2"
+511.povray_r,128,1703.13685,175.488,0,S,,,,,,"refrate(ref) iteration #1"
+511.povray_r,128,1703.573147,175.443072,1,S,,,,,,"refrate(ref) iteration #2"
+519.lbm_r,128,1678.577491,80.372864,1,S,,,,,,"refrate(ref) iteration #1"
+519.lbm_r,128,1677.439625,80.427392,0,S,,,,,,"refrate(ref) iteration #2"
+521.wrf_r,128,1714.386271,167.24352,1,S,,,,,,"refrate(ref) iteration #1"
+521.wrf_r,128,1712.444965,167.433088,0,S,,,,,,"refrate(ref) iteration #2"
+526.blender_r,128,980.037151,198.914944,1,S,,,,,,"refrate(ref) iteration #1"
+526.blender_r,128,978.607449,199.205504,0,S,,,,,,"refrate(ref) iteration #2"
+527.cam4_r,128,1099.510579,203.610624,0,S,,,,,,"refrate(ref) iteration #1"
+527.cam4_r,128,1109.043519,201.86048,1,S,,,,,,"refrate(ref) iteration #2"
+538.imagick_r,128,1394.271761,228.317056,0,S,,,,,,"refrate(ref) iteration #1"
+538.imagick_r,128,1396.167891,228.006912,1,S,,,,,,"refrate(ref) iteration #2"
+544.nab_r,128,906.689284,237.594112,1,S,,,,,,"refrate(ref) iteration #1"
+544.nab_r,128,906.661561,237.60128,0,S,,,,,,"refrate(ref) iteration #2"
+549.fotonik3d_r,128,2462.201431,202.58944,1,S,,,,,,"refrate(ref) iteration #1"
+549.fotonik3d_r,128,2461.254712,202.667392,0,S,,,,,,"refrate(ref) iteration #2"
+554.roms_r,128,1265.535153,160.71616,0,S,,,,,,"refrate(ref) iteration #1"
+554.roms_r,128,1267.971142,160.407424,1,S,,,,,,"refrate(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+503.bwaves_r,128,1835.14735,699.444608,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+507.cactuBSSN_r,128,1751.83696,92.50176,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+508.namd_r,128,722.858664,168.220928,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+510.parest_r,128,1857.885202,180.230784,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+511.povray_r,128,1703.573147,175.443072,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+519.lbm_r,128,1678.577491,80.372864,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+521.wrf_r,128,1714.386271,167.24352,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+526.blender_r,128,980.037151,198.914944,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+527.cam4_r,128,1109.043519,201.86048,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+538.imagick_r,128,1396.167891,228.006912,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+544.nab_r,128,906.689284,237.594112,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+549.fotonik3d_r,128,2462.201431,202.58944,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+554.roms_r,128,1267.971142,160.407424,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+
+SPECrate2017_fp_base,186.358872,,186.358872
+SPECrate2017_fp_peak,"Not Run",,,,,,,"Not Run"
+
+"Run number:",011.1
+"runcpu command:","/home/build/cpu2017/bin/harness/runcpu --configfile kachkin-xl-linux-ppc64le.cfg --tune base --reportable --iterations 2 --nopower --runmode rate --tune base --size refrate fprate"
+"output root:","not used"
+
+"Hardware Vendor:",Yadro
+"Hardware Model:","Yadro Vesnin (3.32 GHz, 32 cores, RHEL 7.2)"
+"Date tested:",Dec-2017
+"CPU2017 License:",4813
+"Test sponsor:",Yadro
+"Tested by:",Yadro
+"Hardware avail:",Dec-2017
+"Software avail:",Dec-2016
+
+
+HARDWARE
+
+"CPU Name","IBM POWER8"
+"  Max MHz.",3857
+"  Nominal",3325
+Enabled,"32 cores, 4 chips, 4 threads/core"
+Orderable,"1-4 chips"
+"Cache L1","32 KB I + 64 KB D on chip per core"
+"  L2","512 KB I+D on chip per core"
+"  L3","8 MB I+D on chip per core"
+"  Other","16 MB I+D off chip per 8 DIMMs"
+Memory,"8 TB (128 x 64 GB 4Rx4 PC4 - 2400T,"
+,"running at 1600)"
+Storage,"2 x 2.9 TB NVMe SSD"
+Other,None
+
+SOFTWARE
+
+OS,"RHEL 7.2"
+,"Red Hat Enterprise Linux Server release 7.2"
+,(Maipo)
+,3.10.0-327.el7.ppc64le
+Compiler,"C/C++: Version 13.1.5 of IBM XL C/C++;"
+,"Fortran: Version 15.1.5 of IBM XL Fortran"
+Parallel,No
+Firmware,"Version 1.19 of OpenPOWER Firmware. Released Nov-2017."
+"File System",xfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers","Not Applicable"
+Other,None
+
+"General Notes"
+
+" ""ppc64_cpu --smt=4"" used to set SMT4 mode (see flags file for details)."
+
+"Binaries were compiled on a system with 4x POWER8 chips + 4 TB Memory using rhel 7.2"
+
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+"and software available as of the publication date."
+
+"This benchmark result is intended to provide perspective on past performance using"
+"the historical hardware and/or software described on this result page."
+
+"The system as described on this result page was formerly generally available.  At the time of"
+"this publication, it may not be shipping, and/or may not be supported, and/or may fail"
+"to meet other tests of General Availability described in the SPEC OSG Policy document,"
+http://www.spec.org/osg/policy.html
+
+"This measured result may not be representative of the result that would be measured were this"
+"benchmark run with hardware and software available as of the publication date."
+
+"Platform Notes"
+
+" Sysinfo program /home/build/cpu2017/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on localhost.localdomain Mon Dec 18 23:23:57 2017"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"   'clock : ' reported by /proc/cpuinfo may not be reliable. Use with caution."
+"    cpu : POWER8 (raw), altivec supported"
+"    clock : 3857.000000MHz"
+"    machine : PowerNV 0000000000000000"
+"    model : 0000000000000000"
+"    platform : PowerNV"
+"    revision : 2.0 (pvr 004d 0200)"
+
+" Number of cores, from 'ppc64_cpu --cores-present' :  32"
+
+" WARNING regarding the output of 'lscfg':  this utility reports resources for the system,"
+" not the current partition.  Therefore, for a partition that has a subset of the full"
+" system resources:"
+"    (1) The tester may need to adjust the sysinfo-supplied 'hw_ncores'."
+"    (2) The tester may need to adjust the sysinfo-supplied 'hw_nchips'."
+
+" Processors, from lscfg -vp"
+"    Node:  processor@0"
+"    Node:  processor@8"
+"    Node:  processor@10"
+"    Node:  processor@18"
+"       128 ""processors"""
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+"   available: 4 nodes (0,8,16,24)"
+"   node 0 cpus: 0 1 2 3 8 9 10 11 16 17 18 19 24 25 26 27 32 33 34 35 40 41 42 43 48 49 50"
+"   51 56 57 58 59"
+"   node 0 size: 2097152 MB"
+"   node 0 free: 1994167 MB"
+"   node 8 cpus: 64 65 66 67 72 73 74 75 80 81 82 83 88 89 90 91 96 97 98 99 104 105 106"
+"   107 112 113 114 115 120 121 122 123"
+"   node 8 size: 2097152 MB"
+"   node 8 free: 2018117 MB"
+"   node 16 cpus: 128 129 130 131 136 137 138 139 144 145 146 147 152 153 154 155 160 161"
+"   162 163 168 169 170 171 176 177 178 179 184 185 186 187"
+"   node 16 size: 2097152 MB"
+"   node 16 free: 2017874 MB"
+"   node 24 cpus: 192 193 194 195 200 201 202 203 208 209 210 211 216 217 218 219 224 225"
+"   226 227 232 233 234 235 240 241 242 243 248 249 250 251"
+"   node 24 size: 2097152 MB"
+"   node 24 free: 2009694 MB"
+"   node distances:"
+"   node   0   8  16  24"
+"     0:  10  40  40  40"
+"     8:  40  10  40  40"
+"    16:  40  40  10  40"
+"    24:  40  40  40  10"
+
+" From /proc/meminfo"
+"    MemTotal:       8569843072 kB"
+"    HugePages_Total:   16000"
+"    Hugepagesize:      16384 kB"
+
+" From /etc/*release* /etc/*version*"
+"    os-release:"
+"       NAME=""Red Hat Enterprise Linux Server"""
+"       VERSION=""7.2 (Maipo)"""
+"       ID=""rhel"""
+"       ID_LIKE=""fedora"""
+"       VERSION_ID=""7.2"""
+"       PRETTY_NAME=""Red Hat Enterprise Linux"""
+"       ANSI_COLOR=""0;31"""
+"       CPE_NAME=""cpe:/o:redhat:enterprise_linux:7.2:GA:server"""
+"    redhat-release: Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+"    system-release: Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+"    system-release-cpe: cpe:/o:redhat:enterprise_linux:7.2:ga:server"
+
+" uname -a:"
+"    Linux localhost.localdomain 3.10.0-327.el7.ppc64le #1 SMP Thu Oct 29 17:31:13 EDT 2015"
+"    ppc64le ppc64le ppc64le GNU/Linux"
+
+" run-level 3 Dec 18 20:30"
+
+" SPEC is set to: /home/build/cpu2017"
+"    Filesystem            Type  Size  Used Avail Use% Mounted on"
+"    /dev/mapper/rhel-home xfs   2.9T   19G  2.9T   1% /home"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CXXC 508.namd_r(base) 510.parest_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlC: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  511.povray_r(base) 526.blender_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlC: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlc: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  507.cactuBSSN_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlC: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlc: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+"IBM XL Fortran for Linux, V15.1.5 (Community Edition)"
+"Version: 15.01.0005.0001"
+"Driver Version: 15.1.5(Fortran) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"Fortran Front End and Run Time Version: 15.1.5(Fortran) Level: 161202 ID:"
+"  _i9fBcbirEeabvOJ9E16jqw"
+"Fortran Transformer Version: 15.1.5(Fortran) Level: 161129 ID:"
+"  _dYoGZafDEeabg-J9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlf/15.1.5/bin/.orig/xlf95: 1501-303 (I) XL Fortran Community"
+"  Edition is a no-charge product and does not include official IBM support."
+"  You can provide feedback at the XL on POWER Fortran Community Edition forum"
+"  (http://ibm.biz/xlfortran-linux-ce). For information about a fully"
+"  supported XL Fortran compiler, visit XL Fortran for Linux"
+"  (http://ibm.biz/xlfortran-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  519.lbm_r(base) 538.imagick_r(base) 544.nab_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlc: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  503.bwaves_r(base) 549.fotonik3d_r(base) 554.roms_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL Fortran for Linux, V15.1.5 (Community Edition)"
+"Version: 15.01.0005.0001"
+"Driver Version: 15.1.5(Fortran) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"Fortran Front End and Run Time Version: 15.1.5(Fortran) Level: 161202 ID:"
+"  _i9fBcbirEeabvOJ9E16jqw"
+"Fortran Transformer Version: 15.1.5(Fortran) Level: 161129 ID:"
+"  _dYoGZafDEeabg-J9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlf/15.1.5/bin/.orig/xlf95: 1501-303 (I) XL Fortran Community"
+"  Edition is a no-charge product and does not include official IBM support."
+"  You can provide feedback at the XL on POWER Fortran Community Edition forum"
+"  (http://ibm.biz/xlfortran-linux-ce). For information about a fully"
+"  supported XL Fortran compiler, visit XL Fortran for Linux"
+"  (http://ibm.biz/xlfortran-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  521.wrf_r(base) 527.cam4_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL Fortran for Linux, V15.1.5 (Community Edition)"
+"Version: 15.01.0005.0001"
+"Driver Version: 15.1.5(Fortran) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"Fortran Front End and Run Time Version: 15.1.5(Fortran) Level: 161202 ID:"
+"  _i9fBcbirEeabvOJ9E16jqw"
+"Fortran Transformer Version: 15.1.5(Fortran) Level: 161129 ID:"
+"  _dYoGZafDEeabg-J9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlf/15.1.5/bin/.orig/xlf95: 1501-303 (I) XL Fortran Community"
+"  Edition is a no-charge product and does not include official IBM support."
+"  You can provide feedback at the XL on POWER Fortran Community Edition forum"
+"  (http://ibm.biz/xlfortran-linux-ce). For information about a fully"
+"  supported XL Fortran compiler, visit XL Fortran for Linux"
+"  (http://ibm.biz/xlfortran-linux)."
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlc: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+503.bwaves_r," No flags used"
+507.cactuBSSN_r," No flags used"
+508.namd_r," No flags used"
+510.parest_r," No flags used"
+511.povray_r," No flags used"
+519.lbm_r," No flags used"
+521.wrf_r," No flags used"
+526.blender_r," No flags used"
+527.cam4_r," No flags used"
+538.imagick_r," No flags used"
+544.nab_r," No flags used"
+549.fotonik3d_r," No flags used"
+554.roms_r," No flags used"
+
+"Base Compiler Invocation"
+503.bwaves_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+507.cactuBSSN_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+508.namd_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+510.parest_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+511.povray_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlC"
+519.lbm_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+521.wrf_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+526.blender_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlC"
+527.cam4_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+538.imagick_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+544.nab_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+549.fotonik3d_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+554.roms_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+
+"Base Portability Flags"
+503.bwaves_r," -qfixed"," -DSPEC_LP64"
+507.cactuBSSN_r," -DSPEC_NO_UNDERSCORE"," -DSPEC_LP64"
+508.namd_r," -DSPEC_LP64"
+510.parest_r," -qnoxlcompatmacros"," -DSPEC_LP64"
+511.povray_r," -DSPEC_LP64"
+519.lbm_r," -DSPEC_LP64"
+521.wrf_r," -DSPEC_NOUNDERSCORE"," -DSPEC_IBMXL"," -DSPEC_LP64"," -qufmt=be"
+526.blender_r," -qchars=unsigned"," -D__BOOL_DEFINED"," -DSPEC_LP64"
+527.cam4_r," -DSPEC_NO_UNDERSCORE"," -DSPEC_LP64"
+538.imagick_r," -DSPEC_LP64"
+544.nab_r," -DSPEC_LP64"
+549.fotonik3d_r," -DSPEC_LP64"
+554.roms_r," -DSPEC_LP64"
+
+"Base Optimization Flags"
+503.bwaves_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+507.cactuBSSN_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+508.namd_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+510.parest_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+511.povray_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+519.lbm_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+521.wrf_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+526.blender_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+527.cam4_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+538.imagick_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+544.nab_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+549.fotonik3d_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+554.roms_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qsmallstack=dynlenonheap"
+
+"Base Other Flags"
+503.bwaves_r," No flags used"
+507.cactuBSSN_r," No flags used"
+508.namd_r," No flags used"
+510.parest_r," No flags used"
+511.povray_r," No flags used"
+519.lbm_r," No flags used"
+521.wrf_r," No flags used"
+526.blender_r," No flags used"
+527.cam4_r," No flags used"
+538.imagick_r," No flags used"
+544.nab_r," No flags used"
+549.fotonik3d_r," No flags used"
+554.roms_r," No flags used"
+
+"Base Forbidden Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Base Unknown Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Runtime Environment"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Compiler Invocation"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Portability Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Optimization Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Other Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Forbidden Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Unknown Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.1.
+"Result run on","2017-12-18 15:23:56-0500."
+"Report generated on","2018-10-31 17:14:41","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2018-03-08.
