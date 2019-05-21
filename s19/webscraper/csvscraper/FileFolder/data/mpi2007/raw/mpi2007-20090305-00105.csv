@@ -1,0 +1,407 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,64,390.723683,4.005388,1,S,,,,,,"mref(ref) iteration #1"
+104.milc,64,387.435246,4.039385,0,S,,,,,,"mref(ref) iteration #2"
+107.leslie3d,64,1042.96576,5.004958,1,S,,,,,,"mref(ref) iteration #1"
+107.leslie3d,64,1042.078672,5.009219,0,S,,,,,,"mref(ref) iteration #2"
+113.GemsFDTD,64,851.087769,7.411692,1,S,,,,,,"mref(ref) iteration #1"
+113.GemsFDTD,64,849.685779,7.423921,0,S,,,,,,"mref(ref) iteration #2"
+115.fds4,64,446.184986,4.372626,0,S,,,,,,"mref(ref) iteration #1"
+115.fds4,64,447.387923,4.360869,1,S,,,,,,"mref(ref) iteration #2"
+121.pop2,64,524.349245,7.872616,1,S,,,,,,"mref(ref) iteration #1"
+121.pop2,64,523.532554,7.884896,0,S,,,,,,"mref(ref) iteration #2"
+122.tachyon,64,334.356988,8.36531,0,S,,,,,,"mref(ref) iteration #1"
+122.tachyon,64,336.436994,8.313592,1,S,,,,,,"mref(ref) iteration #2"
+126.lammps,64,452.079884,6.447975,0,S,,,,,,"mref(ref) iteration #1"
+126.lammps,64,452.486475,6.442182,1,S,,,,,,"mref(ref) iteration #2"
+127.wrf2,64,800.562772,9.73815,0,S,,,,,,"mref(ref) iteration #1"
+127.wrf2,64,800.804757,9.735207,1,S,,,,,,"mref(ref) iteration #2"
+128.GAPgeofem,64,361.487898,5.712501,0,S,,,,,,"mref(ref) iteration #1"
+128.GAPgeofem,64,361.609086,5.710587,1,S,,,,,,"mref(ref) iteration #2"
+129.tera_tf,64,299.831572,9.23185,1,S,,,,,,"mref(ref) iteration #1"
+129.tera_tf,64,299.758877,9.234089,0,S,,,,,,"mref(ref) iteration #2"
+130.socorro,64,755.209315,5.054228,1,S,,,,,,"mref(ref) iteration #1"
+130.socorro,64,751.688253,5.077903,0,S,,,,,,"mref(ref) iteration #2"
+132.zeusmp2,64,484.802875,6.40054,0,S,,,,,,"mref(ref) iteration #1"
+132.zeusmp2,64,485.482817,6.391575,1,S,,,,,,"mref(ref) iteration #2"
+137.lu,64,377.959361,9.725913,0,S,,,,,,"mref(ref) iteration #1"
+137.lu,64,380.732035,9.655085,1,S,,,,,,"mref(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,64,390.723683,4.005388,1,S,,,,,NR,"SelectedIteration (base #1)"
+107.leslie3d,64,1042.96576,5.004958,1,S,,,,,NR,"SelectedIteration (base #1)"
+113.GemsFDTD,64,851.087769,7.411692,1,S,,,,,NR,"SelectedIteration (base #1)"
+115.fds4,64,447.387923,4.360869,1,S,,,,,NR,"SelectedIteration (base #2)"
+121.pop2,64,524.349245,7.872616,1,S,,,,,NR,"SelectedIteration (base #1)"
+122.tachyon,64,336.436994,8.313592,1,S,,,,,NR,"SelectedIteration (base #2)"
+126.lammps,64,452.486475,6.442182,1,S,,,,,NR,"SelectedIteration (base #2)"
+127.wrf2,64,800.804757,9.735207,1,S,,,,,NR,"SelectedIteration (base #2)"
+128.GAPgeofem,64,361.609086,5.710587,1,S,,,,,NR,"SelectedIteration (base #2)"
+129.tera_tf,64,299.831572,9.23185,1,S,,,,,NR,"SelectedIteration (base #1)"
+130.socorro,64,755.209315,5.054228,1,S,,,,,NR,"SelectedIteration (base #1)"
+132.zeusmp2,64,485.482817,6.391575,1,S,,,,,NR,"SelectedIteration (base #2)"
+137.lu,64,380.732035,9.655085,1,S,,,,,NR,"SelectedIteration (base #2)"
+
+SPECmpiM_base2007,6.584515,,6.584515
+SPECmpiM_peak2007,"Not Run",,,,,,,"Not Run"
+
+"Run number:",001
+
+"System Vendor:","Intel Corporation"
+"System Name:","Atlantis (Intel Xeon X5482, 3.20 GHz)"
+"Date tested:",Mar-2009
+"MPI2007 License:",13
+"Test sponsor:","Intel Corporation"
+"Tested by:","Pavel Shelepugin"
+"Hardware avail:",Sep-2008
+"Software avail:",Jun-2009
+
+
+"Node Description: Atlantis Node"
+
+HARDWARE
+
+"Number of nodes",8
+"Uses of the node",compute
+Vendor,Intel
+Model,SR1560SF
+"CPU Name","Intel Xeon X5482"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",8
+"Cores per chip",4
+"Threads per core",1
+"CPU Characteristics","1600 MHz FSB"
+"CPU MHz",3200
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","12 MB I+D on chip per chip, 6 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"16 GB (FBDIMM 8x2-GB 667 MHz)"
+"Disk Subsystem","Seagate Barracuda ES 250 GB ST3250620NS"
+"Other Hardware",None
+Adapter,"Intel (ESB2) 82563EB Dual-Port Gigabit Ethernet"
+,Controller
+"Number of Adapters",1
+"Slot Type","PCI-Express x8"
+"Data Rate","1Gbps Ethernet"
+"Ports Used",1
+"Interconnect Type",Ethernet
+Adapter,"Mellanox MHGH29-XTC"
+"Number of Adapters",1
+"Slot Type","PCIe x16 Gen2"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Intel (ESB2) 82563EB Dual-Port Gigabit Ethernet"
+,Controller
+"Adapter Driver",e1000
+"Adapter Firmware",None
+Adapter,"Mellanox MHGH29-XTC"
+"Adapter Driver","OFED 1.3.1"
+"Adapter Firmware",2.5.0
+"Operating System","RedHat EL 5 Update 2, kernel 2.6.18-92"
+"Local File System",Linux/ext2
+"Shared File System",NFS
+"System State",Multi-User
+"Other Software","PBS Pro 8.0"
+
+
+"Node Description: HOME"
+
+HARDWARE
+
+"Number of nodes",1
+"Uses of the node",fileserver
+Vendor,Intel
+Model,SSR212CC
+"CPU Name","Intel Xeon"
+"CPU(s) orderable","2 chips"
+"Chips enabled",2
+"Cores enabled",2
+"Cores per chip",1
+"Threads per core",1
+"CPU Characteristics",--
+"CPU MHz",2800
+"Primary Cache","12 KB I + 16 KB D on chip per chip"
+"Secondary Cache","1 MB I+D on chip per chip"
+"L3 Cache",None
+"Other Cache",None
+Memory,"2 GB"
+"Disk Subsystem","3 disks, 500GB/disk, 1.5TB total, 1TB available"
+"Other Hardware",None
+Adapter,"Intel 82546GB Dual-Port Gigabit Ethernet"
+,Controller
+"Number of Adapters",1
+"Slot Type","PCI-Express x8"
+"Data Rate","1Gbps Ethernet"
+"Ports Used",1
+"Interconnect Type",Ethernet
+
+SOFTWARE
+
+Adapter,"Intel 82546GB Dual-Port Gigabit Ethernet"
+,Controller
+"Adapter Driver",e1000
+"Adapter Firmware",N/A
+"Operating System","RedHat EL 4 Update 4"
+"Local File System",Linux/ext2
+"Shared File System",NFS
+"System State",Multi-User
+"Other Software",None
+
+
+"Interconnect Description: IB Switch"
+
+HARDWARE
+
+Vendor,Cisco
+Model,"Cisco SFS 9120"
+"Switch Model","Cisco SFS 9120"
+"Number of Switches",1
+"Number of Ports",120
+"Data Rate","InfiniBand 4x DDR"
+Firmware,4.1.1.1.11
+Topology,"Single switch"
+"Primary Use","MPI traffic"
+
+
+"Interconnect Description: Gigabit Ethernet"
+
+HARDWARE
+
+Vendor,Cisco
+Model,"Cisco Catalyst 4506"
+"Switch Model","Cisco Catalyst 4506"
+"Number of Switches",1
+"Number of Ports",144
+"Data Rate","1Gbps Ethernet"
+Firmware,--
+Topology,Star
+"Primary Use","Cluster File System"
+
+
+"BENCHMARK DETAILS"
+
+"Type of System",Homogeneous
+"Total Compute Nodes",8
+"Total Chips",16
+"Total Cores",64
+"Total Threads",64
+"Total Memory","128 GB"
+"Base Ranks Run",64
+"Minimum Peak Ranks",--
+"Maximum Peak Ranks",--
+"C Compiler","Intel C++ Compiler 11.1 for Linux"
+"C++ Compiler","Intel C++ Compiler 11.1 for Linux"
+"Fortran Compiler","Intel Fortran Compiler 11.1 for Linux"
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+"MPI Library","Intel MPI Library 3.2 for Linux"
+"Other MPI Info",None
+Pre-processors,No
+"Other Software","Intel MPI Library 3.2 for Linux Multi-Purpose"
+,"Daemon (MPD)"
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+
+"General Notes"
+
+"PBS Pro was used for job submission. It has no impact on performance."
+"  Can be found at: http://www.altair.com"
+
+"Base Compiler Invocation"
+104.milc," mpiicc"," mpiicc"
+107.leslie3d," mpiifort"," mpiifort"
+113.GemsFDTD," mpiifort"," mpiifort"
+115.fds4," mpiicc"," mpiifort"," mpiifort"
+121.pop2," mpiicc"," mpiifort"," mpiifort"
+122.tachyon," mpiicc"," mpiicc"
+126.lammps," mpiicpc"," mpiicpc"
+127.wrf2," mpiicc"," mpiifort"," mpiifort"
+128.GAPgeofem," mpiicc"," mpiifort"," mpiicc"," mpiifort"
+129.tera_tf," mpiifort"," mpiifort"
+130.socorro," mpiicc"," mpiifort"," mpiifort"
+132.zeusmp2," mpiicc"," mpiifort"," mpiifort"
+137.lu," mpiifort"," mpiifort"
+
+"Base Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2," -DSPEC_MPI_CASE_FLAG"
+122.tachyon
+126.lammps," -DMPICH_IGNORE_CXX_SEEK"
+127.wrf2," -DSPEC_MPI_CASE_FLAG"," -DSPEC_MPI_LINUX"
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Optimization Flags"
+104.milc," -O3"," -xT"," -no-prec-div"
+107.leslie3d," -O3"," -xT"," -no-prec-div"
+113.GemsFDTD," -O3"," -xT"," -no-prec-div"
+115.fds4," -O3"," -xT"," -no-prec-div"
+121.pop2," -O3"," -xT"," -no-prec-div"
+122.tachyon," -O3"," -xT"," -no-prec-div"
+126.lammps," -O3"," -xT"," -no-prec-div"
+127.wrf2," -O3"," -xT"," -no-prec-div"
+128.GAPgeofem," -O3"," -xT"," -no-prec-div"
+129.tera_tf," -O3"," -xT"," -no-prec-div"
+130.socorro," -O3"," -xT"," -no-prec-div"
+132.zeusmp2," -O3"," -xT"," -no-prec-div"
+137.lu," -O3"," -xT"," -no-prec-div"
+
+"Base Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Compiler Invocation"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Optimization Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2010 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC MPI2007 ","v1.1.  Report","generated on ","Tue Jul 22 13:36:43 2014","by SPEC MPI2007 CSV","formatter v1463."
+"Originally published on ","15 April 2009."

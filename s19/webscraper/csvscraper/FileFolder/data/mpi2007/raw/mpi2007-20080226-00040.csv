@@ -1,0 +1,402 @@
+valid,0,(NON-COMPLIANT)
+
+"Full Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,NC,NC,NC,NC,NC,,,,,
+104.milc,NC,NC,NC,NC,NC,,,,,
+104.milc,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+
+"Selected Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,NC,NC,NC,NC,NC,,,,,NR
+107.leslie3d,NC,NC,NC,NC,NC,,,,,NR
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,NR
+115.fds4,NC,NC,NC,NC,NC,,,,,NR
+121.pop2,NC,NC,NC,NC,NC,,,,,NR
+122.tachyon,NC,NC,NC,NC,NC,,,,,NR
+126.lammps,NC,NC,NC,NC,NC,,,,,NR
+127.wrf2,NC,NC,NC,NC,NC,,,,,NR
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,NR
+129.tera_tf,NC,NC,NC,NC,NC,,,,,NR
+130.socorro,NC,NC,NC,NC,NC,,,,,NR
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,NR
+137.lu,NC,NC,NC,NC,NC,,,,,NR
+
+SPECmpiM_base2007,NC,,NC
+SPECmpiM_peak2007,"Not Run",,,,,,,"Not Run"
+
+"Run number:",027
+
+"System Vendor:","Linux Networx"
+"System Name:","LS-1, Scali MPI Connect 5.6.1, Intel 9.1 compilers"
+"Date tested:",Feb-2008
+"MPI2007 License:",021
+"Test sponsor:","Scali, Inc"
+"Tested by:","Scali, Inc"
+"Hardware avail:",Sep-2007
+"Software avail:",Feb-2008
+
+"REASON FOR NON-COMPLIANCE"
+---------------------------------------------------------------------------
+" SPEC has determined that this result was not in compliance with the SPEC"
+" MPI2007 run and reporting rules.  Specifically, the result did not meet the"
+" requirement for baseline optimization flags to not use assertion flags (the"
+" flag -fno-alias is a violation of this rule). The result was found to be"
+" performance neutral compared to runs without -fno-alias. Replacement"
+" results could not be produced because of system access limitations."
+---------------------------------------------------------------------------
+
+
+"Node Description: Linux Networx LS-1"
+
+HARDWARE
+
+"Number of nodes",8
+"Uses of the node",compute
+Vendor,"Linux Networx, Inc."
+Model,LS-1
+"CPU Name","Intel Xeon 5160"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",4
+"Cores per chip",2
+"Threads per core",1
+"CPU Characteristics","1333 Mhz FSB"
+"CPU MHz",3000
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","4 MB I+D on chip per chip"
+"L3 Cache",None
+"Other Cache",None
+Memory,"8 GB (8 x 1GB DIMMs 667 MHz)"
+"Disk Subsystem","250GB SAS hard drive"
+"Other Hardware",None
+Adapter,"Mellanox MHGA28-XTC"
+,"PCI-Express DDR InfiniBand HCA"
+"Number of Adapters",1
+"Slot Type","PCIe x8"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",Infiniband
+
+SOFTWARE
+
+Adapter,"Mellanox MHGA28-XTC"
+,"PCI-Express DDR InfiniBand HCA"
+"Adapter Driver","IBGD 1.8.2"
+"Adapter Firmware",5.1.4
+"Operating System","SLES9 SP3"
+"Local File System","Not applicable"
+"Shared File System",GPFS
+"System State",multi-user
+"Other Software",None
+
+
+"Node Description: Linux Networx LS1 I/O Nodes"
+
+HARDWARE
+
+"Number of nodes",8
+"Uses of the node","file server"
+Vendor,"Linux Networx, Inc."
+Model,LS1
+"CPU Name","Intel Xeon 5150"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",4
+"Cores per chip",2
+"Threads per core",1
+"CPU Characteristics","1333 Mhz FSB"
+"CPU MHz",2660
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","4 MB I+D on chip per chip"
+"L3 Cache",None
+"Other Cache",None
+Memory,"4 GB (4 x 1GB DIMMs 667 MHz)"
+"Disk Subsystem","18 TB SAN interconnected by FC4"
+"Other Hardware",None
+Adapter,"Mellanox MHGA28-XTC"
+,"PCI-X DDR InfiniBand HCA"
+"Number of Adapters",1
+"Slot Type","PCIe x8"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MHGA28-XTC"
+,"PCI-X DDR InfiniBand HCA"
+"Adapter Driver","IBGD 1.8.2"
+"Adapter Firmware",5.2.0
+"Operating System","SLES9 SP3"
+"Local File System","Not applicable"
+"Shared File System",GPFS
+"System State",multi-user
+"Other Software",None
+
+
+"Interconnect Description: InfiniBand"
+
+HARDWARE
+
+Vendor,QLogic
+Model,"QLogic Silverstorm 9120 Fabric Director"
+"Switch Model",9120
+"Number of Switches",1
+"Number of Ports",144
+"Data Rate","InfiniBand 4x SDR and InfiniBand 4x DDR"
+Firmware,4.1.1.1.11
+Topology,"Single switch (star)"
+"Primary Use","MPI and filesystem traffic"
+
+
+"BENCHMARK DETAILS"
+
+"Type of System",Homogenous
+"Total Compute Nodes",8
+"Total Chips",16
+"Total Cores",32
+"Total Threads",32
+"Total Memory","64 GB"
+"Base Ranks Run",32
+"Minimum Peak Ranks",--
+"Maximum Peak Ranks",--
+"C Compiler","Intel C 9.1.045"
+"C++ Compiler","Intel C++ 9.1.045"
+"Fortran Compiler","Intel Fortran 9.1.040"
+"Base Pointers",64-bit
+"Peak Pointers","Not Applicable"
+"MPI Library","Scali MPI Connect 5.6.1-58818"
+"Other MPI Info","IB Gold VAPI"
+Pre-processors,None
+"Other Software",None
+
+"General Notes"
+
+"The following approved srcalts are used"
+"   tera_tf - fixbuffer"
+"   wrf2    - fixcalling"
+
+"Base Compiler Invocation"
+104.milc," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpicc  -ccl icc"
+107.leslie3d," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+113.GemsFDTD," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+115.fds4," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+121.pop2," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+122.tachyon," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpicc  -ccl icc"
+126.lammps," /opt/scali/bin/mpicc  -ccl icpc"," /opt/scali/bin/mpicc  -ccl icpc"
+127.wrf2," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+128.GAPgeofem," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"
+129.tera_tf," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+130.socorro," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+132.zeusmp2," /opt/scali/bin/mpicc  -ccl icc"," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+137.lu," /opt/scali/bin/mpif77 -ccl ifort"," /opt/scali/bin/mpif77 -ccl ifort"
+
+"Base Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2," -DSPEC_MPI_CASE_FLAG"
+122.tachyon
+126.lammps
+127.wrf2," -DSPEC_MPI_LINUX"," -DSPEC_MPI_CASE_FLAG"
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Optimization Flags"
+104.milc," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+107.leslie3d," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+113.GemsFDTD," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+115.fds4," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+121.pop2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+122.tachyon," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+126.lammps," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+127.wrf2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+128.GAPgeofem," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+129.tera_tf," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+130.socorro," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+132.zeusmp2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+137.lu," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+
+"Base Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Compiler Invocation"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Optimization Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2010 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC MPI2007 ","v1.0.  Report","generated on ","Tue Jul 22 13:33:37 2014","by SPEC MPI2007 CSV","formatter v1463."
+"Originally published on ","31 March 2008."
