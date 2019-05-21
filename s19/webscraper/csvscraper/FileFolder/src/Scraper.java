@@ -11,17 +11,62 @@ public class Scraper {
 	 * but if it works, it works, and I dont think the .csv files are 
 	 * that big, and this won't take that long to run on all of them
 	 */
-	static final String[] keywords = {"\"Hardware Model:\"",
+	//openACC
+	/*static final String[] keywords = {"\"Hardware Model:\"",
 									  "SPECaccel_acc_base",
 									  "\"CPU Name\"",
 									  "\"CPU(s) enabled\"",
 									  "\"Accel Model Name\"",
 									  "Memory",
-									  "\"Operating System\""};
+									  "\"Operating System\"",
+									  "\"Other Software\"",
+									  "Compiler"};*/
+	static final String[] keywords_openacc = {"\"Hardware Model:\"",
+			  								  "SPECaccel_acc_base",
+			  								  "\"CPU Name\"",
+			  								  "\"CPU(s) enabled\"",
+			  								  "\"Accel Model Name\"",
+			  								  "Memory",
+			  								  "\"Operating System\"",
+			  								  "\"Other Software\"",
+	                                          "Compiler"};
+	static final String[] keywords_cpu2017 = {"\"Hardware Model:\"",
+											  "SPECrate2017_fp_base",
+											  "\"CPU Name\"",
+											  "Enabled",
+											  "Memory",
+											  "OS",
+											  "Compiler"};
+	static final String[] keywords_cpu2006 = {"\"Hardware Model:\"",
+					                          "SPECint_base2006",
+					                          "\"CPU Name\"",
+					                          "\"CPU(s) enabled\"",					                         
+					                          "Memory",
+					                          "\"Operating System\"",
+					                          "\"Other Software\"",
+											  "Compiler"};
+	static final String[] keywords_omp2012 = {"\"Hardware Model:\"",
+											  "SPECompG_base2012",
+			                                  "\"CPU Name\"",
+			                                  "\"CPU(s) enabled\"",
+			                                  "Memory",
+			                                  "\"Operating System\"",
+	                                          "Compiler"};
+	static final String[] keywords_mpi2007 = {"Model",
+											  "SPECmpiL_base2007",
+											  "\"Chips enabled\"",
+											  "\"Cores enabled\"",
+											  "\"Cores per chip\"",
+											  "\"Threads per core\"",
+											  "Memory",
+											  "\"Operating System\"",
+											  "\"Other Software\"",};
+	static String[][] keyWords = {keywords_openacc,keywords_cpu2017,keywords_cpu2006,keywords_omp2012,keywords_mpi2007};
+	 
 	static String currentTest = "undefined";
+	static String[] keywords;
 	
 	public static void main(String[] args) throws IOException{
-		System.out.println("The JAR works.");
 		/*String s = "blasdhkasdfh\nSPECaccel_acc_base,1.740416,,,,\n"
 				+ "etckjasdhfksdaf,,,dshfas,jasdfkj,\n\n,ashfasdhf,\n"
 				+ " \"Accel Model Name\",\"Tesla K20\" ";
@@ -36,12 +81,46 @@ public class Scraper {
 		stringToCSV(buildString(test));
 		System.out.println("Done");
 		*/
-		
+		int i = 0;
 		for(String s : args){
-			System.out.println("Folding " + s);
-			currentTest=s;
-			stringToCSV(buildString(csvToString(s)));
+			if(isCSV(s)){
+				if(i == 0){
+					keywords = keywords_openacc;
+				}
+				System.out.println("Folding " + s);
+				currentTest=s;
+				stringToCSV(buildString(csvToString(s)));
+			}else{
+				i++;
+				assignKeywords(s);
+			}
 		}
+	}
+	public static void assignKeywords(String dataset){
+		/*
+		 * openacc
+		 * cpu2017
+		 * cpu2006
+		 * mpi2007
+		 * omp2012
+		 */
+		if(dataset.equals("openacc")){
+			keywords = keywords_openacc;
+		}else if(dataset.equals("cpu2006")){
+			keywords = keywords_cpu2006;
+		}else if(dataset.equals("cpu2017")){
+			keywords = keywords_cpu2017;
+		}else if(dataset.equals("mpi2007")){
+			keywords = keywords_mpi2007;
+		}else if(dataset.equals("omp2012")){
+			keywords = keywords_omp2012;
+		}
+	}
+	public static boolean isCSV(String s){
+		if(s.length() >= 4){
+			return s.substring(s.length()-4).equals(".csv");
+		}
+		return false;
 	}
 	/*
 	 * Given a .csv file, return it as a big string.
@@ -99,11 +178,7 @@ public class Scraper {
 		int x = s1.indexOf(s2) + s2.length();
 		if(x==s2.length()-1)
 			return null;
-		
 		String[] arr = s1.substring(x).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1)[1].split("\n");
-		System.out.println("looking for " + s2 + " and we get the following split");
-		System.out.println(Arrays.toString(arr));
-		System.out.println("first element is " + arr[0]);
 		return arr[0];
 	}
 
