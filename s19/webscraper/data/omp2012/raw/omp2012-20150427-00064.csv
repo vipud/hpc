@@ -1,0 +1,431 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+350.md,144,202.608704,22.85193,0,S,144,159.833624,28.967622,0,S,"ref iteration #1"
+350.md,144,195.306173,23.706368,0,S,144,164.005945,28.230684,0,S,"ref iteration #2"
+350.md,144,196.551623,23.556152,1,S,144,160.837194,28.786874,1,S,"ref iteration #3"
+351.bwaves,144,189.231703,23.938906,1,S,72,176.052754,25.730924,1,S,"ref iteration #1"
+351.bwaves,144,188.794431,23.994352,0,S,72,175.998016,25.738927,0,S,"ref iteration #2"
+351.bwaves,144,191.112509,23.703315,0,S,72,176.35115,25.687386,0,S,"ref iteration #3"
+352.nab,144,243.233857,15.992839,0,S,144,233.34442,16.670636,1,S,"ref iteration #1"
+352.nab,144,248.198598,15.672933,0,S,144,230.638259,16.866239,0,S,"ref iteration #2"
+352.nab,144,247.728575,15.70267,1,S,144,235.995866,16.48334,0,S,"ref iteration #3"
+357.bt331,144,174.668253,27.137158,0,S,144,174.822187,27.113263,0,S,"ref iteration #1"
+357.bt331,144,174.687742,27.134131,1,S,144,174.868017,27.106157,1,S,"ref iteration #2"
+357.bt331,144,175.002599,27.085312,0,S,144,174.900949,27.101054,0,S,"ref iteration #3"
+358.botsalgn,144,286.666173,15.174445,0,S,144,279.805055,15.546538,0,S,"ref iteration #1"
+358.botsalgn,144,286.73701,15.170696,0,S,144,279.851217,15.543974,0,S,"ref iteration #2"
+358.botsalgn,144,286.728732,15.171134,1,S,144,279.823722,15.545501,1,S,"ref iteration #3"
+359.botsspar,144,376.032887,13.961545,1,S,72,359.310035,14.611337,0,S,"ref iteration #1"
+359.botsspar,144,377.406875,13.910716,0,S,72,360.914224,14.546393,1,S,"ref iteration #2"
+359.botsspar,144,375.253184,13.990554,0,S,72,361.20164,14.534818,0,S,"ref iteration #3"
+360.ilbdc,144,287.097586,12.399965,0,S,144,288.421598,12.343042,1,S,"ref iteration #1"
+360.ilbdc,144,287.031333,12.402827,1,S,144,290.217094,12.266679,0,S,"ref iteration #2"
+360.ilbdc,144,285.706993,12.460318,0,S,144,285.649846,12.462811,0,S,"ref iteration #3"
+362.fma3d,144,262.535867,14.474213,1,S,144,263.471341,14.422821,0,S,"ref iteration #1"
+362.fma3d,144,262.971578,14.450231,0,S,144,263.228604,14.436121,1,S,"ref iteration #2"
+362.fma3d,144,262.285255,14.488043,0,S,144,262.617376,14.46972,0,S,"ref iteration #3"
+363.swim,144,219.144991,20.671246,0,S,72,211.640563,21.404214,1,S,"ref iteration #1"
+363.swim,144,219.345653,20.652335,1,S,72,211.034606,21.465674,0,S,"ref iteration #2"
+363.swim,144,219.417407,20.645582,0,S,72,212.460622,21.321598,0,S,"ref iteration #3"
+367.imagick,144,350.806783,20.039521,1,S,144,347.883761,20.207899,0,S,"ref iteration #1"
+367.imagick,144,351.842267,19.980544,0,S,144,348.163406,20.191668,1,S,"ref iteration #2"
+367.imagick,144,350.145543,20.077365,0,S,144,349.109607,20.136942,0,S,"ref iteration #3"
+370.mgrid331,144,251.482281,17.575791,0,S,72,241.045701,18.336772,1,S,"ref iteration #1"
+370.mgrid331,144,252.11499,17.531683,1,S,72,241.139121,18.329668,0,S,"ref iteration #2"
+370.mgrid331,144,252.384523,17.51296,0,S,72,240.898882,18.347947,0,S,"ref iteration #3"
+371.applu331,144,129.050576,46.958334,0,S,144,128.734794,47.073521,0,S,"ref iteration #1"
+371.applu331,144,129.062375,46.954041,1,S,144,128.72971,47.07538,1,S,"ref iteration #2"
+371.applu331,144,129.103374,46.93913,0,S,144,128.701752,47.085606,0,S,"ref iteration #3"
+372.smithwa,144,156.723093,34.200448,0,S,72,121.765285,44.019114,1,S,"ref iteration #1"
+372.smithwa,144,155.677358,34.430183,1,S,72,122.783613,43.654034,0,S,"ref iteration #2"
+372.smithwa,144,155.261016,34.52251,0,S,72,120.8073,44.36818,0,S,"ref iteration #3"
+376.kdtree,144,227.302975,19.797365,0,S,144,227.300069,19.797618,0,S,"ref iteration #1"
+376.kdtree,144,227.36637,19.791845,1,S,144,228.090584,19.729004,0,S,"ref iteration #2"
+376.kdtree,144,227.587924,19.772578,0,S,144,227.481387,19.781838,1,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+350.md,144,196.551623,23.556152,1,S,144,160.837194,28.786874,1,S,"SelectedIteration (base #3; peak #3)"
+351.bwaves,144,189.231703,23.938906,1,S,72,176.052754,25.730924,1,S,"SelectedIteration (base #1; peak #1)"
+352.nab,144,247.728575,15.70267,1,S,144,233.34442,16.670636,1,S,"SelectedIteration (base #3; peak #1)"
+357.bt331,144,174.687742,27.134131,1,S,144,174.868017,27.106157,1,S,"SelectedIteration (base #2; peak #2)"
+358.botsalgn,144,286.728732,15.171134,1,S,144,279.823722,15.545501,1,S,"SelectedIteration (base #3; peak #3)"
+359.botsspar,144,376.032887,13.961545,1,S,72,360.914224,14.546393,1,S,"SelectedIteration (base #1; peak #2)"
+360.ilbdc,144,287.031333,12.402827,1,S,144,288.421598,12.343042,1,S,"SelectedIteration (base #2; peak #1)"
+362.fma3d,144,262.535867,14.474213,1,S,144,263.228604,14.436121,1,S,"SelectedIteration (base #1; peak #2)"
+363.swim,144,219.345653,20.652335,1,S,72,211.640563,21.404214,1,S,"SelectedIteration (base #2; peak #1)"
+367.imagick,144,350.806783,20.039521,1,S,144,348.163406,20.191668,1,S,"SelectedIteration (base #1; peak #2)"
+370.mgrid331,144,252.11499,17.531683,1,S,72,241.045701,18.336772,1,S,"SelectedIteration (base #2; peak #1)"
+371.applu331,144,129.062375,46.954041,1,S,144,128.72971,47.07538,1,S,"SelectedIteration (base #2; peak #2)"
+372.smithwa,144,155.677358,34.430183,1,S,72,121.765285,44.019114,1,S,"SelectedIteration (base #2; peak #1)"
+376.kdtree,144,227.36637,19.791845,1,S,144,227.481387,19.781838,1,S,"SelectedIteration (base #2; peak #3)"
+
+SPECompG_base2012,20.372243,,20.372243
+SPECompG_peak2012,21.455704,,,,,,,21.455704
+
+"Run number:",035
+
+"Hardware Vendor:","Hewlett-Packard Company"
+"Hardware Model:","HP ProLiant DL580 Gen9 (Intel Xeon E7-8890 v3 @ 2.50)"
+"Date tested:",Apr-2015
+"OMP2012 License:",1
+"Test sponsor:","Hewlett-Packard Company"
+"Tested by:","Hewlett-Packard Company"
+"Hardware avail:",May-2015
+"Software avail:",Jan-2015
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon E7-8890 v3"
+"CPU Characteristics","Intel Turbo Boost Technology up to 3.30 GHz"
+"CPU MHz",2500
+"CPU MHz Maximum",3300
+FPU,Integrated
+"CPU(s) enabled","72 cores, 4 chips, 18 cores/chip, 2 threads/core"
+"CPU(s) orderable","2,4 chips"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","256 KB I+D on chip per core"
+"L3 Cache","45 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"1.00 TB (64 x 16 GB 2Rx4 PC4-2133P-R, ECC)"
+"Disk Subsystem","1 X 300GB SAS, 10K RPM"
+"Other Hardware",None
+"Base Threads Run",144
+"Minimum Peak Threads",72
+"Maximum Peak Threads",144
+
+SOFTWARE
+
+"Operating System","SUSE Linux Enterprise Server 11 SP3 (x86_64)"
+,"Kernel 3.0.76-0.11-default"
+Compiler,"C/C++/Fortran: Version 15.0.2.0 of Intel"
+,"Composer XE for Linux, Build 20150121"
+"Auto Parallel",No
+"File System",ext3
+"System State",Default
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+"Other Software",None
+
+"Platform Notes"
+
+" Sysinfo program /opt/omp2012/Docs/sysinfo"
+" $Rev: 395 $ $Date:: 2012-07-25 #$ 8f8c0fe9e19c658963a1e67685e50647"
+" running on DL580Gen9-6 Mon Apr 20 02:42:02 2015"
+
+" This section contains SUT (System Under Test) info as seen by"
+" some common utilities.  To remove or add to this section, see:"
+"   http://www.spec.org/omp2012/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) CPU E7-8890 v3 @ 2.50GHz"
+"       4 ""physical id""s (chips)"
+"       144 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent.  The"
+"    following excerpts from /proc/cpuinfo might not be reliable.  Use with"
+"    caution.)"
+"       cpu cores : 18"
+"       siblings  : 36"
+"       physical 0: cores 0 1 2 3 4 8 9 10 11 16 17 18 19 20 24 25 26 27"
+"       physical 1: cores 0 1 2 3 4 8 9 10 11 16 17 18 19 20 24 25 26 27"
+"       physical 2: cores 0 1 2 3 4 8 9 10 11 16 17 18 19 20 24 25 26 27"
+"       physical 3: cores 0 1 2 3 4 8 9 10 11 16 17 18 19 20 24 25 26 27"
+"    cache size : 46080 KB"
+
+" From /proc/meminfo"
+"    MemTotal:       1058712696 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" /usr/bin/lsb_release -d"
+"    SUSE Linux Enterprise Server 11 (x86_64)"
+
+" From /etc/*release* /etc/*version*"
+"    SuSE-release:"
+"       SUSE Linux Enterprise Server 11 (x86_64)"
+"       VERSION = 11"
+"       PATCHLEVEL = 3"
+
+" uname -a:"
+"    Linux DL580Gen9-6 3.0.76-0.11-default #1 SMP Fri Jun 14 08:21:43 UTC 2013"
+"    (ccab990) x86_64 x86_64 x86_64 GNU/Linux"
+
+" run-level 3 Apr 20 02:25 last=S"
+
+" SPEC is set to: /opt/omp2012"
+"    Filesystem     Type  Size  Used Avail Use% Mounted on"
+"    /dev/sda3      ext3  273G   41G  232G  15% /"
+
+" Additional information from dmidecode:"
+"   BIOS HP U17 03/13/2015"
+"   Memory:"
+"    64x HP 752369-081 16 GB 1600 MHz"
+"    32x UNKNOWN NOT AVAILABLE"
+
+" (End of data from sysinfo program)"
+
+"General Notes"
+
+" ========================================================================"
+" Transparent Huge Pages enabled with:"
+"   echo always > /sys/kernel/mm/transparent_hugepage/enabled"
+" Software Environment:"
+"   ulimit -s unlimited"
+" BIOS settings notes:"
+"   Power Profile = Maximum Performance"
+"   Thermal Configuration = Maximum Cooling"
+"   Collaborative Power Control = Disabled"
+"   Processor Power and Utilization Monitoring = Disabled"
+"   Memory Refresh Rate = 1x"
+" ========================================================================"
+" General OMP Library Settings"
+"   ENV_KMP_LIBRARY=turnaround"
+"   ENV_KMP_STACKSIZE=2220M"
+"   ENV_KMP_BLOCKTIME=infinite"
+"   ENV_OMP_DYNAMIC=FALSE"
+"   ENV_OMP_NESTED=FALSE"
+"   ENV_OMP_WAIT_POLICY=ACTIVE"
+" ========================================================================"
+" General base OMP Library Settings"
+"   ENV_KMP_AFFINITY=compact,0"
+
+" ========================================================================"
+" General peak OMP Library Settings"
+"   ENV_KMP_AFFINITY=compact,0"
+
+" ========================================================================"
+" Per benchmark peak OMP Library Settings"
+
+" ========================================================================"
+" 351.bwaves:peak:"
+"   ENV_KMP_AFFINITY=compact,1"
+"   ENV_OMP_SCHEDULE=static,1"
+" ========================================================================"
+" 357.bt331:peak:"
+"   ENV_OMP_SCHEDULE=static,1"
+
+" ========================================================================"
+" 359.botsspar:peak:"
+"   ENV_KMP_AFFINITY=compact,1"
+"   ENV_OMP_SCHEDULE=guided"
+
+" ========================================================================"
+" 362.fma3d:peak:"
+"   ENV_OMP_SCHEDULE=static,1"
+
+" ========================================================================"
+" 363.swim:peak:"
+"   ENV_KMP_AFFINITY=compact,1"
+
+" ========================================================================"
+" 370.mgrid331:peak:"
+"   ENV_KMP_AFFINITY=compact,1"
+
+" ========================================================================"
+" 372.smithwa:peak:"
+"   ENV_KMP_AFFINITY=compact,1"
+"   ENV_OMP_SCHEDULE=guided"
+
+
+"Base Compiler Invocation"
+350.md," ifort"," ifort"
+351.bwaves," ifort"," ifort"
+352.nab," icc"," icc"
+357.bt331," ifort"," ifort"
+358.botsalgn," icc"," icc"
+359.botsspar," icc"," icc"
+360.ilbdc," ifort"," ifort"
+362.fma3d," ifort"," ifort"
+363.swim," ifort"," ifort"
+367.imagick," icc"," icc"
+370.mgrid331," ifort"," ifort"
+371.applu331," ifort"," ifort"
+372.smithwa," icc"," icc"
+376.kdtree," icpc"," icpc"
+
+"Base Portability Flags"
+350.md," -FR"
+351.bwaves
+352.nab
+357.bt331," -mcmodel=medium"
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim," -mcmodel=medium"
+367.imagick," -std=c99"
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+
+"Base Optimization Flags"
+350.md," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+351.bwaves," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+352.nab," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+357.bt331," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+358.botsalgn," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+359.botsspar," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+360.ilbdc," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+362.fma3d," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+363.swim," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+367.imagick," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+370.mgrid331," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+371.applu331," -O3"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+372.smithwa," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+376.kdtree," -O3"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+
+"Base Other Flags"
+350.md," No flags used"
+351.bwaves," No flags used"
+352.nab," No flags used"
+357.bt331," No flags used"
+358.botsalgn," No flags used"
+359.botsspar," No flags used"
+360.ilbdc," No flags used"
+362.fma3d," No flags used"
+363.swim," No flags used"
+367.imagick," No flags used"
+370.mgrid331," No flags used"
+371.applu331," No flags used"
+372.smithwa," No flags used"
+376.kdtree," No flags used"
+
+"Base Forbidden Flags"
+350.md
+351.bwaves
+352.nab
+357.bt331
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim
+367.imagick
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+
+"Base Unknown Flags"
+350.md
+351.bwaves
+352.nab
+357.bt331
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim
+367.imagick
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+
+"Peak Compiler Invocation"
+350.md," ifort"," ifort"
+351.bwaves," ifort"," ifort"
+352.nab," icc"," icc"
+357.bt331," ifort"," ifort"
+358.botsalgn," icc"," icc"
+359.botsspar," icc"," icc"
+360.ilbdc," ifort"," ifort"
+362.fma3d," ifort"," ifort"
+363.swim," ifort"," ifort"
+367.imagick," icc"," icc"
+370.mgrid331," ifort"," ifort"
+371.applu331," ifort"," ifort"
+372.smithwa," icc"," icc"
+376.kdtree," icpc"," icpc"
+
+"Peak Portability Flags"
+350.md," -FR"
+351.bwaves
+352.nab
+357.bt331," -mcmodel=medium"
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim," -mcmodel=medium"
+367.imagick," -std=c99"
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+
+"Peak Optimization Flags"
+350.md," -O2"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -opt-malloc-options=1"," -fp-model fast=2"," -no-prec-div"," -no-prec-sqrt"," -align array64byte"
+351.bwaves," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -fp-model fast=2"," -no-prec-div"," -no-prec-sqrt"," -align array64byte"
+352.nab," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -opt-malloc-options=1"," -opt-calloc"," -fp-model fast=2"," -no-prec-div"," -no-prec-sqrt"," -ansi-alias"
+357.bt331," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -fp-model fast=2"," -no-prec-div"," -no-prec-sqrt"," -align array64byte"
+358.botsalgn," -O3"," -openmp"," -ipo "," -xSSE4.2"," -fno-alias"," -ansi-alias"
+359.botsspar," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -ansi-alias"
+360.ilbdc," -O3"," -openmp"," -ipo "," -xAVX"," -opt-malloc-options=1"," -align array64byte"
+362.fma3d," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -align array64byte"
+363.swim," -O3"," -openmp"," -ipo "," -xSSE4.2"," -fno-alias"," -opt-streaming-stores always"," -opt-malloc-options=3"," -align array64byte"
+367.imagick," -O2"," -openmp"," -ipo "," -xAVX"," -ansi-alias"
+370.mgrid331," -O2"," -openmp"," -ipo "," -xSSE4.2"," -fno-alias"," -opt-malloc-options=3"," -align array64byte"
+371.applu331," -O2"," -openmp"," -ipo "," -xAVX"," -align array64byte"
+372.smithwa," -O2"," -openmp"," -ipo "," -xSSE4.2"," -fno-alias"," -opt-streaming-stores always"," -opt-malloc-options=1"," -ansi-alias"
+376.kdtree," -O3"," -openmp"," -ipo "," -xAVX"," -fno-alias"," -ansi-alias"
+
+"Peak Other Flags"
+350.md," No flags used"
+351.bwaves," No flags used"
+352.nab," No flags used"
+357.bt331," No flags used"
+358.botsalgn," No flags used"
+359.botsspar," No flags used"
+360.ilbdc," No flags used"
+362.fma3d," No flags used"
+363.swim," No flags used"
+367.imagick," No flags used"
+370.mgrid331," No flags used"
+371.applu331," No flags used"
+372.smithwa," No flags used"
+376.kdtree," No flags used"
+
+"Peak Forbidden Flags"
+350.md
+351.bwaves
+352.nab
+357.bt331
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim
+367.imagick
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+
+"Peak Unknown Flags"
+350.md
+351.bwaves
+352.nab
+357.bt331
+358.botsalgn
+359.botsspar
+360.ilbdc
+362.fma3d
+363.swim
+367.imagick
+370.mgrid331
+371.applu331
+372.smithwa
+376.kdtree
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2012-2015 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC OMP2012 ","v1.0.  Report","generated on ","Wed May 13 16:02:02 2015","by SPEC OMP2012 CSV","formatter v541."
+"Originally published on ","13 May 2015."

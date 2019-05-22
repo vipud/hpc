@@ -1,0 +1,413 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,16,433.852518,3.607217,1,S,,,,,,"mref(ref) iteration #1"
+104.milc,16,427.482203,3.660971,0,S,,,,,,"mref(ref) iteration #2"
+107.leslie3d,16,1521.137079,3.431643,0,S,,,,,,"mref(ref) iteration #1"
+107.leslie3d,16,1522.947676,3.427564,1,S,,,,,,"mref(ref) iteration #2"
+113.GemsFDTD,16,1238.947989,5.091416,1,S,,,,,,"mref(ref) iteration #1"
+113.GemsFDTD,16,1234.999921,5.107693,0,S,,,,,,"mref(ref) iteration #2"
+115.fds4,16,586.824982,3.324671,1,S,,,,,,"mref(ref) iteration #1"
+115.fds4,16,585.229722,3.333734,0,S,,,,,,"mref(ref) iteration #2"
+121.pop2,16,906.499746,4.55378,1,S,,,,,,"mref(ref) iteration #1"
+121.pop2,16,906.037093,4.556105,0,S,,,,,,"mref(ref) iteration #2"
+122.tachyon,16,1302.453455,2.147486,1,S,,,,,,"mref(ref) iteration #1"
+122.tachyon,16,1300.359069,2.150944,0,S,,,,,,"mref(ref) iteration #2"
+126.lammps,16,1158.212822,2.516809,0,S,,,,,,"mref(ref) iteration #1"
+126.lammps,16,1161.493424,2.5097,1,S,,,,,,"mref(ref) iteration #2"
+127.wrf2,16,1213.200857,6.425976,1,S,,,,,,"mref(ref) iteration #1"
+127.wrf2,16,1212.66917,6.428794,0,S,,,,,,"mref(ref) iteration #2"
+128.GAPgeofem,16,533.244353,3.872521,1,S,,,,,,"mref(ref) iteration #1"
+128.GAPgeofem,16,532.190572,3.880189,0,S,,,,,,"mref(ref) iteration #2"
+129.tera_tf,16,959.037189,2.886228,0,S,,,,,,"mref(ref) iteration #1"
+129.tera_tf,16,959.098869,2.886042,1,S,,,,,,"mref(ref) iteration #2"
+130.socorro,16,850.208318,4.489488,1,S,,,,,,"mref(ref) iteration #1"
+130.socorro,16,850.207401,4.489493,0,S,,,,,,"mref(ref) iteration #2"
+132.zeusmp2,16,875.035057,3.546144,1,S,,,,,,"mref(ref) iteration #1"
+132.zeusmp2,16,872.668939,3.555759,0,S,,,,,,"mref(ref) iteration #2"
+137.lu,16,1170.77936,3.139789,0,S,,,,,,"mref(ref) iteration #1"
+137.lu,16,1173.204452,3.133299,1,S,,,,,,"mref(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,16,433.852518,3.607217,1,S,,,,,NR,"SelectedIteration (base #1)"
+107.leslie3d,16,1522.947676,3.427564,1,S,,,,,NR,"SelectedIteration (base #2)"
+113.GemsFDTD,16,1238.947989,5.091416,1,S,,,,,NR,"SelectedIteration (base #1)"
+115.fds4,16,586.824982,3.324671,1,S,,,,,NR,"SelectedIteration (base #1)"
+121.pop2,16,906.499746,4.55378,1,S,,,,,NR,"SelectedIteration (base #1)"
+122.tachyon,16,1302.453455,2.147486,1,S,,,,,NR,"SelectedIteration (base #1)"
+126.lammps,16,1161.493424,2.5097,1,S,,,,,NR,"SelectedIteration (base #2)"
+127.wrf2,16,1213.200857,6.425976,1,S,,,,,NR,"SelectedIteration (base #1)"
+128.GAPgeofem,16,533.244353,3.872521,1,S,,,,,NR,"SelectedIteration (base #1)"
+129.tera_tf,16,959.098869,2.886042,1,S,,,,,NR,"SelectedIteration (base #2)"
+130.socorro,16,850.208318,4.489488,1,S,,,,,NR,"SelectedIteration (base #1)"
+132.zeusmp2,16,875.035057,3.546144,1,S,,,,,NR,"SelectedIteration (base #1)"
+137.lu,16,1173.204452,3.133299,1,S,,,,,NR,"SelectedIteration (base #2)"
+
+SPECmpiM_base2007,3.621057,,3.621057
+SPECmpiM_peak2007,"Not Run",,,,,,,"Not Run"
+
+"Run number:",001
+
+"System Vendor:","Intel Corporation"
+"System Name:","Endeavor (Intel Xeon X5560, 2.80 GHz, DDR3-1333 MHz, SMT off, Turbo on)"
+"Date tested:",Jul-2009
+"MPI2007 License:",13
+"Test sponsor:","Intel Corporation"
+"Tested by:","Pavel Shelepugin"
+"Hardware avail:",Jun-2009
+"Software avail:",Jun-2009
+
+
+"Node Description: Endeavor Node"
+
+HARDWARE
+
+"Number of nodes",2
+"Uses of the node",compute
+Vendor,Intel
+Model,SR1600UR
+"CPU Name","Intel Xeon X5560"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",8
+"Cores per chip",4
+"Threads per core",1
+"CPU Characteristics","Intel Turbo Boost Technology up to 3.2 GHz,"
+,"6.4 GT/s QPI, Hyper-Threading disabled"
+"CPU MHz",2800
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","256 KB I+D on chip per core"
+"L3 Cache","8 MB I+D on chip per chip, 8 MB shared / 4 cores"
+"Other Cache",None
+Memory,"24 GB (RDIMM 6x4-GB DDR3-1333 MHz)"
+"Disk Subsystem","Seagate 400 GB ST3400755SS"
+"Other Hardware",None
+Adapter,"Mellanox MHQH29-XTC"
+"Number of Adapters",1
+"Slot Type","PCIe x8 Gen2"
+"Data Rate","InfiniBand 4x QDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MHQH29-XTC"
+"Adapter Driver","OFED 1.3.1"
+"Adapter Firmware",2.6.000
+"Operating System","Red Hat EL 5.2, kernel 2.6.18-128"
+"Local File System",Linux/ext2
+"Shared File System","Lustre FS"
+"System State",Multi-User
+"Other Software","PBS Pro 8.0"
+
+
+"Node Description: LFS"
+
+HARDWARE
+
+"Number of nodes",8
+"Uses of the node",fileserver
+Vendor,Intel
+Model,SR1560SF
+"CPU Name","Intel Xeon E5462"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",8
+"Cores per chip",4
+"Threads per core",1
+"CPU Characteristics","1600 MHz FSB"
+"CPU MHz",2800
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","12 MB I+D on chip per chip, 6 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"16 GB DDR2 16x1-GB 667 MHz"
+"Disk Subsystem","Seagate 250 GB"
+"Other Hardware","connected to DDN storage (see General Notes)"
+Adapter,"Mellanox MHGH28-XTC"
+"Number of Adapters",1
+"Slot Type","PCIe x8 Gen2"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MHGH28-XTC"
+"Adapter Driver","OFED 1.3.1"
+"Adapter Firmware",2.6.000
+"Operating System","Red Hat EL 5.2, kernel 2.6.18-53"
+"Local File System",None
+"Shared File System","Lustre FS"
+"System State",Multi-User
+"Other Software",None
+
+
+"Interconnect Description: IB Switch"
+
+HARDWARE
+
+Vendor,Mellanox
+Model,"Mellanox MTS3600Q-1UNC"
+"Switch Model","Mellanox MTS3600Q-1UNC"
+"Number of Switches",46
+"Number of Ports",36
+"Data Rate","InfiniBand 4x QDR"
+Firmware,7.1.000
+Topology,"Fat tree"
+"Primary Use","MPI traffic, FS traffic"
+
+
+"BENCHMARK DETAILS"
+
+"Type of System",Homogeneous
+"Total Compute Nodes",2
+"Total Chips",4
+"Total Cores",16
+"Total Threads",16
+"Total Memory","48 GB"
+"Base Ranks Run",16
+"Minimum Peak Ranks",--
+"Maximum Peak Ranks",--
+"C Compiler","Intel C++ Compiler 11.1 for Linux"
+"C++ Compiler","Intel C++ Compiler 11.1 for Linux"
+"Fortran Compiler","Intel Fortran Compiler 11.1 for Linux"
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+"MPI Library","Intel MPI Library 3.2 for Linux"
+"Other MPI Info",None
+Pre-processors,No
+"Other Software",None
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+
+"General Notes"
+
+" MPI startup command:"
+"   mpiexec command was used to start MPI jobs. This command uses"
+"   an independent ring of mpd daemons, which is started beforehand via"
+"   mpdboot command. mpdboot was launched only once, and the corresponding"
+"   ring of daemons was used for every iteration of each SPEC MPI component."
+"   So, the startup and tear-down time of the daemons was not included to"
+"   the elapsed time and thus was not taken into account during calculation"
+"   of the ratio."
+
+" BIOS settings:"
+"   Intel Hyper-Threading Technology (SMT): Disabled (default is Enabled)"
+"   Intel Turbo Boost Technology (Turbo)  : Enabled (default is Enabled)"
+
+" RAM configuration:"
+"   Compute nodes have 1x4-GB RDIMM on each memory channel."
+
+" Network:"
+"   Forty six 36-port switches: 18 core switches and 28 leaf switches."
+"   Each leaf has one link to each core. Remaining 18 ports on 25 of 28 leafs"
+"   are used for compute nodes. On the remaining 3 leafs the ports are used"
+"   for FS nodes and other peripherals."
+
+" Job placement:"
+"   Each MPI job was assigned to a topologically compact set of nodes, i.e."
+"   the minimal needed number of leaf switches was used for each job: 1 switch"
+"   for 16/32/64/128 ranks, 2 switches for 256 ranks, 4 switches for 512 ranks."
+
+" Fileserver:"
+"   Intel SR1560SF systems connected via IB to DataDirect Networks S2A9900"
+"   storage which is: 160 disks, 300GB/disk, 48TB total, 35TB available."
+
+" PBS Pro was used for job submission. It has no impact on performance."
+"   Can be found at: http://www.altair.com"
+
+" Lustre File System 1.6.6 was used. Download from:"
+"   http://www.sun.com/software/products/lustre"
+
+"Base Compiler Invocation"
+104.milc," mpiicc"," mpiicc"
+107.leslie3d," mpiifort"," mpiifort"
+113.GemsFDTD," mpiifort"," mpiifort"
+115.fds4," mpiicc"," mpiifort"," mpiifort"
+121.pop2," mpiicc"," mpiifort"," mpiifort"
+122.tachyon," mpiicc"," mpiicc"
+126.lammps," mpiicpc"," mpiicpc"
+127.wrf2," mpiicc"," mpiifort"," mpiifort"
+128.GAPgeofem," mpiicc"," mpiifort"," mpiicc"," mpiifort"
+129.tera_tf," mpiifort"," mpiifort"
+130.socorro," mpiicc"," mpiifort"," mpiifort"
+132.zeusmp2," mpiicc"," mpiifort"," mpiifort"
+137.lu," mpiifort"," mpiifort"
+
+"Base Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2," -DSPEC_MPI_CASE_FLAG"
+122.tachyon
+126.lammps," -DMPICH_IGNORE_CXX_SEEK"
+127.wrf2," -DSPEC_MPI_CASE_FLAG"," -DSPEC_MPI_LINUX"
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Optimization Flags"
+104.milc," -O3"," -xSSE4.2"," -no-prec-div"
+107.leslie3d," -O3"," -xSSE4.2"," -no-prec-div"
+113.GemsFDTD," -O3"," -xSSE4.2"," -no-prec-div"
+115.fds4," -O3"," -xSSE4.2"," -no-prec-div"
+121.pop2," -O3"," -xSSE4.2"," -no-prec-div"
+122.tachyon," -O3"," -xSSE4.2"," -no-prec-div"
+126.lammps," -O3"," -xSSE4.2"," -no-prec-div"
+127.wrf2," -O3"," -xSSE4.2"," -no-prec-div"
+128.GAPgeofem," -O3"," -xSSE4.2"," -no-prec-div"
+129.tera_tf," -O3"," -xSSE4.2"," -no-prec-div"
+130.socorro," -O3"," -xSSE4.2"," -no-prec-div"
+132.zeusmp2," -O3"," -xSSE4.2"," -no-prec-div"
+137.lu," -O3"," -xSSE4.2"," -no-prec-div"
+
+"Base Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Compiler Invocation"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Optimization Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2010 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC MPI2007 ","v1.1.  Report","generated on ","Tue Jul 22 13:37:50 2014","by SPEC MPI2007 CSV","formatter v1463."
+"Originally published on ","13 August 2009."

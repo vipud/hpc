@@ -1,0 +1,305 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,562.210078,17.377846,0,S,9770,431.171987,22.659172,0,S,"ref iteration #1"
+400.perlbench,9770,563.63889,17.333793,1,S,9770,430.539934,22.692436,0,S,"ref iteration #2"
+400.perlbench,9770,564.687971,17.30159,0,S,9770,430.719352,22.682984,1,S,"ref iteration #3"
+401.bzip2,9650,684.958669,14.088441,0,S,9650,619.354666,15.580734,0,S,"ref iteration #1"
+401.bzip2,9650,681.056958,14.169153,0,S,9650,620.873349,15.542622,1,S,"ref iteration #2"
+401.bzip2,9650,681.428866,14.161419,1,S,9650,623.910409,15.466964,0,S,"ref iteration #3"
+403.gcc,8050,570.902573,14.100479,0,S,8050,482.477213,16.684726,1,S,"ref iteration #1"
+403.gcc,8050,570.494114,14.110575,0,S,8050,482.656044,16.678544,0,S,"ref iteration #2"
+403.gcc,8050,570.879718,14.101044,1,S,8050,482.055762,16.699313,0,S,"ref iteration #3"
+429.mcf,9120,409.038488,22.29619,1,S,9120,346.132989,26.348254,0,S,"ref iteration #1"
+429.mcf,9120,411.030165,22.188153,0,S,9120,345.831662,26.371212,1,S,"ref iteration #2"
+429.mcf,9120,408.664574,22.316591,0,S,9120,344.19246,26.496804,0,S,"ref iteration #3"
+445.gobmk,10490,643.269121,16.307327,0,S,10490,553.835746,18.940634,0,S,"ref iteration #1"
+445.gobmk,10490,642.970384,16.314904,1,S,10490,553.580888,18.949354,0,S,"ref iteration #2"
+445.gobmk,10490,642.886415,16.317035,0,S,10490,553.764225,18.94308,1,S,"ref iteration #3"
+456.hmmer,9330,462.06729,20.191864,1,S,9330,288.335874,32.358096,0,S,"ref iteration #1"
+456.hmmer,9330,461.169547,20.231171,0,S,9330,288.472297,32.342794,1,S,"ref iteration #2"
+456.hmmer,9330,468.540656,19.912893,0,S,9330,288.773618,32.309046,0,S,"ref iteration #3"
+458.sjeng,12100,803.877112,15.052052,0,S,12100,731.733126,16.536083,1,S,"ref iteration #1"
+458.sjeng,12100,803.801506,15.053468,1,S,12100,732.69543,16.514365,0,S,"ref iteration #2"
+458.sjeng,12100,803.575816,15.057696,0,S,12100,731.594346,16.53922,0,S,"ref iteration #3"
+462.libquantum,20720,466.013057,44.462274,1,S,20720,281.410285,73.62915,0,S,"ref iteration #1"
+462.libquantum,20720,464.404978,44.616231,0,S,20720,281.86862,73.509424,0,S,"ref iteration #2"
+462.libquantum,20720,472.245166,43.875515,0,S,20720,281.655404,73.565072,1,S,"ref iteration #3"
+464.h264ref,22130,865.5471,25.567644,0,S,22130,828.564149,26.708855,0,S,"ref iteration #1"
+464.h264ref,22130,857.727848,25.800725,0,S,22130,812.510149,27.236583,0,S,"ref iteration #2"
+464.h264ref,22130,861.349034,25.692256,1,S,22130,828.364832,26.715282,1,S,"ref iteration #3"
+471.omnetpp,6250,495.310622,12.618344,0,S,6250,495.312154,12.618305,0,S,"ref iteration #1"
+471.omnetpp,6250,497.650984,12.559003,0,S,6250,498.14196,12.546624,0,S,"ref iteration #2"
+471.omnetpp,6250,495.793507,12.606055,1,S,6250,497.955336,12.551326,1,S,"ref iteration #3"
+473.astar,7020,572.377686,12.264629,0,S,7020,507.977696,13.819504,0,S,"ref iteration #1"
+473.astar,7020,570.899127,12.296393,0,S,7020,501.780316,13.990186,1,S,"ref iteration #2"
+473.astar,7020,571.907554,12.274711,1,S,7020,500.807259,14.017369,0,S,"ref iteration #3"
+483.xalancbmk,6900,318.730679,21.648371,0,S,6900,300.106645,22.991827,0,S,"ref iteration #1"
+483.xalancbmk,6900,318.268055,21.679838,1,S,6900,300.281898,22.978408,1,S,"ref iteration #2"
+483.xalancbmk,6900,317.87121,21.706905,0,S,6900,301.062844,22.918803,0,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,563.63889,17.333793,1,S,9770,430.719352,22.682984,1,S,"SelectedIteration (base #2; peak #3)"
+401.bzip2,9650,681.428866,14.161419,1,S,9650,620.873349,15.542622,1,S,"SelectedIteration (base #3; peak #2)"
+403.gcc,8050,570.879718,14.101044,1,S,8050,482.477213,16.684726,1,S,"SelectedIteration (base #3; peak #1)"
+429.mcf,9120,409.038488,22.29619,1,S,9120,345.831662,26.371212,1,S,"SelectedIteration (base #1; peak #2)"
+445.gobmk,10490,642.970384,16.314904,1,S,10490,553.764225,18.94308,1,S,"SelectedIteration (base #2; peak #3)"
+456.hmmer,9330,462.06729,20.191864,1,S,9330,288.472297,32.342794,1,S,"SelectedIteration (base #1; peak #2)"
+458.sjeng,12100,803.801506,15.053468,1,S,12100,731.733126,16.536083,1,S,"SelectedIteration (base #2; peak #1)"
+462.libquantum,20720,466.013057,44.462274,1,S,20720,281.655404,73.565072,1,S,"SelectedIteration (base #1; peak #3)"
+464.h264ref,22130,861.349034,25.692256,1,S,22130,828.364832,26.715282,1,S,"SelectedIteration (base #3; peak #3)"
+471.omnetpp,6250,495.793507,12.606055,1,S,6250,497.955336,12.551326,1,S,"SelectedIteration (base #3; peak #3)"
+473.astar,7020,571.907554,12.274711,1,S,7020,501.780316,13.990186,1,S,"SelectedIteration (base #3; peak #2)"
+483.xalancbmk,6900,318.268055,21.679838,1,S,6900,300.281898,22.978408,1,S,"SelectedIteration (base #2; peak #2)"
+
+SPECint_base2006,18.359465,,18.359465
+SPECint2006,21.943197,,,,,,,21.943197
+
+"Run number:",001
+
+"Hardware Vendor:",Supermicro
+"Hardware Model:","Motherboard H8DMT-IBX, AMD Opteron 2439 SE"
+"Date tested:",Aug-2009
+"CPU2006 License:",001176
+"Test sponsor:",Supermicro
+"Tested by:",Supermicro
+"Hardware avail:",Jun-2009
+"Software avail:",Apr-2009
+
+
+HARDWARE
+
+"CPU Name","AMD Opteron 2439 SE"
+"CPU Characteristics"," "
+"CPU MHz",2800
+FPU,Integrated
+"CPU(s) enabled","12 cores, 2 chips, 6 cores/chip"
+"CPU(s) orderable","1,2 chips"
+"Primary Cache","64 KB I + 64 KB D on chip per core"
+"Secondary Cache","512 KB I+D on chip per core"
+"L3 Cache","6 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"32 GB (8x4 GB, DDR2-800, CL5, Reg, Dual Rank)"
+"Disk Subsystem","1 x 250 GB SATA, 5400 RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Red Hat Enterprise Linux Server release 5.3,"
+,"Advanced Platform, Kernel 2.6.18-128.el5"
+Compiler,"PGI Server Complete Version 8.0"
+,"x86 Open64 4.2.2 Compiler Suite (from AMD)"
+"Auto Parallel",No
+"File System",ext3
+"System State","Run level 3 (Full multiuser with network)"
+"Base Pointers",32/64-bit
+"Peak Pointers",32/64-bit
+"Other Software","binutils 2.18"
+,"SmartHeap 8.1 32-bit Library for Linux"
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+"'numactl' was used to bind copies to the cores."
+"See the configuration file for details."
+
+"Operating System Notes"
+
+"'ulimit -s unlimited' was used to set environment stack size"
+"'ulimit -l 2097152'  was used to set environment locked pages in memory limit"
+
+"Set vm/nr_hugepages=5400 in /etc/sysctl.conf"
+"mount -t hugetlbfs nodev /mnt/hugepages"
+
+"General Notes"
+
+"Environment variables set by runspec before the start of the run:"
+"HUGETLB_LIMIT = ""450"""
+"LD_LIBRARY_PATH = ""/usr/cpu2006/amd0905is-libs/64:/usr/cpu2006/amd0905is-libs/32"""
+"PGI_HUGE_PAGES = ""450"""
+
+"The x86 Open64 Compiler Suite is only available from (and supported by) AMD at"
+http://developer.amd.com/cpu/open64
+
+"System can be built with CSE-808-780/809T-780."
+
+"Product description can be obtained at:"
+http://www.supermicro.com/Aplus/motherboard/Opteron2000/MCP55/H8DMT-IBX.cfm
+
+"Base Compiler Invocation"
+400.perlbench," opencc"," opencc"
+401.bzip2," opencc"," opencc"
+403.gcc," opencc"," opencc"
+429.mcf," opencc"," opencc"
+445.gobmk," opencc"," opencc"
+456.hmmer," opencc"," opencc"
+458.sjeng," opencc"," opencc"
+462.libquantum," opencc"," opencc"
+464.h264ref," opencc"," opencc"
+471.omnetpp," openCC"," openCC"
+473.astar," openCC"," openCC"
+483.xalancbmk," openCC"," openCC"
+
+"Base Portability Flags"
+400.perlbench," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX_X64"
+401.bzip2," -DSPEC_CPU_LP64"
+403.gcc," -DSPEC_CPU_LP64"
+429.mcf," -DSPEC_CPU_LP64"
+445.gobmk," -DSPEC_CPU_LP64"
+456.hmmer," -DSPEC_CPU_LP64"
+458.sjeng," -DSPEC_CPU_LP64"
+462.libquantum," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX"
+464.h264ref," -DSPEC_CPU_LP64"
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_LINUX"
+
+"Base Optimization Flags"
+400.perlbench," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+401.bzip2," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+403.gcc," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+429.mcf," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+445.gobmk," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+456.hmmer," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+458.sjeng," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+462.libquantum," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+464.h264ref," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:local_sched_alg=1"," -HP:bdt=2m:heap=2m"
+471.omnetpp," -march=barcelona"," -march=barcelona"," -Ofast"," -m32"," -INLINE:aggressive=on"," -L/root/work/libraries/SmartHeap-8.1/lib -lsmartheap"
+473.astar," -march=barcelona"," -march=barcelona"," -Ofast"," -m32"," -INLINE:aggressive=on"," -L/root/work/libraries/SmartHeap-8.1/lib -lsmartheap"
+483.xalancbmk," -march=barcelona"," -march=barcelona"," -Ofast"," -m32"," -INLINE:aggressive=on"," -L/root/work/libraries/SmartHeap-8.1/lib -lsmartheap"
+
+"Base Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," No flags used"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," opencc"," opencc"
+401.bzip2," opencc"," opencc"
+403.gcc," opencc"," opencc"
+429.mcf," opencc"," opencc"
+445.gobmk," opencc"," opencc"
+456.hmmer," pgcc"," pgcc"
+458.sjeng," opencc"," opencc"
+462.libquantum," opencc"," opencc"
+464.h264ref," opencc"," opencc"
+471.omnetpp," openCC"," openCC"
+473.astar," pgcpp"," pgcpp"
+483.xalancbmk," openCC"," openCC"
+
+"Peak Portability Flags"
+400.perlbench," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX_X64"
+401.bzip2," -DSPEC_CPU_LP64"
+403.gcc
+429.mcf
+445.gobmk," -DSPEC_CPU_LP64"
+456.hmmer," -DSPEC_CPU_LP64"
+458.sjeng," -DSPEC_CPU_LP64"
+462.libquantum," -DSPEC_CPU_LP64"," -DSPEC_CPU_LINUX"
+464.h264ref," -DSPEC_CPU_LP64"
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_LINUX"
+
+"Peak Optimization Flags"
+400.perlbench," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -IPA:plimit=20000"," -LNO:opt=0"," -OPT:unroll_times_max=8"," -OPT:unroll_size=256"," -OPT:unroll_level=2"," -OPT:keep_ext=on"," -WOPT:if_conv=0"," -CG:local_sched_alg=1"," -CG:unroll_fb_req=on"," -HP:bdt=2m:heap=2m"
+401.bzip2," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -O3"," -OPT:alias=disjoint"," -OPT:unroll_size=0"," -OPT:Ofast"," -OPT:goto=off"," -INLINE:aggressive=on"," -CG:local_sched_alg=1"," -m3dnow"," -HP:bdt=2m:heap=2m"
+403.gcc," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -Ofast"," -LNO:trip_count=256"," -LNO:prefetch_ahead=10"," -CG:cmp_peep=on"," -m32"," -HP:bdt=2m:heap=2m"," -GRA:unspill=on"
+429.mcf," -march=barcelona"," -march=barcelona"," -O3"," -ipa"," -INLINE:aggressive=on"," -CG:gcm=off"," -GRA:prioritize_by_density=on"," -m32"," -HP:bdt=2m:heap=2m"
+445.gobmk," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -O3"," -OPT:alias=restrict"," -OPT:unroll_times_max=8"," -OPT:unroll_size=256"," -OPT:unroll_level=2"," -OPT:keep_ext=on"," -ipa"," -IPA:plimit=750"," -IPA:min_hotness=300"," -IPA:pu_reorder=1"," -LNO:prefetch=1"," -LNO:ignore_feedback=off"," -CG:p2align=on"," -CG:unroll_fb_req=on"," -HP:bdt=2m:heap=2m"
+456.hmmer," -fastsse"," -Mvect=partial"," -Munroll=n:8"," -Msmartalloc=huge"," -Msafeptr"," -Mprefetch=t0"," -Mfprelaxed"," -Mipa=const"," -Mipa=ptr"," -Mipa=arg"," -Mipa=inline"," -tp shanghai-64"," -Bstatic_pgi"
+458.sjeng," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -O3"," -ipa"," -LNO:ignore_feedback=off"," -LNO:full_unroll=10"," -LNO:fusion=0"," -LNO:fission=2"," -IPA:pu_reorder=2"," -CG:ptr_load_use=0"," -OPT:unroll_times_max=8"," -INLINE:aggressive=on"," -HP:bdt=2m:heap=2m"
+462.libquantum," -march=barcelona"," -march=barcelona"," -Ofast"," -LNO:pf2=0"," -CG:gcm=off"," -CG:use_prefetchnta=on"," -CG:cmp_peep=on"," -WOPT:aggstr=0"," -HP:bdt=2m:heap=2m"," -OPT:alias=disjoint"," -INLINE:aggressive=on"," -IPA:space=1000"," -IPA:plimit=20000"
+464.h264ref," -march=barcelona"," -march=barcelona"," -fb_create fbdata"," -fb_opt fbdata"," -fb_create fbdata"," -fb_opt fbdata"," -O3"," -IPA:plimit=20000"," -OPT:alias=disjoint"," -LNO:prefetch=0"," -CG:ptr_load_use=0"," -CG:push_pop_int_saved_regs=off"," -HP:bdt=2m:heap=2m"
+471.omnetpp," -march=barcelona"," -march=barcelona"," -Ofast"," -CG:gcm=off"," -INLINE:aggressive=on"," -OPT:alias=disjoint"," -WOPT:if_conv=0"," -m32"," -L/root/work/libraries/SmartHeap-8.1/lib -lsmartheap"
+473.astar," -Mpfi"," -Mpfo"," -Mipa=fast"," -Mipa=inline:6"," -Mpfi"," -Mpfo"," -Mipa=fast"," -Mipa=inline:6"," -fastsse"," -O4"," -Msmartalloc=huge"," -Msafeptr=global"," -Mfprelaxed"," --zc_eh"," -tp shanghai-32"," -Bstatic_pgi"
+483.xalancbmk," -march=barcelona"," -march=barcelona"," -Ofast"," -INLINE:aggressive=on"," -m32"," -CG:cmp_peep=on"," -GRA:unspill=on"," -TENV:frame_pointer=off"," -L/root/work/libraries/SmartHeap-8.1/lib -lsmartheap"
+
+"Peak Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," No flags used"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," -Mipa=jobs:4"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," -Mipa=jobs:4"," -Mipa=jobs:4"
+483.xalancbmk," No flags used"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.1.  Report","generated on ","Wed Jul 23 02:30:27 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on ","16 September 2009."

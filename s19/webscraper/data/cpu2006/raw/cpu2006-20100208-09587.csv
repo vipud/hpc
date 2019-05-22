@@ -1,0 +1,320 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,256,1382.355773,1809.31712,0,S,256,1272.709964,1965.192448,0,S,"ref iteration #1"
+400.perlbench,256,1384.501411,1806.513152,1,S,256,1287.934738,1941.961728,1,S,"ref iteration #2"
+400.perlbench,256,1426.01252,1753.925632,0,S,256,1291.755599,1936.2176,0,S,"ref iteration #3"
+401.bzip2,256,1416.235525,1744.342528,0,S,256,1416.235525,1744.342528,0,S,"ref iteration #1"
+401.bzip2,256,1419.694379,1740.092928,0,S,256,1419.694379,1740.092928,0,S,"ref iteration #2"
+401.bzip2,256,1418.719714,1741.288192,1,S,256,1418.719714,1741.288192,1,S,"ref iteration #3"
+403.gcc,256,1010.556891,2039.27168,1,S,256,924.223902,2229.762816,0,S,"ref iteration #1"
+403.gcc,256,1013.775927,2032.796416,0,S,256,931.24636,2212.948224,0,S,"ref iteration #2"
+403.gcc,256,1008.711641,2043.002112,0,S,256,926.289462,2224.790528,1,S,"ref iteration #3"
+429.mcf,256,690.353293,3381.920512,1,S,128,338.187199,3451.816064,0,S,"ref iteration #1"
+429.mcf,256,688.222976,3392.388864,0,S,128,330.850528,3528.360704,0,S,"ref iteration #2"
+429.mcf,256,690.816435,3379.65312,0,S,128,332.243966,3513.562624,1,S,"ref iteration #3"
+445.gobmk,256,1142.021525,2351.479296,0,S,256,945.495905,2840.244992,0,S,"ref iteration #1"
+445.gobmk,256,1147.161818,2340.942592,0,S,256,941.650091,2851.844864,1,S,"ref iteration #2"
+445.gobmk,256,1146.542112,2342.208,1,S,256,940.836444,2854.311168,0,S,"ref iteration #3"
+456.hmmer,256,1236.737889,1931.27424,0,S,256,907.737442,2631.245312,0,S,"ref iteration #1"
+456.hmmer,256,1236.593264,1931.500032,1,S,256,915.147283,2609.94048,0,S,"ref iteration #2"
+456.hmmer,256,1236.465694,1931.699456,0,S,256,908.2764,2629.683968,1,S,"ref iteration #3"
+458.sjeng,256,1299.314398,2384.026624,0,S,256,1185.032649,2613.936384,0,S,"ref iteration #1"
+458.sjeng,256,1294.599979,2392.708096,0,S,256,1180.991078,2622.881792,1,S,"ref iteration #2"
+458.sjeng,256,1298.974735,2384.649984,1,S,256,1178.069592,2629.38624,0,S,"ref iteration #3"
+462.libquantum,256,1044.404737,5078.797312,0,S,128,503.116304,5271.465088,0,S,"ref iteration #1"
+462.libquantum,256,1045.013394,5075.839232,0,S,128,502.816219,5274.611072,1,S,"ref iteration #2"
+462.libquantum,256,1044.458337,5078.536704,1,S,128,502.695707,5275.875584,0,S,"ref iteration #3"
+464.h264ref,256,1860.891211,3044.390656,0,S,256,1731.666243,3271.577344,0,S,"ref iteration #1"
+464.h264ref,256,1837.659171,3082.878464,0,S,256,1718.218026,3297.183488,1,S,"ref iteration #2"
+464.h264ref,256,1847.819156,3065.92768,1,S,256,1717.510201,3298.542336,0,S,"ref iteration #3"
+471.omnetpp,256,1054.584934,1517.184512,0,S,256,917.163111,1744.509696,1,S,"ref iteration #1"
+471.omnetpp,256,1068.689474,1497.160704,0,S,256,906.710834,1764.620032,0,S,"ref iteration #2"
+471.omnetpp,256,1058.796818,1511.149312,1,S,256,930.359945,1719.76448,0,S,"ref iteration #3"
+473.astar,256,956.322876,1879.197952,1,S,256,950.42948,1890.85056,0,S,"ref iteration #1"
+473.astar,256,992.60771,1810.50368,0,S,256,940.119856,1911.586048,0,S,"ref iteration #2"
+473.astar,256,954.219636,1883.340032,0,S,256,940.984673,1909.82912,1,S,"ref iteration #3"
+483.xalancbmk,256,843.256678,2094.735872,0,S,256,791.723212,2231.082752,0,S,"ref iteration #1"
+483.xalancbmk,256,835.653014,2113.796096,0,S,256,783.857496,2253.47072,0,S,"ref iteration #2"
+483.xalancbmk,256,839.231962,2104.781568,1,S,256,788.026958,2241.547776,1,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,256,1384.501411,1806.513152,1,S,256,1287.934738,1941.961728,1,S,"SelectedIteration (base #2; peak #2)"
+401.bzip2,256,1418.719714,1741.288192,1,S,256,1418.719714,1741.288192,1,S,"SelectedIteration (base #3; peak #3)"
+403.gcc,256,1010.556891,2039.27168,1,S,256,926.289462,2224.790528,1,S,"SelectedIteration (base #1; peak #3)"
+429.mcf,256,690.353293,3381.920512,1,S,128,332.243966,3513.562624,1,S,"SelectedIteration (base #1; peak #3)"
+445.gobmk,256,1146.542112,2342.208,1,S,256,941.650091,2851.844864,1,S,"SelectedIteration (base #3; peak #2)"
+456.hmmer,256,1236.593264,1931.500032,1,S,256,908.2764,2629.683968,1,S,"SelectedIteration (base #2; peak #3)"
+458.sjeng,256,1298.974735,2384.649984,1,S,256,1180.991078,2622.881792,1,S,"SelectedIteration (base #3; peak #2)"
+462.libquantum,256,1044.458337,5078.536704,1,S,128,502.816219,5274.611072,1,S,"SelectedIteration (base #3; peak #2)"
+464.h264ref,256,1847.819156,3065.92768,1,S,256,1718.218026,3297.183488,1,S,"SelectedIteration (base #3; peak #2)"
+471.omnetpp,256,1058.796818,1511.149312,1,S,256,917.163111,1744.509696,1,S,"SelectedIteration (base #3; peak #1)"
+473.astar,256,956.322876,1879.197952,1,S,256,940.984673,1909.82912,1,S,"SelectedIteration (base #1; peak #3)"
+483.xalancbmk,256,839.231962,2104.781568,1,S,256,788.026958,2241.547776,1,S,"SelectedIteration (base #3; peak #3)"
+
+SPECint_rate_base2006,2298.830114,,2298.830114
+SPECint_rate2006,2526.148138,,,,,,,2526.148138
+
+"Run number:",001
+
+"Hardware Vendor:","IBM Corporation"
+"Hardware Model:","IBM Power 780 (3.86 GHz, 64 core)"
+"Date tested:",Jan-2010
+"CPU2006 License:",11
+"Test sponsor:","IBM Corporation"
+"Tested by:","IBM Corporation"
+"Hardware avail:",Mar-2010
+"Software avail:",Mar-2010
+
+
+HARDWARE
+
+"CPU Name",POWER7
+"CPU Characteristics","Intelligent Energy Optimization enabled,"
+,"up to 3.94 GHz"
+"CPU MHz",3860
+FPU,Integrated
+"CPU(s) enabled","64 cores, 8 chips, 8 cores/chip, 4 threads/core"
+"CPU(s) orderable","8,16,24,32,48,64 cores"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","256 KB I+D on chip per core"
+"L3 Cache","4 MB I+D on chip per core"
+"Other Cache",None
+Memory,"512 GB (64x8 GB) DDR3 1066 MHz"
+"Disk Subsystem","12x146.8 GB SAS SFF 15K RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","IBM AIX V6.1 with the 6100-04"
+,"  Technology Level and Service Pack 3"
+Compiler,"XL C/C++ Enterprise Edition V10.1.0.5 for AIX"
+"Auto Parallel",No
+"File System",AIX/JFS2
+"System State",Multi-user
+"Base Pointers",32-bit
+"Peak Pointers",32/64-bit
+"Other Software",None
+
+"Peak Tuning Notes"
+
+" fdpr binary optimization tool used for 400.perlbench"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 401.bzip2"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 403.gcc"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 429.mcf"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 445.gobmk"
+"  with options -O3 -vrox -sdp 9"
+" fdpr binary optimization tool used for 456.hmmer"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 458.sjeng"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 462.libquantum"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 464.h264ref"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 471.omnetpp"
+"  with options -O4 -vrox -pbsi"
+" fdpr binary optimization tool used for 473.astar"
+"  with options -O4 -vrox -pbsi"
+
+"Submit Notes"
+
+" The config file option 'submit' was used"
+" to assign benchmark copy to specific kernel thread using"
+" the ""bindprocessor"" command (see flags file for details)."
+
+"Operating System Notes"
+
+" all ulimits set to unlimited."
+" 25600 16M large pages defined with vmo command"
+
+"General Notes"
+
+"Environment variables set by runspec before the start of the run:"
+"MALLOCOPTIONS = ""pool"""
+"MEMORY_AFFINITY = ""MCM"""
+"XLFRTEOPTS = ""intrinthds=1"""
+
+" See the flags file for details on settings."
+
+"Base Compiler Invocation"
+400.perlbench," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+401.bzip2," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+403.gcc," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+429.mcf," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+445.gobmk," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+456.hmmer," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+458.sjeng," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+462.libquantum," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+464.h264ref," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+471.omnetpp," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+473.astar," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+483.xalancbmk," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+
+"Base Portability Flags"
+400.perlbench," -DSPEC_CPU_AIX"
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum," -DSPEC_CPU_AIX"
+464.h264ref," -DSPEC_CPU_AIX"," -qchars=signed"
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_AIX"
+
+"Base Optimization Flags"
+400.perlbench," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+401.bzip2," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+403.gcc," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+429.mcf," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+445.gobmk," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+456.hmmer," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+458.sjeng," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+462.libquantum," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+464.h264ref," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+471.omnetpp," -bmaxdata:0x20000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qrtti=all"," -D__IBM_FAST_SET_MAP_ITERATOR"," -blpdata"
+473.astar," -bmaxdata:0x20000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qrtti=all"," -D__IBM_FAST_SET_MAP_ITERATOR"," -blpdata"
+483.xalancbmk," -bmaxdata:0x20000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qrtti=all"," -D__IBM_FAST_SET_MAP_ITERATOR"," -blpdata"
+
+"Base Other Flags"
+400.perlbench," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+401.bzip2," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+403.gcc," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+429.mcf," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+445.gobmk," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+456.hmmer," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+458.sjeng," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+462.libquantum," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+464.h264ref," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+471.omnetpp," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+473.astar," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+483.xalancbmk," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+401.bzip2," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+403.gcc," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+429.mcf," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+445.gobmk," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+456.hmmer," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+458.sjeng," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+462.libquantum," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+464.h264ref," /usr/vac/bin/xlc"," -qlanglvl=extc99"," /usr/vac/bin/xlc"," -qlanglvl=extc99"
+471.omnetpp," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+473.astar," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+483.xalancbmk," /usr/vacpp/bin/xlC"," /usr/vacpp/bin/xlC"
+
+"Peak Portability Flags"
+400.perlbench," -DSPEC_CPU_AIX"
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum," -DSPEC_CPU_AIX"
+464.h264ref," -DSPEC_CPU_AIX"," -qchars=signed"
+471.omnetpp
+473.astar
+483.xalancbmk," -DSPEC_CPU_AIX"
+
+"Peak Optimization Flags"
+400.perlbench," -bmaxdata:0x50000000"," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -D_ILS_MACROS"," -qalias=noansi"," -qfdpr"," -blpdata"," -btextpsize:64K"
+401.bzip2," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qalias=noansi"," -qalloca"," -blpdata"
+403.gcc," -bmaxdata:0x50000000"," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O4"," -qlargepage"," -D_ILS_MACROS"," -qalloca"," -qfdpr"," -blpdata"
+429.mcf," -bmaxdata:0x50000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qfdpr"," -blpdata"
+445.gobmk," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O3"," -qarch=auto"," -qtune=auto"," -qlargepage"," -D_ILS_MACROS"," -qfdpr"," -blpdata"
+456.hmmer," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -qenablevmx"," -qvecnvol"," -D_ILS_MACROS"," -qfdpr"," -blpdata"," -btextpsize:64K"
+458.sjeng," -O5"," -qlargepage"," -qenablevmx"," -qvecnvol"," -D_ILS_MACROS"," -qfdpr"," -blpdata"
+462.libquantum," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -qlargepage"," -q64"," -D_ILS_MACROS"," -qfdpr"," -blpdata"
+464.h264ref," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -D_ILS_MACROS"," -qfdpr"," -blpdata"," -btextpsize:64K"
+471.omnetpp," -bmaxdata:0x20000000"," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qfdpr"," -qalign=natural"," -qrtti=all"," -qinlglue"," -D__IBM_FAST_SET_MAP_ITERATOR"," -blpdata"," -btextpsize:64K"
+473.astar," -bmaxdata:0x20000000"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qfdpr"," -qenablevmx"," -qvecnvol"," -qinlglue"," -qalign=natural"," -blpdata"
+483.xalancbmk," -bmaxdata:0x20000000"," -qpdf1"," -qpdf2"," -qpdf1"," -qpdf2"," -O5"," -qlargepage"," -D_ILS_MACROS"," -qfdpr"," -qinlglue"," -D__IBM_FAST_VECTOR"," -blpdata"," -btextpsize:64K"
+
+"Peak Other Flags"
+400.perlbench," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+401.bzip2," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+403.gcc," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+429.mcf," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+445.gobmk," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+456.hmmer," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+458.sjeng," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+462.libquantum," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+464.h264ref," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+471.omnetpp," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+473.astar," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+483.xalancbmk," -qipa=threads"," -qipa=noobject"," -qsuppress=1500-036"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.1.  Report","generated on ","Wed Jul 23 06:04:17 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on "," 3 March 2010."

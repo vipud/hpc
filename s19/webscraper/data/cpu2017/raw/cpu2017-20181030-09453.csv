@@ -1,0 +1,462 @@
+valid,1
+
+"SPEC CPU2017 Floating Point Speed Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+603.bwaves_s,24,130.100463,453.480323,0,S,,,,,,"refspeed(ref) iteration #1"
+603.bwaves_s,24,129.833011,454.414479,0,S,,,,,,"refspeed(ref) iteration #2"
+603.bwaves_s,24,129.967322,453.944877,1,S,,,,,,"refspeed(ref) iteration #3"
+607.cactuBSSN_s,24,136.433577,122.183999,0,S,,,,,,"refspeed(ref) iteration #1"
+607.cactuBSSN_s,24,148.991351,111.885689,0,S,,,,,,"refspeed(ref) iteration #2"
+607.cactuBSSN_s,24,147.928157,112.689838,1,S,,,,,,"refspeed(ref) iteration #3"
+619.lbm_s,24,59.176304,88.51516,0,S,,,,,,"refspeed(ref) iteration #1"
+619.lbm_s,24,61.15314,85.653819,1,S,,,,,,"refspeed(ref) iteration #2"
+619.lbm_s,24,61.431678,85.265455,0,S,,,,,,"refspeed(ref) iteration #3"
+621.wrf_s,24,115.036591,114.972114,0,S,,,,,,"refspeed(ref) iteration #1"
+621.wrf_s,24,115.39016,114.619825,0,S,,,,,,"refspeed(ref) iteration #2"
+621.wrf_s,24,115.340362,114.669312,1,S,,,,,,"refspeed(ref) iteration #3"
+627.cam4_s,24,135.038003,65.633376,0,S,,,,,,"refspeed(ref) iteration #1"
+627.cam4_s,24,135.497778,65.410667,1,S,,,,,,"refspeed(ref) iteration #2"
+627.cam4_s,24,135.627388,65.348158,0,S,,,,,,"refspeed(ref) iteration #3"
+628.pop2_s,24,183.314922,64.768323,0,S,,,,,,"refspeed(ref) iteration #1"
+628.pop2_s,24,182.313559,65.124065,1,S,,,,,,"refspeed(ref) iteration #2"
+628.pop2_s,24,180.091448,65.927617,0,S,,,,,,"refspeed(ref) iteration #3"
+638.imagick_s,24,167.513557,86.118403,0,S,,,,,,"refspeed(ref) iteration #1"
+638.imagick_s,24,167.392106,86.180886,1,S,,,,,,"refspeed(ref) iteration #2"
+638.imagick_s,24,167.374659,86.189869,0,S,,,,,,"refspeed(ref) iteration #3"
+644.nab_s,24,103.738266,168.423868,0,S,,,,,,"refspeed(ref) iteration #1"
+644.nab_s,24,103.702898,168.481309,1,S,,,,,,"refspeed(ref) iteration #2"
+644.nab_s,24,103.695089,168.493997,0,S,,,,,,"refspeed(ref) iteration #3"
+649.fotonik3d_s,24,114.062733,79.920933,1,S,,,,,,"refspeed(ref) iteration #1"
+649.fotonik3d_s,24,114.564008,79.571238,0,S,,,,,,"refspeed(ref) iteration #2"
+649.fotonik3d_s,24,113.636542,80.220674,0,S,,,,,,"refspeed(ref) iteration #3"
+654.roms_s,24,147.817705,106.516334,1,S,,,,,,"refspeed(ref) iteration #1"
+654.roms_s,24,147.567964,106.6966,0,S,,,,,,"refspeed(ref) iteration #2"
+654.roms_s,24,147.975694,106.40261,0,S,,,,,,"refspeed(ref) iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+603.bwaves_s,24,129.967322,453.944877,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+607.cactuBSSN_s,24,147.928157,112.689838,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+619.lbm_s,24,61.15314,85.653819,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+621.wrf_s,24,115.340362,114.669312,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+627.cam4_s,24,135.497778,65.410667,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+628.pop2_s,24,182.313559,65.124065,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+638.imagick_s,24,167.392106,86.180886,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+644.nab_s,24,103.702898,168.481309,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+649.fotonik3d_s,24,114.062733,79.920933,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+654.roms_s,24,147.817705,106.516334,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+
+SPECspeed2017_fp_base,110.217646,,110.217646
+SPECspeed2017_fp_peak,"Not Run",,,,,,,"Not Run"
+
+"Run number:",002.0
+"runcpu command:","/home/speccpu/bin/harness/runcpu --define default-platform-flags --configfile Fujitsu-ic19-lin-core-avx512-speed-20181024.cfg --define cores=24 --tune base --output_format all --define drop_caches --nopower --runmode speed --tune base --size refspeed fpspeed"
+"output root:","not used"
+
+"Hardware Vendor:",Fujitsu
+"Hardware Model:","PRIMERGY RX2540 M4, Intel Xeon Gold 6126, 2.60GHz"
+"Date tested:",Oct-2018
+"CPU2017 License:",19
+"Test sponsor:",Fujitsu
+"Tested by:",Fujitsu
+"Hardware avail:",Jul-2017
+"Software avail:",Sep-2018
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon Gold 6126"
+"  Max MHz.",3700
+"  Nominal",2600
+Enabled,"24 cores, 2 chips"
+Orderable,"1,2 chips"
+"Cache L1","32 KB I + 32 KB D on chip per core"
+"  L2","1 MB I+D on chip per core"
+"  L3","19.25 MB I+D on chip per chip"
+"  Other",None
+Memory,"384 GB (24 x 16 GB 2Rx4 PC4-2666V-R)"
+Storage,"1 x SATA HDD, 1TB, 7200 RPM"
+Other,None
+
+SOFTWARE
+
+OS,"Red Hat Enterprise Linux Server release 7.5"
+,(Maipo)
+,3.10.0-862.el7.x86_64
+Compiler,"C/C++: Version 19.0.0.117 of Intel C/C++"
+,"Compiler for Linux;"
+,"Fortran: Version 19.0.0.117 of Intel Fortran"
+,"Compiler for Linux"
+Parallel,Yes
+Firmware,"Fujitsu BIOS Version V5.0.0.12 R1.22.0 for D3384-A1x. Released Jun-2018"
+"File System",xfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers","Not Applicable"
+Other,"jemalloc memory allocator library V5.0.1"
+
+"Operating System Notes"
+
+" Stack size set to unlimited using ""ulimit -s unlimited"""
+
+"General Notes"
+
+"Environment variables set by runcpu before the start of the run:"
+"KMP_AFFINITY = ""granularity=fine,compact"""
+"LD_LIBRARY_PATH = ""$LD_LIBRARY_PATH:/home/speccpu/icc19-lib/intel64"""
+"LD_LIBRARY_PATH = ""$LD_LIBRARY_PATH:/home/speccpu/je5.0.1-64"""
+"OMP_STACKSIZE = ""192M"""
+
+" Binaries compiled on a system with 2x Intel Xeon Gold 6126 CPU + 384GB RAM"
+" memory using Red Hat Enterprise Linux Server 7.5"
+" Transparent Huge Pages enabled by default"
+" Prior to runcpu invocation"
+" Filesystem page cache synced and cleared with:"
+" sync; echo 3 > /proc/sys/vm/drop_caches"
+" jemalloc: configured and built at default for 32bit (i686) and 64bit (x86_64) targets;"
+" jemalloc: built with the RedHat Enterprise 7.4, and the system compiler gcc 4.8.5;"
+" jemalloc: sources available via jemalloc.net;"
+
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+
+"Platform Notes"
+
+" BIOS configuration:"
+" Hyper-Threading = Disabled"
+" Adjacent Cache Line Prefetch = Disabled"
+" DCU Streamer Prefetcher = Disabled"
+" Override OS Energy Performance = Disabled"
+" Energy Performance = Performance"
+" LLC Dead Line Alloc = Disabled"
+" Fan Control = Full"
+" Patrol Scrub = Disabled"
+" Sub NUMA Clustering = Disabled"
+" IMC Interleaving = 2-way"
+" Sysinfo program /home/speccpu/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on localhost.localdomain Fri Oct 26 03:10:27 2018"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) Gold 6126 CPU @ 2.60GHz"
+"       2  ""physical id""s (chips)"
+"       24 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent. The following"
+"    excerpts from /proc/cpuinfo might not be reliable.  Use with caution.)"
+"       cpu cores : 12"
+"       siblings  : 12"
+"       physical 0: cores 0 1 3 4 5 6 8 9 10 11 12 13"
+"       physical 1: cores 0 1 3 5 6 8 9 10 11 12 13 14"
+
+" From lscpu:"
+"      Architecture:          x86_64"
+"      CPU op-mode(s):        32-bit, 64-bit"
+"      Byte Order:            Little Endian"
+"      CPU(s):                24"
+"      On-line CPU(s) list:   0-23"
+"      Thread(s) per core:    1"
+"      Core(s) per socket:    12"
+"      Socket(s):             2"
+"      NUMA node(s):          2"
+"      Vendor ID:             GenuineIntel"
+"      CPU family:            6"
+"      Model:                 85"
+"      Model name:            Intel(R) Xeon(R) Gold 6126 CPU @ 2.60GHz"
+"      Stepping:              4"
+"      CPU MHz:               3050.524"
+"      CPU max MHz:           3700.0000"
+"      CPU min MHz:           1000.0000"
+"      BogoMIPS:              5200.00"
+"      Virtualization:        VT-x"
+"      L1d cache:             32K"
+"      L1i cache:             32K"
+"      L2 cache:              1024K"
+"      L3 cache:              19712K"
+"      NUMA node0 CPU(s):     0-11"
+"      NUMA node1 CPU(s):     12-23"
+"      Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov"
+"      pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp"
+"      lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc"
+"      aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg"
+"      fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes"
+"      xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb cat_l3 cdp_l3 intel_ppin"
+"      intel_pt mba tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2"
+"      smep bmi2 erms invpcid rtm cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt"
+"      clwb avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc"
+"      cqm_mbm_total cqm_mbm_local ibpb ibrs stibp dtherm ida arat pln pts hwp"
+"      hwp_act_window hwp_epp hwp_pkg_req pku ospke spec_ctrl intel_stibp"
+
+" /proc/cpuinfo cache data"
+"    cache size : 19712 KB"
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+
+" From /proc/meminfo"
+"    MemTotal:       394435180 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" From /etc/*release* /etc/*version*"
+"    os-release:"
+"       NAME=""Red Hat Enterprise Linux Server"""
+"       VERSION=""7.5 (Maipo)"""
+"       ID=""rhel"""
+"       ID_LIKE=""fedora"""
+"       VARIANT=""Server"""
+"       VARIANT_ID=""server"""
+"       VERSION_ID=""7.5"""
+"       PRETTY_NAME=""Red Hat Enterprise Linux Server 7.5 (Maipo)"""
+"    redhat-release: Red Hat Enterprise Linux Server release 7.5 (Maipo)"
+"    system-release: Red Hat Enterprise Linux Server release 7.5 (Maipo)"
+"    system-release-cpe: cpe:/o:redhat:enterprise_linux:7.5:ga:server"
+
+" uname -a:"
+"    Linux localhost.localdomain 3.10.0-862.el7.x86_64 #1 SMP Wed Mar 21 18:14:51 EDT 2018"
+"    x86_64 x86_64 x86_64 GNU/Linux"
+
+" run-level 3 Oct 26 03:09"
+
+" SPEC is set to: /home/speccpu"
+"    Filesystem              Type  Size  Used Avail Use% Mounted on"
+"    /dev/mapper/rhel00-home xfs   876G   16G  860G   2% /home"
+
+" Additional information from dmidecode follows.  WARNING: Use caution when you interpret"
+" this section. The 'dmidecode' program reads system data which is ""intended to allow"
+" hardware to be accurately determined"", but the intent may not be met, as there are"
+" frequent changes to hardware, firmware, and the ""DMTF SMBIOS"" standard."
+"   BIOS FUJITSU // American Megatrends Inc. V5.0.0.12 R1.22.0 for D3384-A1x"
+"       06/04/2018"
+"   Memory:"
+"    15x Hynix HMA42GR7BJR4N-VK 16 GB 2 rank 2666"
+"    9x Samsung M393A2G40EB2-CTD 16 GB 2 rank 2666"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CC  619.lbm_s(base) 638.imagick_s(base) 644.nab_s(base)
+"
+------------------------------------------------------------------------------
+"icc (ICC) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  607.cactuBSSN_s(base)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+"icc (ICC) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+"ifort (IFORT) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  603.bwaves_s(base) 649.fotonik3d_s(base) 654.roms_s(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  621.wrf_s(base) 627.cam4_s(base) 628.pop2_s(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+"icc (ICC) 19.0.0.117 20180804"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+603.bwaves_s," No flags used"
+607.cactuBSSN_s," No flags used"
+619.lbm_s," No flags used"
+621.wrf_s," No flags used"
+627.cam4_s," No flags used"
+628.pop2_s," No flags used"
+638.imagick_s," No flags used"
+644.nab_s," No flags used"
+649.fotonik3d_s," No flags used"
+654.roms_s," No flags used"
+
+"Base Compiler Invocation"
+603.bwaves_s," ifort -m64"," ifort -m64"
+607.cactuBSSN_s," icpc -m64"," icc -m64 -std=c11"," icpc -m64"," ifort -m64"
+619.lbm_s," icc -m64 -std=c11"," icc -m64 -std=c11"
+621.wrf_s," ifort -m64"," icc -m64 -std=c11"," ifort -m64"
+627.cam4_s," ifort -m64"," icc -m64 -std=c11"," ifort -m64"
+628.pop2_s," ifort -m64"," icc -m64 -std=c11"," ifort -m64"
+638.imagick_s," icc -m64 -std=c11"," icc -m64 -std=c11"
+644.nab_s," icc -m64 -std=c11"," icc -m64 -std=c11"
+649.fotonik3d_s," ifort -m64"," ifort -m64"
+654.roms_s," ifort -m64"," ifort -m64"
+
+"Base Portability Flags"
+603.bwaves_s," -DSPEC_LP64"
+607.cactuBSSN_s," -DSPEC_LP64"
+619.lbm_s," -DSPEC_LP64"
+621.wrf_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"
+627.cam4_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"
+628.pop2_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"," -assume byterecl"
+638.imagick_s," -DSPEC_LP64"
+644.nab_s," -DSPEC_LP64"
+649.fotonik3d_s," -DSPEC_LP64"
+654.roms_s," -DSPEC_LP64"
+
+"Base Optimization Flags"
+603.bwaves_s," -Wl,-z,muldefs"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+607.cactuBSSN_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+619.lbm_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+621.wrf_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+627.cam4_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+628.pop2_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+638.imagick_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+644.nab_s," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+649.fotonik3d_s," -Wl,-z,muldefs"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+654.roms_s," -Wl,-z,muldefs"," -DSPEC_OPENMP"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -L/usr/local/je5.0.1-64/lib"," -ljemalloc"
+
+"Base Other Flags"
+603.bwaves_s," No flags used"
+607.cactuBSSN_s," No flags used"
+619.lbm_s," No flags used"
+621.wrf_s," No flags used"
+627.cam4_s," No flags used"
+628.pop2_s," No flags used"
+638.imagick_s," No flags used"
+644.nab_s," No flags used"
+649.fotonik3d_s," No flags used"
+654.roms_s," No flags used"
+
+"Base Forbidden Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Base Unknown Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Runtime Environment"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Compiler Invocation"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Portability Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Optimization Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Other Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Forbidden Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Unknown Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.2.
+"Result run on","2018-10-25 15:10:27-0400."
+"Report generated on","2018-11-13 15:16:39","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2018-11-13.

@@ -1,0 +1,410 @@
+valid,0,(NON-COMPLIANT)
+
+"Full Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,NC,NC,NC,NC,NC,,,,,
+104.milc,NC,NC,NC,NC,NC,,,,,
+104.milc,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+107.leslie3d,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+115.fds4,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+121.pop2,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+122.tachyon,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+126.lammps,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+127.wrf2,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+129.tera_tf,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+130.socorro,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+137.lu,NC,NC,NC,NC,NC,,,,,
+
+"Selected Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,NC,NC,NC,NC,NC,,,,,NR
+107.leslie3d,NC,NC,NC,NC,NC,,,,,NR
+113.GemsFDTD,NC,NC,NC,NC,NC,,,,,NR
+115.fds4,NC,NC,NC,NC,NC,,,,,NR
+121.pop2,NC,NC,NC,NC,NC,,,,,NR
+122.tachyon,NC,NC,NC,NC,NC,,,,,NR
+126.lammps,NC,NC,NC,NC,NC,,,,,NR
+127.wrf2,NC,NC,NC,NC,NC,,,,,NR
+128.GAPgeofem,NC,NC,NC,NC,NC,,,,,NR
+129.tera_tf,NC,NC,NC,NC,NC,,,,,NR
+130.socorro,NC,NC,NC,NC,NC,,,,,NR
+132.zeusmp2,NC,NC,NC,NC,NC,,,,,NR
+137.lu,NC,NC,NC,NC,NC,,,,,NR
+
+SPECmpiM_base2007,NC,,NC
+SPECmpiM_peak2007,"Not Run",,,,,,,"Not Run"
+
+"Run number:",022
+
+"System Vendor:","Hewlett Packard Company"
+"System Name:","HP Proliant BL460c blade Cluster Platform 3000BL"
+"Date tested:",May-2007
+"MPI2007 License:",0001
+"Test sponsor:","Hewlett-Packard Company"
+"Tested by:",HPCD
+"Hardware avail:",May-2007
+"Software avail:",May-2007
+
+"REASON FOR NON-COMPLIANCE"
+---------------------------------------------------------------------------
+" SPEC has determined that this result was not in compliance with the SPEC"
+" MPI2007 run and reporting rules.  Specifically, the result did not meet the"
+" requirement for baseline optimization flags to not use assertion flags (the"
+" flag -fno-alias is a violation of this rule). The result was found to be"
+" performance neutral compared to runs without -fno-alias. Replacement"
+" results could not be produced because of system access limitations."
+---------------------------------------------------------------------------
+
+
+"Node Description: HP XC Cluster"
+
+HARDWARE
+
+"Number of nodes",4
+"Uses of the node",compute
+Vendor,"Hewlett-Packard Company"
+Model,XC3000
+"CPU Name","Intel Xeon 5160"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",4
+"Cores per chip",2
+"Threads per core",1
+"CPU Characteristics","1333 MHz FSB"
+"CPU MHz",3000
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","4 MB I+D on chip per chip"
+"L3 Cache",None
+"Other Cache",None
+Memory,"8 GB"
+"Disk Subsystem","Ext 3"
+"Other Hardware",None
+Adapter,"PCI-Express DDR InfiniBand HCA"
+"Number of Adapters",1
+"Slot Type","Mezzanine - PCIe x8"
+"Data Rate","Infiniband 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"PCI-Express DDR InfiniBand HCA"
+"Adapter Driver","Voltiare GridStack 3.5.5_25"
+"Adapter Firmware","Hp 1.2"
+"Operating System","Redhat 4 Update 4"
+"Local File System",VXFS
+"Shared File System",NFS
+"System State","Multi User"
+"Other Software",None
+
+
+"Node Description: HP ProLiant DL380 G4 file server"
+
+HARDWARE
+
+"Number of nodes",1
+"Uses of the node","file server"
+Vendor,"Hewlett-Packard Company"
+Model,"DL380 G4"
+"CPU Name","Intel Xeon"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",2
+"Cores per chip",1
+"Threads per core",1
+"CPU Characteristics",None
+"CPU MHz",3800
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","2 MB I+D on chip per chip"
+"L3 Cache",None
+"Other Cache",None
+Memory,"6 GB"
+"Disk Subsystem",SCSI
+"Other Hardware",None
+Adapter,"PCI-Express DDR InfiniBand HCA"
+"Number of Adapters",1
+"Slot Type","PCIe x4"
+"Data Rate","Infiniband 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"PCI-Express DDR InfiniBand HCA"
+"Adapter Driver","Voltiare GridStack 3.5.5_25"
+"Adapter Firmware","Hp 1.2"
+"Operating System","Redhat 4 Update 4"
+"Local File System","2 x 146GB Ultra320 SCSI 10k RPM Disks RAID 0+1"
+"Shared File System",N/A
+"System State","Multi User"
+"Other Software",None
+
+
+"Interconnect Description: DDR InfiniBand"
+
+HARDWARE
+
+Vendor,Voltaire
+Model,ISR
+"Switch Model","HP 4X DDR IB Switch Module for HP BladeSystem"
+,C-Class
+"Number of Switches",1
+"Number of Ports",16
+"Data Rate","Infiniband 4x DDR"
+Firmware,1.30
+"Switch Model","Voltaire 24 port External switch for"
+,"subnet management ISR 9024"
+"Number of Switches",1
+"Number of Ports",24
+"Data Rate","Infiniband 4x DDR"
+Firmware,0.8.6
+Topology,"two level, 1 for subnet manager, and 1 for leaf."
+"Primary Use","MPI and file system traffic"
+
+
+"BENCHMARK DETAILS"
+
+"Type of System",Homogenous
+"Total Compute Nodes",4
+"Total Chips",8
+"Total Cores",16
+"Total Threads",16
+"Total Memory","32 GB"
+"Base Ranks Run",16
+"Minimum Peak Ranks",--
+"Maximum Peak Ranks",--
+"C Compiler","Intel C 9.1.045"
+"C++ Compiler","Intel C++ 9.1.045"
+"Fortran Compiler","Intel Fortran 9.1.040"
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+"MPI Library","HP-MPI 2.2.5"
+"Other MPI Info",None
+Pre-processors,No
+"Other Software",None
+
+"General Notes"
+
+"To run spec mpi2007 on XC3000 cluster."
+"module load mpi"
+". ./shrc"
+". /opt/intel/fc/9.1.040/bin/ifortvars.sh"
+". /opt/intel/cc/9.1.045/bin/iccvars.sh"
+"runspec -c linux_amd_intel medium  --reportable --ranks=NN --define CMD_PREFIX= --define MPIRUN_OPTIONS= --flagsurl=hpmpi-intel.xml -o cfg,txt,html,check"
+"cluster launch performed via slurm's srun"
+"  submit=  \$MPI_ROOT/bin/mpirun  -srun $command"
+
+"Base Compiler Invocation"
+104.milc," mpicc -mpicc icc"," mpicc -mpicc icc"
+107.leslie3d," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+113.GemsFDTD," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+115.fds4," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+121.pop2," mpicc -mpicc icc"," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+122.tachyon," mpicc -mpicc icc"," mpicc -mpicc icc"
+126.lammps," mpiCC -mpicxx icpc"," mpiCC -mpicxx icpc"
+127.wrf2," mpicc -mpicc icc"," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+128.GAPgeofem," mpicc -mpicc icc"," mpif90 -mpif90 ifort"," mpicc -mpicc icc"," mpif90 -mpif90 ifort"
+129.tera_tf," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+130.socorro," mpicc -mpicc icc"," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+132.zeusmp2," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+137.lu," mpif90 -mpif90 ifort"," mpif90 -mpif90 ifort"
+
+"Base Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2," -DSPEC_MPI_CASE_FLAG"
+122.tachyon
+126.lammps
+127.wrf2," -DSPEC_MPI_LINUX"," -DSPEC_MPI_CASE_FLAG"
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Optimization Flags"
+104.milc," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+107.leslie3d," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+113.GemsFDTD," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+115.fds4," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+121.pop2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+122.tachyon," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+126.lammps," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+127.wrf2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+128.GAPgeofem," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+129.tera_tf," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+130.socorro," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+132.zeusmp2," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+137.lu," -O3"," -no-prec-div"," -ftz"," -fno-alias"," -xT"
+
+"Base Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Compiler Invocation"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Optimization Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2010 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC MPI2007 ","v59.  Report","generated on ","Tue Jul 22 13:32:53 2014","by SPEC MPI2007 CSV","formatter v1463."
+"Originally published on ","16 July 2007."

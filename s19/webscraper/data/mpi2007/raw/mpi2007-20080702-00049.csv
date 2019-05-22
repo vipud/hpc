@@ -1,0 +1,474 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,16,1566.811185,0.998844,0,S,,,,,,"mref(ref) iteration #1"
+104.milc,16,1567.096864,0.998662,1,S,,,,,,"mref(ref) iteration #2"
+107.leslie3d,16,3958.146375,1.318799,1,S,,,,,,"mref(ref) iteration #1"
+107.leslie3d,16,3951.754221,1.320932,0,S,,,,,,"mref(ref) iteration #2"
+113.GemsFDTD,16,3167.858756,1.99125,1,S,,,,,,"mref(ref) iteration #1"
+113.GemsFDTD,16,3149.539315,2.002833,0,S,,,,,,"mref(ref) iteration #2"
+115.fds4,16,1561.103675,1.249757,0,S,,,,,,"mref(ref) iteration #1"
+115.fds4,16,1565.097086,1.246568,1,S,,,,,,"mref(ref) iteration #2"
+121.pop2,16,1474.647246,2.799314,1,S,,,,,,"mref(ref) iteration #1"
+121.pop2,16,1469.146206,2.809795,0,S,,,,,,"mref(ref) iteration #2"
+122.tachyon,16,1378.423714,2.029129,0,S,,,,,,"mref(ref) iteration #1"
+122.tachyon,16,1397.521826,2.0014,1,S,,,,,,"mref(ref) iteration #2"
+126.lammps,16,1753.847968,1.66206,0,S,,,,,,"mref(ref) iteration #1"
+126.lammps,16,1777.254397,1.64017,1,S,,,,,,"mref(ref) iteration #2"
+127.wrf2,16,3000.607827,2.59814,1,S,,,,,,"mref(ref) iteration #1"
+127.wrf2,16,2991.263416,2.606257,0,S,,,,,,"mref(ref) iteration #2"
+128.GAPgeofem,16,1471.02906,1.403779,1,S,,,,,,"mref(ref) iteration #1"
+128.GAPgeofem,16,1457.986622,1.416337,0,S,,,,,,"mref(ref) iteration #2"
+129.tera_tf,16,1184.108305,2.337624,1,S,,,,,,"mref(ref) iteration #1"
+129.tera_tf,16,1181.981075,2.341831,0,S,,,,,,"mref(ref) iteration #2"
+130.socorro,16,3536.949298,1.079179,0,S,,,,,,"mref(ref) iteration #1"
+130.socorro,16,3537.428642,1.079032,1,S,,,,,,"mref(ref) iteration #2"
+132.zeusmp2,16,1816.787659,1.70796,1,S,,,,,,"mref(ref) iteration #1"
+132.zeusmp2,16,1812.41634,1.712079,0,S,,,,,,"mref(ref) iteration #2"
+137.lu,16,3560.793799,1.032354,1,S,,,,,,"mref(ref) iteration #1"
+137.lu,16,3552.557076,1.034748,0,S,,,,,,"mref(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Ranks","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Ranks","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+104.milc,16,1567.096864,0.998662,1,S,,,,,NR,"SelectedIteration (base #2)"
+107.leslie3d,16,3958.146375,1.318799,1,S,,,,,NR,"SelectedIteration (base #1)"
+113.GemsFDTD,16,3167.858756,1.99125,1,S,,,,,NR,"SelectedIteration (base #1)"
+115.fds4,16,1565.097086,1.246568,1,S,,,,,NR,"SelectedIteration (base #2)"
+121.pop2,16,1474.647246,2.799314,1,S,,,,,NR,"SelectedIteration (base #1)"
+122.tachyon,16,1397.521826,2.0014,1,S,,,,,NR,"SelectedIteration (base #2)"
+126.lammps,16,1777.254397,1.64017,1,S,,,,,NR,"SelectedIteration (base #2)"
+127.wrf2,16,3000.607827,2.59814,1,S,,,,,NR,"SelectedIteration (base #1)"
+128.GAPgeofem,16,1471.02906,1.403779,1,S,,,,,NR,"SelectedIteration (base #1)"
+129.tera_tf,16,1184.108305,2.337624,1,S,,,,,NR,"SelectedIteration (base #1)"
+130.socorro,16,3537.428642,1.079032,1,S,,,,,NR,"SelectedIteration (base #2)"
+132.zeusmp2,16,1816.787659,1.70796,1,S,,,,,NR,"SelectedIteration (base #1)"
+137.lu,16,3560.793799,1.032354,1,S,,,,,NR,"SelectedIteration (base #1)"
+
+SPECmpiM_base2007,1.60973,,1.60973
+SPECmpiM_peak2007,"Not Run",,,,,,,"Not Run"
+
+"Run number:",012
+
+"System Vendor:",SGI
+"System Name:","SGI Altix ICE 8200EX (Xeon Processor X5472 3GHz)"
+"Date tested:",Jun-2008
+"MPI2007 License:",037
+"Test sponsor:",ZIH
+"Tested by:","Matthias Jurenz"
+"Hardware avail:",Mar-2008
+"Software avail:",Apr-2008
+
+
+"Node Description: SGI Altix ICE 8200EX Compute Node"
+
+HARDWARE
+
+"Number of nodes",2
+"Uses of the node",compute
+Vendor,SGI
+Model,"Altix ICE 8200EX (Xeon Processor X5472 3GHz)"
+"CPU Name","Intel Xeon X5472"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",8
+"Cores per chip",4
+"Threads per core",1
+"CPU Characteristics","Quad Core, 3.0GHz, 1600MHz system bus"
+"CPU MHz",3000
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","12 MB I+D on chip per chip, 6 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"16 GB (8*2GB PC2-6400 CL5-5-5 FB-DIMMs)"
+"Disk Subsystem",NFS
+"Other Hardware",None
+Adapter,"Mellanox MT26418 ConnectX IB DDR"
+,"(PCIe x8 Gen2 5 GT/s)"
+"Number of Adapters",1
+"Slot Type","PCIe x8 Gen2"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",2
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MT26418 ConnectX IB DDR"
+,"(PCIe x8 Gen2 5 GT/s)"
+"Adapter Driver","OFED 1.3.0 (mlx4_ib.ko 0.01)"
+"Adapter Firmware",2.3.0
+"Operating System","SLES10 SP1"
+"Local File System","NFS (v3)"
+"Shared File System","NFS (RDMA InfiniBand, NAS Nexis2000)"
+"System State","Multi-user, run level 3"
+"Other Software","SGI ProPack 5 SP4"
+
+
+"Node Description: SGI Altix ICE 8200EX Head Node"
+
+HARDWARE
+
+"Number of nodes",1
+"Uses of the node",head
+Vendor,SGI
+Model,"Altix ICE 8200EX (Xeon Processor X5365 3GHz)"
+"CPU Name","Intel Xeon X5365"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",8
+"Cores per chip",4
+"Threads per core",1
+"CPU Characteristics","Quad Core, 3.0GHz, 1333MHz system bus"
+"CPU MHz",3000
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","8 MB I+D on chip per chip, 4 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"16 GB (8*2GB PC2-6400 CL5-5-5 FB-DIMMs)"
+"Disk Subsystem","Seagate Cheetah 15K.5 147GB SAS (ST3146855SS)"
+"Other Hardware",None
+Adapter,"Mellanox MT25208 InfiniHost III Ex (rev 20)"
+,"(PCIe x8 Gen1 2.5 GT/s)"
+"Number of Adapters",1
+"Slot Type","PCIe x8 Gen1"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MT25208 InfiniHost III Ex (rev 20)"
+,"(PCIe x8 Gen1 2.5 GT/s)"
+"Adapter Driver","OFED 1.3.0 (mlx4_ib.ko 0.01)"
+"Adapter Firmware",5.2.0
+"Operating System","SLES10 SP1"
+"Local File System",XFS
+"Shared File System","NFS (RDMA InfiniBand, NAS Nexis2000)"
+"System State","Multi-user, run level 3"
+"Other Software","SGI ProPack 5 SP4"
+
+
+"Node Description: SGI InfiniteStorage NEXIS 2000 SAS"
+
+HARDWARE
+
+"Number of nodes",1
+"Uses of the node",fileserver
+Vendor,SGI
+Model,"InfiniteStorage NEXIS 2000 SAS"
+"CPU Name","Intel Xeon 5140"
+"CPU(s) orderable","1-2 chips"
+"Chips enabled",2
+"Cores enabled",4
+"Cores per chip",2
+"Threads per core",1
+"CPU Characteristics","Dual Core, 2.33GHz, 1333MHz system bus"
+"CPU MHz",2333
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","4 MB I+D on chip per chip, 4 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"32 GB"
+"Disk Subsystem","72 disks, 280GB/disk, 10TB total, 6 Shelves"
+,"(striped RAID 5)"
+"Other Hardware",None
+Adapter,"Mellanox MT25204 InfiniHost III Lx (rev 20)"
+,"(PCIe x8 Gen1 2.5 GT/s)"
+"Number of Adapters",1
+"Slot Type","PCIe x8 Gen1"
+"Data Rate","InfiniBand 4x DDR"
+"Ports Used",1
+"Interconnect Type",InfiniBand
+
+SOFTWARE
+
+Adapter,"Mellanox MT25204 InfiniHost III Lx (rev 20)"
+,"(PCIe x8 Gen1 2.5 GT/s)"
+"Adapter Driver","OFED 1.2.6 (ib_mthca.ko 0.08)"
+"Adapter Firmware",1.2.0
+"Operating System","SLES10 SP1"
+"Local File System",XFS
+"Shared File System",None
+"System State","Multi-user, run level 3"
+"Other Software","SGI ProPack 5 SP2"
+,"SGI InfiniteStorage Appliance Manager 4"
+,"SGI XVM 4.2.2.1"
+,"XFS 64-bit journaled file system"
+
+
+"Interconnect Description: InfiniBand (MPI)"
+
+HARDWARE
+
+Vendor,"Mellanox Technologies"
+Model,"MT26418 ConnectX"
+"Switch Model","Mellanox MT47396 InfiniScale III"
+"Number of Switches",8
+"Number of Ports",24
+"Data Rate","InfiniBand 4x DDR"
+Firmware,1.3.0
+Topology,"Hypercube with express links"
+"Primary Use","MPI traffic"
+
+
+"Interconnect Description: InfiniBand (I/O)"
+
+HARDWARE
+
+Vendor,"Mellanox Technologies"
+Model,"MT26418 ConnectX"
+"Switch Model","Mellanox MT47396 InfiniScale III"
+"Number of Switches",8
+"Number of Ports",24
+"Data Rate","InfiniBand 4x DDR"
+Firmware,1.3.0
+Topology,"Hypercube with express links"
+"Primary Use","I/O traffic"
+
+
+"BENCHMARK DETAILS"
+
+"Type of System",Homogenous
+"Total Compute Nodes",2
+"Total Chips",4
+"Total Cores",16
+"Total Threads",16
+"Total Memory","32 GB"
+"Base Ranks Run",16
+"Minimum Peak Ranks",--
+"Maximum Peak Ranks",--
+"C Compiler","Intel C"
+,"Applications Version 10.1 (Build 20080112)"
+"C++ Compiler","Intel C++"
+,"Applications Version 10.1 (Build 20080112)"
+"Fortran Compiler","Intel Fortran"
+,"Applications Version 10.1 (Build 20080112)"
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+"MPI Library","SGI Message Passing Toolkit (MPT) Version 1.19"
+"Other MPI Info",None
+Pre-processors,None
+"Other Software",None
+
+"General Notes"
+
+" srcalt's:"
+"   104.milc: calloc"
+"   113.GemsFDTD: maxprocandstop"
+"   127.wrf2: fixcalling"
+"   129.tera_tf: fixbuffer"
+"   130.socorro: second_underscore"
+
+" Environment:"
+"   export MPI_REQUEST_MAX=65536"
+"     Determines the maximum number of nonblocking sends and"
+"     receives that can simultaneously exist for any single MPI"
+"     process.  MPI generates an error message if this limit"
+"     (or the default, if not set) is exceeded.  Default:  16384"
+"   export MPI_TYPE_MAX=32768"
+"     Determines the maximum number of data types that can"
+"     simultaneously exist for any single MPI process."
+"     MPI generates an error message if this limit (or the default,"
+"     if not set) is exceeded.  Default:  8192"
+"   export MPI_BUFS_PER_HOST=512"
+"     Determines the number of shared message buffers (16 KB each)"
+"     that MPI is to allocate for each host. These buffers are used"
+"     to send and receive long inter-host messages."
+"     Default:  32 pages (1 page = 16KB)"
+"   export MPI_NUM_QUICKS=16"
+"     Controls the number of other ranks that a rank can receive from"
+"     over InfiniBand using a short message fast path. This is 8 by"
+"     default and can be any value between 0 and 32."
+
+"   ulimit -s unlimited"
+"     Removes limits on the maximum size of the automatically-"
+"     extended stack region of the current process and each"
+"     process it creates."
+
+"Base Compiler Invocation"
+104.milc," icc"," icc"
+107.leslie3d," ifort"," ifort"
+113.GemsFDTD," ifort"," ifort"
+115.fds4," icc"," ifort"," ifort"
+121.pop2," icc"," ifort"," ifort"
+122.tachyon," icc"," icc"
+126.lammps," icpc"," icpc"
+127.wrf2," icc"," ifort"," ifort"
+128.GAPgeofem," icc"," ifort"," icc"," ifort"
+129.tera_tf," ifort"," ifort"
+130.socorro," icc"," ifort"," ifort"
+132.zeusmp2," icc"," ifort"," ifort"
+137.lu," ifort"," ifort"
+
+"Base Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2," -DSPEC_MPI_CASE_FLAG"
+122.tachyon
+126.lammps
+127.wrf2," -DSPEC_MPI_LINUX"," -DSPEC_MPI_CASE_FLAG"
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Optimization Flags"
+104.milc," -O3"," -xT"," -ipo"," -no-prec-div"
+107.leslie3d," -O3"," -xT"," -ipo"," -no-prec-div"
+113.GemsFDTD," -O3"," -xT"," -ipo"," -no-prec-div"
+115.fds4," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+121.pop2," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+122.tachyon," -O3"," -xT"," -ipo"," -no-prec-div"
+126.lammps," -O3"," -xT"," -ipo"," -ansi-alias"," -no-prec-div"
+127.wrf2," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+128.GAPgeofem," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+129.tera_tf," -O3"," -xT"," -ipo"," -no-prec-div"
+130.socorro," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+132.zeusmp2," -O3"," -xT"," -ipo"," -no-prec-div"," -O3"," -xT"," -ipo"," -no-prec-div"
+137.lu," -O3"," -xT"," -ipo"," -no-prec-div"
+
+"Base Other Flags"
+104.milc," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+107.leslie3d," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+113.GemsFDTD," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+115.fds4," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+121.pop2," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+122.tachyon," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+126.lammps," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+127.wrf2," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+128.GAPgeofem," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+129.tera_tf," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+130.socorro," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+132.zeusmp2," -I/opt/sgi-mpt/1.19/include"," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+137.lu," -I/opt/sgi-mpt/1.19/include"," -L/opt/sgi-mpt/1.19/lib64"," -lmpi"
+
+"Base Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Base Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Compiler Invocation"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Portability Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Optimization Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Other Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Forbidden Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+
+"Peak Unknown Flags"
+104.milc
+107.leslie3d
+113.GemsFDTD
+115.fds4
+121.pop2
+122.tachyon
+126.lammps
+127.wrf2
+128.GAPgeofem
+129.tera_tf
+130.socorro
+132.zeusmp2
+137.lu
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2010 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC MPI2007 ","v1.0.  Report","generated on ","Tue Jul 22 13:34:14 2014","by SPEC MPI2007 CSV","formatter v1463."
+"Originally published on ","30 July 2008."

@@ -1,0 +1,295 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,582.707,16.7665739385317,0,S,9770,451.089,21.6586970642157,1,S,"ref iteration #1"
+400.perlbench,9770,579.275,16.865909973674,0,S,9770,452.275,21.6019014979824,0,S,"ref iteration #2"
+400.perlbench,9770,579.945,16.8464250920346,1,S,9770,450.964,21.6647005082446,0,S,"ref iteration #3"
+401.bzip2,9650,683.373,14.1211315050492,1,S,9650,650.583,14.8328499207634,0,S,"ref iteration #1"
+401.bzip2,9650,696.103,13.8628909802141,0,S,9650,646.324,14.9305920869409,1,S,"ref iteration #2"
+401.bzip2,9650,681.486,14.1602321984604,0,S,9650,643.749,14.9903145480614,0,S,"ref iteration #3"
+403.gcc,8050,488.81,16.4685665186882,1,S,8050,429.843,18.7277680455422,0,S,"ref iteration #1"
+403.gcc,8050,488.919,16.4648950030578,0,S,8050,415.85,19.3579415654683,0,S,"ref iteration #2"
+403.gcc,8050,482.508,16.6836612035448,0,S,8050,426.02,18.8958264870194,1,S,"ref iteration #3"
+429.mcf,9120,386.693,23.5846007039176,0,S,9120,386.693,23.5846007039176,0,S,"ref iteration #1"
+429.mcf,9120,387.067,23.5618122960624,1,S,9120,387.067,23.5618122960624,1,S,"ref iteration #2"
+429.mcf,9120,387.317,23.5466039445725,0,S,9120,387.317,23.5466039445725,0,S,"ref iteration #3"
+445.gobmk,10490,613.174,17.1077051538389,0,S,10490,532.038,19.7166367815833,1,S,"ref iteration #1"
+445.gobmk,10490,613.314,17.1038000110873,0,S,10490,532.147,19.7125982106448,0,S,"ref iteration #2"
+445.gobmk,10490,613.236,17.1059755135054,1,S,10490,531.976,19.718934688783,0,S,"ref iteration #3"
+456.hmmer,9330,665.933,14.0104184655213,1,S,9330,469.996,19.8512327764492,0,S,"ref iteration #1"
+456.hmmer,9330,665.73,14.0146906403497,0,S,9330,470.138,19.8452369304332,0,S,"ref iteration #2"
+456.hmmer,9330,665.98,14.009429712604,0,S,9330,470.121,19.8459545521259,1,S,"ref iteration #3"
+458.sjeng,12100,764.197,15.8336135839319,0,S,12100,685.917,17.6406183255408,0,S,"ref iteration #1"
+458.sjeng,12100,764.743,15.8223089325434,1,S,12100,686.244,17.6322124492163,1,S,"ref iteration #2"
+458.sjeng,12100,765.43,15.8081078609409,0,S,12100,686.525,17.62499544809,0,S,"ref iteration #3"
+462.libquantum,20720,442.962,46.7760214194446,0,S,20720,442.962,46.7760214194446,0,S,"ref iteration #1"
+462.libquantum,20720,442.852,46.7876401145304,1,S,20720,442.852,46.7876401145304,1,S,"ref iteration #2"
+462.libquantum,20720,442.821,46.7909155166535,0,S,20720,442.821,46.7909155166535,0,S,"ref iteration #3"
+464.h264ref,22130,793.369,27.8937039385204,0,S,22130,744.104,29.7404663864191,1,S,"ref iteration #1"
+464.h264ref,22130,793.978,27.8723088045261,0,S,22130,744.261,29.7341927092781,0,S,"ref iteration #2"
+464.h264ref,22130,793.9,27.8750472351682,1,S,22130,744.057,29.7423450085141,0,S,"ref iteration #3"
+471.omnetpp,6250,435.255,14.3593985135151,0,S,6250,389.922,16.028846795,1,S,"ref iteration #1"
+471.omnetpp,6250,435.381,14.3552428792253,1,S,6250,389.703,16.0378544686595,0,S,"ref iteration #2"
+471.omnetpp,6250,435.989,14.3352240538179,0,S,6250,390.218,16.0166881076731,0,S,"ref iteration #3"
+473.astar,7020,532.194,13.1906785871318,0,S,7020,476.69,14.7265518471124,1,S,"ref iteration #1"
+473.astar,7020,532.241,13.1895137728961,1,S,7020,477.095,14.7140506607699,0,S,"ref iteration #2"
+473.astar,7020,532.428,13.184881336068,0,S,7020,476.424,14.7347740667976,0,S,"ref iteration #3"
+483.xalancbmk,6900,344.152,20.0492805504545,0,S,6900,341.889,20.1819888911313,0,S,"ref iteration #1"
+483.xalancbmk,6900,344.807,20.0111946683217,0,S,6900,342.326,20.1562253524418,0,S,"ref iteration #2"
+483.xalancbmk,6900,344.448,20.0320512820513,1,S,6900,341.999,20.1754975891742,1,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base Ref Time","Base Run Time","Base Ratio","Base Selected","Base Status","Peak Ref Time","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+400.perlbench,9770,579.945,16.8464250920346,1,S,9770,451.089,21.6586970642157,1,S,"SelectedIteration (base #3; peak #1)"
+401.bzip2,9650,683.373,14.1211315050492,1,S,9650,646.324,14.9305920869409,1,S,"SelectedIteration (base #1; peak #2)"
+403.gcc,8050,488.81,16.4685665186882,1,S,8050,426.02,18.8958264870194,1,S,"SelectedIteration (base #1; peak #3)"
+429.mcf,9120,387.067,23.5618122960624,1,S,9120,387.067,23.5618122960624,1,S,"SelectedIteration (base #2; peak #2)"
+445.gobmk,10490,613.236,17.1059755135054,1,S,10490,532.038,19.7166367815833,1,S,"SelectedIteration (base #3; peak #1)"
+456.hmmer,9330,665.933,14.0104184655213,1,S,9330,470.121,19.8459545521259,1,S,"SelectedIteration (base #1; peak #3)"
+458.sjeng,12100,764.743,15.8223089325434,1,S,12100,686.244,17.6322124492163,1,S,"SelectedIteration (base #2; peak #2)"
+462.libquantum,20720,442.852,46.7876401145304,1,S,20720,442.852,46.7876401145304,1,S,"SelectedIteration (base #2; peak #2)"
+464.h264ref,22130,793.9,27.8750472351682,1,S,22130,744.104,29.7404663864191,1,S,"SelectedIteration (base #3; peak #1)"
+471.omnetpp,6250,435.381,14.3552428792253,1,S,6250,389.922,16.028846795,1,S,"SelectedIteration (base #2; peak #1)"
+473.astar,7020,532.241,13.1895137728961,1,S,7020,476.69,14.7265518471124,1,S,"SelectedIteration (base #2; peak #1)"
+483.xalancbmk,6900,344.448,20.0320512820513,1,S,6900,341.999,20.1754975891742,1,S,"SelectedIteration (base #3; peak #3)"
+
+SPECint_base2006,18.6152342305347,,18.6152342305347
+SPECint2006,20.8065548127059,,,,,,,20.8065548127059
+
+"Run number:",Unknown
+
+"Hardware Vendor:","Fujitsu Siemens Computers"
+"Hardware Model:","CELSIUS M460, Intel Core 2 Quad Q6700 processor"
+"Date tested:",Dec-2007
+"CPU2006 License:",22
+"Test sponsor:","Fujitsu Siemens Computers"
+"Tested by:","Fujitsu Siemens Computers"
+"Hardware avail:",Nov-2007
+"Software avail:",Nov-2007
+
+
+HARDWARE
+
+"CPU Name","Intel Core 2 Quad Q6700"
+"CPU Characteristics"," "
+"CPU MHz",2667
+FPU,Integrated
+"CPU(s) enabled","4 cores, 1 chip, 4 cores/chip"
+"CPU(s) orderable","1 chip"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","8 MB I+D on chip per chip, 4 MB shared / 2 cores"
+"L3 Cache",None
+"Other Cache",None
+Memory,"4 GB (4x1 GB PC2-6400 CL6 SDRAM)"
+"Disk Subsystem","1 x 400 GB SATA II 7200 RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Microsoft Windows Vista Ultimate (x64)"
+Compiler,"Intel C++ Compilers for IA-32"
+,"and for Intel64,"
+,"Version 10.1, Build 20070913"
+,"Microsoft Visual Studio 2005 with SP1"
+,"(for libraries)"
+"Auto Parallel",Yes
+"File System",NTFS
+"System State",Default
+"Base Pointers",32-bit
+"Peak Pointers",32/64-bit
+"Other Software","MicroQuill SmartHeap Library, Version 8.1"
+
+"Operating System Notes"
+
+"OMP_NUM_THREADS set to number of cores (default)."
+
+"Platform Notes"
+
+"BIOS default settings have been used."
+
+"General Notes"
+
+" All binaries were built with 32-bit Intel compiler except:"
+" 401.bzip2 and 456.hmmer in peak were built with 64-bit Intel"
+" compiler by changing the path for include and library files."
+
+
+"For information about Fujitsu Siemens Computers please see:"
+http://www.fujitsu-siemens.com
+
+"Base Compiler Invocation"
+400.perlbench," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+401.bzip2," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+403.gcc," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+429.mcf," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+445.gobmk," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+456.hmmer," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+458.sjeng," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+462.libquantum," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+464.h264ref," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+471.omnetpp," icl"," -Qvc8"," icl"," -Qvc8"
+473.astar," icl"," -Qvc8"," icl"," -Qvc8"
+483.xalancbmk," icl"," -Qvc8"," icl"," -Qvc8"
+
+"Base Portability Flags"
+400.perlbench
+401.bzip2
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref," -DSPEC_CPU_NO_INTTYPES"," -DWIN32"
+471.omnetpp
+473.astar
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Base Optimization Flags"
+400.perlbench," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+401.bzip2," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+403.gcc," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+429.mcf," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+445.gobmk," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+456.hmmer," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+458.sjeng," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+462.libquantum," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+464.h264ref," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+471.omnetpp," -fast"," -Qcxx-features"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+473.astar," -fast"," -Qcxx-features"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+483.xalancbmk," -fast"," -Qcxx-features"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+
+"Base Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+401.bzip2," C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Bin\\icl.exe"," -IC:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Include"," C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Bin\\icl.exe"," -IC:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Include"," -link -LIBPATH:C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Lib"," -link -LIBPATH:""C:\\Program Files\\Microsoft Visual Studio 8\\vc\\lib"""," -link -LIBPATH:""C:\\Program Files\\Microsoft Visual Studio 8\\vc\\lib\\amd64"""
+403.gcc," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+429.mcf," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+445.gobmk," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+456.hmmer," C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Bin\\icl.exe"," -IC:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Include"," C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Bin\\icl.exe"," -IC:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Include"," -link -LIBPATH:C:\\DevelTools\\Intel\\Compiler\\C++\\10.1.011\\EM64T\\Lib"," -link -LIBPATH:""C:\\Program Files\\Microsoft Visual Studio 8\\vc\\lib"""," -link -LIBPATH:""C:\\Program Files\\Microsoft Visual Studio 8\\vc\\lib\\amd64"""
+458.sjeng," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+462.libquantum," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+464.h264ref," icl"," -Qvc8"," -Qc99"," icl"," -Qvc8"," -Qc99"
+471.omnetpp," icl"," -Qvc8"," icl"," -Qvc8"
+473.astar," icl"," -Qvc8"," icl"," -Qvc8"
+483.xalancbmk," icl"," -Qvc8"," icl"," -Qvc8"
+
+"Peak Portability Flags"
+400.perlbench
+401.bzip2," -DSPEC_CPU_P64"
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer," -DSPEC_CPU_P64"
+458.sjeng
+462.libquantum
+464.h264ref," -DSPEC_CPU_NO_INTTYPES"," -DWIN32"
+471.omnetpp
+473.astar
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Peak Optimization Flags"
+400.perlbench," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qparallel"," -Qpar-runtime-control"," -Qansi-alias"," -Qprefetch"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+401.bzip2," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qprefetch"," -F512000000"," libguide40.lib"
+403.gcc," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -F512000000"," libguide40.lib"
+429.mcf," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+445.gobmk," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -O2"," -Qipo"," -QxT"," -Qprec-div-"," -Qansi-alias"," -F512000000"
+456.hmmer," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qunroll2"," -Qansi-alias"," -Qopt-multi-version-aggressive"," -F512000000"," libguide40.lib"
+458.sjeng," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qunroll4"," -F512000000"," libguide40.lib"
+462.libquantum," -fast"," -Qparallel"," -Qvec-guard-write"," -Qpar-runtime-control"," -F512000000"," libguide40.lib"
+464.h264ref," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qunroll2"," -Qansi-alias"," -F512000000"," libguide40.lib"
+471.omnetpp," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qcxx-features"," -Qansi-alias"," -Qopt-ra-region-strategy=block"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+473.astar," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qcxx-features"," -Qansi-alias"," -Qopt-ra-region-strategy=routine"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+483.xalancbmk," -Qprof_gen"," -Qprof_use"," -Qprof_gen"," -Qprof_use"," -fast"," -Qcxx-features"," -Qansi-alias"," -F512000000"," libguide40.lib"," shlW32M.lib"," -link -FORCE:MULTIPLE"
+
+"Peak Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.0.  Report","generated on ","Tue Jul 22 15:17:49 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on ","24 January 2008."

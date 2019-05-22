@@ -1,0 +1,603 @@
+valid,1
+
+"SPEC CPU2017 Floating Point Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+503.bwaves_r,24,685.880956,350.894712,1,S,24,683.830249,351.946992,0,S,"refrate(ref) iteration #1"
+503.bwaves_r,24,686.6624,350.495376,0,S,24,685.592109,351.042552,1,S,"refrate(ref) iteration #2"
+503.bwaves_r,24,685.873004,350.898768,0,S,24,685.606488,351.035184,0,S,"refrate(ref) iteration #3"
+507.cactuBSSN_r,24,435.876093,69.70788,0,S,24,440.410134,68.990232,0,S,"refrate(ref) iteration #1"
+507.cactuBSSN_r,24,434.828585,69.875808,0,S,24,439.995497,69.055248,1,S,"refrate(ref) iteration #2"
+507.cactuBSSN_r,24,435.317233,69.797376,1,S,24,439.918772,69.067296,0,S,"refrate(ref) iteration #3"
+508.namd_r,24,355.981807,64.048224,1,S,24,353.668779,64.467096,0,S,"refrate(ref) iteration #1"
+508.namd_r,24,355.330111,64.16568,0,S,24,354.295649,64.353024,1,S,"refrate(ref) iteration #2"
+508.namd_r,24,357.353171,63.80244,0,S,24,355.846416,64.072584,0,S,"refrate(ref) iteration #3"
+510.parest_r,24,824.925581,76.10868,1,S,24,817.460979,76.803672,0,S,"refrate(ref) iteration #1"
+510.parest_r,24,826.351941,75.977304,0,S,24,821.287347,76.445832,0,S,"refrate(ref) iteration #2"
+510.parest_r,24,824.340776,76.16268,0,S,24,819.817821,76.582872,1,S,"refrate(ref) iteration #3"
+511.povray_r,24,551.282298,101.653896,0,S,24,462.754804,121.100856,0,S,"refrate(ref) iteration #1"
+511.povray_r,24,550.904862,101.723544,1,S,24,469.281633,119.41656,0,S,"refrate(ref) iteration #2"
+511.povray_r,24,549.611491,101.962944,0,S,24,464.93517,120.532944,1,S,"refrate(ref) iteration #3"
+519.lbm_r,24,418.843794,60.394824,0,S,24,367.685971,68.797848,1,S,"refrate(ref) iteration #1"
+519.lbm_r,24,415.92648,60.818448,0,S,24,368.395837,68.665272,0,S,"refrate(ref) iteration #2"
+519.lbm_r,24,416.54722,60.7278,1,S,24,366.097184,69.096408,0,S,"refrate(ref) iteration #3"
+521.wrf_r,24,466.722641,115.186176,0,S,24,460.584083,116.72136,1,S,"refrate(ref) iteration #1"
+521.wrf_r,24,463.107036,116.08548,0,S,24,461.611748,116.461512,0,S,"refrate(ref) iteration #2"
+521.wrf_r,24,465.432493,115.505472,1,S,24,459.586576,116.974704,0,S,"refrate(ref) iteration #3"
+526.blender_r,24,418.665444,87.305976,0,S,24,417.248027,87.602568,1,S,"refrate(ref) iteration #1"
+526.blender_r,24,419.546753,87.122592,1,S,24,419.952961,87.038328,0,S,"refrate(ref) iteration #2"
+526.blender_r,24,419.587867,87.114048,0,S,24,416.665895,87.724968,0,S,"refrate(ref) iteration #3"
+527.cam4_r,24,432.770393,96.993696,0,S,24,427.748372,98.132448,0,S,"refrate(ref) iteration #1"
+527.cam4_r,24,431.594063,97.258056,0,S,24,425.999104,98.535408,1,S,"refrate(ref) iteration #2"
+527.cam4_r,24,431.837761,97.203168,1,S,24,425.687968,98.607432,0,S,"refrate(ref) iteration #3"
+538.imagick_r,24,448.245648,133.159128,1,S,24,448.340804,133.130856,0,S,"refrate(ref) iteration #1"
+538.imagick_r,24,448.417704,133.108032,0,S,24,448.18063,133.178448,0,S,"refrate(ref) iteration #2"
+538.imagick_r,24,448.152915,133.18668,0,S,24,448.207129,133.170576,1,S,"refrate(ref) iteration #3"
+544.nab_r,24,361.102245,111.85752,0,S,24,356.113522,113.424504,0,S,"refrate(ref) iteration #1"
+544.nab_r,24,361.522713,111.727416,1,S,24,357.008807,113.140056,0,S,"refrate(ref) iteration #2"
+544.nab_r,24,365.524248,110.504304,0,S,24,356.622976,113.26248,1,S,"refrate(ref) iteration #3"
+549.fotonik3d_r,24,1007.41493,92.839608,0,S,24,1005.187206,93.04536,0,S,"refrate(ref) iteration #1"
+549.fotonik3d_r,24,1004.952539,93.06708,1,S,24,1012.611454,92.36316,0,S,"refrate(ref) iteration #2"
+549.fotonik3d_r,24,1004.164829,93.140088,0,S,24,1010.899095,92.519616,1,S,"refrate(ref) iteration #3"
+554.roms_r,24,573.539327,66.492384,1,S,24,562.59067,67.786416,1,S,"refrate(ref) iteration #1"
+554.roms_r,24,572.304681,66.635832,0,S,24,556.619278,68.513616,0,S,"refrate(ref) iteration #2"
+554.roms_r,24,581.674099,65.56248,0,S,24,565.099775,67.485432,0,S,"refrate(ref) iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+503.bwaves_r,24,685.880956,350.894712,1,S,24,685.592109,351.042552,1,S,"SelectedIteration (base #1; peak #2)"
+507.cactuBSSN_r,24,435.317233,69.797376,1,S,24,439.995497,69.055248,1,S,"SelectedIteration (base #3; peak #2)"
+508.namd_r,24,355.981807,64.048224,1,S,24,354.295649,64.353024,1,S,"SelectedIteration (base #1; peak #2)"
+510.parest_r,24,824.925581,76.10868,1,S,24,819.817821,76.582872,1,S,"SelectedIteration (base #1; peak #3)"
+511.povray_r,24,550.904862,101.723544,1,S,24,464.93517,120.532944,1,S,"SelectedIteration (base #2; peak #3)"
+519.lbm_r,24,416.54722,60.7278,1,S,24,367.685971,68.797848,1,S,"SelectedIteration (base #3; peak #1)"
+521.wrf_r,24,465.432493,115.505472,1,S,24,460.584083,116.72136,1,S,"SelectedIteration (base #3; peak #1)"
+526.blender_r,24,419.546753,87.122592,1,S,24,417.248027,87.602568,1,S,"SelectedIteration (base #2; peak #1)"
+527.cam4_r,24,431.837761,97.203168,1,S,24,425.999104,98.535408,1,S,"SelectedIteration (base #3; peak #2)"
+538.imagick_r,24,448.245648,133.159128,1,S,24,448.207129,133.170576,1,S,"SelectedIteration (base #1; peak #3)"
+544.nab_r,24,361.522713,111.727416,1,S,24,356.622976,113.26248,1,S,"SelectedIteration (base #2; peak #3)"
+549.fotonik3d_r,24,1004.952539,93.06708,1,S,24,1010.899095,92.519616,1,S,"SelectedIteration (base #2; peak #3)"
+554.roms_r,24,573.539327,66.492384,1,S,24,562.59067,67.786416,1,S,"SelectedIteration (base #1; peak #1)"
+
+SPECrate2017_fp_base,96.901194,,96.901194
+SPECrate2017_fp_peak,99.559373,,,,,,,99.559373
+
+"Run number:",004.0
+"runcpu command:","/home/cpu2017.1.0.2.ic18.0/bin/harness/runcpu --define default-platform-flags --copies 24 --configfile ic18.0-lin-core-avx2-rate-20170901.cfg --define smt-on --define cores=12 --define physicalfirst --define invoke_with_interleave --define drop_caches --tune base,peak --output_format all --nopower --runmode rate --tune base:peak --size refrate fprate"
+"output root:","not used"
+
+"Hardware Vendor:","Lenovo Global Technology"
+"Hardware Model:","ThinkSystem SR530 (3.40 GHz, Intel Xeon Gold 6128)"
+"Date tested:",May-2018
+"CPU2017 License:",9017
+"Test sponsor:","Lenovo Global Technology"
+"Tested by:","Lenovo Global Technology"
+"Hardware avail:",Aug-2017
+"Software avail:",Feb-2018
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon Gold 6128"
+"  Max MHz.",3700
+"  Nominal",3400
+Enabled,"12 cores, 2 chips, 2 threads/core"
+Orderable,"1,2 chips"
+"Cache L1","32 KB I + 32 KB D on chip per core"
+"  L2","1 MB I+D on chip per core"
+"  L3","19.25 MB I+D on chip per chip"
+"  Other",None
+Memory,"384 GB (12 x 32 GB 2Rx4 PC4-2666V-R)"
+Storage,"1 x 800 GB SAS SSD"
+Other,None
+
+SOFTWARE
+
+OS,"SUSE Linux Enterprise Server 12 SP2 (x86_64)"
+,"Kernel 4.4.114-92.64-default"
+Compiler,"C/C++: Version 18.0.0.128 of Intel C/C++"
+,"Compiler for Linux;"
+,"Fortran: Version 18.0.0.128 of Intel Fortran"
+,"Compiler for Linux"
+Parallel,No
+Firmware,"Lenovo BIOS Version TEE119R 1.22 released Feb-2018"
+"File System",btrfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers",64-bit
+Other,None
+
+"Submit Notes"
+
+" The numactl mechanism was used to bind copies to processors. The config file option 'submit'"
+" was used to generate numactl commands to bind each copy to a specific processor."
+" For details, please see the config file."
+
+"Operating System Notes"
+
+" Stack size set to unlimited using ""ulimit -s unlimited"""
+
+"General Notes"
+
+"Environment variables set by runcpu before the start of the run:"
+"LD_LIBRARY_PATH = ""/home/cpu2017.1.0.2.ic18.0/lib/ia32:/home/cpu2017.1.0.2.ic18.0/lib/intel64"""
+"LD_LIBRARY_PATH = ""$LD_LIBRARY_PATH:/home/cpu2017.1.0.2.ic18.0/je5.0.1-32:/home/cpu2017.1.0.2.ic18.0/je5.0.1-64"""
+" Binaries compiled on a system with 1x Intel Core i7-4790 CPU + 32GB RAM"
+" memory using Redhat Enterprise Linux 7.4"
+" Transparent Huge Pages enabled by default"
+" Prior to runcpu invocation"
+" Filesystem page cache synced and cleared with:"
+" sync; echo 3>       /proc/sys/vm/drop_caches"
+" runcpu command invoked through numactl i.e.:"
+" numactl --interleave=all runcpu <etc>"
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+
+"Platform Notes"
+
+"BIOS configuration:"
+"Choose Operating Mode set to Maximum Performance"
+"Execute Disable Bit set to Disable"
+"MONITORMWAIT set to Enable"
+"SNC set to Enable"
+"DCA set to Enable"
+" Sysinfo program /home/cpu2017.1.0.2.ic18.0/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on linux-ickx Tue May  1 03:29:57 2018"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) Gold 6128 CPU @ 3.40GHz"
+"       2  ""physical id""s (chips)"
+"       24 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent. The following"
+"    excerpts from /proc/cpuinfo might not be reliable.  Use with caution.)"
+"       cpu cores : 6"
+"       siblings  : 12"
+"       physical 0: cores 2 3 4 5 10 11"
+"       physical 1: cores 0 6 9 10 11 13"
+
+" From lscpu:"
+"      Architecture:          x86_64"
+"      CPU op-mode(s):        32-bit, 64-bit"
+"      Byte Order:            Little Endian"
+"      CPU(s):                24"
+"      On-line CPU(s) list:   0-23"
+"      Thread(s) per core:    2"
+"      Core(s) per socket:    6"
+"      Socket(s):             2"
+"      NUMA node(s):          4"
+"      Vendor ID:             GenuineIntel"
+"      CPU family:            6"
+"      Model:                 85"
+"      Model name:            Intel(R) Xeon(R) Gold 6128 CPU @ 3.40GHz"
+"      Stepping:              4"
+"      CPU MHz:               3392.043"
+"      BogoMIPS:              6784.08"
+"      Virtualization:        VT-x"
+"      L1d cache:             32K"
+"      L1i cache:             32K"
+"      L2 cache:              1024K"
+"      L3 cache:              19712K"
+"      NUMA node0 CPU(s):     0,1,4,12,13,16"
+"      NUMA node1 CPU(s):     2,3,5,14,15,17"
+"      NUMA node2 CPU(s):     6,8,9,18,20,21"
+"      NUMA node3 CPU(s):     7,10,11,19,22,23"
+"      Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov"
+"      pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp"
+"      lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc"
+"      aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg"
+"      fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes"
+"      xsave avx f16c rdrand lahf_lm abm 3dnowprefetch ida arat epb invpcid_single pln pts"
+"      dtherm intel_pt rsb_ctxsw spec_ctrl retpoline kaiser tpr_shadow vnmi flexpriority"
+"      ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm mpx"
+"      avx512f avx512dq rdseed adx smap clflushopt clwb avx512cd avx512bw avx512vl xsaveopt"
+"      xsavec xgetbv1 cqm_llc cqm_occup_llc"
+
+" /proc/cpuinfo cache data"
+"    cache size : 19712 KB"
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+"   available: 4 nodes (0-3)"
+"   node 0 cpus: 0 1 4 12 13 16"
+"   node 0 size: 96347 MB"
+"   node 0 free: 96115 MB"
+"   node 1 cpus: 2 3 5 14 15 17"
+"   node 1 size: 96753 MB"
+"   node 1 free: 96472 MB"
+"   node 2 cpus: 6 8 9 18 20 21"
+"   node 2 size: 96753 MB"
+"   node 2 free: 96581 MB"
+"   node 3 cpus: 7 10 11 19 22 23"
+"   node 3 size: 96750 MB"
+"   node 3 free: 96543 MB"
+"   node distances:"
+"   node   0   1   2   3"
+"     0:  10  11  21  21"
+"     1:  11  10  21  21"
+"     2:  21  21  10  11"
+"     3:  21  21  11  10"
+
+" From /proc/meminfo"
+"    MemTotal:       395882944 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" From /etc/*release* /etc/*version*"
+"    SuSE-release:"
+"       SUSE Linux Enterprise Server 12 (x86_64)"
+"       VERSION = 12"
+"       PATCHLEVEL = 2"
+"       # This file is deprecated and will be removed in a future service pack or release."
+"       # Please check /etc/os-release for details about this release."
+"    os-release:"
+"       NAME=""SLES"""
+"       VERSION=""12-SP2"""
+"       VERSION_ID=""12.2"""
+"       PRETTY_NAME=""SUSE Linux Enterprise Server 12 SP2"""
+"       ID=""sles"""
+"       ANSI_COLOR=""0;32"""
+"       CPE_NAME=""cpe:/o:suse:sles:12:sp2"""
+
+" uname -a:"
+"    Linux linux-ickx 4.4.114-92.64-default #1 SMP Thu Feb 1 19:18:19 UTC 2018 (c6ce5db)"
+"    x86_64 x86_64 x86_64 GNU/Linux"
+
+" run-level 3 May 1 03:27"
+
+" SPEC is set to: /home/cpu2017.1.0.2.ic18.0"
+"    Filesystem     Type   Size  Used Avail Use% Mounted on"
+"    /dev/sda2      btrfs  744G  237G  507G  32% /home"
+
+" Additional information from dmidecode follows.  WARNING: Use caution when you interpret"
+" this section. The 'dmidecode' program reads system data which is ""intended to allow"
+" hardware to be accurately determined"", but the intent may not be met, as there are"
+" frequent changes to hardware, firmware, and the ""DMTF SMBIOS"" standard."
+"   BIOS Lenovo -[TEE119R-1.22]- 02/06/2018"
+"   Memory:"
+"    12x Hynix HMA84GR7AFR4N-VK 32 GB 2 rank 2666"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CC  519.lbm_r(base) 538.imagick_r(base, peak) 544.nab_r(base)
+"
+------------------------------------------------------------------------------
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   519.lbm_r(peak) 544.nab_r(peak)
+"
+------------------------------------------------------------------------------
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CXXC 508.namd_r(base) 510.parest_r(base)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CXXC 508.namd_r(peak) 510.parest_r(peak)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  511.povray_r(base) 526.blender_r(base)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   511.povray_r(peak) 526.blender_r(peak)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  507.cactuBSSN_r(base)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"FC   507.cactuBSSN_r(peak)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  503.bwaves_r(base, peak) 549.fotonik3d_r(base, peak) 554.roms_r(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"FC   554.roms_r(peak)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  521.wrf_r(base) 527.cam4_r(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   521.wrf_r(peak) 527.cam4_r(peak)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+503.bwaves_r," No flags used"
+507.cactuBSSN_r," No flags used"
+508.namd_r," No flags used"
+510.parest_r," No flags used"
+511.povray_r," No flags used"
+519.lbm_r," No flags used"
+521.wrf_r," No flags used"
+526.blender_r," No flags used"
+527.cam4_r," No flags used"
+538.imagick_r," No flags used"
+544.nab_r," No flags used"
+549.fotonik3d_r," No flags used"
+554.roms_r," No flags used"
+
+"Base Compiler Invocation"
+503.bwaves_r," ifort"," ifort"
+507.cactuBSSN_r," icpc"," icc"," icpc"," ifort"
+508.namd_r," icpc"," icpc"
+510.parest_r," icpc"," icpc"
+511.povray_r," icpc"," icc"," icpc"
+519.lbm_r," icc"," icc"
+521.wrf_r," ifort"," icc"," ifort"
+526.blender_r," icpc"," icc"," icpc"
+527.cam4_r," ifort"," icc"," ifort"
+538.imagick_r," icc"," icc"
+544.nab_r," icc"," icc"
+549.fotonik3d_r," ifort"," ifort"
+554.roms_r," ifort"," ifort"
+
+"Base Portability Flags"
+503.bwaves_r," -DSPEC_LP64"
+507.cactuBSSN_r," -DSPEC_LP64"
+508.namd_r," -DSPEC_LP64"
+510.parest_r," -DSPEC_LP64"
+511.povray_r," -DSPEC_LP64"
+519.lbm_r," -DSPEC_LP64"
+521.wrf_r," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"
+526.blender_r," -DSPEC_LP64"," -DSPEC_LINUX"," -funsigned-char"
+527.cam4_r," -DSPEC_LP64"," -DSPEC_CASE_FLAG"
+538.imagick_r," -DSPEC_LP64"
+544.nab_r," -DSPEC_LP64"
+549.fotonik3d_r," -DSPEC_LP64"
+554.roms_r," -DSPEC_LP64"
+
+"Base Optimization Flags"
+503.bwaves_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+507.cactuBSSN_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+508.namd_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+510.parest_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+511.povray_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+519.lbm_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+521.wrf_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+526.blender_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+527.cam4_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+538.imagick_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+544.nab_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+549.fotonik3d_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+554.roms_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+
+"Base Other Flags"
+503.bwaves_r," -m64"," -m64"
+507.cactuBSSN_r," -m64"," -m64"," -std=c11"," -m64"," -m64"
+508.namd_r," -m64"," -m64"
+510.parest_r," -m64"," -m64"
+511.povray_r," -m64"," -m64"," -std=c11"," -m64"
+519.lbm_r," -m64"," -std=c11"," -m64"," -std=c11"
+521.wrf_r," -m64"," -m64"," -std=c11"," -m64"
+526.blender_r," -m64"," -m64"," -std=c11"," -m64"
+527.cam4_r," -m64"," -m64"," -std=c11"," -m64"
+538.imagick_r," -m64"," -std=c11"," -m64"," -std=c11"
+544.nab_r," -m64"," -std=c11"," -m64"," -std=c11"
+549.fotonik3d_r," -m64"," -m64"
+554.roms_r," -m64"," -m64"
+
+"Base Forbidden Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Base Unknown Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Runtime Environment"
+503.bwaves_r," No flags used"
+507.cactuBSSN_r," No flags used"
+508.namd_r," No flags used"
+510.parest_r," No flags used"
+511.povray_r," No flags used"
+519.lbm_r," No flags used"
+521.wrf_r," No flags used"
+526.blender_r," No flags used"
+527.cam4_r," No flags used"
+538.imagick_r," No flags used"
+544.nab_r," No flags used"
+549.fotonik3d_r," No flags used"
+554.roms_r," No flags used"
+
+"Peak Compiler Invocation"
+503.bwaves_r," ifort"," ifort"
+507.cactuBSSN_r," icpc"," icc"," icpc"," ifort"
+508.namd_r," icpc"," icpc"
+510.parest_r," icpc"," icpc"
+511.povray_r," icpc"," icc"," icpc"
+519.lbm_r," icc"," icc"
+521.wrf_r," ifort"," icc"," ifort"
+526.blender_r," icpc"," icc"," icpc"
+527.cam4_r," ifort"," icc"," ifort"
+538.imagick_r," icc"," icc"
+544.nab_r," icc"," icc"
+549.fotonik3d_r," ifort"," ifort"
+554.roms_r," ifort"," ifort"
+
+"Peak Portability Flags"
+503.bwaves_r," -DSPEC_LP64"
+507.cactuBSSN_r," -DSPEC_LP64"
+508.namd_r," -DSPEC_LP64"
+510.parest_r," -DSPEC_LP64"
+511.povray_r," -DSPEC_LP64"
+519.lbm_r," -DSPEC_LP64"
+521.wrf_r," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"
+526.blender_r," -DSPEC_LP64"," -DSPEC_LINUX"," -funsigned-char"
+527.cam4_r," -DSPEC_LP64"," -DSPEC_CASE_FLAG"
+538.imagick_r," -DSPEC_LP64"
+544.nab_r," -DSPEC_LP64"
+549.fotonik3d_r," -DSPEC_LP64"
+554.roms_r," -DSPEC_LP64"
+
+"Peak Optimization Flags"
+503.bwaves_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+507.cactuBSSN_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+508.namd_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+510.parest_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+511.povray_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+519.lbm_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+521.wrf_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+526.blender_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+527.cam4_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+538.imagick_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"
+544.nab_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"
+549.fotonik3d_r," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+554.roms_r," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX2"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -qopt-prefetch"," -ffinite-math-only"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"
+
+"Peak Other Flags"
+503.bwaves_r," -m64"," -m64"
+507.cactuBSSN_r," -m64"," -m64"," -std=c11"," -m64"," -m64"
+508.namd_r," -m64"," -m64"
+510.parest_r," -m64"," -m64"
+511.povray_r," -m64"," -m64"," -std=c11"," -m64"
+519.lbm_r," -m64"," -std=c11"," -m64"," -std=c11"
+521.wrf_r," -m64"," -m64"," -std=c11"," -m64"
+526.blender_r," -m64"," -m64"," -std=c11"," -m64"
+527.cam4_r," -m64"," -m64"," -std=c11"," -m64"
+538.imagick_r," -m64"," -std=c11"," -m64"," -std=c11"
+544.nab_r," -m64"," -std=c11"," -m64"," -std=c11"
+549.fotonik3d_r," -m64"," -m64"
+554.roms_r," -m64"," -m64"
+
+"Peak Forbidden Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+
+"Peak Unknown Flags"
+503.bwaves_r
+507.cactuBSSN_r
+508.namd_r
+510.parest_r
+511.povray_r
+519.lbm_r
+521.wrf_r
+526.blender_r
+527.cam4_r
+538.imagick_r
+544.nab_r
+549.fotonik3d_r
+554.roms_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.2.
+"Result run on","2018-04-30 15:29:56-0400."
+"Report generated on","2018-10-31 17:59:22","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2018-06-12.

@@ -1,0 +1,437 @@
+valid,1
+
+"SPEC CPU2017 Floating Point Speed Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+603.bwaves_s,20,171.422957,344.166272,0,S,,,,,,"refspeed(ref) iteration #1"
+603.bwaves_s,20,171.430145,344.151841,1,S,,,,,,"refspeed(ref) iteration #2"
+603.bwaves_s,20,171.944514,343.122317,0,S,,,,,,"refspeed(ref) iteration #3"
+607.cactuBSSN_s,20,176.205798,94.605286,1,S,,,,,,"refspeed(ref) iteration #1"
+607.cactuBSSN_s,20,176.679745,94.351506,0,S,,,,,,"refspeed(ref) iteration #2"
+607.cactuBSSN_s,20,175.811866,94.817263,0,S,,,,,,"refspeed(ref) iteration #3"
+619.lbm_s,20,150.376484,34.832574,0,S,,,,,,"refspeed(ref) iteration #1"
+619.lbm_s,20,155.896327,33.599252,0,S,,,,,,"refspeed(ref) iteration #2"
+619.lbm_s,20,150.708122,34.755924,1,S,,,,,,"refspeed(ref) iteration #3"
+621.wrf_s,20,229.49727,57.630315,1,S,,,,,,"refspeed(ref) iteration #1"
+621.wrf_s,20,228.761014,57.815795,0,S,,,,,,"refspeed(ref) iteration #2"
+621.wrf_s,20,230.068998,57.487102,0,S,,,,,,"refspeed(ref) iteration #3"
+627.cam4_s,20,188.475742,47.024619,0,S,,,,,,"refspeed(ref) iteration #1"
+627.cam4_s,20,189.108092,46.867376,0,S,,,,,,"refspeed(ref) iteration #2"
+627.cam4_s,20,189.007162,46.892403,1,S,,,,,,"refspeed(ref) iteration #3"
+628.pop2_s,20,208.560543,56.928314,0,S,,,,,,"refspeed(ref) iteration #1"
+628.pop2_s,20,210.581061,56.382088,0,S,,,,,,"refspeed(ref) iteration #2"
+628.pop2_s,20,208.824171,56.856445,1,S,,,,,,"refspeed(ref) iteration #3"
+638.imagick_s,20,242.965882,59.374592,0,S,,,,,,"refspeed(ref) iteration #1"
+638.imagick_s,20,243.087223,59.344954,1,S,,,,,,"refspeed(ref) iteration #2"
+638.imagick_s,20,243.344356,59.282246,0,S,,,,,,"refspeed(ref) iteration #3"
+644.nab_s,20,166.811573,104.740934,0,S,,,,,,"refspeed(ref) iteration #1"
+644.nab_s,20,166.725392,104.795075,0,S,,,,,,"refspeed(ref) iteration #2"
+644.nab_s,20,166.774171,104.764424,1,S,,,,,,"refspeed(ref) iteration #3"
+649.fotonik3d_s,20,134.144924,67.956354,0,S,,,,,,"refspeed(ref) iteration #1"
+649.fotonik3d_s,20,133.640577,68.212815,0,S,,,,,,"refspeed(ref) iteration #2"
+649.fotonik3d_s,20,133.809115,68.126899,1,S,,,,,,"refspeed(ref) iteration #3"
+654.roms_s,20,216.011772,72.889546,0,S,,,,,,"refspeed(ref) iteration #1"
+654.roms_s,20,215.107204,73.196061,0,S,,,,,,"refspeed(ref) iteration #2"
+654.roms_s,20,215.661455,73.007947,1,S,,,,,,"refspeed(ref) iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Threads","Base Run Time","Base Ratio","Base Selected","Base Status","Peak # Threads","Peak Run Time","Peak Ratio","Peak Selected","Peak Status",Description
+603.bwaves_s,20,171.430145,344.151841,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+607.cactuBSSN_s,20,176.205798,94.605286,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+619.lbm_s,20,150.708122,34.755924,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+621.wrf_s,20,229.49727,57.630315,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+627.cam4_s,20,189.007162,46.892403,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+628.pop2_s,20,208.824171,56.856445,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+638.imagick_s,20,243.087223,59.344954,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+644.nab_s,20,166.774171,104.764424,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+649.fotonik3d_s,20,133.809115,68.126899,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+654.roms_s,20,215.661455,73.007947,1,S,,,,,NR,"SelectedIteration (base #3; peak NR)"
+
+SPECspeed2017_fp_base,74.653709,,74.653709
+SPECspeed2017_fp_peak,"Not Run",,,,,,,"Not Run"
+
+"Run number:",020.0
+"runcpu command:","/home/cpu2017/bin/harness/runcpu --define default-platform-flags --configfile ic18.0-lin-core-avx2-speed-20170901.cfg --define cores=20 --tune base --output_format all --define drop_caches --nopower --runmode speed --tune base --size refspeed fpspeed"
+"output root:","not used"
+
+"Hardware Vendor:","Hewlett Packard Enterprise"
+"Hardware Model:","ProLiant DL380 Gen10 (2.40 GHz, Intel Xeon Gold 5115)"
+"Date tested:",Nov-2017
+"CPU2017 License:",3
+"Test sponsor:",HPE
+"Tested by:",HPE
+"Hardware avail:",Oct-2017
+"Software avail:",Sep-2017
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon Gold 5115"
+"  Max MHz.",3200
+"  Nominal",2400
+Enabled,"20 cores, 2 chips"
+Orderable,"1, 2 chip(s)"
+"Cache L1","32 KB I + 32 KB D on chip per core"
+"  L2","1 MB I+D on chip per core"
+"  L3","13.75 MB I+D on chip per chip"
+"  Other",None
+Memory,"192 GB (24 x 8 GB 2Rx8 PC4-2666V-R,"
+,"running at 2400)"
+Storage,"1 x 960 GB SATA SSD, RAID 0"
+Other,None
+
+SOFTWARE
+
+OS,"Red Hat Enterprise Linux Server release 7.3"
+,(Maipo)
+,"Kernel 3.10.0-514.el7.x86_64"
+Compiler,"C/C++: Version 18.0.0.128 of Intel C/C++"
+,"Compiler for Linux;"
+,"Fortran: Version 18.0.0.128 of Intel Fortran"
+,"Compiler for Linux"
+Parallel,Yes
+Firmware,"HPE BIOS Version U30 released Oct-2017 (tested with U30 9/29/2017)"
+"File System",xfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers","Not Applicable"
+Other,None
+
+"Operating System Notes"
+
+" Stack size set to unlimited using ""ulimit -s unlimited"""
+" Transparent Huge Pages enabled by default"
+" Filesystem page cache cleared with:"
+"  shell invocation of 'sync; echo 3 > /proc/sys/vm/drop_caches' prior to run"
+" irqbalance disabled with ""systemctl stop irqbalance"""
+" tuned profile set wtih ""tuned-adm profile throughput-performance"""
+
+"General Notes"
+
+"Environment variables set by runcpu before the start of the run:"
+"KMP_AFFINITY = ""granularity=core,compact"""
+"LD_LIBRARY_PATH = ""/home/cpu2017/lib/ia32:/home/cpu2017/lib/intel64:/home/cpu2017/je5.0.1-32:/home/cpu2017/je5.0.1-64"""
+"OMP_STACKSIZE = ""192M"""
+
+" Binaries compiled on a system with 1x Intel Core i7-4790 CPU + 32GB RAM"
+" memory using Redhat Enterprise Linux 7.4"
+
+"Platform Notes"
+
+"BIOS Configuration:"
+" Intel Hyperthreading set to Disabled"
+" Thermal Configuration set to Maximum Cooling"
+" LLC Prefetch set to Enabled"
+" LLC Dead Line Allocation set to Disabled"
+" Memory Patrol Scrubbing set to Disabled"
+" Workload Profile set to General Peak Frequency Compute"
+"  Energy/Performance Bias set to Maximum Performance"
+" Workload Profile set to Custom"
+"  NUMA Group Size Optimization set to Flat"
+" Sysinfo program /home/cpu2017/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on DL380Gen10-2 Fri Nov 17 05:55:16 2017"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) Gold 5115 CPU @ 2.40GHz"
+"       2  ""physical id""s (chips)"
+"       20 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent. The following"
+"    excerpts from /proc/cpuinfo might not be reliable.  Use with caution.)"
+"       cpu cores : 10"
+"       siblings  : 10"
+"       physical 0: cores 0 1 2 3 4 8 9 10 11 12"
+"       physical 1: cores 0 1 2 3 4 8 9 10 11 12"
+
+" From lscpu:"
+"      Architecture:          x86_64"
+"      CPU op-mode(s):        32-bit, 64-bit"
+"      Byte Order:            Little Endian"
+"      CPU(s):                20"
+"      On-line CPU(s) list:   0-19"
+"      Thread(s) per core:    1"
+"      Core(s) per socket:    10"
+"      Socket(s):             2"
+"      NUMA node(s):          2"
+"      Vendor ID:             GenuineIntel"
+"      CPU family:            6"
+"      Model:                 85"
+"      Model name:            Intel(R) Xeon(R) Gold 5115 CPU @ 2.40GHz"
+"      Stepping:              4"
+"      CPU MHz:               2400.000"
+"      BogoMIPS:              4805.34"
+"      Virtualization:        VT-x"
+"      L1d cache:             32K"
+"      L1i cache:             32K"
+"      L2 cache:              1024K"
+"      L3 cache:              14080K"
+"      NUMA node0 CPU(s):     0-9"
+"      NUMA node1 CPU(s):     10-19"
+
+" /proc/cpuinfo cache data"
+"    cache size : 14080 KB"
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+
+" From /proc/meminfo"
+"    MemTotal:       197574300 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" From /etc/*release* /etc/*version*"
+"    os-release:"
+"       NAME=""Red Hat Enterprise Linux Server"""
+"       VERSION=""7.3 (Maipo)"""
+"       ID=""rhel"""
+"       ID_LIKE=""fedora"""
+"       VERSION_ID=""7.3"""
+"       PRETTY_NAME=""Red Hat Enterprise Linux Server 7.3 (Maipo)"""
+"       ANSI_COLOR=""0;31"""
+"       CPE_NAME=""cpe:/o:redhat:enterprise_linux:7.3:GA:server"""
+"    redhat-release: Red Hat Enterprise Linux Server release 7.3 (Maipo)"
+"    system-release: Red Hat Enterprise Linux Server release 7.3 (Maipo)"
+"    system-release-cpe: cpe:/o:redhat:enterprise_linux:7.3:ga:server"
+
+" uname -a:"
+"    Linux DL380Gen10-2 3.10.0-514.el7.x86_64 #1 SMP Wed Oct 19 11:24:13 EDT 2016 x86_64"
+"    x86_64 x86_64 GNU/Linux"
+
+" run-level 3 Nov 17 05:51"
+
+" SPEC is set to: /home/cpu2017"
+"    Filesystem            Type  Size  Used Avail Use% Mounted on"
+"    /dev/mapper/rhel-home xfs   504G   30G  474G   6% /home"
+
+" Additional information from dmidecode follows.  WARNING: Use caution when you interpret"
+" this section. The 'dmidecode' program reads system data which is ""intended to allow"
+" hardware to be accurately determined"", but the intent may not be met, as there are"
+" frequent changes to hardware, firmware, and the ""DMTF SMBIOS"" standard."
+"   BIOS HPE U30 09/29/2017"
+"   Memory:"
+"    24x UNKNOWN NOT AVAILABLE 8 GB 2 rank 2666, configured at 2400"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CC  619.lbm_s(base) 638.imagick_s(base) 644.nab_s(base)
+"
+------------------------------------------------------------------------------
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  607.cactuBSSN_s(base)
+"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  603.bwaves_s(base) 649.fotonik3d_s(base) 654.roms_s(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  621.wrf_s(base) 627.cam4_s(base) 628.pop2_s(base)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+"icc (ICC) 18.0.0 20170811"
+"Copyright (C) 1985-2017 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+603.bwaves_s," No flags used"
+607.cactuBSSN_s," No flags used"
+619.lbm_s," No flags used"
+621.wrf_s," No flags used"
+627.cam4_s," No flags used"
+628.pop2_s," No flags used"
+638.imagick_s," No flags used"
+644.nab_s," No flags used"
+649.fotonik3d_s," No flags used"
+654.roms_s," No flags used"
+
+"Base Compiler Invocation"
+603.bwaves_s," ifort"," ifort"
+607.cactuBSSN_s," icpc"," icc"," icpc"," ifort"
+619.lbm_s," icc"," icc"
+621.wrf_s," ifort"," icc"," ifort"
+627.cam4_s," ifort"," icc"," ifort"
+628.pop2_s," ifort"," icc"," ifort"
+638.imagick_s," icc"," icc"
+644.nab_s," icc"," icc"
+649.fotonik3d_s," ifort"," ifort"
+654.roms_s," ifort"," ifort"
+
+"Base Portability Flags"
+603.bwaves_s," -DSPEC_LP64"
+607.cactuBSSN_s," -DSPEC_LP64"
+619.lbm_s," -DSPEC_LP64"
+621.wrf_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"
+627.cam4_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"
+628.pop2_s," -DSPEC_LP64"," -DSPEC_CASE_FLAG"," -convert big_endian"," -assume byterecl"
+638.imagick_s," -DSPEC_LP64"
+644.nab_s," -DSPEC_LP64"
+649.fotonik3d_s," -DSPEC_LP64"
+654.roms_s," -DSPEC_LP64"
+
+"Base Optimization Flags"
+603.bwaves_s," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+607.cactuBSSN_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -nostandard-realloc-lhs"," -align array32byte"
+619.lbm_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"
+621.wrf_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+627.cam4_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+628.pop2_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+638.imagick_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"
+644.nab_s," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -DSPEC_OPENMP"
+649.fotonik3d_s," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+654.roms_s," -DSPEC_OPENMP"," -xCORE-AVX2"," -ipo"," -O3"," -no-prec-div"," -qopt-prefetch"," -ffinite-math-only"," -qopt-mem-layout-trans=3"," -qopenmp"," -nostandard-realloc-lhs"," -align array32byte"
+
+"Base Other Flags"
+603.bwaves_s," -m64"," -m64"
+607.cactuBSSN_s," -m64"," -m64"," -std=c11"," -m64"," -m64"
+619.lbm_s," -m64"," -std=c11"," -m64"," -std=c11"
+621.wrf_s," -m64"," -m64"," -std=c11"," -m64"
+627.cam4_s," -m64"," -m64"," -std=c11"," -m64"
+628.pop2_s," -m64"," -m64"," -std=c11"," -m64"
+638.imagick_s," -m64"," -std=c11"," -m64"," -std=c11"
+644.nab_s," -m64"," -std=c11"," -m64"," -std=c11"
+649.fotonik3d_s," -m64"," -m64"
+654.roms_s," -m64"," -m64"
+
+"Base Forbidden Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Base Unknown Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Runtime Environment"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Compiler Invocation"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Portability Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Optimization Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Other Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Forbidden Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+
+"Peak Unknown Flags"
+603.bwaves_s
+607.cactuBSSN_s
+619.lbm_s
+621.wrf_s
+627.cam4_s
+628.pop2_s
+638.imagick_s
+644.nab_s
+649.fotonik3d_s
+654.roms_s
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.2.
+"Result run on","2017-11-17 05:55:15-0500."
+"Report generated on","2018-10-31 14:56:01","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2017-12-12.

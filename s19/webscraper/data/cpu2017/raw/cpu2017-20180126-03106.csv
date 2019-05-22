@@ -1,0 +1,446 @@
+valid,1
+
+"SPEC CPU2017 Integer Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,128,1438.420368,141.66656,0,S,,,,,,"refrate(ref) iteration #1"
+500.perlbench_r,128,1441.074781,141.405568,1,S,,,,,,"refrate(ref) iteration #2"
+502.gcc_r,128,906.132118,200.023808,1,S,,,,,,"refrate(ref) iteration #1"
+502.gcc_r,128,902.376588,200.85632,0,S,,,,,,"refrate(ref) iteration #2"
+505.mcf_r,128,916.624072,225.662848,1,S,,,,,,"refrate(ref) iteration #1"
+505.mcf_r,128,915.59482,225.916544,0,S,,,,,,"refrate(ref) iteration #2"
+520.omnetpp_r,128,1710.37341,98.186752,1,S,,,,,,"refrate(ref) iteration #1"
+520.omnetpp_r,128,1709.92664,98.212352,0,S,,,,,,"refrate(ref) iteration #2"
+523.xalancbmk_r,128,1024.459807,131.940736,1,S,,,,,,"refrate(ref) iteration #1"
+523.xalancbmk_r,128,1023.388595,132.078848,0,S,,,,,,"refrate(ref) iteration #2"
+525.x264_r,128,1587.33546,141.197568,0,S,,,,,,"refrate(ref) iteration #1"
+525.x264_r,128,1588.577819,141.087232,1,S,,,,,,"refrate(ref) iteration #2"
+531.deepsjeng_r,128,924.967844,158.587136,0,S,,,,,,"refrate(ref) iteration #1"
+531.deepsjeng_r,128,927.152536,158.213504,1,S,,,,,,"refrate(ref) iteration #2"
+541.leela_r,128,1014.88088,208.860032,1,S,,,,,,"refrate(ref) iteration #1"
+541.leela_r,128,1010.287395,209.809664,0,S,,,,,,"refrate(ref) iteration #2"
+548.exchange2_r,128,1072.557997,312.673024,0,S,,,,,,"refrate(ref) iteration #1"
+548.exchange2_r,128,1074.429411,312.128512,1,S,,,,,,"refrate(ref) iteration #2"
+557.xz_r,128,1035.757003,133.467648,0,S,,,,,,"refrate(ref) iteration #1"
+557.xz_r,128,1035.855609,133.454848,1,S,,,,,,"refrate(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,128,1441.074781,141.405568,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+502.gcc_r,128,906.132118,200.023808,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+505.mcf_r,128,916.624072,225.662848,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+520.omnetpp_r,128,1710.37341,98.186752,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+523.xalancbmk_r,128,1024.459807,131.940736,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+525.x264_r,128,1588.577819,141.087232,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+531.deepsjeng_r,128,927.152536,158.213504,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+541.leela_r,128,1014.88088,208.860032,1,S,,,,,NR,"SelectedIteration (base #1; peak NR)"
+548.exchange2_r,128,1074.429411,312.128512,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+557.xz_r,128,1035.855609,133.454848,1,S,,,,,NR,"SelectedIteration (base #2; peak NR)"
+
+SPECrate2017_int_base,166.176438,,166.176438
+SPECrate2017_int_peak,"Not Run",,,,,,,"Not Run"
+
+"Run number:",008.0
+"runcpu command:","/home/build/cpu2017/bin/harness/runcpu --configfile kachkin-xl-linux-ppc64le.cfg --tune base --reportable --iterations 2 --nopower --runmode rate --tune base --size refrate intrate"
+"output root:","not used"
+
+"Hardware Vendor:",Yadro
+"Hardware Model:","Yadro Vesnin (3.32 GHz, 32 cores, RHEL 7.2)"
+"Date tested:",Dec-2017
+"CPU2017 License:",4813
+"Test sponsor:",Yadro
+"Tested by:",Yadro
+"Hardware avail:",Dec-2017
+"Software avail:",Dec-2016
+
+
+HARDWARE
+
+"CPU Name","IBM POWER8"
+"  Max MHz.",3857
+"  Nominal",3325
+Enabled,"32 cores, 4 chips, 4 threads/core"
+Orderable,"1-4 chips"
+"Cache L1","32 KB I + 64 KB D on chip per core"
+"  L2","512 KB I+D on chip per core"
+"  L3","8 MB I+D on chip per core"
+"  Other","16 MB I+D off chip per 8 DIMMs"
+Memory,"8 TB (128 x 64 GB 4Rx4 PC4 - 2400T,"
+,"running at 1600)"
+Storage,"2 x 2.9 TB NVMe SSD"
+Other,None
+
+SOFTWARE
+
+OS,"RHEL 7.2"
+,"Red Hat Enterprise Linux Server release 7.2"
+,(Maipo)
+,3.10.0-327.el7.ppc64le
+Compiler,"C/C++: Version 13.1.5 of IBM XL C/C++;"
+,"Fortran: Version 15.1.5 of IBM XL Fortran"
+Parallel,No
+Firmware,"Version 1.19 of OpenPOWER Firmware. Released Nov-2017."
+"File System",xfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers","Not Applicable"
+Other,None
+
+"General Notes"
+
+"""ppc64_cpu --smt=4"" used to set SMT4 mode (see flags file for details)."
+
+"Binaries were compiled on a system with 4x POWER8 chips + 4 TB Memory using rhel 7.2"
+
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"No: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+
+"This benchmark result is intended to provide perspective on past performance using"
+"the historical hardware and/or software described on this result page."
+
+"The system as described on this result page was formerly generally available.  At the time of"
+"this publication, it may not be shipping, and/or may not be supported, and/or may fail"
+"to meet other tests of General Availability described in the SPEC OSG Policy document,"
+http://www.spec.org/osg/policy.html
+
+"This measured result may not be representative of the result that would be measured were this"
+"benchmark run with hardware and software available as of the publication date."
+
+"Platform Notes"
+
+" Sysinfo program /home/build/cpu2017/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on localhost.localdomain Sun Dec 17 23:10:41 2017"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"   'clock : ' reported by /proc/cpuinfo may not be reliable. Use with caution."
+"    cpu : POWER8 (raw), altivec supported"
+"    clock : 3857.000000MHz"
+"    machine : PowerNV 0000000000000000"
+"    model : 0000000000000000"
+"    platform : PowerNV"
+"    revision : 2.0 (pvr 004d 0200)"
+
+" Number of cores, from 'ppc64_cpu --cores-present' :  32"
+
+" WARNING regarding the output of 'lscfg':  this utility reports resources for the system,"
+" not the current partition.  Therefore, for a partition that has a subset of the full"
+" system resources:"
+"    (1) The tester may need to adjust the sysinfo-supplied 'hw_ncores'."
+"    (2) The tester may need to adjust the sysinfo-supplied 'hw_nchips'."
+
+" Processors, from lscfg -vp"
+"    Node:  processor@0"
+"    Node:  processor@8"
+"    Node:  processor@10"
+"    Node:  processor@18"
+"       128 ""processors"""
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+"   available: 4 nodes (0,8,16,24)"
+"   node 0 cpus: 0 1 2 3 8 9 10 11 16 17 18 19 24 25 26 27 32 33 34 35 40 41 42 43 48 49 50"
+"   51 56 57 58 59"
+"   node 0 size: 2097152 MB"
+"   node 0 free: 2013804 MB"
+"   node 8 cpus: 64 65 66 67 72 73 74 75 80 81 82 83 88 89 90 91 96 97 98 99 104 105 106"
+"   107 112 113 114 115 120 121 122 123"
+"   node 8 size: 2097152 MB"
+"   node 8 free: 1994142 MB"
+"   node 16 cpus: 128 129 130 131 136 137 138 139 144 145 146 147 152 153 154 155 160 161"
+"   162 163 168 169 170 171 176 177 178 179 184 185 186 187"
+"   node 16 size: 2097152 MB"
+"   node 16 free: 1996680 MB"
+"   node 24 cpus: 192 193 194 195 200 201 202 203 208 209 210 211 216 217 218 219 224 225"
+"   226 227 232 233 234 235 240 241 242 243 248 249 250 251"
+"   node 24 size: 2097152 MB"
+"   node 24 free: 2010028 MB"
+"   node distances:"
+"   node   0   8  16  24"
+"     0:  10  40  40  40"
+"     8:  40  10  40  40"
+"    16:  40  40  10  40"
+"    24:  40  40  40  10"
+
+" From /proc/meminfo"
+"    MemTotal:       8569843072 kB"
+"    HugePages_Total:   16000"
+"    Hugepagesize:      16384 kB"
+
+" From /etc/*release* /etc/*version*"
+"    os-release:"
+"       NAME=""Red Hat Enterprise Linux Server"""
+"       VERSION=""7.2 (Maipo)"""
+"       ID=""rhel"""
+"       ID_LIKE=""fedora"""
+"       VERSION_ID=""7.2"""
+"       PRETTY_NAME=""Red Hat Enterprise Linux"""
+"       ANSI_COLOR=""0;31"""
+"       CPE_NAME=""cpe:/o:redhat:enterprise_linux:7.2:GA:server"""
+"    redhat-release: Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+"    system-release: Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+"    system-release-cpe: cpe:/o:redhat:enterprise_linux:7.2:ga:server"
+
+" uname -a:"
+"    Linux localhost.localdomain 3.10.0-327.el7.ppc64le #1 SMP Thu Oct 29 17:31:13 EDT 2015"
+"    ppc64le ppc64le ppc64le GNU/Linux"
+
+" run-level 3 2017-12-17 21:36"
+
+" SPEC is set to: /home/build/cpu2017"
+"    Filesystem            Type  Size  Used Avail Use% Mounted on"
+"    /dev/mapper/rhel-home xfs   2.9T  688G  2.2T  24% /home"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CXXC 520.omnetpp_r(base) 523.xalancbmk_r(base) 531.deepsjeng_r(base)"
+"      541.leela_r(base)"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlC: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CC  500.perlbench_r(base) 502.gcc_r(base) 505.mcf_r(base) 525.x264_r(base)"
+"      557.xz_r(base)"
+------------------------------------------------------------------------------
+"IBM XL C/C++ for Linux, V13.1.5 (Community Edition)"
+"Version: 13.01.0005.0001"
+"Driver Version: 13.1.5(C/C++) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"C/C++ Front End Version: 13.1.5(C/C++) Level: 161129 ID:"
+"  _XUlJoJsoEeabgOJ9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlC/13.1.5/bin/.orig/xlc: note: XL C/C++ Community Edition is a"
+"  no-charge product and does not include official IBM support. You can"
+"  provide feedback at the XL on POWER C/C++ Community Edition forum"
+"  (http://ibm.biz/xlcpp-linux-ce). For information about a fully supported XL"
+"  C/C++ compiler, visit XL C/C++ for Linux (http://ibm.biz/xlcpp-linux)."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  548.exchange2_r(base)
+"
+------------------------------------------------------------------------------
+"IBM XL Fortran for Linux, V15.1.5 (Community Edition)"
+"Version: 15.01.0005.0001"
+"Driver Version: 15.1.5(Fortran) Level: 161202 ID: _FJC-kLh6EeabvOJ9E16jqw"
+"Fortran Front End and Run Time Version: 15.1.5(Fortran) Level: 161202 ID:"
+"  _i9fBcbirEeabvOJ9E16jqw"
+"Fortran Transformer Version: 15.1.5(Fortran) Level: 161129 ID:"
+"  _dYoGZafDEeabg-J9E16jqw"
+"High-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161201"
+"  ID: _LqhNgLg4EeabvOJ9E16jqw"
+"Low-Level Optimizer Version: 13.1.5(C/C++) and 15.1.5(Fortran) Level: 161129"
+"  ID: _dlqc0afDEeabg-J9E16jqw"
+"/opt/ibm/xlf/15.1.5/bin/.orig/xlf95: 1501-303 (I) XL Fortran Community"
+"  Edition is a no-charge product and does not include official IBM support."
+"  You can provide feedback at the XL on POWER Fortran Community Edition forum"
+"  (http://ibm.biz/xlfortran-linux-ce). For information about a fully"
+"  supported XL Fortran compiler, visit XL Fortran for Linux"
+"  (http://ibm.biz/xlfortran-linux)."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Compiler Invocation"
+500.perlbench_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+502.gcc_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+505.mcf_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+520.omnetpp_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+523.xalancbmk_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+525.x264_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+531.deepsjeng_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+541.leela_r," /opt/ibm/xlC/13.1.5/bin/xlC"," /opt/ibm/xlC/13.1.5/bin/xlC"
+548.exchange2_r," /opt/ibm/xlf/15.1.5/bin/xlf95"," /opt/ibm/xlf/15.1.5/bin/xlf95"
+557.xz_r," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"," /opt/ibm/xlC/13.1.5/bin/xlc"," -qlanglvl=extc99"
+
+"Base Portability Flags"
+500.perlbench_r," -DSPEC_LINUX_PPC_LE"," -DSPEC_LP64"
+502.gcc_r," -DSPEC_LP64"
+505.mcf_r," -DSPEC_LP64"
+520.omnetpp_r," -DSPEC_LP64"
+523.xalancbmk_r," -DSPEC_LINUX"," -DSPEC_LP64"
+525.x264_r," -DSPEC_LP64"
+531.deepsjeng_r," -DSPEC_LP64"
+541.leela_r," -DSPEC_LP64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -DSPEC_LP64"
+
+"Base Optimization Flags"
+500.perlbench_r," -Wl,-z,muldefs"," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qalias=noansi"
+502.gcc_r," -Wl,-z,muldefs"," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qalias=noansi"
+505.mcf_r," -Wl,-z,muldefs"," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qalias=noansi"
+520.omnetpp_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+523.xalancbmk_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+525.x264_r," -Wl,-z,muldefs"," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qalias=noansi"
+531.deepsjeng_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+541.leela_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+548.exchange2_r," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"
+557.xz_r," -Wl,-z,muldefs"," -O5"," -q64"," -qinline=40"," -qipa=threads"," -qsimd=noauto"," -qalias=noansi"
+
+"Base Other Flags"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Base Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Runtime Environment"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Compiler Invocation"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Portability Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Optimization Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Other Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.1.
+"Result run on","2017-12-17 15:10:40-0500."
+"Report generated on","2018-10-31 17:14:08","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2018-03-08.

@@ -1,0 +1,492 @@
+valid,1
+
+"SPEC CPU2017 Integer Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,112,861.44739,206.981824,0,S,112,724.194671,246.210048,0,S,"refrate(ref) iteration #1"
+500.perlbench_r,112,862.277303,206.782688,1,S,112,725.105543,245.900704,1,S,"refrate(ref) iteration #2"
+500.perlbench_r,112,863.454417,206.500784,0,S,112,726.454564,245.44408,0,S,"refrate(ref) iteration #3"
+502.gcc_r,112,761.353187,208.302752,0,S,112,607.979101,260.851024,0,S,"refrate(ref) iteration #1"
+502.gcc_r,112,753.370199,210.510048,0,S,112,607.429871,261.086896,1,S,"refrate(ref) iteration #2"
+502.gcc_r,112,758.713986,209.027392,1,S,112,607.378609,261.10896,0,S,"refrate(ref) iteration #3"
+505.mcf_r,112,616.196646,293.724368,0,S,112,626.27198,288.999088,0,S,"refrate(ref) iteration #1"
+505.mcf_r,112,626.251542,289.008496,0,S,112,627.636192,288.37088,0,S,"refrate(ref) iteration #2"
+505.mcf_r,112,624.875274,289.644992,1,S,112,627.213565,288.5652,1,S,"refrate(ref) iteration #3"
+520.omnetpp_r,112,923.319786,159.147408,0,S,112,994.790732,147.71344,0,S,"refrate(ref) iteration #1"
+520.omnetpp_r,112,935.309765,157.107328,1,S,112,996.238938,147.498736,1,S,"refrate(ref) iteration #2"
+520.omnetpp_r,112,956.385044,153.645184,0,S,112,997.429053,147.322784,0,S,"refrate(ref) iteration #3"
+523.xalancbmk_r,112,535.703159,220.778992,0,S,112,422.263741,280.090384,1,S,"refrate(ref) iteration #1"
+523.xalancbmk_r,112,541.245006,218.518384,0,S,112,422.24879,280.10024,0,S,"refrate(ref) iteration #2"
+523.xalancbmk_r,112,539.704392,219.142224,1,S,112,422.49481,279.937168,0,S,"refrate(ref) iteration #3"
+525.x264_r,112,362.938355,540.345232,1,S,112,346.267368,566.360032,0,S,"refrate(ref) iteration #1"
+525.x264_r,112,362.797392,540.55512,0,S,112,346.18972,566.48704,1,S,"refrate(ref) iteration #2"
+525.x264_r,112,362.971821,540.295392,0,S,112,345.232293,568.058064,0,S,"refrate(ref) iteration #3"
+531.deepsjeng_r,112,557.827042,230.0928,0,S,112,563.870116,227.626896,0,S,"refrate(ref) iteration #1"
+531.deepsjeng_r,112,564.086398,227.539648,1,S,112,565.183188,227.098032,0,S,"refrate(ref) iteration #2"
+531.deepsjeng_r,112,565.971705,226.781632,0,S,112,565.025878,227.161312,1,S,"refrate(ref) iteration #3"
+541.leela_r,112,830.179637,223.411888,0,S,112,819.982487,226.19016,0,S,"refrate(ref) iteration #1"
+541.leela_r,112,839.159623,221.021136,0,S,112,814.424962,227.733632,0,S,"refrate(ref) iteration #2"
+541.leela_r,112,831.758826,222.987744,1,S,112,815.523747,227.426864,1,S,"refrate(ref) iteration #3"
+548.exchange2_r,112,584.212228,502.283264,0,S,112,584.613012,501.938864,1,S,"refrate(ref) iteration #1"
+548.exchange2_r,112,584.699771,501.864384,1,S,112,583.912839,502.540752,0,S,"refrate(ref) iteration #2"
+548.exchange2_r,112,585.738362,500.974544,0,S,112,585.586648,501.104352,0,S,"refrate(ref) iteration #3"
+557.xz_r,112,670.502996,180.401872,0,S,112,678.971031,178.151904,1,S,"refrate(ref) iteration #1"
+557.xz_r,112,673.259802,179.663232,1,S,112,680.879426,177.652608,0,S,"refrate(ref) iteration #2"
+557.xz_r,112,673.59352,179.574192,0,S,112,678.840066,178.186288,0,S,"refrate(ref) iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,112,862.277303,206.782688,1,S,112,725.105543,245.900704,1,S,"SelectedIteration (base #2; peak #2)"
+502.gcc_r,112,758.713986,209.027392,1,S,112,607.429871,261.086896,1,S,"SelectedIteration (base #3; peak #2)"
+505.mcf_r,112,624.875274,289.644992,1,S,112,627.213565,288.5652,1,S,"SelectedIteration (base #3; peak #3)"
+520.omnetpp_r,112,935.309765,157.107328,1,S,112,996.238938,147.498736,1,S,"SelectedIteration (base #2; peak #2)"
+523.xalancbmk_r,112,539.704392,219.142224,1,S,112,422.263741,280.090384,1,S,"SelectedIteration (base #3; peak #1)"
+525.x264_r,112,362.938355,540.345232,1,S,112,346.18972,566.48704,1,S,"SelectedIteration (base #1; peak #2)"
+531.deepsjeng_r,112,564.086398,227.539648,1,S,112,565.025878,227.161312,1,S,"SelectedIteration (base #2; peak #3)"
+541.leela_r,112,831.758826,222.987744,1,S,112,815.523747,227.426864,1,S,"SelectedIteration (base #3; peak #3)"
+548.exchange2_r,112,584.699771,501.864384,1,S,112,584.613012,501.938864,1,S,"SelectedIteration (base #2; peak #1)"
+557.xz_r,112,673.259802,179.663232,1,S,112,678.971031,178.151904,1,S,"SelectedIteration (base #2; peak #1)"
+
+SPECrate2017_int_base,252.787788,,252.787788
+SPECrate2017_int_peak,269.257786,,,,,,,269.257786
+
+"Run number:",049.0
+"runcpu command:","/home/cpu2017/bin/harness/runcpu --define default-platform-flags --copies 112 --configfile ic18.0-lin-core-avx512-rate-20180509.cfg --define smt-on --define cores=56 --define physicalfirst --define no-numa --tune base,peak --output_format all --define drop_caches --nopower --runmode rate --tune base:peak --size refrate intrate"
+"output root:","not used"
+
+"Hardware Vendor:","Cisco Systems"
+"Hardware Model:","Cisco UCS B200 M5 (Intel Xeon Platinum 8176M, 2.10 GHz)"
+"Date tested:",May-2018
+"CPU2017 License:",9019
+"Test sponsor:","Cisco Systems"
+"Tested by:","Cisco Systems"
+"Hardware avail:",Aug-2017
+"Software avail:",Mar-2018
+
+
+HARDWARE
+
+"CPU Name","Intel Xeon Platinum 8176M"
+"  Max MHz.",3800
+"  Nominal",2100
+Enabled,"56 cores, 2 chips, 2 threads/core"
+Orderable,"1,2 Chips"
+"Cache L1","32 KB I + 32 KB D on chip per core"
+"  L2","1 MB I+D on chip per core"
+"  L3","38.5 MB I+D on chip per chip"
+"  Other",None
+Memory,"384 GB (24 x 16 GB 2Rx4 PC4-2666V-R)"
+Storage,"1 x 240 GB M.2 SATA SSD"
+Other,None
+
+SOFTWARE
+
+OS,"SUSE Linux Enterprise Server 12 SP2 (x86_64)"
+,4.4.103-92.56-default
+Compiler,"C/C++: Version 18.0.0.128 of Intel C/C++"
+,"Compiler for Linux;"
+,"Fortran: Version 18.0.0.128 of Intel Fortran"
+,"Compiler for Linux"
+Parallel,No
+Firmware,"Version 3.2.3c released Mar-2018"
+"File System",xfs
+"System State","Run level 3 (multi-user)"
+"Base Pointers",64-bit
+"Peak Pointers",32/64-bit
+Other,"jemalloc: jemalloc memory allocator library"
+,V5.0.1;
+
+"Submit Notes"
+
+" The taskset mechanism was used to bind copies to processors. The config file option 'submit'"
+" was used to generate taskset commands to bind each copy to a specific processor."
+" For details, please see the config file."
+
+"Operating System Notes"
+
+" Stack size set to unlimited using ""ulimit -s unlimited"""
+
+"General Notes"
+
+"Environment variables set by runcpu before the start of the run:"
+"LD_LIBRARY_PATH = ""/home/cpu2017/lib/ia32:/home/cpu2017/lib/intel64:/home/cpu2017/je5.0.1-32:/home/cpu2017/je5.0.1-64"""
+
+" Binaries compiled on a system with 1x Intel Core i7-4790 CPU + 32GB RAM"
+" memory using Redhat Enterprise Linux 7.4"
+" Transparent Huge Pages enabled by default"
+" Prior to runcpu invocation"
+" Filesystem page cache synced and cleared with:"
+" sync; echo 3>       /proc/sys/vm/drop_caches"
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5754 (Meltdown)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5753 (Spectre variant 1)"
+"is mitigated in the system as tested and documented."
+"Yes: The test sponsor attests, as of date of publication, that CVE-2017-5715 (Spectre variant 2)"
+"is mitigated in the system as tested and documented."
+
+"jemalloc: configured and built at default for"
+"32bit (i686) and 64bit (x86_64) targets;"
+"jemalloc: built with the RedHat Enterprise 7.4,"
+"and the system compiler gcc 4.8.5;"
+"jemalloc: sources avilable from jemalloc.net or"
+https://github.com/jemalloc/jemalloc/releases
+
+"Platform Notes"
+
+"BIOS Settings:"
+"Intel HyperThreading Technology set to Enabled"
+"CPU performance set to Enterprise"
+"Power Performance Tuning set to OS Controls"
+"SNC set to Enabled"
+"IMC Interleaving set to 1-way Interleave"
+"Patrol Scrub set to Disabled"
+" Sysinfo program /home/cpu2017/bin/sysinfo"
+" Rev: r5797 of 2017-06-14 96c45e4568ad54c135fd618bcc091c0f"
+" running on linux-qc7k Tue May 29 02:32:03 2018"
+
+" SUT (System Under Test) info as seen by some common utilities."
+" For more information on this section, see"
+"    https://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /proc/cpuinfo"
+"    model name : Intel(R) Xeon(R) Platinum 8176M CPU @ 2.10GHz"
+"       2  ""physical id""s (chips)"
+"       112 ""processors"""
+"    cores, siblings (Caution: counting these is hw and system dependent. The following"
+"    excerpts from /proc/cpuinfo might not be reliable.  Use with caution.)"
+"       cpu cores : 28"
+"       siblings  : 56"
+"       physical 0: cores 0 1 2 3 4 5 6 8 9 10 11 12 13 14 16 17 18 19 20 21 22 24 25 26 27"
+"       28 29 30"
+"       physical 1: cores 0 1 2 3 4 5 6 8 9 10 11 12 13 14 16 17 18 19 20 21 22 24 25 26 27"
+"       28 29 30"
+
+" From lscpu:"
+"      Architecture:          x86_64"
+"      CPU op-mode(s):        32-bit, 64-bit"
+"      Byte Order:            Little Endian"
+"      CPU(s):                112"
+"      On-line CPU(s) list:   0-111"
+"      Thread(s) per core:    2"
+"      Core(s) per socket:    28"
+"      Socket(s):             2"
+"      NUMA node(s):          4"
+"      Vendor ID:             GenuineIntel"
+"      CPU family:            6"
+"      Model:                 85"
+"      Model name:            Intel(R) Xeon(R) Platinum 8176M CPU @ 2.10GHz"
+"      Stepping:              4"
+"      CPU MHz:               2570.348"
+"      CPU max MHz:           3800.0000"
+"      CPU min MHz:           1000.0000"
+"      BogoMIPS:              4200.00"
+"      Virtualization:        VT-x"
+"      L1d cache:             32K"
+"      L1i cache:             32K"
+"      L2 cache:              1024K"
+"      L3 cache:              39424K"
+"      NUMA node0 CPU(s):     0-3,7-9,14-17,21-23,56-59,63-65,70-73,77-79"
+"      NUMA node1 CPU(s):     4-6,10-13,18-20,24-27,60-62,66-69,74-76,80-83"
+"      NUMA node2 CPU(s):     28-31,35-37,42-45,49-51,84-87,91-93,98-101,105-107"
+"      NUMA node3 CPU(s):     32-34,38-41,46-48,52-55,88-90,94-97,102-104,108-111"
+"      Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov"
+"      pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp"
+"      lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc"
+"      aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg"
+"      fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes"
+"      xsave avx f16c rdrand lahf_lm abm 3dnowprefetch ida arat epb invpcid_single pln pts"
+"      dtherm hwp hwp_act_window hwp_epp hwp_pkg_req intel_pt spec_ctrl kaiser tpr_shadow"
+"      vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid"
+"      rtm cqm mpx avx512f avx512dq rdseed adx smap clflushopt clwb avx512cd avx512bw"
+"      avx512vl xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc"
+
+" /proc/cpuinfo cache data"
+"    cache size : 39424 KB"
+
+" From numactl --hardware  WARNING: a numactl 'node' might or might not correspond to a"
+" physical chip."
+"   available: 4 nodes (0-3)"
+"   node 0 cpus: 0 1 2 3 7 8 9 14 15 16 17 21 22 23 56 57 58 59 63 64 65 70 71 72 73 77 78"
+"   79"
+"   node 0 size: 95320 MB"
+"   node 0 free: 95103 MB"
+"   node 1 cpus: 4 5 6 10 11 12 13 18 19 20 24 25 26 27 60 61 62 66 67 68 69 74 75 76 80 81"
+"   82 83"
+"   node 1 size: 96753 MB"
+"   node 1 free: 96517 MB"
+"   node 2 cpus: 28 29 30 31 35 36 37 42 43 44 45 49 50 51 84 85 86 87 91 92 93 98 99 100"
+"   101 105 106 107"
+"   node 2 size: 96753 MB"
+"   node 2 free: 96573 MB"
+"   node 3 cpus: 32 33 34 38 39 40 41 46 47 48 52 53 54 55 88 89 90 94 95 96 97 102 103 104"
+"   108 109 110 111"
+"   node 3 size: 96750 MB"
+"   node 3 free: 96451 MB"
+"   node distances:"
+"   node   0   1   2   3"
+"     0:  10  11  21  21"
+"     1:  11  10  21  21"
+"     2:  21  21  10  11"
+"     3:  21  21  11  10"
+
+" From /proc/meminfo"
+"    MemTotal:       394831632 kB"
+"    HugePages_Total:       0"
+"    Hugepagesize:       2048 kB"
+
+" From /etc/*release* /etc/*version*"
+"    SuSE-release:"
+"       SUSE Linux Enterprise Server 12 (x86_64)"
+"       VERSION = 12"
+"       PATCHLEVEL = 2"
+"       # This file is deprecated and will be removed in a future service pack or release."
+"       # Please check /etc/os-release for details about this release."
+"    os-release:"
+"       NAME=""SLES"""
+"       VERSION=""12-SP2"""
+"       VERSION_ID=""12.2"""
+"       PRETTY_NAME=""SUSE Linux Enterprise Server 12 SP2"""
+"       ID=""sles"""
+"       ANSI_COLOR=""0;32"""
+"       CPE_NAME=""cpe:/o:suse:sles:12:sp2"""
+
+" uname -a:"
+"    Linux linux-qc7k 4.4.103-92.56-default #1 SMP Wed Dec 27 16:24:31 UTC 2017 (2fd2155)"
+"    x86_64 x86_64 x86_64 GNU/Linux"
+
+" run-level 3 Jan 4 01:32"
+
+" SPEC is set to: /home/cpu2017"
+"    Filesystem     Type  Size  Used Avail Use% Mounted on"
+"    /dev/sda1      xfs   224G   64G  160G  29% /"
+
+" Additional information from dmidecode follows.  WARNING: Use caution when you interpret"
+" this section. The 'dmidecode' program reads system data which is ""intended to allow"
+" hardware to be accurately determined"", but the intent may not be met, as there are"
+" frequent changes to hardware, firmware, and the ""DMTF SMBIOS"" standard."
+"   BIOS Cisco Systems, Inc. B200M5.3.2.3c.0.0307181316 03/07/2018"
+"   Memory:"
+"    24x 0xCE00 M393A2G40EB2-CTD 16 GB 2 rank 2666"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+" CC  500.perlbench_r(base) 502.gcc_r(base) 505.mcf_r(base, peak)"
+"      525.x264_r(base, peak) 557.xz_r(base, peak)"
+------------------------------------------------------------------------------
+"icc (ICC) 18.0.2 20180210"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   500.perlbench_r(peak) 502.gcc_r(peak)
+"
+------------------------------------------------------------------------------
+"icc (ICC) 18.0.2 20180210"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" CXXC 520.omnetpp_r(base) 523.xalancbmk_r(base) 531.deepsjeng_r(base)"
+"      541.leela_r(base)"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.2 20180210"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+"CXXC 520.omnetpp_r(peak) 523.xalancbmk_r(peak) 531.deepsjeng_r(peak)"
+"     541.leela_r(peak)"
+------------------------------------------------------------------------------
+"icpc (ICC) 18.0.2 20180210"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+==============================================================================
+" FC  548.exchange2_r(base, peak)
+"
+------------------------------------------------------------------------------
+"ifort (IFORT) 18.0.2 20180210"
+"Copyright (C) 1985-2018 Intel Corporation.  All rights reserved."
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Compiler Invocation"
+500.perlbench_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+502.gcc_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+505.mcf_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+520.omnetpp_r," icpc -m64"," icpc -m64"
+523.xalancbmk_r," icpc -m64"," icpc -m64"
+525.x264_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+531.deepsjeng_r," icpc -m64"," icpc -m64"
+541.leela_r," icpc -m64"," icpc -m64"
+548.exchange2_r," ifort -m64"," ifort -m64"
+557.xz_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+
+"Base Portability Flags"
+500.perlbench_r," -DSPEC_LP64"," -DSPEC_LINUX_X64"
+502.gcc_r," -DSPEC_LP64"
+505.mcf_r," -DSPEC_LP64"
+520.omnetpp_r," -DSPEC_LP64"
+523.xalancbmk_r," -DSPEC_LP64"," -DSPEC_LINUX"
+525.x264_r," -DSPEC_LP64"
+531.deepsjeng_r," -DSPEC_LP64"
+541.leela_r," -DSPEC_LP64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -DSPEC_LP64"
+
+"Base Optimization Flags"
+500.perlbench_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+502.gcc_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+505.mcf_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+520.omnetpp_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+523.xalancbmk_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+525.x264_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+531.deepsjeng_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+541.leela_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+548.exchange2_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+557.xz_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+
+"Base Other Flags"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Base Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Peak Compiler Invocation"
+500.perlbench_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+502.gcc_r," icc -m32 -std=c11 -L/opt/intel/compilers_and_libraries_2018/linux/lib/ia32"," icc -m32 -std=c11 -L/opt/intel/compilers_and_libraries_2018/linux/lib/ia32"
+505.mcf_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+520.omnetpp_r," icpc -m64"," icpc -m64"
+523.xalancbmk_r," icpc -m32 -L/opt/intel/compilers_and_libraries_2018/linux/lib/ia32"," icpc -m32 -L/opt/intel/compilers_and_libraries_2018/linux/lib/ia32"
+525.x264_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+531.deepsjeng_r," icpc -m64"," icpc -m64"
+541.leela_r," icpc -m64"," icpc -m64"
+548.exchange2_r," ifort -m64"," ifort -m64"
+557.xz_r," icc -m64 -std=c11"," icc -m64 -std=c11"
+
+"Peak Portability Flags"
+500.perlbench_r," -DSPEC_LP64"," -DSPEC_LINUX_X64"
+502.gcc_r," -D_FILE_OFFSET_BITS=64"
+505.mcf_r," -DSPEC_LP64"
+520.omnetpp_r," -DSPEC_LP64"
+523.xalancbmk_r," -D_FILE_OFFSET_BITS=64"," -DSPEC_LINUX"
+525.x264_r," -DSPEC_LP64"
+531.deepsjeng_r," -DSPEC_LP64"
+541.leela_r," -DSPEC_LP64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -DSPEC_LP64"
+
+"Peak Optimization Flags"
+500.perlbench_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -fno-strict-overflow"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+502.gcc_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-32/"," -ljemalloc"
+505.mcf_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+520.omnetpp_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+523.xalancbmk_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-32/"," -ljemalloc"
+525.x264_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -fno-alias"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+531.deepsjeng_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+541.leela_r," -Wl,-z,muldefs"," -prof-gen"," -prof-use"," -prof-gen"," -prof-use"," -ipo"," -xCORE-AVX512"," -O3"," -no-prec-div"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+548.exchange2_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -nostandard-realloc-lhs"," -align array32byte"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+557.xz_r," -Wl,-z,muldefs"," -xCORE-AVX512"," -ipo"," -O3"," -no-prec-div"," -qopt-mem-layout-trans=3"," -L/home/cpu2017/je5.0.1-64/"," -ljemalloc"
+
+"Peak Other Flags"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Peak Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v1.0.2.
+"Result run on","2018-05-29 02:32:02-0400."
+"Report generated on","2018-10-31 17:30:12","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2018-06-26.

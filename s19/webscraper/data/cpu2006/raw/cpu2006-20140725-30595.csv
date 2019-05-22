@@ -1,0 +1,332 @@
+valid,1
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,2,314.9,62,0,S,2,253.8,77,1,S,"ref iteration #1"
+400.perlbench,2,313.8,62.2,1,S,2,254.2,76.8,0,S,"ref iteration #2"
+400.perlbench,2,312.5,62.6,0,S,2,252.9,77.2,0,S,"ref iteration #3"
+401.bzip2,2,504.7,38.2,1,S,2,496.6,38.8,0,S,"ref iteration #1"
+401.bzip2,2,508.6,38,0,S,2,496.5,38.8,1,S,"ref iteration #2"
+401.bzip2,2,502.1,38.4,0,S,2,493.1,39.2,0,S,"ref iteration #3"
+403.gcc,2,260,62,0,S,2,246.3,65.4,0,S,"ref iteration #1"
+403.gcc,2,265.2,60.8,0,S,2,248.6,64.8,0,S,"ref iteration #2"
+403.gcc,2,261,61.6,1,S,2,246.6,65.2,1,S,"ref iteration #3"
+429.mcf,2,192.5,94.8,0,S,2,192.5,94.8,0,S,"ref iteration #1"
+429.mcf,2,194.9,93.6,1,S,2,194.9,93.6,1,S,"ref iteration #2"
+429.mcf,2,197.8,92.2,0,S,2,197.8,92.2,0,S,"ref iteration #3"
+445.gobmk,2,405.2,51.8,0,S,2,389.6,53.8,0,S,"ref iteration #1"
+445.gobmk,2,407.4,51.4,0,S,2,389.9,53.8,1,S,"ref iteration #2"
+445.gobmk,2,406.6,51.6,1,S,2,390.9,53.6,0,S,"ref iteration #3"
+456.hmmer,2,171.3,109,1,S,2,155.1,120.4,0,S,"ref iteration #1"
+456.hmmer,2,174.6,106.8,0,S,2,154.4,120.8,1,S,"ref iteration #2"
+456.hmmer,2,171.1,109,0,S,2,153.9,121.2,0,S,"ref iteration #3"
+458.sjeng,2,408.9,59.2,1,S,2,391.8,61.8,0,S,"ref iteration #1"
+458.sjeng,2,414.5,58.4,0,S,2,394.9,61.2,0,S,"ref iteration #2"
+458.sjeng,2,404.1,59.8,0,S,2,394.5,61.4,1,S,"ref iteration #3"
+462.libquantum,2,74.9,553.2,0,S,2,70,592,0,S,"ref iteration #1"
+462.libquantum,2,74.5,556.2,1,S,2,70.4,588.6,0,S,"ref iteration #2"
+462.libquantum,2,74.4,557,0,S,2,70.2,590.4,1,S,"ref iteration #3"
+464.h264ref,2,409.2,108.2,0,S,2,397.9,111.2,0,S,"ref iteration #1"
+464.h264ref,2,410.6,107.8,0,S,2,396.8,111.6,0,S,"ref iteration #2"
+464.h264ref,2,409.5,108,1,S,2,397,111.4,1,S,"ref iteration #3"
+471.omnetpp,2,283.8,44,0,S,2,265.4,47,1,S,"ref iteration #1"
+471.omnetpp,2,294.7,42.4,0,S,2,259.6,48.2,0,S,"ref iteration #2"
+471.omnetpp,2,284.5,44,1,S,2,272.1,46,0,S,"ref iteration #3"
+473.astar,2,308,45.6,0,S,2,277.7,50.6,0,S,"ref iteration #1"
+473.astar,2,307,45.8,1,S,2,277.4,50.6,1,S,"ref iteration #2"
+473.astar,2,303.7,46.2,0,S,2,276.5,50.8,0,S,"ref iteration #3"
+483.xalancbmk,2,140.6,98.2,1,S,2,140.6,98.2,1,S,"ref iteration #1"
+483.xalancbmk,2,140.9,98,0,S,2,140.9,98,0,S,"ref iteration #2"
+483.xalancbmk,2,140.1,98.6,0,S,2,140.1,98.6,0,S,"ref iteration #3"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+400.perlbench,2,313.8,62.2,1,S,2,253.8,77,1,S,"SelectedIteration (base #2; peak #1)"
+401.bzip2,2,504.7,38.2,1,S,2,496.5,38.8,1,S,"SelectedIteration (base #1; peak #2)"
+403.gcc,2,261,61.6,1,S,2,246.6,65.2,1,S,"SelectedIteration (base #3; peak #3)"
+429.mcf,2,194.9,93.6,1,S,2,194.9,93.6,1,S,"SelectedIteration (base #2; peak #2)"
+445.gobmk,2,406.6,51.6,1,S,2,389.9,53.8,1,S,"SelectedIteration (base #3; peak #2)"
+456.hmmer,2,171.3,109,1,S,2,154.4,120.8,1,S,"SelectedIteration (base #1; peak #2)"
+458.sjeng,2,408.9,59.2,1,S,2,394.5,61.4,1,S,"SelectedIteration (base #1; peak #3)"
+462.libquantum,2,74.5,556.2,1,S,2,70.2,590.4,1,S,"SelectedIteration (base #2; peak #3)"
+464.h264ref,2,409.5,108,1,S,2,397,111.4,1,S,"SelectedIteration (base #3; peak #3)"
+471.omnetpp,2,284.5,44,1,S,2,265.4,47,1,S,"SelectedIteration (base #3; peak #1)"
+473.astar,2,307,45.8,1,S,2,277.4,50.6,1,S,"SelectedIteration (base #2; peak #2)"
+483.xalancbmk,2,140.6,98.2,1,S,2,140.6,98.2,1,S,"SelectedIteration (base #1; peak #1)"
+
+SPECint_rate_base2006,78.4,,78.4
+SPECint_rate2006,83.3,,,,,,,83.3
+
+"Run number:",003
+
+"Hardware Vendor:","Intel Corporation"
+"Hardware Model:","ASUS H97M-PLUS Motherboard (Intel Pentium G3440)"
+"Date tested:",Jun-2014
+"CPU2006 License:",13
+"Test sponsor:","Intel Corporation"
+"Tested by:","Intel Corporation"
+"Hardware avail:",Jun-2014
+"Software avail:",Oct-2013
+
+
+HARDWARE
+
+"CPU Name","Intel Pentium G3440"
+"CPU Characteristics",
+"CPU MHz",3300
+FPU,Integrated
+"CPU(s) enabled","2 cores, 1 chip, 2 cores/chip"
+"CPU(s) orderable","1 chip"
+"Primary Cache","32 KB I + 32 KB D on chip per core"
+"Secondary Cache","256 KB I+D on chip per core"
+"L3 Cache","3 MB I+D on chip per chip"
+"Other Cache",None
+Memory,"8 GB (2 x 4 GB 2Rx4 PC3-12800U-11)"
+"Disk Subsystem","1 TB SATA HDD, 7200 RPM"
+"Other Hardware",None
+
+SOFTWARE
+
+"Operating System","Microsoft Windows 8.1 Pro"
+,"6.3.9600 N/A Build 9600"
+Compiler,"C/C++: Version 14.0.1.139 of Intel C++ Studio XE"
+,"for Windows;"
+,"Libraries: Version 16.00.30319.01 of Microsoft"
+,"Visual Studio 2010 Professional SP1"
+"Auto Parallel",No
+"File System",NTFS
+"System State",Default
+"Base Pointers",32-bit
+"Peak Pointers",32/64-bit
+"Other Software","SmartHeap Library Version 10.0 from"
+,http://www.microquill.com/
+
+"Compiler Invocation Notes"
+
+" To compile these binaries, the Intel Compiler 14.0 was set up to"
+" generate 32-bit binaries with the command:"
+" ""ipsxe-comp-vars.bat ia32 vs2010"" (shortcut provided in the Intel(r)"
+" Parallel Studio XE 2013 program folder)"
+
+"Submit Notes"
+
+
+" Processes were bound to specific processors using the start command with the /affinity switch."
+" The config file option 'submit' was used to generate the affinity mask for each process."
+
+"Platform Notes"
+
+" Sysinfo program C:\SPEC14.0/Docs/sysinfo"
+" $Rev: 6775 $ $Date:: 2011-08-16 #$ \8787f7622badcf24e01c368b1db4377c"
+" running on Clt10C37B4C835C Sat Jun 28 04:40:12 2014"
+
+" This section contains SUT (System Under Test) info as seen by"
+" some common utilities.  To remove or add to this section, see:"
+"   http://www.spec.org/cpu2006/Docs/config.html#sysinfo"
+
+" Trying 'systeminfo'"
+" OS Name       : Microsoft Windows 8.1 Pro"
+" OS Version    : 6.3.9600 N/A Build 9600"
+" System Manufacturer: ASUS"
+" System Model  : All Series"
+" Processor(s)  : 1 Processor(s) Installed."
+"      [01]: Intel64 Family 6 Model 60 Stepping 3 GenuineIntel ~3300 Mhz"
+" BIOS Version  : American Megatrends Inc. 2001, 6/13/2014"
+" Total Physical Memory: 8,007 MB"
+
+" Trying 'wmic cpu get /value'"
+" DeviceID      : CPU0"
+" L2CacheSize   : 512"
+" L3CacheSize   : 3072"
+" MaxClockSpeed : 3300"
+" Name          : Intel(R) Pentium(R) CPU G3440 @ 3.30GHz"
+" NumberOfCores : 2"
+" NumberOfLogicalProcessors: 2"
+
+" (End of data from sysinfo program)"
+
+"Component Notes"
+
+" Tested systems can be used with Shin-G ATX case,"
+" PC Power and Cooling 1200W power supply"
+
+"General Notes"
+
+" Binaries compiled on a system with 1x Intel Core i7-860 CPU"
+" + 8GB memory using Windows 7 Enterprise 64-bit"
+
+"Base Compiler Invocation"
+400.perlbench," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+401.bzip2," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+403.gcc," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+429.mcf," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+445.gobmk," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+456.hmmer," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+458.sjeng," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+462.libquantum," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+464.h264ref," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+471.omnetpp," icl -Qvc10"," icl -Qvc10"
+473.astar," icl -Qvc10"," icl -Qvc10"
+483.xalancbmk," icl -Qvc10"," icl -Qvc10"
+
+"Base Portability Flags"
+400.perlbench
+401.bzip2
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref," -DWIN32"," -DSPEC_CPU_NO_INTTYPES"
+471.omnetpp
+473.astar
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Base Optimization Flags"
+400.perlbench," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+401.bzip2," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+403.gcc," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+429.mcf," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+445.gobmk," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+456.hmmer," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+458.sjeng," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+462.libquantum," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+464.h264ref," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+471.omnetpp," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+473.astar," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+483.xalancbmk," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+
+"Base Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," No flags used"
+458.sjeng," No flags used"
+462.libquantum," No flags used"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," No flags used"
+483.xalancbmk," No flags used"
+
+"Base Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Base Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Compiler Invocation"
+400.perlbench," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+401.bzip2," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+403.gcc," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+429.mcf," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+445.gobmk," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+456.hmmer," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"
+458.sjeng," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"
+462.libquantum," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"," -Qstd=c99"," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"," -Qstd=c99"
+464.h264ref," icl -Qvc10"," -Qstd=c99"," icl -Qvc10"," -Qstd=c99"
+471.omnetpp," icl -Qvc10"," icl -Qvc10"
+473.astar," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"," C:\Program Files (x86)\Intel\Composer XE 2013 SP1/bin/intel64/icl.exe"
+483.xalancbmk," icl -Qvc10"," icl -Qvc10"
+
+"Peak Portability Flags"
+400.perlbench
+401.bzip2
+403.gcc," -DSPEC_CPU_WIN32"
+429.mcf
+445.gobmk
+456.hmmer," -DSPEC_CPU_P64"
+458.sjeng," -DSPEC_CPU_P64"
+462.libquantum," -DSPEC_CPU_P64"
+464.h264ref," -DWIN32"," -DSPEC_CPU_NO_INTTYPES"
+471.omnetpp
+473.astar," -DSPEC_CPU_P64"
+483.xalancbmk," -Qoption,cpp,--no_wchar_t_keyword"
+
+"Peak Optimization Flags"
+400.perlbench," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qansi-alias"," -Qopt-prefetch"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+401.bzip2," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qansi-alias"," /F512000000"
+403.gcc," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+429.mcf," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+445.gobmk," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O2"," -Qprec-div-"," -Qansi-alias"," /F512000000"
+456.hmmer," -Qauto-ilp32"," -Qauto-ilp32"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+458.sjeng," -Qauto-ilp32"," -Qauto-ilp32"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qunroll4"," /F512000000"
+462.libquantum," -Qauto-ilp32"," -Qauto-ilp32"," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"
+464.h264ref," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qunroll2"," -Qansi-alias"," /F512000000"
+471.omnetpp," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -QxSSE4.2"," -Qprof_gen"," -Qprof_use"," -Qipo"," -O3"," -Qprec-div-"," -Qansi-alias"," -Qopt-ra-region-strategy=block"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+473.astar," -Qauto-ilp32"," -Qauto-ilp32"," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," /F512000000"," shlW64M.lib","            -link /FORCE:MULTIPLE"
+483.xalancbmk," -QxSSE4.2"," -Qipo"," -O3"," -Qprec-div-"," -Qopt-prefetch"," -Qcxx-features"," /F512000000"," shlW32M.lib","            -link /FORCE:MULTIPLE"
+
+"Peak Other Flags"
+400.perlbench," No flags used"
+401.bzip2," No flags used"
+403.gcc," -Dalloca=_alloca"
+429.mcf," No flags used"
+445.gobmk," No flags used"
+456.hmmer," -link -LIBPATH:C:\Program Files (x86)\Intel\Composer XE 2013 SP1/compiler/lib/intel64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/AMD64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib"," -link -LIBPATH:C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/lib/x64"
+458.sjeng," -link -LIBPATH:C:\Program Files (x86)\Intel\Composer XE 2013 SP1/compiler/lib/intel64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/AMD64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib"," -link -LIBPATH:C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/lib/x64"
+462.libquantum," -link -LIBPATH:C:\Program Files (x86)\Intel\Composer XE 2013 SP1/compiler/lib/intel64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/AMD64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib"," -link -LIBPATH:C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/lib/x64"
+464.h264ref," No flags used"
+471.omnetpp," No flags used"
+473.astar," -link -LIBPATH:C:\Program Files (x86)\Intel\Composer XE 2013 SP1/compiler/lib/intel64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib/AMD64"," -link -LIBPATH:C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/lib"," -link -LIBPATH:C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/lib/x64"
+483.xalancbmk," No flags used"
+
+"Peak Forbidden Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+
+"Peak Unknown Flags"
+400.perlbench
+401.bzip2
+403.gcc
+429.mcf
+445.gobmk
+456.hmmer
+458.sjeng
+462.libquantum
+464.h264ref
+471.omnetpp
+473.astar
+483.xalancbmk
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",webmaster@spec.org.,
+"Copyright 2006-2014 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2006 ","v1.2.  Report","generated on ","Tue Aug 12 13:16:07 2014","by SPEC CPU2006 CSV","formatter v6932."
+"Originally published on ","12 August 2014."

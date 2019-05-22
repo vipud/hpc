@@ -1,0 +1,400 @@
+valid,1
+
+"SPEC CPU2017 Integer Rate Result"
+
+"Full Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,256,3127.193762,130.325248,0,S,224,2735.349976,130.37024,0,S,"refrate(ref) iteration #1"
+500.perlbench_r,256,3128.580853,130.267392,1,S,224,2736.059946,130.336416,1,S,"refrate(ref) iteration #2"
+502.gcc_r,256,3436.96716,105.469696,1,S,256,3123.842341,116.041728,1,S,"refrate(ref) iteration #1"
+502.gcc_r,256,3436.209389,105.492992,0,S,256,3114.522881,116.388864,0,S,"refrate(ref) iteration #2"
+505.mcf_r,256,6147.799318,67.291648,0,S,64,1321.983086,78.233984,1,S,"refrate(ref) iteration #1"
+505.mcf_r,256,6149.551668,67.272448,1,S,64,1318.817982,78.42176,0,S,"refrate(ref) iteration #2"
+520.omnetpp_r,256,2753.091359,121.99808,1,S,256,2753.091359,121.99808,1,S,"refrate(ref) iteration #1"
+520.omnetpp_r,256,2736.533166,122.736384,0,S,256,2736.533166,122.736384,0,S,"refrate(ref) iteration #2"
+523.xalancbmk_r,256,2459.74681,109.903872,1,S,256,2007.132853,134.687744,0,S,"refrate(ref) iteration #1"
+523.xalancbmk_r,256,2446.195631,110.512896,0,S,256,2010.296392,134.475776,1,S,"refrate(ref) iteration #2"
+525.x264_r,256,4459.395476,100.519424,0,S,256,4381.776167,102.30016,0,S,"refrate(ref) iteration #1"
+525.x264_r,256,4462.089632,100.458752,1,S,256,4383.417964,102.26176,1,S,"refrate(ref) iteration #2"
+531.deepsjeng_r,256,2160.326267,135.8016,1,S,256,2093.898905,140.109824,0,S,"refrate(ref) iteration #1"
+531.deepsjeng_r,256,2158.499914,135.916544,0,S,256,2095.749865,139.986176,1,S,"refrate(ref) iteration #2"
+541.leela_r,256,2820.970438,150.280192,1,S,256,2709.506877,156.462336,0,S,"refrate(ref) iteration #1"
+541.leela_r,256,2819.791702,150.342912,0,S,256,2711.267918,156.360704,1,S,"refrate(ref) iteration #2"
+548.exchange2_r,256,5373.428512,124.821504,0,S,256,4166.418965,160.982272,0,S,"refrate(ref) iteration #1"
+548.exchange2_r,256,5375.605871,124.771072,1,S,256,4190.591829,160.05376,1,S,"refrate(ref) iteration #2"
+557.xz_r,256,2364.841098,116.91264,1,S,256,2364.841098,116.91264,1,S,"refrate(ref) iteration #1"
+557.xz_r,256,2364.703931,116.919552,0,S,256,2364.703931,116.919552,0,S,"refrate(ref) iteration #2"
+
+"Selected Results Table"
+
+Benchmark,"Base # Copies","Base Run Time","Base Rate","Base Selected","Base Status","Peak # Copies","Peak Run Time","Peak Rate","Peak Selected","Peak Status",Description
+500.perlbench_r,256,3128.580853,130.267392,1,S,224,2736.059946,130.336416,1,S,"SelectedIteration (base #2; peak #2)"
+502.gcc_r,256,3436.96716,105.469696,1,S,256,3123.842341,116.041728,1,S,"SelectedIteration (base #1; peak #1)"
+505.mcf_r,256,6149.551668,67.272448,1,S,64,1321.983086,78.233984,1,S,"SelectedIteration (base #2; peak #1)"
+520.omnetpp_r,256,2753.091359,121.99808,1,S,256,2753.091359,121.99808,1,S,"SelectedIteration (base #1; peak #1)"
+523.xalancbmk_r,256,2459.74681,109.903872,1,S,256,2010.296392,134.475776,1,S,"SelectedIteration (base #1; peak #2)"
+525.x264_r,256,4462.089632,100.458752,1,S,256,4383.417964,102.26176,1,S,"SelectedIteration (base #2; peak #2)"
+531.deepsjeng_r,256,2160.326267,135.8016,1,S,256,2095.749865,139.986176,1,S,"SelectedIteration (base #1; peak #2)"
+541.leela_r,256,2820.970438,150.280192,1,S,256,2711.267918,156.360704,1,S,"SelectedIteration (base #1; peak #2)"
+548.exchange2_r,256,5375.605871,124.771072,1,S,256,4190.591829,160.05376,1,S,"SelectedIteration (base #2; peak #2)"
+557.xz_r,256,2364.841098,116.91264,1,S,256,2364.841098,116.91264,1,S,"SelectedIteration (base #1; peak #1)"
+
+SPECrate2017_int_base,113.997057,,113.997057
+SPECrate2017_int_peak,123.314056,,,,,,,123.314056
+
+"Run number:",052
+"runcpu command:","/cpu2017/rc3/bin/harness/runcpu -c oct12a-rate --reportable intrate"
+"output root:",/spec/johnh/out.rc3
+
+"Hardware Vendor:","Oracle Corporation"
+"Hardware Model:","1-Chip VM with SPARC M7"
+"Date tested:",Oct-2016
+"CPU2017 License:",6
+"Test sponsor:","Oracle Corporation"
+"Tested by:","Oracle Corporation"
+"Hardware avail:",Oct-2015
+"Software avail:",Jul-2016
+
+
+HARDWARE
+
+"CPU Name","SPARC M7"
+"  Max MHz.",4133
+"  Nominal",4133
+Enabled,"32 cores, 1 chip, 8 threads/core"
+Orderable,"1-16 CMIOU (on host)"
+"Cache L1","16 KB I + 16 KB D on chip per core"
+"  L2","2 MB I on chip per chip (256 KB / 4 cores);"
+,"4 MB D on chip per chip (256 KB / 2 cores)"
+"  L3","64 MB I+D on chip per chip (8 MB / 4 cores)"
+"  Other",None
+Memory,"480 GB (16 x 32 GB 2Rx4 PC4-2400T-L, running"
+,"at 2133, 16-way interleaved)"
+Storage,"2.2 TB on 16 x 300 GB 10K RPM SAS disks"
+,"served via COMSTAR over 8 Gb/s Fibre Channel"
+,"from a Sun Fire X4270M2, arranged as"
+,"8 x 2-way mirrors"
+Other,None
+
+SOFTWARE
+
+OS,"Oracle Solaris 11.3.10.5.0"
+Compiler,"C/C++: Version 12.5 of Oracle Developer Studio;"
+,"Fortran: Version 12.5 of Oracle Developer Studio;"
+,"Fortran: Version 6.2.0 of gfortran (548 peak only)"
+Parallel,No
+Firmware,"Sun System Firmware 9.5.2.g"
+"File System",zfs
+"System State",Default
+"Base Pointers",32-bit
+"Peak Pointers",32/64-bit
+Other,None
+
+"Compiler Notes"
+
+"The peak version of 548.exchange2 was built using GNU Fortran 6.2.0."
+"GNU Fortran 6.2.0 was built on a SPARC T4 system running Solaris 11.3"
+"using: configure --without-gnu-as --with-as=/usr/bin/as"
+"--without-system-zlib --with-included-gettext --with-gnu-ld"
+--with-ld=/usr/bin/gld
+
+"Submit Notes"
+
+"The config file option 'submit' was used."
+
+"Operating System Notes"
+
+" The ZFS cache was limited to 12% of memory, and the"
+" fsflush daemon was told to run once every 10 seconds,"
+" checking for dirty pages more than 10 minutes old,"
+" using these settings in /etc/system:"
+" set user_reserve_hint_pct=88"
+" set autoup=600"
+" set tune_t_fsflushr=10"
+
+"Platform Notes"
+
+
+"   The System Under Test (SUT),"
+"   ""1-chip VM with SPARC M7"","
+"   contains:"
+"    - 1 physical CPU chip"
+"    - 256 virtual CPUs"
+"    - 32 cores"
+"    - 480 GB memory"
+"    - OS: Oracle Solaris 11.3.10.5.0"
+
+"   The SUT is managed by a HOST with:"
+"    - OS: Oracle Solaris 11.3.5.1.0"
+"    - Oracle VM Server for SPARC v3.3"
+"      (included with Oracle Solaris)"
+"   From the standpoint of the HOST, the SUT is:"
+"    - A Logical Domain (LDom)"
+"    - One CMIOU (CPU, Memory, IO unit), containing:"
+"      - 1 SPARC M7 chip"
+"      - 16x 32 GB memory DIMMs"
+"        - 1x DIMM is reserved"
+"        - Therefore the SUT sees 480 GB, not 512"
+
+"   The HOST is part of an M7-16 server that has:"
+"     - Sun System Firmware 9.5.2.g 2015/12/07 11:57"
+"     - 16x CMIOUs"
+"     - 4x Domain Configurable Units (DCUs)"
+"        - Each DCU has 4x CMIOUs"
+"        - Each DCU is a Physical Domain (PDom)"
+"   From the standpoint of the M7-16, the HOST"
+"   is one PDom containing one DCU."
+
+"   Additional information about SUT, LDom, and"
+"   PDom commands are in the platform flags file."
+
+"   For Oracle VM Server information, see"
+"   Oracle Technical Network (OTN) (http://www.oracle.com/technetwork/server-storage/vm/overview/index.html)"
+
+" Sysinfo program /cpu2017/rc3/Docs/sysinfo"
+" Rev: r4961 of 2016-10-02 93f3ce875d5c7794a1fec4785739b79b"
+" running on m7-16-002c-ld3 Wed Oct 12 21:37:47 2016"
+
+" This section contains SUT (System Under Test) info as seen by"
+" some common utilities.  To remove or add to this section, see:"
+"   http://www.spec.org/cpu2017/Docs/config.html#sysinfo"
+
+" From /usr/sbin/psrinfo"
+"    SPARC-M7 (chipid 3, clock 4133 MHz)"
+"    1 chips"
+"    256 threads"
+"    4133 MHz"
+
+" From kstat:       32 cores"
+
+" From prtconf: 489984 Megabytes"
+
+" /etc/release:"
+"      Oracle Solaris 11.3 SPARC"
+" uname -a:"
+"    SunOS m7-16-002c-ld3 5.11 11.3 sun4v sparc sun4v"
+
+" disk: df -h /cpu2017/rc3"
+" Filesystem             Size   Used  Available Capacity  Mounted on"
+" spec/cpu2017/rc3       2.4T   1.2G       1.8T     1%    /cpu2017/rc3"
+
+" (End of data from sysinfo program)"
+
+"Compiler Version Notes"
+
+==============================================================================
+"CXXC 520.omnetpp_r(base, peak) 523.xalancbmk_r(base, peak)"
+"     531.deepsjeng_r(base, peak) 541.leela_r(base, peak)"
+------------------------------------------------------------------------------
+"CC: Studio 12.5 Sun C++ 5.14 SunOS_sparc 2016/05/31"
+------------------------------------------------------------------------------
+
+==============================================================================
+"FC   548.exchange2_r(peak)
+"
+------------------------------------------------------------------------------
+"Using built-in specs."
+COLLECT_GCC=/SW/compilers/GCC/SunOS/sparc/gcc-6.2.0/bin/gfortran
+COLLECT_LTO_WRAPPER=/SW/compilers/GCC/SunOS/sparc/gcc-6.2.0/bin/../libexec/gcc/sparc-sun-solaris2.11/6.2.0/lto-wrapper
+"Target: sparc-sun-solaris2.11"
+"Configured with: /SW/compilers/GCC/build/gcc-6.2.0/configure"
+"  --enable-languages=c,c++,fortran,objc,obj-c++ --enable-lto"
+"  --with-multilib-list=m64,m32 --disable-libvtv --without-gnu-as"
+"  --with-as=/usr/bin/as --without-system-zlib --with-included-gettext"
+"  --with-gnu-ld --with-ld=/usr/bin/gld --with-pkgversion='CDS  22-Aug-2016'"
+"  --prefix=/net/toromondo.us.oracle.com/export/software/compilers/GCC/SunOS/sparc/gcc-6.2.0"
+"  --with-local-prefix=/net/toromondo.us.oracle.com/export/software/compilers/GCC/SunOS/sparc"
+"Thread model: posix"
+"gcc version 6.2.0 (CDS  22-Aug-2016) "
+------------------------------------------------------------------------------
+
+==============================================================================
+"CC   500.perlbench_r(base, peak) 502.gcc_r(base, peak) 505.mcf_r(base, peak)"
+"     525.x264_r(base, peak) 557.xz_r(base, peak)"
+------------------------------------------------------------------------------
+"cc: Studio 12.5 Sun C 5.14 SunOS_sparc 2016/05/31"
+------------------------------------------------------------------------------
+
+==============================================================================
+"FC   548.exchange2_r(base)
+"
+------------------------------------------------------------------------------
+"f90: Studio 12.5 Fortran 95 8.8 SunOS_sparc 2016/05/31"
+------------------------------------------------------------------------------
+
+"Base Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Base Compiler Invocation"
+500.perlbench_r," cc"," cc"
+502.gcc_r," cc"," cc"
+505.mcf_r," cc"," cc"
+520.omnetpp_r," CC"," CC"
+523.xalancbmk_r," CC"," CC"
+525.x264_r," cc"," cc"
+531.deepsjeng_r," CC"," CC"
+541.leela_r," CC"," CC"
+548.exchange2_r," f95"," f95"
+557.xz_r," cc"," cc"
+
+"Base Portability Flags"
+500.perlbench_r," -DSPEC_SOLARIS_SPARC"
+502.gcc_r," -D_FILE_OFFSET_BITS=64"
+505.mcf_r," -D_FILE_OFFSET_BITS=64"
+520.omnetpp_r," -DSPEC_GCC_MANGLE"," -D_FILE_OFFSET_BITS=64"
+523.xalancbmk_r," -DSPEC_SOLARIS"," -D_FILE_OFFSET_BITS=64"
+525.x264_r," -D_FILE_OFFSET_BITS=64"
+531.deepsjeng_r," -D_FILE_OFFSET_BITS=64"
+541.leela_r," -D_FILE_OFFSET_BITS=64"
+548.exchange2_r," -D_FILE_OFFSET_BITS=64"
+557.xz_r," -D_FILE_OFFSET_BITS=64"
+
+"Base Optimization Flags"
+500.perlbench_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+502.gcc_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+505.mcf_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+520.omnetpp_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -g"," -lfast"
+523.xalancbmk_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -g"," -lfast"
+525.x264_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+531.deepsjeng_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -g"," -lfast"
+541.leela_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -g"," -lfast"
+548.exchange2_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -g1"," -lfast"
+557.xz_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+
+"Base Other Flags"
+500.perlbench_r," -xjobs=64"," -xjobs=64"," -errfmt"
+502.gcc_r," -xjobs=64"," -xjobs=64"," -errfmt"
+505.mcf_r," -xjobs=64"," -xjobs=64"," -errfmt"
+520.omnetpp_r," -xjobs=64"," -xjobs=64"
+523.xalancbmk_r," -xjobs=64"," -xjobs=64"
+525.x264_r," -xjobs=64"," -xjobs=64"," -errfmt"
+531.deepsjeng_r," -xjobs=64"," -xjobs=64"
+541.leela_r," -xjobs=64"," -xjobs=64"
+548.exchange2_r," -xjobs=64"," -xjobs=64"
+557.xz_r," -xjobs=64"," -xjobs=64"," -errfmt"
+
+"Base Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Base Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Runtime Environment"
+500.perlbench_r," No flags used"
+502.gcc_r," No flags used"
+505.mcf_r," No flags used"
+520.omnetpp_r," No flags used"
+523.xalancbmk_r," No flags used"
+525.x264_r," No flags used"
+531.deepsjeng_r," No flags used"
+541.leela_r," No flags used"
+548.exchange2_r," No flags used"
+557.xz_r," No flags used"
+
+"Peak Compiler Invocation"
+500.perlbench_r," cc"," cc"
+502.gcc_r," cc"," cc"
+505.mcf_r," cc"," cc"
+520.omnetpp_r," CC"," CC"
+523.xalancbmk_r," CC"," CC"
+525.x264_r," cc"," cc"
+531.deepsjeng_r," CC"," CC"
+541.leela_r," CC"," CC"
+548.exchange2_r," gfortran"," gfortran"
+557.xz_r," cc"," cc"
+
+"Peak Portability Flags"
+500.perlbench_r," -DSPEC_SOLARIS_SPARC"
+502.gcc_r," -D_FILE_OFFSET_BITS=64"
+505.mcf_r," -D_FILE_OFFSET_BITS=64"
+520.omnetpp_r," -DSPEC_GCC_MANGLE"," -D_FILE_OFFSET_BITS=64"
+523.xalancbmk_r," -DSPEC_SOLARIS"," -D_FILE_OFFSET_BITS=64"
+525.x264_r," -D_FILE_OFFSET_BITS=64"
+531.deepsjeng_r," -D_FILE_OFFSET_BITS=64"
+541.leela_r," -D_FILE_OFFSET_BITS=64"
+548.exchange2_r," -DSPEC_LP64"
+557.xz_r," -D_FILE_OFFSET_BITS=64"
+
+"Peak Optimization Flags"
+500.perlbench_r," -m32"," -xpagesize=256M"," -xpagesize=256M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=layout"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g1"," -lfast"
+502.gcc_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=basic"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g1"," -lfast"
+505.mcf_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -g1"," -lfast"
+520.omnetpp_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -g"," -lfast"
+523.xalancbmk_r," -library=stlport4"," -std=sun03"," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -std=sun03"," -library=stlport4"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g"," -lfast"
+525.x264_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g1"," -lfast"
+531.deepsjeng_r," -m32"," -xpagesize=256M"," -std=c++03"," -xpagesize=256M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g"
+541.leela_r," -m32"," -xpagesize=4M"," -std=c++03"," -xpagesize=4M"," -m32"," -std=c++03"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=compatible"," -xprofile=collect:./feedback"," -xprofile=use:./feedback"," -g"
+548.exchange2_r," -m64"," -m64"," -DSPEC_SUPPRESS_OPENMP"," -g"," -Ofast"," -mcpu=niagara4"," -mtune=niagara4"," -mvis3"," -mfmaf"," -fprofile-generate"," -fprofile-use"," -g1"
+557.xz_r," -m32"," -xpagesize=4M"," -xpagesize=4M"," -m32"," -DSPEC_SUPPRESS_OPENMP"," -fast"," -xipo=2"," -xthroughput=yes"," -xalias_level=std"," -g1"," -lfast"
+
+"Peak Other Flags"
+500.perlbench_r," -xjobs=64"," -xjobs=64"," -errfmt"
+502.gcc_r," -xjobs=64"," -xjobs=64"," -errfmt"
+505.mcf_r," -xjobs=64"," -xjobs=64"," -errfmt"
+520.omnetpp_r," -xjobs=64"," -xjobs=64"
+523.xalancbmk_r," -xjobs=64"," -xjobs=64"
+525.x264_r," -xjobs=64"," -xjobs=64"," -errfmt"
+531.deepsjeng_r," -xjobs=64"," -xjobs=64"
+541.leela_r," -xjobs=64"," -xjobs=64"
+548.exchange2_r," No flags used"
+557.xz_r," -xjobs=64"," -xjobs=64"," -errfmt"
+
+"Peak Forbidden Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+
+"Peak Unknown Flags"
+500.perlbench_r
+502.gcc_r
+505.mcf_r
+520.omnetpp_r
+523.xalancbmk_r
+525.x264_r
+531.deepsjeng_r
+541.leela_r
+548.exchange2_r
+557.xz_r
+----------------
+"For questions about","this result, please","contact the tester.",
+"For other inquiries,","please contact",info@spec.org.,
+"Copyright 2017-2018 Standard","Performance Evaluation",Corporation,
+"Tested with SPEC CPU2017",v0.903.0.
+"Result run on","2016-10-13 00:37:42-0400."
+"Report generated on","2018-10-31 19:01:43","by SPEC CPU2017 CSV","formatter v5178."
+"Originally published on ",2017-06-19.
