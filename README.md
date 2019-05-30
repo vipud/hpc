@@ -18,10 +18,14 @@ NOTE: In the future, these programs will exist in a cron job, and will have dire
 
 ### Database
 
-*subject to change*
-
 MongoDB database installed on yoda. Run python scripts to move scraped .csv files into the database.
 
+1. Pull the vip github since the webscraped data is stored on github.
+2. get the path to the new ouput csv files, change the path in each script based on the benchmarks, located in the importDB folder.
+3. run each script using "python <ScriptName.py>" once
+4. Now everthing is in the database.
+
+NOTE: In the future, these programs will exist in a cron job, and will have directory organization built in, so that they are able to constantly updating database. Currently all the scripts are manually executed.
 ### User-Interface
 
 *subject to change* 
