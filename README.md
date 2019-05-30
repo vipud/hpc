@@ -25,7 +25,16 @@ MongoDB database installed on yoda. Run python scripts to move scraped .csv file
 3. run each script using "python <ScriptName.py>" once
 4. Now everthing is in the database.
 
+Useful mongo commands
+- mongo - acess the mongo shell to talk to databases
+- show dbs - show all databases
+- use "databaseName" - switch to a specific database
+- show collections - show all collections within the current database
+- db.collectionName.find().pretty() - display all documents in a specific collection
+- exit - exit the mongo shell
+
 NOTE: In the future, these programs will exist in a cron job, and will have directory organization built in, so that they are able to constantly updating database. Currently all the scripts are manually executed.
+
 ### User-Interface
 
 *subject to change* 
